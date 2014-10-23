@@ -1,0 +1,411 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4F1A9FFA19F92A9F00FBD23E /* AppleEventBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1A9FF919F92A9F00FBD23E /* AppleEventBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F1AA00019F92A9F00FBD23E /* AppleEventBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */; };
+		4F1AA00719F92A9F00FBD23E /* AppleEventBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA00619F92A9F00FBD23E /* AppleEventBridgeTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4F1AA00119F92A9F00FBD23E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4F1A9FEB19F92A9E00FBD23E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F1A9FF319F92A9F00FBD23E;
+			remoteInfo = AppleEventBridge;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppleEventBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F1A9FF819F92A9F00FBD23E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F1A9FF919F92A9F00FBD23E /* AppleEventBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppleEventBridge.h; sourceTree = "<group>"; };
+		4F1A9FFF19F92A9F00FBD23E /* AppleEventBridgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleEventBridgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F1AA00519F92A9F00FBD23E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F1AA00619F92A9F00FBD23E /* AppleEventBridgeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppleEventBridgeTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4F1A9FF019F92A9F00FBD23E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F1A9FFC19F92A9F00FBD23E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F1AA00019F92A9F00FBD23E /* AppleEventBridge.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4F1A9FEA19F92A9E00FBD23E = {
+			isa = PBXGroup;
+			children = (
+				4F1A9FF619F92A9F00FBD23E /* AppleEventBridge */,
+				4F1AA00319F92A9F00FBD23E /* AppleEventBridgeTests */,
+				4F1A9FF519F92A9F00FBD23E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4F1A9FF519F92A9F00FBD23E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */,
+				4F1A9FFF19F92A9F00FBD23E /* AppleEventBridgeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4F1A9FF619F92A9F00FBD23E /* AppleEventBridge */ = {
+			isa = PBXGroup;
+			children = (
+				4F1A9FF919F92A9F00FBD23E /* AppleEventBridge.h */,
+				4F1A9FF719F92A9F00FBD23E /* Supporting Files */,
+			);
+			path = AppleEventBridge;
+			sourceTree = "<group>";
+		};
+		4F1A9FF719F92A9F00FBD23E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4F1A9FF819F92A9F00FBD23E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4F1AA00319F92A9F00FBD23E /* AppleEventBridgeTests */ = {
+			isa = PBXGroup;
+			children = (
+				4F1AA00619F92A9F00FBD23E /* AppleEventBridgeTests.m */,
+				4F1AA00419F92A9F00FBD23E /* Supporting Files */,
+			);
+			path = AppleEventBridgeTests;
+			sourceTree = "<group>";
+		};
+		4F1AA00419F92A9F00FBD23E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4F1AA00519F92A9F00FBD23E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4F1A9FF119F92A9F00FBD23E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F1A9FFA19F92A9F00FBD23E /* AppleEventBridge.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4F1A9FF319F92A9F00FBD23E /* AppleEventBridge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F1AA00A19F92A9F00FBD23E /* Build configuration list for PBXNativeTarget "AppleEventBridge" */;
+			buildPhases = (
+				4F1A9FEF19F92A9F00FBD23E /* Sources */,
+				4F1A9FF019F92A9F00FBD23E /* Frameworks */,
+				4F1A9FF119F92A9F00FBD23E /* Headers */,
+				4F1A9FF219F92A9F00FBD23E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AppleEventBridge;
+			productName = AppleEventBridge;
+			productReference = 4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		4F1A9FFE19F92A9F00FBD23E /* AppleEventBridgeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F1AA00D19F92A9F00FBD23E /* Build configuration list for PBXNativeTarget "AppleEventBridgeTests" */;
+			buildPhases = (
+				4F1A9FFB19F92A9F00FBD23E /* Sources */,
+				4F1A9FFC19F92A9F00FBD23E /* Frameworks */,
+				4F1A9FFD19F92A9F00FBD23E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4F1AA00219F92A9F00FBD23E /* PBXTargetDependency */,
+			);
+			name = AppleEventBridgeTests;
+			productName = AppleEventBridgeTests;
+			productReference = 4F1A9FFF19F92A9F00FBD23E /* AppleEventBridgeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4F1A9FEB19F92A9E00FBD23E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = org.bitbucket.hhas;
+				TargetAttributes = {
+					4F1A9FF319F92A9F00FBD23E = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					4F1A9FFE19F92A9F00FBD23E = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
+			};
+			buildConfigurationList = 4F1A9FEE19F92A9E00FBD23E /* Build configuration list for PBXProject "AppleEventBridge" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4F1A9FEA19F92A9E00FBD23E;
+			productRefGroup = 4F1A9FF519F92A9F00FBD23E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4F1A9FF319F92A9F00FBD23E /* AppleEventBridge */,
+				4F1A9FFE19F92A9F00FBD23E /* AppleEventBridgeTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4F1A9FF219F92A9F00FBD23E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F1A9FFD19F92A9F00FBD23E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4F1A9FEF19F92A9F00FBD23E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F1A9FFB19F92A9F00FBD23E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F1AA00719F92A9F00FBD23E /* AppleEventBridgeTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4F1AA00219F92A9F00FBD23E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4F1A9FF319F92A9F00FBD23E /* AppleEventBridge */;
+			targetProxy = 4F1AA00119F92A9F00FBD23E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		4F1AA00819F92A9F00FBD23E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4F1AA00919F92A9F00FBD23E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		4F1AA00B19F92A9F00FBD23E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = AppleEventBridge/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		4F1AA00C19F92A9F00FBD23E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = AppleEventBridge/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		4F1AA00E19F92A9F00FBD23E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AppleEventBridgeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4F1AA00F19F92A9F00FBD23E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AppleEventBridgeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4F1A9FEE19F92A9E00FBD23E /* Build configuration list for PBXProject "AppleEventBridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F1AA00819F92A9F00FBD23E /* Debug */,
+				4F1AA00919F92A9F00FBD23E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F1AA00A19F92A9F00FBD23E /* Build configuration list for PBXNativeTarget "AppleEventBridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F1AA00B19F92A9F00FBD23E /* Debug */,
+				4F1AA00C19F92A9F00FBD23E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		4F1AA00D19F92A9F00FBD23E /* Build configuration list for PBXNativeTarget "AppleEventBridgeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F1AA00E19F92A9F00FBD23E /* Debug */,
+				4F1AA00F19F92A9F00FBD23E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4F1A9FEB19F92A9E00FBD23E /* Project object */;
+}
