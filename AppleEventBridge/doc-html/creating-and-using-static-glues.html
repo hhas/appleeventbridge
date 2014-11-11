@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>AppleEventBridge | Creating and using static glues</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css" media="all"><!--@import url(full.css);--></style>
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="main">
+				<h1>Creating and using static glues</h1>
+				<div class="navbar"><a href="how-appleeventbridge-works.html">prev</a> | <a href="index.html">index</a> | <a href="objc-ae-type-mappings.html">next</a></div>
+				<h2>Generating a glue</h2>
+
+<p>The AppleEventBridge framework bundle includes an <code>aebglue</code> tool for generating static glue files containing high-level terminology-based APIs.</p>
+
+<p>To put <code>aebglue</code> on your Bash shell's search path, add the following line to your <code>~/.bash_profile</code> (modify the path to <code>AppleEventBridge.framework</code> as needed):</p>
+
+<pre><code>  export $PATH="$PATH:/Library/Frameworks/AppleEventBridge.framework/Resources/bin"
+</code></pre>
+
+<p>To view the <code>aebglue</code> tool's full documentation:</p>
+
+<pre><code>  aebglue -h
+</code></pre>
+
+<p>The following example generates a glue for the TextEdit application, using <code>TE</code> as the class name prefix, and saving the generated glue to your home folder as <code>TEGlue</code>:</p>
+
+<pre><code>  aebglue -a TextEdit  -p TE -o ~/TEGlue
+</code></pre>
+
+<p>The generated glue includes an <code>.sdef</code> file containing the application's dictionary documentation in AEB format. For example, to view the <code>TEGlue</code> terminology in Script Editor: </p>
+
+<pre><code>  open -a 'Script Editor' ~/TEGlue/TextEdit.sdef
+</code></pre>
+
+<h2>Using a glue</h2>
+
+<p>To include the generated glue files in your project:</p>
+
+<ol>
+<li><p>Right-click on the Classes group in the left-hand Groups &amp; Files pane of the Xcode project window, and select Add &gt; Existing Files... from the contextual menu.</p></li>
+<li><p>Select the generated glue folder (e.g. <code>TEGlue</code>) and click Add.</p></li>
+<li><p>In the following sheet, check the "Copy items into destination group's folder" and "Recursively create groups for any added folders" options, and click Add.</p></li>
+</ol>
+
+<p>You can now import the main <code>&lt;var&gt;XX&lt;/var&gt;Glue/&lt;var&gt;XX&lt;/var&gt;Glue.h</code> header file into your own files (where <code>&lt;var&gt;XX&lt;/var&gt;</code> is the prefix code given in the <code>osaglue</code> command). For example:</p>
+
+<pre><code>  #import "TEGlue/TEGlue.h"
+</code></pre>
+
+<p>Each glue contains the following classes:</p>
+
+<ul>
+<li><p><code>&lt;var&gt;XX&lt;/var&gt;Symbol</code> -- represents Apple event type, enumerator, and property names, e.g. <code>TESymbol</code></p></li>
+<li><p><code>&lt;var&gt;XX&lt;/var&gt;Specifier</code> -- represents Apple Event Object Model queries (a.k.a. object specifiers), e.g. <code>TESpecifier</code></p></li>
+<li><p><code>&lt;var&gt;XXNAME&lt;/var&gt;Command</code> -- represents an application command (one class for each application command), e.g. <code>TEMakeCommand</code>, <code>TEMoveCommand</code>, etc.</p></li>
+<li><p><code>&lt;var&gt;XX&lt;/var&gt;Application</code> -- represents an application, e.g. <code>TEApplication</code></p></li>
+</ul>
+
+<p>Each glue also provides three macros - <code>&lt;var&gt;XX&lt;/var&gt;App</code>, <code>&lt;var&gt;XX&lt;/var&gt;Con</code> and <code>&lt;var&gt;XX&lt;/var&gt;Its</code> - for use in constructing object specifiers.</p>
+
+<p class="hilitebox">Note that the code examples in this manual assume the presence of suitable glues; e.g. TextEdit-based examples assume a TextEdit glue with the prefix `TE`, Finder-based examples assume a Finder glue with the prefix `FN`, etc.</p>
+
+<h2>How keywords are converted</h2>
+
+<p>Because application terminology resources specify AppleScript-style keywords for class, property, command, etc. names, AppleEventBridge uses the following rules to translate these keywords to legal ObjC class and method names:</p>
+
+<ul>
+<li><p>Characters a-z, A-Z, 0-9 and underscores (_) are preserved.</p></li>
+<li><p>Spaces, hyphens (-) and forward slashes (/) are removed, and the first character of all but the first word is capitalised, e.g. <code>document file</code> is converted to <code>documentFile</code>.</p></li>
+<li><p>Ampersands (&amp;) are replaced by the word 'And'.</p></li>
+<li><p>All other characters are converted to 0x00-style hexadecimal representations.</p></li>
+<li><p>Names that begin with '_', 'AEM', or 'AEB' have an underscore appended.</p></li>
+<li><p>Names that match ObjC keywords, <code>NSObject</code> methods, or methods already defined on AppleEventBridge's <code>AEBApplication</code> and <code>AEBSpecifier</code> classes have an underscore appended. The reserved method names are: [TO DO]</p></li>
+</ul>
+
+<p>AppleEventBridge provides default terminology for standard type classes such as <code>integer</code> and <code>unicodeText</code>, and standard commands such as <code>open</code> and <code>quit</code>. If an application-defined name matches a built-in name but has a different Apple event code, AppleEventBridge will append an underscore to the application-defined name.</p>
+
+			</div>
+		</div>
+		<div id="footer"><div class="navbar"><a href="how-appleeventbridge-works.html">prev</a> | <a href="index.html">index</a> | <a href="objc-ae-type-mappings.html">next</a></div></div>
+	</body>
+</html>

@@ -1,0 +1,154 @@
+<?xml version='1.0'?>
+<!DOCTYPE signatures SYSTEM "file://localhost/System/Library/DTDs/BridgeSupport.dtd">
+<signatures version='1.0'>
+<depends_on path='/System/Library/Frameworks/Foundation.framework'/>
+<depends_on path='/System/Library/Frameworks/Carbon.framework'/>
+<depends_on path='/System/Library/Frameworks/ApplicationServices.framework'/>
+<depends_on path='/System/Library/Frameworks/CoreFoundation.framework'/>
+<depends_on path='/System/Library/Frameworks/CoreServices.framework'/>
+<constant name='AppleEventBridgeVersionNumber' type64='d'/>
+<constant name='AppleEventBridgeVersionString' type64='^C'/>
+<constant name='kAEMErrorBriefMessageKey' type64='@'/>
+<constant name='kAEMErrorDomain' type64='@'/>
+<constant name='kAEMErrorExpectedTypeKey' type64='@'/>
+<constant name='kAEMErrorFailedEvent' type64='@'/>
+<constant name='kAEMErrorNumberKey' type64='@'/>
+<constant name='kAEMErrorOffendingObjectKey' type64='@'/>
+<constant name='kAEMErrorStringKey' type64='@'/>
+<enum name='kAEBRelaunchAlways' value64='2'/>
+<enum name='kAEBRelaunchLimited' value64='1'/>
+<enum name='kAEBRelaunchNever' value64='0'/>
+<enum name='kAEBTargetBundleID' value64='3'/>
+<enum name='kAEBTargetCurrent' value64='1'/>
+<enum name='kAEBTargetDescriptor' value64='6'/>
+<enum name='kAEBTargetName' value64='2'/>
+<enum name='kAEBTargetProcessID' value64='5'/>
+<enum name='kAEBTargetURL' value64='4'/>
+<enum name='kAEBTermCommand' value64='4'/>
+<enum name='kAEBTermEnumerator' value64='2'/>
+<enum name='kAEBTermParameter' value64='5'/>
+<enum name='kAEBTermProperty' value64='3'/>
+<enum name='kAEBTermType' value64='1'/>
+<enum name='kAEMDefaultLaunchOptions' value64='2560'/>
+<enum name='kAEMDontUnpack' value64='0'/>
+<enum name='kAEMTargetCurrent' value64='1'/>
+<enum name='kAEMTargetDescriptor' value64='5'/>
+<enum name='kAEMTargetEppcURL' value64='3'/>
+<enum name='kAEMTargetFileURL' value64='2'/>
+<enum name='kAEMTargetProcessID' value64='4'/>
+<enum name='kAEMUnpackAsItem' value64='1'/>
+<enum name='kAEMUnpackAsList' value64='2'/>
+<enum name='typeFSS' value64='1718842144'/>
+<function name='AEMDescriptionForError'>
+<arg type64='i'/>
+<retval type64='@'/>
+</function>
+<function name='AEMGetDefaultUnitTypeDefinitions'>
+<arg type64='^@'/>
+<arg type64='^@'/>
+<retval type64='v'/>
+</function>
+<function name='AEMNewRecordOfType'>
+<arg type64='I'/>
+<retval type64='@'/>
+</function>
+<function name='AEMSendMessageThreadSafe'>
+<arg type64='^{AEDesc=I^^{OpaqueAEDataStorageType}}'/>
+<arg type64='^{AEDesc=I^^{OpaqueAEDataStorageType}}'/>
+<arg type64='i'/>
+<arg type64='q'/>
+<retval type64='i'/>
+</function>
+<function name='disposeSpecifierModule'>
+<retval type64='v'/>
+</function>
+<function name='disposeTestModule'>
+<retval type64='v'/>
+</function>
+<function name='initSpecifierModule'>
+<retval type64='v'/>
+</function>
+<function name='initTestModule'>
+<retval type64='v'/>
+</function>
+<class name='AEBAppData'>
+<method selector='connectWithError:'>
+<retval type64='B'/>
+</method>
+<method selector='isRunning'>
+<retval type64='B'/>
+</method>
+<method selector='launchApplicationWithError:'>
+<retval type64='B'/>
+</method>
+</class>
+<class name='AEBSpecifier'>
+<method selector='abortTransactionWithError:'>
+<retval type64='B'/>
+</method>
+<method selector='beginTransactionWithError:'>
+<retval type64='B'/>
+</method>
+<method selector='beginTransactionWithSession:error:'>
+<retval type64='B'/>
+</method>
+<method selector='endTransactionWithError:'>
+<retval type64='B'/>
+</method>
+<method selector='isRunning'>
+<retval type64='B'/>
+</method>
+<method selector='launchApplication'>
+<retval type64='B'/>
+</method>
+<method selector='launchApplicationWithError:'>
+<retval type64='B'/>
+</method>
+<method selector='reconnectApplication'>
+<retval type64='B'/>
+</method>
+<method selector='reconnectApplicationWithError:'>
+<retval type64='B'/>
+</method>
+</class>
+<class name='AEMApplication'>
+<method selector='abortTransactionWithError:'>
+<retval type64='B'/>
+</method>
+<method selector='beginTransactionWithError:'>
+<retval type64='B'/>
+</method>
+<method selector='beginTransactionWithSession:error:'>
+<retval type64='B'/>
+</method>
+<method selector='endTransactionWithError:'>
+<retval type64='B'/>
+</method>
+<method selector='isEqual:'>
+<retval type64='B'/>
+</method>
+<method class_method='true' selector='isApplicationRunningWithDescriptor:'>
+<retval type64='B'/>
+</method>
+<method class_method='true' selector='processExistsForURL:'>
+<retval type64='B'/>
+</method>
+<method class_method='true' selector='isApplicationRunningWithProcessID:'>
+<retval type64='B'/>
+</method>
+<method selector='reconnect'>
+<retval type64='B'/>
+</method>
+<method selector='reconnectWithError:'>
+<retval type64='B'/>
+</method>
+</class>
+<class name='AEMBoolean'>
+<method selector='boolValue'>
+<retval type64='B'/>
+</method>
+<method selector='initWithBool:'>
+<arg index='0' type64='B'/>
+</method>
+</class>
+</signatures>

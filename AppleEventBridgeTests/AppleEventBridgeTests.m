@@ -1,9 +1,5 @@
 //
 //  AppleEventBridgeTests.m
-//  AppleEventBridgeTests
-//
-//  Created by Hamish Sanderson on 23/10/2014.
-//  Copyright (c) 2014 org.bitbucket.hhas. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

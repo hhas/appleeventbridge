@@ -1,0 +1,8 @@
+README
+
+AppleEventBridge is a mostly cleaned-up, modernized fork of objc-appscript (http://appscript.sourceforge.net). Some work remains to be done; for now, it is released as-is.
+
+AppleEventBridge currently depends on a number of legacy/deprecated Carbon APIs (see LEGACY API WRAPPERS) and is therefore unsupported and not recommended for production use. (This may change should Apple add equivalent fully-supported Cocoa APIs to future OS X releases.) No warranty given, E&OE, use at own risk, etc.
+
+AppleEventBridge is released into the public domain, except for sendthreadsafe.h/sendthreadsafe.c, which are modified versions of Apple
+code (http://developer.apple.com/samplecode/AESendThreadSafe); see files for details.
