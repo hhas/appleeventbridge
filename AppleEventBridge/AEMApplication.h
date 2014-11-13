@@ -62,6 +62,9 @@ typedef enum {
 
 // Utility class methods
 
+// Find application from which this process was launched.
++ (NSURL *)fileURLForCurrentApplication;
+
 // Find application by file name; returns nil if not found. Full path is also acceptable; .app suffix is optional.
 + (NSURL *)fileURLForApplicationWithName:(NSString *)name;
 
@@ -82,7 +85,7 @@ typedef enum {
 
 // Check if specified application is running
 
-// If a file:// URL is given, e.g. [NSURL fileURLWithPath: @"/Applications/iCal.app"],
+// If a file:// URL is given, e.g. [NSURL fileURLWithPath: @"/Applications/Calendar.app"],
 // does a local process launched from that application file exist? Or, if an eppc://
 // URL is given, e.g. [NSURL URLWithString: @"eppc://mac12.local/TextEdit"], does the
 // remote process identified by that URL exist?

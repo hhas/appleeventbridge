@@ -66,11 +66,11 @@ def render(sourcedir, destdir):
 			links = [('index.html', 'index'), (next[1], 'next')]
 		elif i == len(pages)-1:
 			prev = pages[i-1]
-			links = [(prev[1], 'prev'), ('index.html', 'index')]
+			links = [(prev[1], 'back'), ('index.html', 'index')]
 		else:
 			prev = pages[i-1]
 			next = pages[i+1]
-			links = [(prev[1], 'prev'), ('index.html', 'index'), (next[1], 'next')]
+			links = [(prev[1], 'back'), ('index.html', 'index'), (next[1], 'next')]
 		write(destdir, newname, render_page(links, title, content))
 
 

@@ -1,7 +1,7 @@
 //
 // TEApplicationGlue.h
 // TextEdit
-// (aebglue 0.6.0)
+// (AppleEventBridge 1.0)
 //
 
 #import <Foundation/Foundation.h>
@@ -17,13 +17,15 @@
 
 /* initialisers */
 
-+ (id)application;
++ (instancetype)application;
++ (instancetype)currentApplication;
 + (instancetype)applicationWithName:(NSString *)name;
 + (instancetype)applicationWithURL:(NSURL *)url;
 + (instancetype)applicationWithBundleID:(NSString *)bundleID;
 + (instancetype)applicationWithProcessID:(pid_t)pid;
 + (instancetype)applicationWithDescriptor:(NSAppleEventDescriptor *)desc;
 - (instancetype)init;
+- (instancetype)initCurrentApplication;
 - (instancetype)initWithName:(NSString *)name;
 - (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithBundleID:(NSString *)bundleID;

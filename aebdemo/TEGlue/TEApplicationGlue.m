@@ -1,7 +1,7 @@
 //
 // TEApplicationGlue.m
 // TextEdit
-// (aebglue 0.6.0)
+// (AppleEventBridge 1.0)
 //
 
 #import "TEApplicationGlue.h"
@@ -24,8 +24,11 @@
 
 /* initialisers */
 
-+ (id)application {
++ (instancetype)application {
     return [[self alloc] init];
+}
++ (instancetype)currentApplication {
+    return [[self alloc] initCurrentApplication];
 }
 + (instancetype)applicationWithName:(NSString *)name {
     return [[self alloc] initWithName: name];
@@ -43,6 +46,9 @@
     return [[self alloc] initWithDescriptor: desc];
 }
 - (instancetype)init {
+    return [self initWithBundleID: @"com.apple.TextEdit"];
+}
+- (instancetype)initCurrentApplication {
     return [self initWithTargetType: kAEBTargetCurrent data: nil];
 }
 - (instancetype)initWithName:(NSString *)name {

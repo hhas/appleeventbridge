@@ -9,7 +9,7 @@
 		<div id="wrap">
 			<div id="main">
 				<h1>How AppleEventBridge works</h1>
-				<div class="navbar"><a href="understanding-apple-events.html">prev</a> | <a href="index.html">index</a> | <a href="creating-and-using-static-glues.html">next</a></div>
+				<div class="navbar"><a href="understanding-apple-events.html">back</a> | <a href="index.html">index</a> | <a href="creating-and-using-static-glues.html">next</a></div>
 				<p>AppleEventBridge is a high-level Objective-C wrapper for the Carbon Apple Event Manager APIs. </p>
 
 <p>AppleEventBridge builds upon the Carbon Apple Event Manager and Foundation APIs to provide:</p>
@@ -33,9 +33,16 @@
 
 <p>The AEB layer consists of several <code>AEBStatic...</code> base classes and a code generator, <code>aebglue</code>, which creates static glue classes for individual applications. A number of <code>AEBDynamic...</code> base classes are also provided for use in constructing high-level bridges for scripting languages.</p>
 
-<p>For example, to set the size of the first character of every non-empty paragraph in every document of TextEdit to 24 pt: using <code>AEM</code> classes:</p>
+<p>For example, the following AppleScript sets the size of the first character of every non-empty paragraph in every document of TextEdit to 24 pt:</p>
 
-<pre><code>  AEMApplication *te = [[AEMApplication alloc] initWithName: @"TextEdit.app"];
+<pre><code>  tell application id "com.apple.TextEdit"
+     set size of character 1 of (every paragraph where it ≠ "\n") of every document to 24
+  end tell
+</code></pre>
+
+<p>Here is the equivalent Objective-C code using <code>AEM</code> classes:</p>
+
+<pre><code>  AEMApplication *te = [[AEMApplication alloc] initWithBundleID: @"com.apple.TextEdit"];
 
   AEMQuery *ref = [[[[[[[AEMApp elements: 'docu']
                                 property: 'ctxt']
@@ -52,7 +59,7 @@
 
 <p>and using <code>AEB</code> glue classes:</p>
 
-<pre><code>  TEApplication *te = [[TEApplication alloc] initWithName: @"TextEdit"];
+<pre><code>  TEApplication *te = [TEApplication application];
 
   TESpecifier *ref = [[te.documents.text.paragraphs byTest: [TEIts notEquals: @"\n"]]
                                         .characters at: 1].size;
@@ -62,6 +69,6 @@
 
 			</div>
 		</div>
-		<div id="footer"><div class="navbar"><a href="understanding-apple-events.html">prev</a> | <a href="index.html">index</a> | <a href="creating-and-using-static-glues.html">next</a></div></div>
+		<div id="footer"><div class="navbar"><a href="understanding-apple-events.html">back</a> | <a href="index.html">index</a> | <a href="creating-and-using-static-glues.html">next</a></div></div>
 	</body>
 </html>

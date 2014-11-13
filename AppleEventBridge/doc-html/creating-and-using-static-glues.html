@@ -9,7 +9,7 @@
 		<div id="wrap">
 			<div id="main">
 				<h1>Creating and using static glues</h1>
-				<div class="navbar"><a href="how-appleeventbridge-works.html">prev</a> | <a href="index.html">index</a> | <a href="objc-ae-type-mappings.html">next</a></div>
+				<div class="navbar"><a href="how-appleeventbridge-works.html">back</a> | <a href="index.html">index</a> | <a href="objc-ae-type-mappings.html">next</a></div>
 				<h2>Generating a glue</h2>
 
 <p>The AppleEventBridge framework bundle includes an <code>aebglue</code> tool for generating static glue files containing high-level terminology-based APIs.</p>
@@ -29,10 +29,19 @@
 <pre><code>  aebglue -a TextEdit  -p TE -o ~/TEGlue
 </code></pre>
 
+<p>For compatibility, <code>aebglue</code> normally sends the application an <code>ascr/gdte</code> event to retrieve its terminology in AETE format. However, some Carbon-based applications (e.g. Finder in 10.9 and 10.10) may have buggy <code>ascr/gdte</code> event handlers that return Cocoa Scripting's default terminology instead of the application's own. To work around this, add an <code>-s</code> option to retrieve the terminology in SDEF format instead:</p>
+
+<pre><code>  aebglue -a Finder  -p FN -o ~/FNGlue -s
+</code></pre>
+
+<p>(Be aware that OS X's AETE-to-SDEF converter is not 100% reliable; for example, some four-char codes may fail to translate, in which case <code>aebglue</code> will warn of their omission. You'll have to correct the glue files manually should you need to use the affected features, or use the lower-level <code>AEM</code> APIs instead.)</p>
+
 <p>The generated glue includes an <code>.sdef</code> file containing the application's dictionary documentation in AEB format. For example, to view the <code>TEGlue</code> terminology in Script Editor: </p>
 
 <pre><code>  open -a 'Script Editor' ~/TEGlue/TextEdit.sdef
 </code></pre>
+
+<p>Refer to this documentation when using AppleEventBridge glues in your own code, as it shows element, property, command, etc. names as they appear in the generated glue classes. (Make sure Script Editor's dictionary viewer is set to "AppleScript" language mode; the "Objective-C" mode formats terminology for OS X's Scripting Bridge.)</p>
 
 <h2>Using a glue</h2>
 
@@ -64,7 +73,7 @@
 
 <h2>How keywords are converted</h2>
 
-<p>Because application terminology resources specify AppleScript-style keywords for class, property, command, etc. names, AppleEventBridge uses the following rules to translate these keywords to legal ObjC class and method names:</p>
+<p>Because scriptable applications' terminology resources supply class, property, command, etc. names in AppleScript keyword format, <code>aebglue</code> must convert these terms to valid Objective-C class and method names when generating the glue files and accompanying <code>.sdef</code> documentation file. For reference, here are the conversion rules used:</p>
 
 <ul>
 <li><p>Characters a-z, A-Z, 0-9 and underscores (_) are preserved.</p></li>
@@ -72,13 +81,12 @@
 <li><p>Ampersands (&amp;) are replaced by the word 'And'.</p></li>
 <li><p>All other characters are converted to 0x00-style hexadecimal representations.</p></li>
 <li><p>Names that begin with '_', 'AEM', or 'AEB' have an underscore appended.</p></li>
-<li><p>Names that match ObjC keywords, <code>NSObject</code> methods, or methods already defined on AppleEventBridge's <code>AEBApplication</code> and <code>AEBSpecifier</code> classes have an underscore appended. The reserved method names are: [TO DO]</p></li>
+<li><p>Names that match ObjC keywords, <code>NSObject</code> methods, or methods already defined on AppleEventBridge's <code>AEBApplication</code> and <code>AEBSpecifier</code> classes have an underscore appended.</p></li>
+<li><p>AppleEventBridge provides default terminology for standard type classes such as <code>integer</code> and <code>unicodeText</code>, and standard commands such as <code>open</code> and <code>quit</code>. If an application-defined name matches a built-in name but has a different Apple event code, AppleEventBridge will append an underscore to the application-defined name.</p></li>
 </ul>
-
-<p>AppleEventBridge provides default terminology for standard type classes such as <code>integer</code> and <code>unicodeText</code>, and standard commands such as <code>open</code> and <code>quit</code>. If an application-defined name matches a built-in name but has a different Apple event code, AppleEventBridge will append an underscore to the application-defined name.</p>
 
 			</div>
 		</div>
-		<div id="footer"><div class="navbar"><a href="how-appleeventbridge-works.html">prev</a> | <a href="index.html">index</a> | <a href="objc-ae-type-mappings.html">next</a></div></div>
+		<div id="footer"><div class="navbar"><a href="how-appleeventbridge-works.html">back</a> | <a href="index.html">index</a> | <a href="objc-ae-type-mappings.html">next</a></div></div>
 	</body>
 </html>

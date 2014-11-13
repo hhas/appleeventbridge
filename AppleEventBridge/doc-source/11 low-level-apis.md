@@ -284,6 +284,12 @@ An `AEMApplication` instance represents an application to which Apple events wil
 
     - (instancetype)initWithDescriptor:(NSAppleEventDescriptor *)desc;
 
+Alternatively, to target the current (i.e. host) process:
+
+    - (instancetype)init;
+
+[TO DO: alternatively, should AEMApplication implement -initCurrentApplication for consistency with high-level glue APIs, and just stub out -init to return nil?]
+
 Applications identified by name/path, `file://` URL, or bundle ID will be launched automatically if not already running. You can use the `options` argument to customize the launching behavior (e.g. to hide the process upon launch); see the AppKit documentation for `NSWorkspaceLaunchOptions` for details. Once running, `AEMApplication` identifies the target application by its process ID for reliability. If the application cannot be launched (e.g. it can't be found) then the initializer returns `nil`; if the `error` argument is not `nil` then an `NSError` containing additional error information is also returned.
 
 Applications identified by `eppc://` URL, process ID, or AEAddressDesc are not launched automatically, so must be running before the `AEMApplication` instance is used, or an error will occur when an Apple event is sent.
@@ -375,9 +381,8 @@ The `AEM` APIs streamline this process as follows:
 
 ### Targeting applications
 
-    AEMApplication *textedit;
     // application "TextEdit"
-    textedit = [[AEMApplication alloc] initWithName: @"TextEdit"];
+    AEMApplication *textedit = [[AEMApplication alloc] initWithName: @"TextEdit"];
 
     // application id "com.apple.TextEdit"
     textedit = [[AEMApplication alloc] initWithBundleID: @"com.apple.TextEdit"];

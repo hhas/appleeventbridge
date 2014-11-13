@@ -19,7 +19,9 @@ Fortunately, it's often possible to minimise performance overheads by using fewe
 
 While iterating over application objects and manipulating each in turn is a common technique, it's also the slowest by far:
     
-    CNSApplication *contacts = [CNSApplication applicationWithName: @"Contacts"];
+    #import "CNSGlue/CNSGlue.h"
+
+    CNSApplication *contacts = [CNSApplication application];
 
     NSString *desiredEmail = @"sam.brown@example.com";
     
@@ -45,7 +47,9 @@ While there are some situations where iterating over and manipulating each appli
 
 In this case, the entire search can be performed using a single complex query sent to Contacts via a single Apple event:
 
-    CNSApplication *contacts = [CNSApplication applicationWithName: @"Contacts"];
+    #import "CNSGlue/CNSGlue.h"
+
+    CNSApplication *contacts = [CNSApplication application];
     
     NSString *desiredEmail = @"sam.brown@example.com";
     
@@ -68,7 +72,9 @@ To explain:
 
 While AEOM queries can be surprisingly powerful, there are still many problems too complex for the application to evaluate entirely by itself. For example, let's say that you want to obtain the name of every person who has an email addresses that uses a particular domain name. Unfortunately, this test is too complex to express as a single AEOM query; however, it can still be solved reasonably efficiently by obtaining all the data from the application up-front and processing it locally. For this we need: 1. the name of every person in the Contacts, and 2. each person's email addresses. Fortunately, each of these can be expressed in a single query, allowing all this data to be retrieved using just two `get` commands.
 
-    CNSApplication *contacts = [CNSApplication applicationWithName: @"Contacts"];
+    #import "CNSGlue/CNSGlue.h"
+
+    CNSApplication *contacts = [CNSApplication application];
     
     NSString *desiredDomain = @"@example.com";
 

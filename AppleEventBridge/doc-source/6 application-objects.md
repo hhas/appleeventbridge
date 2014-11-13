@@ -1,10 +1,16 @@
 # Application objects
 
-[TO DO: revise constructors: use -currentApplication for current process, and -application to create by bundle ID without having to explicitly state it (aebglue should include the bundle id in the glue file)]
-
 ## Creating application objects
 
-Before you can communicate with a scriptable application you must create an application object by calling one of the following methods on the glue's Application class:
+Before you can communicate with a scriptable application you must create an application object. When targeting local applications, the glue's <code>+[<var>XX</var>Application application]</code> method is usually the best choice. For example, to target TextEdit:
+
+    #import "TEGlue/TEGlue.h"
+
+    TEApplication *textedit = [TEApplication application];
+
+This uses the bundle identifier of the application from which the glue was originally generated (e.g. `com.apple.TextEdit`) to locate the application on the current machine, or returns `nil` if no match is found. (See `-[NSWorkspace URLForApplicationWithBundleIdentifier:]` for more information.)
+
+Alternatively, one of the following methods may be used (e.g. if multiple versions of the application are installed, or the application is running on another machine):
 
     // application's name or full path (.app suffix is optional)
     + (instancetype)applicationWithName:(NSString *)name;
@@ -22,20 +28,15 @@ Before you can communicate with a scriptable application you must create an appl
     + (instancetype)applicationWithDescriptor:(NSAppleEventDescriptor *)desc; 
 
     // the current (host) process
-    + (instancetype)application; 
+    + (instancetype)currentApplication; 
 
+For example, to target a specific version of InDesign by name:
+    
+    #import "AIDGlue/AIDGlue.h"
 
-Examples:
+    AIDApplication *indesign = [AIDApplication applicationWithName: @"Adobe InDesign CS6.app"];
 
-    #import "ICLGlue/ICLGlue.h"
-
-    ICLApplication *ical = [ICLApplication applicationWithName: @"iCal.app"];
-
-
-    #import "TEGlue/TEGlue.h"
-
-    TEApplication *te = [TEApplication applicationWithBundleID: @"com.apple.textedit"];
-
+Or to control an iTunes process on another machine using Remote Apple Events:
 
     #import "ITSGlue/ITSGlue.h"
 
@@ -43,7 +44,7 @@ Examples:
     ITSApplication *itunes = [ITSApplication applicationWithURL: url];
 
 
-Note that local applications will be launched if not already running when `+applicationWithName:`, `+applicationWithBundleID:` or `+applicationWithURL:` is invoked, and events will be sent to the running application according to its process ID. If the process is later terminated, that process ID is no longer valid and events sent subsequently using this application object will fail as application objects currently don't provide a 'reconnect' facility.
+Note that local applications will be launched if not already running when `+application`, `+applicationWithName:`, `+applicationWithBundleID:` or `+applicationWithURL:` is invoked, and events will be sent to the running application according to its process ID. If the process is later terminated, that process ID is no longer valid and events sent subsequently using this application object will fail as application objects currently don't provide a 'reconnect' facility [TO DO: update this].
 
 If `+applicationWithURL:` is invoked with an `eppc://` URL, or if `+applicationWithProcessID:` or `+applicationWithDescriptor:` are used, the caller is responsible for ensuring the target application is running before sending any events to it.
 
@@ -111,7 +112,7 @@ You can check if the application specified by an Application object is currently
 
 This is useful if you don't want to perform commands on an application that isn't already running. For example:
 
-    TEApplication *te = [[TEApplication alloc] initWithName: @"TextEdit'];
+    TEApplication *textedit = [TEApplication application];
     
     // Only perform TextEdit-related commands if it's already running:
     if (textedit.isRunning) {
@@ -133,8 +134,8 @@ The result is a Boolean value indicating if the application was successfully lau
 
 This is useful when you want to start an application without it going through its normal startup procedure, and is equivalent to the using AppleScript's `launch` command. For example, to launch TextEdit without causing it to display a new, empty document (its usual behaviour):
 
-    TEApplication *te = [[TEApplication alloc] initWithName: @"TextEdit'];
-    [te launchApplication];
+    TEApplication *textedit = [TEApplication application];
+    [textedit launchApplication];
     // other TextEdit-related code goes here...
 
 The lower level `AEMApplication` class also provides several class methods that allow fine-grained control over application launches.

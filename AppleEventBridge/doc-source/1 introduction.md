@@ -6,15 +6,17 @@ AppleEventBridge allows you to control Apple event-aware ("AppleScriptable") Mac
 
 For example, to get the value of the first paragraph of the topmost document in TextEdit:
 
-    TEApplication *te = [[TEApplication alloc] initWithName: @"TextEdit.app"];
+    #import "TEGlue/TEGlue.h"
+    
+    TEApplication *textedit = [TEApplication application];
                             
-    TESpecifier *ref = [[te.documents at: 1].paragraphs at: 1];
+    TESpecifier *ref = [[textedit.documents at: 1].paragraphs at: 1];
 
     NSString *result = [[ref get] send];
 
 This is equivalent to the AppleScript statement:
 
-    tell application "TextEdit"
+    tell application id "com.apple.TextEdit"
         get paragraph 1 of document 1
     end tell
 
@@ -28,13 +30,12 @@ The following program uses AppleEventBridge to create a new "Hello World!" docum
     int main(int argc, char *argv[]) {
       @autoreleasepool {
         
-        TEApplication *te = [[TEApplication alloc] initWithName: @"TextEdit.app"];
+        TEApplication *textedit = [TEApplication application];
     
-        TEMakeCommand *cmd = [[[te make] new_: TESymbol.document]
-                               withProperties: @{TESymbol.text: @"Hello World!"}];
+        TEMakeCommand *cmd = [[[textedit make] new_: TESymbol.document]
+                                     withProperties: @{TESymbol.text: @"Hello World!"}];
     
         [cmd send];
-  
       }
       return 0;
     }

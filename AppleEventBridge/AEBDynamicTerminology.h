@@ -17,6 +17,19 @@
 
 
 /**********************************************************************/
+// constants used in AEBDynamicAppData initializers
+
+// targetTerms:
+#define kAEBUseAETETerminology    ([AEMType typeWithCode: 'AETE'])
+#define kAEBUseSDEFTerminology    ([AEMType typeWithCode: 'SDEF'])
+#define kAEBNoTerminology         ([AEMType typeWithCode: 'NoTe'])
+
+// defaultTerms:
+#define kAEBUseDefaultTerminology ([AEMType typeWithCode: 'DeTe'])
+//      kAEBNoTerminology
+
+
+/**********************************************************************/
 
 
 // Given arrays of type, enum, property, element, and command name-code definitions, recomposes
@@ -46,7 +59,7 @@
 // PUBLIC
 
 - (instancetype)initWithKeywordConverter:(id<AEBDynamicTermNameConverterProtocol>)keywordConverter_
-                      defaultTerminology:(id)defaultTerms_; // AEMTrue/AEMFalse/AEBDynamicRawTermsProtocol
+                      defaultTerminology:(id)defaultTerms_; // kAEBUseDefaultTerminology/kAEBNoTerminology/AEBDynamicRawTermsProtocol
 
 /*
  * add data from AEBDynamicAETEParser or equivalent

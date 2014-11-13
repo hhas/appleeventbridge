@@ -7,6 +7,7 @@
 
 #import "AEBAppData.h"
 #import "AEBDynamicAETEParser.h"
+#import "AEBDynamicSDEFParser.h"
 #import "AEBDynamicTerminology.h"
 #import "AEMUtils.h"
 
@@ -22,19 +23,21 @@
 }
 
 // designated initializer
+// targetTerms: kAEBUseAETETerminology/kAEBUseSDEFTerminology/kAEBNoTerminology/any object conforming to AEBDynamicRawTermsProtocol
+// defaultTerms: kAEBUseDefaultTerminology/kAEBNoTerminology/any object conforming to AEBDynamicRawTermsProtocol
 - (instancetype)initWithApplicationClass:(Class)appClass
                               targetType:(AEBTargetType)type
                               targetData:(id)data
                             relaunchMode:(AEBRelaunchMode)mode
                            launchOptions:(NSWorkspaceLaunchOptions)options
-                             targetTerms:(id)targetTerms_ // AEMTrue/AEMFalse/AEBDynamicRawTermsProtocol
-                            defaultTerms:(id)defaultTerms_ // AEMTrue/AEMFalse/AEBDynamicRawTermsProtocol
+                             targetTerms:(id)targetTerms_
+                            defaultTerms:(id)defaultTerms_
                         keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_;
 
 // used by aebglue
-- (instancetype)initWithTargetType:(AEBTargetType)type
-                        targetData:(id)data
-                  keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_;
+- (instancetype)initWithApplicationURL:(NSURL *)url
+                               useSDEF:(bool)useSDEF
+                      keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_;
 
 
 - (AEBDynamicTerminology *)terminologyWithError:(NSError * __autoreleasing *)error;

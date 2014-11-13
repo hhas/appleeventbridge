@@ -1,15 +1,19 @@
 # Examples
 
 ## Application objects
+    
+    // application id "com.apple.Finder"
+    #import "FNGlue/FNGlue.h"
+    FNApplication *finder = [FNApplication application];
 
-    // application "Finder"
-    #import "FNGlue.h"
-    FNApplication *finder = [FNApplication applicationWithName: @"Finder.app"];
+    // application "Adobe InDesign CS6"
+    #import "AIDGlue/AIDGlue.h"
+    AIDApplication *indesign = [AIDApplication applicationWithName: @"Adobe InDesign CS6"];
 
 
     // application "Macintosh HD:Applications:TextEdit.app:"
-    #import "TEGlue.h"
-    TEApplication *textedit = [[TEApplication applicationWithPath: @"/Applications/TextEdit.app"];
+    #import "TEGlue/TEGlue.h"
+    TEApplication *textedit = [TEApplication applicationWithName: @"/Applications/TextEdit.app"];
 
 
 ## Property references

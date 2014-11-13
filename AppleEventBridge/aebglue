@@ -2,7 +2,7 @@
 
 """ aebglue -- Generate Objective-C application glues for AppleEventBridge """
 
-# TO DO: use correct signatures for appdata.terminologyWithError_, AEBDynamicSDEFParser.copyScriptingDefinitionAtURL_error_ so error description is returned
+# TO DO: use correct signatures for appdata.terminologyWithError_, AEBDynamicSDEFParser.copyScriptingDefinitionAtURL_error_ so error description is returned; see objc.setSignatureForSelector()
 
 # TO DO: XXXSymbol.m shouldn't include type and enum symbols already defined by AEBSymbol (also check how partial matches, e.g. where name is same but code is different, are treated)
 
@@ -22,10 +22,8 @@ import codecs, getopt, os, re, string, StringIO, sys
 import xml.etree.ElementTree as ET
 
 import objc # (this script uses system Python, which includes PyObjC as standard)
-from Foundation import NSObject
+from Foundation import NSObject, NSBundle
 
-
-kGlueVersion = '0.6.0'
 
 kReservedPrefixes = {'NS', 'AEM', 'AEB'} # glues cannot use these prefixes
 
@@ -40,7 +38,8 @@ mpath = re.match('(.+/%s.framework)' % kFrameworkName, os.path.abspath(os.path.e
 if not mpath:
     print >> sys.stderr, 'aebglue executable must be inside %s.framework bundle.' % kFrameworkName
     sys.exit(1)
-objc.loadBundle(kFrameworkName, globals(), bundle_path=objc.pathForFramework(mpath.group(1)))
+bundle = objc.loadBundle(kFrameworkName, globals(), bundle_path=mpath.group(1))
+kGlueVersion =  bundle.infoDictionary()['CFBundleShortVersionString']
 
 
 ######################################################################
@@ -310,10 +309,10 @@ class ImplementationRenderer:
     kAutoReleaseEndTag = '<AUTOEND>'
     
     
-    def __init__(self, apppath, prefix, outdir, noarc):
+    def __init__(self, appname, prefix, outdir, noarc):
         if prefix in kReservedPrefixes:
             raise ValueError("Can't use reserved prefix: %r" % prefix)
-        self._apppath = apppath
+        self._appname = appname
         self._outdir = outdir
         self._prefix = prefix
         self._autoreleasestart = '[' if noarc else ''
@@ -332,8 +331,8 @@ class ImplementationRenderer:
         for fn, f, suffix in [(self.writeh, self._interface, 'h'), (self.writem, self._implementation, 'm')]:
             fn('//')
             fn('// <PREFIX>%s.%s' % (name, suffix))
-            print >> f, '// ' + self._apppath
-            fn('// (aebglue %s)' % kGlueVersion)
+            print >> f, '// ' + self._appname
+            fn('// (%s %s)' % (kFrameworkName, kGlueVersion))
             fn('//')
             fn('')
         self.writeh('#import <Foundation/Foundation.h>')
@@ -401,8 +400,8 @@ class ClassBuilder:
         
     kLegalCodeChars = re.compile('^[a-zA-Z0-9* ]+$')
     
-    def __init__(self, terms, noarc=False):
-        self._noarc = noarc
+    def __init__(self, terms, bundleid, noarc):
+        self._bundleid, self._noarc = bundleid, noarc
         # [(str, NSAppleEventDescriptor),...]
         self.typebyname = sorted(terms.typesByName().items(), key=lambda o: o[0])
         # [(str, AEBDynamicTerm),...]
@@ -434,7 +433,7 @@ class ClassBuilder:
         src.submethod('+ (instancetype)symbolWithCode:(OSType)code_')
         src += '    switch (code_) {'
         for code, name in self.typebycode:
-            src += '        case %s: return [self %s];' % (self._formatcode(code), name)
+            src += '        case %s: return self.%s;' % (self._formatcode(code), name)
         src += '        default: return [super symbolWithCode: code_];'
         src += '    }'
         src.endmethod()
@@ -549,8 +548,11 @@ class ClassBuilder:
         src.endmethod()
         # public constructors
         src.comment('initialisers')
-        src.newmethod('+ (id)application')
+        src.newmethod('+ (instancetype)application')
         src += '    return <AUTOSTART>[[self alloc] init]<AUTOEND>;'
+        src.endmethod()
+        src.newmethod('+ (instancetype)currentApplication')
+        src += '    return <AUTOSTART>[[self alloc] initCurrentApplication]<AUTOEND>;'
         src.endmethod()
         for name, call in [
                 ('+ (instancetype)applicationWithName:(NSString *)name', 'initWithName: name'),
@@ -562,6 +564,12 @@ class ClassBuilder:
             src += '    return <AUTOSTART>[[self alloc] %s]<AUTOEND>;' % call
             src.endmethod()
         src.newmethod('- (instancetype)init')
+        if self._bundleid:
+            src += ('    return [self initWithBundleID: @"%s"];' % self._bundleid.replace('\\', '\\\\').replace('"', '\\"'))
+        else:
+            src += '    return nil;'
+        src.endmethod()
+        src.newmethod('- (instancetype)initCurrentApplication')
         src += '    return [self initWithTargetType: kAEBTargetCurrent data: nil];'
         src.endmethod()
         for name, target, data in [
@@ -751,21 +759,30 @@ def nametoprefix(name): # TO DO: currently unused; update to use 3-char prefixes
 ##
 
 
-def makeappglue(appname, prefix, outdir, noarc=False):
+def makeappglue(appname, prefix, outdir, noarc, usesdef):
     """
         appname : str -- application name or path
         prefix : str -- ObjC classname prefix, e.g. 'TE'
         outdir : str -- path to glue folder
         noarc : bool -- if True, use explicit release/autorelease instead of ARC
+        usesdef : bool -- if True, get application's terminology as SDEF instead of AETE
     """
-    appdata = AEBDynamicAppData.alloc().initWithTargetType_targetData_keywordConverter_(
-            2, appname, kKeywordConverter)
+    url = AEMApplication.fileURLForApplicationWithName_(appname)
+    if not url:
+        raise ValueError("Can't make glue for %r: %s" % (appname,  "can't find application."))
+    # get application's dictionary
+    appdata = AEBDynamicAppData.alloc().initWithApplicationURL_useSDEF_keywordConverter_(
+            url, usesdef, kKeywordConverter)
     terms = appdata.terminologyWithError_(None)
     if not terms:
         raise ValueError("Can't make glue for %r: %s" % (appname,  "can't get terminology."))
-    builder = ClassBuilder(terms, noarc)
+    bundle = NSBundle.bundleWithURL_(url)
+    bundleid = bundle.infoDictionary()['CFBundleIdentifier'] if bundle else None
+    if not bundleid:
+        print >> sys.stderr, 'Warning:  +application, -init methods not supported as bundle identifier not found.'
+    builder = ClassBuilder(terms, bundleid, noarc)
     builder.render(ImplementationRenderer(appname, prefix, outdir, noarc))
-    url = AEMApplication.fileURLForApplicationWithName_(appname)
+    # export dictionary documentation
     sdef = AEBDynamicSDEFParser.copyScriptingDefinitionAtURL_error_(url, None)
     if not sdef:
         raise ValueError("Can't export SDEF for %r: %s" % (appname,  "can't get terminology."))
@@ -780,10 +797,10 @@ def makedefaultglue(prefix, outdir, noarc=False):
         outdir : str -- path to glue folder
         noarc : bool -- if True, use explicit release/autorelease instead of ARC
     """
-    appdata = AEBDynamicAppData.alloc().initWithTargetType_targetData_keywordConverter_(
-            1, None, kKeywordConverter)
+    appdata = AEBDynamicAppData.alloc().initWithApplicationURL_useSDEF_keywordConverter_(
+            None, False, kKeywordConverter)
     terms = appdata.terminologyWithError_(None)
-    builder = ClassBuilder(terms, noarc)
+    builder = ClassBuilder(terms, None, noarc)
     builder.render(ImplementationRenderer('<default terminology>', prefix, outdir, noarc))
 
 
@@ -794,7 +811,7 @@ def makedefaultglue(prefix, outdir, noarc=False):
 
 if __name__ == '__main__':
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'a:p:o:hn')
+        opts, args = getopt.getopt(sys.argv[1:], 'a:p:o:hns')
         opts = dict(opts)
         if not opts or '-h' in opts:
             print >> sys.stderr, "Generate Objective-C application glues for AppleEventBridge"
@@ -805,11 +822,13 @@ if __name__ == '__main__':
             print >> sys.stderr
             print >> sys.stderr, "Options:"
             print >> sys.stderr
-            print >> sys.stderr, "    -n         Use explicit retain/release, not ARC"
             print >> sys.stderr, "    -a NAME    Name or full path to application; if omitted,"
             print >> sys.stderr, "                 use default terminology only"
+            print >> sys.stderr, "    -h         Show this help and exit"
             print >> sys.stderr, "    -p PREFIX  Class names prefix"
             print >> sys.stderr, "    -o OUTDIR  Path to output directory"
+            print >> sys.stderr, "    -n         Use explicit retain/release, not ARC"
+            print >> sys.stderr, "    -s         Use SDEF terminology instead of AETE"
             print >> sys.stderr
             print >> sys.stderr, "Example:"
             print >> sys.stderr
@@ -820,7 +839,7 @@ if __name__ == '__main__':
             raise TypeError("-o and -p options are required")
         outdir = os.path.abspath(os.path.expanduser(opts['-o']))
         if '-a' in opts:
-            makeappglue(opts['-a'], opts['-p'], outdir, '-n' in opts)
+            makeappglue(opts['-a'], opts['-p'], outdir, '-n' in opts, '-s' in opts)
         else:
             makedefaultglue(opts['-p'], outdir, '-n' in opts)
         print >> sys.stderr, "Written glue to:", outdir

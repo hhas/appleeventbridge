@@ -5,12 +5,11 @@
 //  for high-level static-generated ObjC glues and dynamic bridges.
 //
 //  WARNING: As this framework relies on legacy and deprecated Carbon APIs, it is not
-//  recommended for production use. Deprecation warnings are turned off in build settings
-//  (20 warnings in 10.9 SDK).
-//
-//  TO DO: port documentation
+//  recommended for production use.
 //
 //  TO DO: generate .bridgesupport automatically
+//
+//  TO DO: remove `k` prefix from all AEM/AEB enums (c.f. Cocoa enums)?
 //
 //  TO DO: is AESendThreadSafe module (<rdar://problem/4976113>) still required?
 

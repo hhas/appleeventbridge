@@ -9,7 +9,7 @@
 		<div id="wrap">
 			<div id="main">
 				<h1>Low-level APIs</h1>
-				<div class="navbar"><a href="optimizing performance.html">prev</a> | <a href="index.html">index</a> | <a href="notes.html">next</a></div>
+				<div class="navbar"><a href="optimizing-performance.html">back</a> | <a href="index.html">index</a> | <a href="notes.html">next</a></div>
 				<h2>Introduction</h2>
 
 <p>AppleEventBridge's lower-level <code>AEM</code> classes provides a object-oriented wrapper around the low-level Apple Event Manager and NSAppleEventDescriptor APIs. It provides the following services:</p>
@@ -291,6 +291,13 @@
   - (instancetype)initWithDescriptor:(NSAppleEventDescriptor *)desc;
 </code></pre>
 
+<p>Alternatively, to target the current (i.e. host) process:</p>
+
+<pre><code>  - (instancetype)init;
+</code></pre>
+
+<p>[TO DO: alternatively, should AEMApplication implement -initCurrentApplication for consistency with high-level glue APIs, and just stub out -init to return nil?]</p>
+
 <p>Applications identified by name/path, <code>file://</code> URL, or bundle ID will be launched automatically if not already running. You can use the <code>options</code> argument to customize the launching behavior (e.g. to hide the process upon launch); see the AppKit documentation for <code>NSWorkspaceLaunchOptions</code> for details. Once running, <code>AEMApplication</code> identifies the target application by its process ID for reliability. If the application cannot be launched (e.g. it can't be found) then the initializer returns <code>nil</code>; if the <code>error</code> argument is not <code>nil</code> then an <code>NSError</code> containing additional error information is also returned.</p>
 
 <p>Applications identified by <code>eppc://</code> URL, process ID, or AEAddressDesc are not launched automatically, so must be running before the <code>AEMApplication</code> instance is used, or an error will occur when an Apple event is sent.</p>
@@ -388,9 +395,8 @@
 
 <h3>Targeting applications</h3>
 
-<pre><code>  AEMApplication *textedit;
-  // application "TextEdit"
-  textedit = [[AEMApplication alloc] initWithName: @"TextEdit"];
+<pre><code>  // application "TextEdit"
+  AEMApplication *textedit = [[AEMApplication alloc] initWithName: @"TextEdit"];
 
   // application id "com.apple.TextEdit"
   textedit = [[AEMApplication alloc] initWithBundleID: @"com.apple.TextEdit"];
@@ -458,6 +464,6 @@
 
 			</div>
 		</div>
-		<div id="footer"><div class="navbar"><a href="optimizing performance.html">prev</a> | <a href="index.html">index</a> | <a href="notes.html">next</a></div></div>
+		<div id="footer"><div class="navbar"><a href="optimizing-performance.html">back</a> | <a href="index.html">index</a> | <a href="notes.html">next</a></div></div>
 	</body>
 </html>

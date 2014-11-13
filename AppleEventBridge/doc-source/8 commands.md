@@ -13,7 +13,7 @@ This granular approach provides plenty of power and flexibility along with a rea
 
 ### Creating a command
 
-Each application command is defined as a pair of methods on the glue's <var>XXX</var>Application and <var>XXX</var>Specifier classes. One takes a value representing the command's direct parameter as its single argument, the other doesn't. For example, TextEdit's `duplicate` command is represented as:
+Each application command is defined as a pair of methods on the glue's <var>XX</var>Application and <var>XX</var>Specifier classes. One takes a value representing the command's direct parameter as its single argument, the other doesn't. For example, TextEdit's `duplicate` command is represented as:
 
     - (TEDuplicateCommand *)duplicate;
     - (TEDuplicateCommand *)duplicate:(id)directParameter;
@@ -211,7 +211,7 @@ As with `-sendWithError:`, the caller is responsible for checking the result of 
 
     // tell application "TextEdit" to make new document with properties {text:"Hi!"}
 
-    TEApplication *te = [TEApplication applicationWithName: @"TextEdit.app"];
+    TEApplication *te = [TEApplication application];
     TEMakeCommand *makeCmd = [[[te make] new_: TESymbol.document]
                                          withProperties: @{TESymbol.text: @"Hi!"}];
     id result = [makeCmd send];
@@ -223,7 +223,7 @@ As with `-sendWithError:`, the caller is responsible for checking the result of 
     //     return "error:\n number: " &amp; errNumber &amp; "\n message: " &amp; errString 
     // end try
 
-    TEApplication *te = [TEApplication applicationWithName: @"TextEdit.app"];
+    TEApplication *te = [TEApplication application];
     TEGetCommand *getCmd = [te.documents at: 2].text;
     NSError *error = nil;
     NSString *result = [[getCmd returnType: typeUnicodeText] sendWithError: &error];

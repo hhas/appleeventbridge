@@ -31,16 +31,16 @@
 }
 
 
-- (instancetype)initWithTargetType:(AEBTargetType)type
-                        targetData:(id)data
-                  keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_ {
+- (instancetype)initWithApplicationURL:(NSURL *)url
+                               useSDEF:(bool)useSDEF
+                      keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_ {
     return [self initWithApplicationClass: AEMApplication.class
-                               targetType: type
-                               targetData: data
+                               targetType: (url ? kAEBTargetURL : kAEBTargetCurrent)
+                               targetData: url
                              relaunchMode: kAEBRelaunchAlways
                             launchOptions: kAEMDefaultLaunchOptions
-                              targetTerms: (type == kAEBTargetCurrent ? AEMFalse : AEMTrue)
-                             defaultTerms: AEMTrue
+                              targetTerms: (useSDEF ? kAEBUseSDEFTerminology : kAEBUseAETETerminology)
+                             defaultTerms: kAEBUseDefaultTerminology
                          keywordConverter: converter_];
 }
 
@@ -66,7 +66,7 @@
     if (!termTable) {
         termTable = [[AEBDynamicTerminology alloc] initWithKeywordConverter: keywordConverter
                                                          defaultTerminology: defaultTerms];
-        if ([targetTerms isEqual: AEMTrue]) { // obtain terminology from application
+        if ([targetTerms isEqual: kAEBUseAETETerminology]) { // obtain AETE terminology from application by sending `ascrgdte` event
             id aetes = [self aetesWithError: &tempError];
             if (aetes) {
                 AEBDynamicAETEParser *parser = [[AEBDynamicAETEParser alloc] init];
@@ -79,8 +79,15 @@
                 return nil;
             } // else no AETE, probably because app is 'non-scriptable' or an SE applet
  //           NSLog(@"AETE resource not found: %@", tempError); // DEBUG
-        } else if (![targetTerms isEqual: AEMFalse]) { // targetTerms is an object containing raw (dumped) terminology
+        } else if ([targetTerms isEqual: kAEBUseSDEFTerminology]) { // obtain SDEF terminology via AEMCopyScriptingDefinitionFromURL
+            AEBDynamicSDEFParser *parser = [[AEBDynamicSDEFParser alloc] init];
+            [parser parseURL: self.targetData error: error];
+            [termTable addRawTerminology: parser];
+        } else if ([targetTerms conformsToProtocol: @protocol(AEMSelfPackingProtocol)]) { // an object containing raw (dumped) terminology
             [termTable addRawTerminology: targetTerms];
+        } else if (![targetTerms isEqual: kAEBNoTerminology]) { // bad argument
+            if (error) *error = AEMErrorWithInfo(1, [NSString stringWithFormat: @"Invalid targetTerms value: %@", targetTerms]);
+            return nil;
         } // else use default terms only (e.g. when targeting AppleScript applets)
     }
     return termTable;

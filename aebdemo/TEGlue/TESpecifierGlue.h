@@ -1,7 +1,7 @@
 //
 // TESpecifierGlue.h
 // TextEdit
-// (aebglue 0.6.0)
+// (AppleEventBridge 1.0)
 //
 
 #import <Foundation/Foundation.h>

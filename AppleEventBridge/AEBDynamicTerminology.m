@@ -9,8 +9,6 @@
 
 #import "AEBDynamicTerminology.h"
 
-#import "AEBDynamicAETEParser.h"
-
 
 /**********************************************************************/
 
@@ -62,7 +60,7 @@
     elementsByCode = [[NSMutableDictionary alloc] init];
     commandsByCode = [[NSMutableDictionary alloc] init];
     
-    if ([defaultTerms isEqual: AEMTrue]) { // use built-in default terms
+    if ([defaultTerms isEqual: kAEBUseDefaultTerminology]) { // use built-in default terms
         // TO DO: currently this uses pre-converted names, but eventually AEBDefaultTerms should contain
         // AS-style names and convert these as required (not sure what difference this might make to performance
         // but if significant then cache the converted terms here in a key-value list using keywordConverter_ as
@@ -70,9 +68,12 @@
         static AEBDefaultTerms *defaultRawTerms = nil;
         if (!defaultRawTerms) defaultRawTerms = [[AEBDefaultTerms alloc] init];
         [self addRawTerminology: defaultRawTerms];
-    } else if (![defaultTerms isEqual: AEMFalse]) { // default terms is object AEBDynamicRawTermsProtocol
+    } else if ([defaultTerms conformsToProtocol: @protocol(AEMSelfPackingProtocol)]) { // an object containing raw (dumped) terminology
         [self addRawTerminology: defaultTerms];
-	} // else do not use default terms
+    } else if (![defaultTerms isEqual: kAEBNoTerminology]) { // bad argument
+//        NSLog(@"Invalid defaultTerms value: %@", defaultTerms);
+        return nil;
+    } // else do not use default terms
     // retain copies of default type and command terms; these will be used to disambiguate
     // any conflicting application-defined terms added later
     defaultTypeByName = [[NSDictionary alloc] initWithDictionary: typesByName];

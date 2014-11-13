@@ -30,10 +30,11 @@ For example, when the user drag-n-drops a file onto TextEdit.app in the Finder, 
 
 ![Sending Apple event from Finder to TextEdit](finder_to_textedit_event.gif)
 
-With suitable bindings, programming languages can also create and send Apple events. For example, when the code `[[[ITApplication applicationWithName: @"iTunes"] play] send]` is executed by a client application, a `hook/Play` event is sent from the client application to iTunes, instructing it to start playing:
+With suitable bindings, programming languages can also create and send Apple events. For example, when the code `[[[ITSApplication application] play] send]` is executed by a client application, a `hook/Play` event is sent from the client application to iTunes, instructing it to start playing:
+
 ![Sending Apple event from client application to iTunes](client_app_to_itunes_event.gif)
 
-Applications may respond to an incoming Apple event by sending a reply event back to the client application. The reply event may contain either a return value, if there is one, or an error description if it was unable to handle the event as requested. For example, executing the command `[[[[TEApplication applicationWithName: @"TextEdit"] name] get] send]` in a client appliation sends TextEdit a `core/getd` event containing an object specifier identifying the `name` property of its root `application` object. TextEdit processes this event, then sends a reply event containing the string '<tt>TextEdit</tt>' back to the client application, where it is returned as the command's result. This exchange is usually performed synchronously, appearing to the user as a simple remote procedure call. Asynchronous messaging is also supported, though is not normally used in application scripting.
+Applications may respond to an incoming Apple event by sending a reply event back to the client application. The reply event may contain either a return value, if there is one, or an error description if it was unable to handle the event as requested. For example, executing the command `[[[[TEApplication application] name] get] send]` in a client appliation sends TextEdit a `core/getd` event containing an object specifier identifying the `name` property of its root `application` object. TextEdit processes this event, then sends a reply event containing the string '<tt>TextEdit</tt>' back to the client application, where it is returned as the command's result. This exchange is usually performed synchronously, appearing to the user as a simple remote procedure call. Asynchronous messaging is also supported, though is not normally used in application scripting.
 
 
 ## What is a scriptable application?
@@ -59,7 +60,6 @@ A scriptable application also contains a built-in definition of its scripting in
 The Apple Event Object Model (AEOM) is a View-Controller layer that provides an idealized, user-friendly representation of the application's internal data, allowing clients to identify and manipulate parts of that structure via Apple events. An incoming Apple event representing a particular command (get, set, move, etc.) is unpacked, and any object specifiers in its parameter list are evaluated against the application's AEOM to identify the user-level object(s) upon which the command should act. The command is then applied these objects, with the AEOM translating this into operations upon the application's implementation-level objects. These implementation-level objects are mostly user-data objects in the application's Model layer, plus a few GUI View objects of interest to scripters (such as those representing document windows). The internal architecture of a typical scriptable desktop application might look something like this:
 
 ![Internal architecture of application with Graphical and Apple event interfaces](application_architecture2.gif)
-
 
 * The AEOM represents user data as an object graph (nominally tree-shaped) whose nodes are connected via one-to-one and/or one-to-many relationships.
 

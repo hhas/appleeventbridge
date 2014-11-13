@@ -25,9 +25,15 @@ The AEM API is largely intended for use by higher-level libraries, though may al
 The AEB layer consists of several `AEBStatic...` base classes and a code generator, `aebglue`, which creates static glue classes for individual applications. A number of `AEBDynamic...` base classes are also provided for use in constructing high-level bridges for scripting languages.
 
 
-For example, to set the size of the first character of every non-empty paragraph in every document of TextEdit to 24 pt: using `AEM` classes:
+For example, the following AppleScript sets the size of the first character of every non-empty paragraph in every document of TextEdit to 24 pt:
 
-    AEMApplication *te = [[AEMApplication alloc] initWithName: @"TextEdit.app"];
+    tell application id "com.apple.TextEdit"
+       set size of character 1 of (every paragraph where it ≠ "\n") of every document to 24
+    end tell
+
+Here is the equivalent Objective-C code using `AEM` classes:
+
+    AEMApplication *te = [[AEMApplication alloc] initWithBundleID: @"com.apple.TextEdit"];
 
     AEMQuery *ref = [[[[[[[AEMApp elements: 'docu']
                                   property: 'ctxt']
@@ -44,7 +50,7 @@ For example, to set the size of the first character of every non-empty paragraph
 
 and using `AEB` glue classes:
 
-    TEApplication *te = [[TEApplication alloc] initWithName: @"TextEdit"];
+    TEApplication *te = [TEApplication application];
 
     TESpecifier *ref = [[te.documents.text.paragraphs byTest: [TEIts notEquals: @"\n"]]
                                           .characters at: 1].size;

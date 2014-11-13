@@ -30,6 +30,11 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 
 // Find installed applications
 
++ (NSURL *)fileURLForCurrentApplication {
+    NSRunningApplication *app = [NSRunningApplication currentApplication];
+    return app.bundleURL ?: app.executableURL;
+}
+
 + (NSURL *)fileURLForApplicationWithBundleID:(NSString *)bundleID {
     return [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier: bundleID];
 }

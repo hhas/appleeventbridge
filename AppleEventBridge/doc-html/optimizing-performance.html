@@ -9,7 +9,7 @@
 		<div id="wrap">
 			<div id="main">
 				<h1>Optimizing performance</h1>
-				<div class="navbar"><a href="examples.html">prev</a> | <a href="index.html">index</a> | <a href="low-level-apis.html">next</a></div>
+				<div class="navbar"><a href="examples.html">back</a> | <a href="index.html">index</a> | <a href="low-level-apis.html">next</a></div>
 				<h2>About performance</h2>
 
 <p>Application scripting is subject to a number of potential performance bottlenecks:</p>
@@ -28,7 +28,9 @@
 
 <p>While iterating over application objects and manipulating each in turn is a common technique, it's also the slowest by far:</p>
 
-<pre><code>  CNSApplication *contacts = [CNSApplication applicationWithName: @"Contacts"];
+<pre><code>  #import "CNSGlue/CNSGlue.h"
+
+  CNSApplication *contacts = [CNSApplication application];
 
   NSString *desiredEmail = @"sam.brown@example.com";
 
@@ -53,7 +55,9 @@
 
 <p>In this case, the entire search can be performed using a single complex query sent to Contacts via a single Apple event:</p>
 
-<pre><code>  CNSApplication *contacts = [CNSApplication applicationWithName: @"Contacts"];
+<pre><code>  #import "CNSGlue/CNSGlue.h"
+
+  CNSApplication *contacts = [CNSApplication application];
 
   NSString *desiredEmail = @"sam.brown@example.com";
 
@@ -75,7 +79,9 @@
 
 <p>While AEOM queries can be surprisingly powerful, there are still many problems too complex for the application to evaluate entirely by itself. For example, let's say that you want to obtain the name of every person who has an email addresses that uses a particular domain name. Unfortunately, this test is too complex to express as a single AEOM query; however, it can still be solved reasonably efficiently by obtaining all the data from the application up-front and processing it locally. For this we need: 1. the name of every person in the Contacts, and 2. each person's email addresses. Fortunately, each of these can be expressed in a single query, allowing all this data to be retrieved using just two <code>get</code> commands.</p>
 
-<pre><code>  CNSApplication *contacts = [CNSApplication applicationWithName: @"Contacts"];
+<pre><code>  #import "CNSGlue/CNSGlue.h"
+
+  CNSApplication *contacts = [CNSApplication application];
 
   NSString *desiredDomain = @"@example.com";
 
@@ -102,6 +108,6 @@
 
 			</div>
 		</div>
-		<div id="footer"><div class="navbar"><a href="examples.html">prev</a> | <a href="index.html">index</a> | <a href="low-level-apis.html">next</a></div></div>
+		<div id="footer"><div class="navbar"><a href="examples.html">back</a> | <a href="index.html">index</a> | <a href="low-level-apis.html">next</a></div></div>
 	</body>
 </html>

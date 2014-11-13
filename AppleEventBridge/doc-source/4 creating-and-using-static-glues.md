@@ -16,9 +16,17 @@ The following example generates a glue for the TextEdit application, using `TE` 
 
     aebglue -a TextEdit  -p TE -o ~/TEGlue
 
+For compatibility, `aebglue` normally sends the application an `ascr/gdte` event to retrieve its terminology in AETE format. However, some Carbon-based applications (e.g. Finder in 10.9 and 10.10) may have buggy `ascr/gdte` event handlers that return Cocoa Scripting's default terminology instead of the application's own. To work around this, add an `-s` option to retrieve the terminology in SDEF format instead:
+
+    aebglue -a Finder  -p FN -o ~/FNGlue -s
+
+(Be aware that OS X's AETE-to-SDEF converter is not 100% reliable; for example, some four-char codes may fail to translate, in which case `aebglue` will warn of their omission. You'll have to correct the glue files manually should you need to use the affected features, or use the lower-level `AEM` APIs instead.)
+
 The generated glue includes an `.sdef` file containing the application's dictionary documentation in AEB format. For example, to view the `TEGlue` terminology in Script Editor: 
 
     open -a 'Script Editor' ~/TEGlue/TextEdit.sdef
+
+Refer to this documentation when using AppleEventBridge glues in your own code, as it shows element, property, command, etc. names as they appear in the generated glue classes. (Make sure Script Editor's dictionary viewer is set to "AppleScript" language mode; the "Objective-C" mode formats terminology for OS X's Scripting Bridge.)
 
 
 ## Using a glue
@@ -55,7 +63,7 @@ Each glue also provides three macros - `<var>XX</var>App`, `<var>XX</var>Con` an
 
 ## How keywords are converted
 
-Because application terminology resources specify AppleScript-style keywords for class, property, command, etc. names, AppleEventBridge uses the following rules to translate these keywords to legal ObjC class and method names:
+Because scriptable applications' terminology resources supply class, property, command, etc. names in AppleScript keyword format, `aebglue` must convert these terms to valid Objective-C class and method names when generating the glue files and accompanying `.sdef` documentation file. For reference, here are the conversion rules used:
 
 * Characters a-z, A-Z, 0-9 and underscores (_) are preserved.
 
@@ -67,8 +75,7 @@ Because application terminology resources specify AppleScript-style keywords for
 
 * Names that begin with '_', 'AEM', or 'AEB' have an underscore appended.
 
-* Names that match ObjC keywords, `NSObject` methods, or methods already defined on AppleEventBridge's `AEBApplication` and `AEBSpecifier` classes have an underscore appended. The reserved method names are: [TO DO]
+* Names that match ObjC keywords, `NSObject` methods, or methods already defined on AppleEventBridge's `AEBApplication` and `AEBSpecifier` classes have an underscore appended.
 
-AppleEventBridge provides default terminology for standard type classes such as `integer` and `unicodeText`, and standard commands such as `open` and `quit`. If an application-defined name matches a built-in name but has a different Apple event code, AppleEventBridge will append an underscore to the application-defined name.
-
+* AppleEventBridge provides default terminology for standard type classes such as `integer` and `unicodeText`, and standard commands such as `open` and `quit`. If an application-defined name matches a built-in name but has a different Apple event code, AppleEventBridge will append an underscore to the application-defined name.
 

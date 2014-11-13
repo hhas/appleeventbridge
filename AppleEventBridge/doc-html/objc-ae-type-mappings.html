@@ -9,32 +9,32 @@
 		<div id="wrap">
 			<div id="main">
 				<h1>Objective-C/Apple event type mappings</h1>
-				<div class="navbar"><a href="creating-and-using-static-glues.html">prev</a> | <a href="index.html">index</a> | <a href="application-objects.html">next</a></div>
+				<div class="navbar"><a href="creating-and-using-static-glues.html">back</a> | <a href="index.html">index</a> | <a href="application-objects.html">next</a></div>
 				<h2>Overview</h2>
 
-<p>The following standard AE types are mapped to and from Foundation/AppleEventBridge classes as follows:</p>
+<p>Standard Apple event descriptor types are mapped to and from Foundation/AppleEventBridge classes as follows:</p>
 
 <table width="100%" summary="AE-Foundation type mappings">
 <thead>
-<tr><th>AppleScript type</th><th>AE type</th><th>`AEBSymbol` name</th><th>Objective-C class</th></tr>
+<tr><th>AppleScript type</th><th>Descriptor type</th><th>`AEBSymbol` name</th><th>Objective-C class</th></tr>
 </thead>
 <tbody>
-<tr><td>(no data)</td><td>`typeNull`</td><td>`null`</td><td>`NSNull`</td></tr>
-<tr><td>`boolean`</td><td>`typeBoolean`</td><td>`boolean`</td><td>`AEMBoolean`</td></tr>
-<tr><td>`integer`</td><td>`typeSInt32`</td><td>`integer`</td><td>`NSNumber`</td></tr>
-<tr><td>`real`</td><td>`typeIEEE64BitFloatingPoint`</td><td>`float`</td><td>`NSNumber`</td></tr>
-<tr><td>`[Unicode] text` [1]</td><td>`typeUnicodeText`</td><td>`unicodeText`</td><td>`NSString`</td></tr>
-<tr><td>`list`</td><td>`typeAEList`</td><td>`list`</td><td>`NSArray`</td></tr>
-<tr><td>`record`</td><td>`typeAERecord`</td><td>`record`</td><td>`NSDictionary`</td></tr>
-<tr><td>`date`</td><td>`typeLongDateTime`</td><td>`date`</td><td>`NSDate`</td></tr>
-<tr><td>`«class bmrk»`</td><td>`typeBookmarkData`</td><td>`bookmarkData`</td><td>`AEMURL`</td></tr>
-<tr><td>`alias`</td><td>`typeAlias`</td><td>`alias`</td><td>`AEMURL`</td></tr>
-<tr><td>`«class furl»`</td><td>`typeFileURL`</td><td>`fileURL`</td><td>`AEMURL`</td></tr>
-<tr><td>`reference`</td><td>`typeObjectSpecifier`</td><td>`reference`</td><td>`AEMSpecifier`/`AEBSpecifier` [3]</td></tr>
-<tr><td>`location reference`</td><td>`typeInsertionLoc`</td><td>`locationReference`</td><td>`AEMSpecifier`/`AEBSpecifier` [3]</td></tr>
-<tr><td>`class`</td><td>`typeType`</td><td>`typeClass`</td><td>`AEMType/AEBSymbol` [3]</td></tr>
-<tr><td>`constant`</td><td>`typeEnumerated`</td><td>`enumerator`</td><td>`AEMEnum/AEBSymbol` [3]</td></tr>
-<tr><td>`property`</td><td>`typeProperty`</td><td>`property`</td><td>`AEMProp/AEBSymbol` [3]</td></tr>
+<tr><td>(no data)</td><td><code>typeNull</code></td><td><code>null</code></td><td><code>NSNull</code></td></tr>
+<tr><td><code>boolean</code></td><td><code>typeBoolean</code></td><td><code>boolean</code></td><td><code>AEMBoolean</code></td></tr>
+<tr><td><code>integer</code></td><td><code>typeSInt32</code></td><td><code>integer</code></td><td><code>NSNumber</code></td></tr>
+<tr><td><code>real</code></td><td><code>typeIEEE64BitFloatingPoint</code></td><td><code>float</code></td><td><code>NSNumber</code></td></tr>
+<tr><td><code>text</code> [1]</td><td><code>typeUnicodeText</code></td><td><code>unicodeText</code></td><td><code>NSString</code></td></tr>
+<tr><td><code>list</code></td><td><code>typeAEList</code></td><td><code>list</code></td><td><code>NSArray</code></td></tr>
+<tr><td><code>record</code></td><td><code>typeAERecord</code></td><td><code>record</code></td><td><code>NSDictionary</code></td></tr>
+<tr><td><code>date</code></td><td><code>typeLongDateTime</code></td><td><code>date</code></td><td><code>NSDate</code></td></tr>
+<tr><td><code>«class bmrk»</code></td><td><code>typeBookmarkData</code></td><td><code>bookmarkData</code></td><td><code>AEMURL</code></td></tr>
+<tr><td><code>alias</code></td><td><code>typeAlias</code></td><td><code>alias</code></td><td><code>AEMURL</code></td></tr>
+<tr><td><code>«class furl»</code></td><td><code>typeFileURL</code></td><td><code>fileURL</code></td><td><code>AEMURL</code></td></tr>
+<tr><td><code>reference</code></td><td><code>typeObjectSpecifier</code></td><td><code>reference</code></td><td><code>AEMSpecifier</code> / <code>AEBSpecifier</code> [2]</td></tr>
+<tr><td><code>location reference</code></td><td><code>typeInsertionLoc</code></td><td><code>locationReference</code></td><td><code>AEMSpecifier</code> / <code>AEBSpecifier</code> [2]</td></tr>
+<tr><td><code>class</code></td><td><code>typeType</code></td><td><code>typeClass</code></td><td><code>AEMType</code> / <code>AEBSymbol</code> [2]</td></tr>
+<tr><td><code>constant</code></td><td><code>typeEnumerated</code></td><td><code>enumerator</code></td><td><code>AEMEnum</code> / <code>AEBSymbol</code> [2]</td></tr>
+<tr><td><code>property</code></td><td><code>typeProperty</code></td><td><code>property</code></td><td><code>AEMProp</code> / <code>AEBSymbol</code> [2]</td></tr>
 </tbody>
 </table>
 
@@ -148,6 +148,6 @@
 
 			</div>
 		</div>
-		<div id="footer"><div class="navbar"><a href="creating-and-using-static-glues.html">prev</a> | <a href="index.html">index</a> | <a href="application-objects.html">next</a></div></div>
+		<div id="footer"><div class="navbar"><a href="creating-and-using-static-glues.html">back</a> | <a href="index.html">index</a> | <a href="application-objects.html">next</a></div></div>
 	</body>
 </html>

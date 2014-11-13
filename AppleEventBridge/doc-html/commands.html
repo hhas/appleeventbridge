@@ -9,7 +9,7 @@
 		<div id="wrap">
 			<div id="main">
 				<h1>Commands</h1>
-				<div class="navbar"><a href="object-specifiers.html">prev</a> | <a href="index.html">index</a> | <a href="examples.html">next</a></div>
+				<div class="navbar"><a href="object-specifiers.html">back</a> | <a href="index.html">index</a> | <a href="examples.html">next</a></div>
 				<h2>Using commands</h2>
 
 <p>Sending application commands in AppleEventBridge involves the following steps:</p>
@@ -24,7 +24,7 @@
 
 <h3>Creating a command</h3>
 
-<p>Each application command is defined as a pair of methods on the glue's <var>XXX</var>Application and <var>XXX</var>Specifier classes. One takes a value representing the command's direct parameter as its single argument, the other doesn't. For example, TextEdit's <code>duplicate</code> command is represented as:</p>
+<p>Each application command is defined as a pair of methods on the glue's <var>XX</var>Application and <var>XX</var>Specifier classes. One takes a value representing the command's direct parameter as its single argument, the other doesn't. For example, TextEdit's <code>duplicate</code> command is represented as:</p>
 
 <pre><code>  - (TEDuplicateCommand *)duplicate;
   - (TEDuplicateCommand *)duplicate:(id)directParameter;
@@ -225,7 +225,7 @@
 
   // tell application "TextEdit" to make new document with properties {text:"Hi!"}
 
-  TEApplication *te = [TEApplication applicationWithName: @"TextEdit.app"];
+  TEApplication *te = [TEApplication application];
   TEMakeCommand *makeCmd = [[[te make] new_: TESymbol.document]
                                        withProperties: @{TESymbol.text: @"Hi!"}];
   id result = [makeCmd send];
@@ -237,7 +237,7 @@
   //     return "error:\n number: " &amp;amp; errNumber &amp;amp; "\n message: " &amp;amp; errString 
   // end try
 
-  TEApplication *te = [TEApplication applicationWithName: @"TextEdit.app"];
+  TEApplication *te = [TEApplication application];
   TEGetCommand *getCmd = [te.documents at: 2].text;
   NSError *error = nil;
   NSString *result = [[getCmd returnType: typeUnicodeText] sendWithError: &amp;error];
@@ -320,6 +320,6 @@
 
 			</div>
 		</div>
-		<div id="footer"><div class="navbar"><a href="object-specifiers.html">prev</a> | <a href="index.html">index</a> | <a href="examples.html">next</a></div></div>
+		<div id="footer"><div class="navbar"><a href="object-specifiers.html">back</a> | <a href="index.html">index</a> | <a href="examples.html">next</a></div></div>
 	</body>
 </html>

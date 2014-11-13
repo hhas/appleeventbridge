@@ -9,12 +9,19 @@
 		<div id="wrap">
 			<div id="main">
 				<h1>Application objects</h1>
-				<div class="navbar"><a href="objc-ae-type-mappings.html">prev</a> | <a href="index.html">index</a> | <a href="object-specifiers.html">next</a></div>
-				<p>[TO DO: revise constructors: use -currentApplication for current process, and -application to create by bundle ID without having to explicitly state it (aebglue should include the bundle id in the glue file)]</p>
+				<div class="navbar"><a href="objc-ae-type-mappings.html">back</a> | <a href="index.html">index</a> | <a href="object-specifiers.html">next</a></div>
+				<h2>Creating application objects</h2>
 
-<h2>Creating application objects</h2>
+<p>Before you can communicate with a scriptable application you must create an application object. When targeting local applications, the glue's <code>+[<var>XX</var>Application application]</code> method is usually the best choice. For example, to target TextEdit:</p>
 
-<p>Before you can communicate with a scriptable application you must create an application object by calling one of the following methods on the glue's Application class:</p>
+<pre><code>  #import "TEGlue/TEGlue.h"
+
+  TEApplication *textedit = [TEApplication application];
+</code></pre>
+
+<p>This uses the bundle identifier of the application from which the glue was originally generated (e.g. <code>com.apple.TextEdit</code>) to locate the application on the current machine, or returns <code>nil</code> if no match is found. (See <code>-[NSWorkspace URLForApplicationWithBundleIdentifier:]</code> for more information.)</p>
+
+<p>Alternatively, one of the following methods may be used (e.g. if multiple versions of the application are installed, or the application is running on another machine):</p>
 
 <pre><code>  // application's name or full path (.app suffix is optional)
   + (instancetype)applicationWithName:(NSString *)name;
@@ -32,28 +39,25 @@
   + (instancetype)applicationWithDescriptor:(NSAppleEventDescriptor *)desc; 
 
   // the current (host) process
-  + (instancetype)application;
+  + (instancetype)currentApplication;
 </code></pre>
 
-<p>Examples:</p>
+<p>For example, to target a specific version of InDesign by name:</p>
 
-<pre><code>  #import "ICLGlue/ICLGlue.h"
+<pre><code>  #import "AIDGlue/AIDGlue.h"
 
-  ICLApplication *ical = [ICLApplication applicationWithName: @"iCal.app"];
+  AIDApplication *indesign = [AIDApplication applicationWithName: @"Adobe InDesign CS6.app"];
+</code></pre>
 
+<p>Or to control an iTunes process on another machine using Remote Apple Events:</p>
 
-  #import "TEGlue/TEGlue.h"
-
-  TEApplication *te = [TEApplication applicationWithBundleID: @"com.apple.textedit"];
-
-
-  #import "ITSGlue/ITSGlue.h"
+<pre><code>  #import "ITSGlue/ITSGlue.h"
 
   NSURL *url = [NSURL URLWithString: @"eppc://jsmith@media-mac.local/iTunes"];
   ITSApplication *itunes = [ITSApplication applicationWithURL: url];
 </code></pre>
 
-<p>Note that local applications will be launched if not already running when <code>+applicationWithName:</code>, <code>+applicationWithBundleID:</code> or <code>+applicationWithURL:</code> is invoked, and events will be sent to the running application according to its process ID. If the process is later terminated, that process ID is no longer valid and events sent subsequently using this application object will fail as application objects currently don't provide a 'reconnect' facility.</p>
+<p>Note that local applications will be launched if not already running when <code>+application</code>, <code>+applicationWithName:</code>, <code>+applicationWithBundleID:</code> or <code>+applicationWithURL:</code> is invoked, and events will be sent to the running application according to its process ID. If the process is later terminated, that process ID is no longer valid and events sent subsequently using this application object will fail as application objects currently don't provide a 'reconnect' facility [TO DO: update this].</p>
 
 <p>If <code>+applicationWithURL:</code> is invoked with an <code>eppc://</code> URL, or if <code>+applicationWithProcessID:</code> or <code>+applicationWithDescriptor:</code> are used, the caller is responsible for ensuring the target application is running before sending any events to it.</p>
 
@@ -117,7 +121,7 @@
 
 <p>This is useful if you don't want to perform commands on an application that isn't already running. For example:</p>
 
-<pre><code>  TEApplication *te = [[TEApplication alloc] initWithName: @"TextEdit'];
+<pre><code>  TEApplication *textedit = [TEApplication application];
 
   // Only perform TextEdit-related commands if it's already running:
   if (textedit.isRunning) {
@@ -140,8 +144,8 @@
 
 <p>This is useful when you want to start an application without it going through its normal startup procedure, and is equivalent to the using AppleScript's <code>launch</code> command. For example, to launch TextEdit without causing it to display a new, empty document (its usual behaviour):</p>
 
-<pre><code>  TEApplication *te = [[TEApplication alloc] initWithName: @"TextEdit'];
-  [te launchApplication];
+<pre><code>  TEApplication *textedit = [TEApplication application];
+  [textedit launchApplication];
   // other TextEdit-related code goes here...
 </code></pre>
 
@@ -159,6 +163,6 @@
 
 			</div>
 		</div>
-		<div id="footer"><div class="navbar"><a href="objc-ae-type-mappings.html">prev</a> | <a href="index.html">index</a> | <a href="object-specifiers.html">next</a></div></div>
+		<div id="footer"><div class="navbar"><a href="objc-ae-type-mappings.html">back</a> | <a href="index.html">index</a> | <a href="object-specifiers.html">next</a></div></div>
 	</body>
 </html>

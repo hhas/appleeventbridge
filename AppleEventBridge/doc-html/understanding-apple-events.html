@@ -9,7 +9,7 @@
 		<div id="wrap">
 			<div id="main">
 				<h1>Understanding Apple events</h1>
-				<div class="navbar"><a href="introduction.html">prev</a> | <a href="index.html">index</a> | <a href="how-appleeventbridge-works.html">next</a></div>
+				<div class="navbar"><a href="introduction.html">back</a> | <a href="index.html">index</a> | <a href="how-appleeventbridge-works.html">next</a></div>
 				<p>This chapter introduces the main concepts behind Apple event-based application scripting.</p>
 
 <h2>What are Apple events?</h2>
@@ -38,10 +38,11 @@
 
 <p><img src="finder_to_textedit_event.gif" alt="Sending Apple event from Finder to TextEdit" /></p>
 
-<p>With suitable bindings, programming languages can also create and send Apple events. For example, when the code <code>[[[ITApplication applicationWithName: @"iTunes"] play] send]</code> is executed by a client application, a <code>hook/Play</code> event is sent from the client application to iTunes, instructing it to start playing:
-<img src="client_app_to_itunes_event.gif" alt="Sending Apple event from client application to iTunes" /></p>
+<p>With suitable bindings, programming languages can also create and send Apple events. For example, when the code <code>[[[ITSApplication application] play] send]</code> is executed by a client application, a <code>hook/Play</code> event is sent from the client application to iTunes, instructing it to start playing:</p>
 
-<p>Applications may respond to an incoming Apple event by sending a reply event back to the client application. The reply event may contain either a return value, if there is one, or an error description if it was unable to handle the event as requested. For example, executing the command <code>[[[[TEApplication applicationWithName: @"TextEdit"] name] get] send]</code> in a client appliation sends TextEdit a <code>core/getd</code> event containing an object specifier identifying the <code>name</code> property of its root <code>application</code> object. TextEdit processes this event, then sends a reply event containing the string '<tt>TextEdit</tt>' back to the client application, where it is returned as the command's result. This exchange is usually performed synchronously, appearing to the user as a simple remote procedure call. Asynchronous messaging is also supported, though is not normally used in application scripting.</p>
+<p><img src="client_app_to_itunes_event.gif" alt="Sending Apple event from client application to iTunes" /></p>
+
+<p>Applications may respond to an incoming Apple event by sending a reply event back to the client application. The reply event may contain either a return value, if there is one, or an error description if it was unable to handle the event as requested. For example, executing the command <code>[[[[TEApplication application] name] get] send]</code> in a client appliation sends TextEdit a <code>core/getd</code> event containing an object specifier identifying the <code>name</code> property of its root <code>application</code> object. TextEdit processes this event, then sends a reply event containing the string '<tt>TextEdit</tt>' back to the client application, where it is returned as the command's result. This exchange is usually performed synchronously, appearing to the user as a simple remote procedure call. Asynchronous messaging is also supported, though is not normally used in application scripting.</p>
 
 <h2>What is a scriptable application?</h2>
 
@@ -175,6 +176,6 @@
 
 			</div>
 		</div>
-		<div id="footer"><div class="navbar"><a href="introduction.html">prev</a> | <a href="index.html">index</a> | <a href="how-appleeventbridge-works.html">next</a></div></div>
+		<div id="footer"><div class="navbar"><a href="introduction.html">back</a> | <a href="index.html">index</a> | <a href="how-appleeventbridge-works.html">next</a></div></div>
 	</body>
 </html>

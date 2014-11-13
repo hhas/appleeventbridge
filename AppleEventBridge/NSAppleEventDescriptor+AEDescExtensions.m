@@ -37,7 +37,7 @@
     return [self.class descriptorWithDescriptorType: typeKernelProcessID bytes: &pid length: sizeof(pid)];
 }
 
-+ (NSAppleEventDescriptor *)descriptorWithApplicationURL:(NSURL *)url {
++ (instancetype)descriptorWithApplicationURL:(NSURL *)url {
     NSData *data = [url.absoluteString dataUsingEncoding: NSUTF8StringEncoding];
     return [NSAppleEventDescriptor descriptorWithDescriptorType: typeApplicationURL data: data];
 }
