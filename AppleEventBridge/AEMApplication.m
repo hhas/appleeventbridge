@@ -11,8 +11,13 @@
 /**********************************************************************/
 
 
-// kLSApplicationNotFoundErr
+// kLSApplicationNotFoundErr = -10814
 #define kAEMApplicationNotFoundError (-10814)
+
+
+// procNotFound = -600
+#define kAEMProcessNotFoundError (-600)
+
 
 id AEMGetFileIDFromNSURL(NSURL *url) {
     id value;
@@ -66,28 +71,30 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 
 // Get info on running applications
 
-+ (pid_t)processIDForApplicationWithFileURL:(NSURL *)url error:(NSError * __autoreleasing *)error {
++ (pid_t)processIDForApplicationWithFileURL:(NSURL *)fileURL error:(NSError * __autoreleasing *)error {
     if (error) *error = nil;
-    NSURL *fileURL = AEMGetFileIDFromNSURL(url);
+    id fileID = AEMGetFileIDFromNSURL(fileURL);
+    // check each process to see if it was launched from the specified bundle/executable
     for (NSRunningApplication *app in [[NSWorkspace sharedWorkspace] runningApplications]) {
-        if ([fileURL isEqual: AEMGetFileIDFromNSURL(app.bundleURL)]
-            || [fileURL isEqual: AEMGetFileIDFromNSURL(app.executableURL)]) return app.processIdentifier;
+        if ([fileID isEqual: AEMGetFileIDFromNSURL(app.bundleURL)]
+         || [fileID isEqual: AEMGetFileIDFromNSURL(app.executableURL)]) return app.processIdentifier;
     }
-    if (error) *error = AEMErrorWithInfo(kAEMApplicationNotFoundError,
-                                         [NSString stringWithFormat: @"Process not found for application: %@", fileURL]);
+    if (error) *error = AEMErrorWithInfo(kAEMProcessNotFoundError,
+                                         [NSString stringWithFormat: @"No processes found for %@", fileURL.path]);
 	return 0;
 }
 
-+ (NSAppleEventDescriptor *)descriptorForApplicationWithFileURL:(NSURL *)url
++ (NSAppleEventDescriptor *)descriptorForApplicationWithFileURL:(NSURL *)fileURL
                                                   launchOptions:(NSWorkspaceLaunchOptions)options
                                                           error:(NSError * __autoreleasing *)error {
     NSError *tempError = nil;
     pid_t pid = -1;
-    if (!(options & NSWorkspaceLaunchNewInstance)) { // get existing process's PID
-        pid = [self processIDForApplicationWithFileURL: url error: &tempError];
+    // if user doesn't require a new instance, then see if app is running and get its PID if it is or tempError if not
+    if (!(options & NSWorkspaceLaunchNewInstance)) {
+        pid = [self processIDForApplicationWithFileURL: fileURL error: &tempError];
     }
-    if (tempError || options & NSWorkspaceLaunchNewInstance) { // or launch new process if required
-        if (tempError && tempError.code != -600) {
+    if (tempError || options & NSWorkspaceLaunchNewInstance) { // or launch new process if user requires a new instance/not already running
+        if (tempError && tempError.code != kAEMProcessNotFoundError) {
             if (error) *error = tempError;
             return nil;
         }
@@ -97,8 +104,8 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
                                               targetDescriptor: [NSAppleEventDescriptor nullDescriptor]
                                                       returnID: kAutoGenerateReturnID
                                                  transactionID: kAnyTransactionID];
-        pid = [self launchApplicationWithFileURL: url launchOptions: options firstEvent: evt error: &tempError];
-        if (tempError && tempError.code != -600) {
+        pid = [self launchApplicationWithFileURL: fileURL launchOptions: options firstEvent: evt error: &tempError];
+        if (tempError && tempError.code != kAEMProcessNotFoundError) {
             if (error) *error = tempError;
             return nil;
         }

@@ -46,3 +46,8 @@ FOUNDATION_EXPORT const unsigned char AppleEventBridgeVersionString[];
 #import "AEBDynamicTerm.h"
 #import "AEBDynamicTerminology.h"
 
+// NSAppleEventDescriptor patches for commonly used functionality
+// (Radar enhancement requests 19169736 and 19169791)
+#import "NSAppleEventDescriptor+AEDescExtensions.h"
+#import "NSAppleEventDescriptor+AEDescMoreExtensions.h"
+

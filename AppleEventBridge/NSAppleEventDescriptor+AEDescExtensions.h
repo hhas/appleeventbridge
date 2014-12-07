@@ -5,6 +5,8 @@
 //
 //  These methods wrap legacy/deprecated Carbon APIs that are essential in building and sending Apple events.
 //
+//  Submitted as enhancement request <rdar://problem/19169736>
+//
 
 #import <Foundation/Foundation.h>
 #import <Carbon/Carbon.h>

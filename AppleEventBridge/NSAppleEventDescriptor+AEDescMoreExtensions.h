@@ -5,6 +5,8 @@
 //
 //  These methods are not essential as double values, process IDs, and file and eppc URLs can be packed and unpacked using existing NSAppleEventDescriptor methods, but they do make it much easier to work with these commonly used types.
 //
+//  Submitted as enhancement request <rdar://problem/19169791>
+//
 
 #import <Foundation/Foundation.h>
 #import <Carbon/Carbon.h>

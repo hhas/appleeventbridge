@@ -56,11 +56,11 @@
 		4F1AA07319F92D6000FBD23E /* AEMTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA03F19F92D6000FBD23E /* AEMTypes.m */; };
 		4F1AA07619F92D6000FBD23E /* AEMUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA04219F92D6000FBD23E /* AEMUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1AA07719F92D6000FBD23E /* AEMUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA04319F92D6000FBD23E /* AEMUtils.m */; };
-		4F70FBD61A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F70FBD41A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4F70FBD61A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F70FBD41A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F70FBD71A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F70FBD51A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m */; };
 		4FA7A88D1A02412600F0E578 /* AEMURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA7A88B1A02412600F0E578 /* AEMURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FA7A88E1A02412600F0E578 /* AEMURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA7A88C1A02412600F0E578 /* AEMURL.m */; };
-		4FA7A8AE1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA7A8AC1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FA7A8AE1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA7A8AC1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FA7A8AF1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA7A8AD1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.m */; };
 		4FA7A8B91A0A607400F0E578 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA7A8B81A0A607400F0E578 /* main.m */; };
 		4FA7A8BF1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.c in Sources */ = {isa = PBXBuildFile; fileRef = 4FA7A8BD1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.c */; };
@@ -613,9 +613,9 @@
 				4F1AA06E19F92D6000FBD23E /* AEMSpecifier.h in Headers */,
 				4F1AA05119F92D6000FBD23E /* AEBDynamicAppData.h in Headers */,
 				4F1AA06A19F92D6000FBD23E /* AEMFormatter.h in Headers */,
-				4FA7A8C01A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.h in Headers */,
 				4FA7A8AE1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.h in Headers */,
 				4F70FBD61A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.h in Headers */,
+				4FA7A8C01A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -748,7 +748,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# generate .bridgeSupport file\n\nframeworkDir=\"$TARGET_BUILD_DIR/AppleEventBridge.framework\"\nbridgeSupportDir=\"$frameworkDir/Resources/BridgeSupport\"\n\nmkdir -p \"$bridgeSupportDir\"\n\ncd \"$frameworkDir/Headers\"\n\ngen_bridge_metadata -f \"$frameworkDir\" \\\n  -o \"$bridgeSupportDir/AppleEventBridge.bridgesupport\" \\\n  -c \"-I $SDKROOT/usr/include -F $SDKROOT/System/Library/Frameworks\"\n\n\n";
+			shellScript = "# generate .bridgeSupport file\n\nframeworkDir=\"$TARGET_BUILD_DIR/AppleEventBridge.framework\"\nbridgeSupportDir=\"$frameworkDir/Resources/BridgeSupport\"\n\nmkdir -p \"$bridgeSupportDir\"\n\ncd \"$frameworkDir/Headers\"\n\n# TO DO: if .bridgeSupport already exists, don't regenerate unless headers are newer\n\ngen_bridge_metadata -f \"$frameworkDir\" \\\n  -o \"$bridgeSupportDir/AppleEventBridge.bridgesupport\" \\\n  -c \"-I $SDKROOT/usr/include -F $SDKROOT/System/Library/Frameworks\"\n\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
