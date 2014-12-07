@@ -135,6 +135,5 @@ Descriptors of `typeType`, `typeEnumerated`, and `typeProperty` are unpacked as 
 
 The Apple Event Manager defines many other AE types whose names and codes are defined by AppleEventBridge for completeness. A few of these types are of occasional interest to users, the rest can simply be ignored. In most cases, values of these types will be represented by `NSAppleEventDescriptor` instances as AppleEventBridge doesn't automatically convert them.
 
-[TO DO: AEB includes support for unit types, though these are poorly documented by Apple and rarely used by applications, and something of a pain in general. Like transaction support, this feature seems headed for real-world extinction, so isn't documented here.]
 
 

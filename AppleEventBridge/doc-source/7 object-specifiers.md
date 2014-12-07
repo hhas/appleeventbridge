@@ -259,5 +259,5 @@ element.<strong>after</strong></code></pre>
 Examples:
 
     documents.end
-    [paragraphs at: 1].before
+    paragraphs.last.before
 

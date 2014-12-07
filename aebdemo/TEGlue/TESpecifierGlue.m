@@ -1,7 +1,7 @@
 //
 // TESpecifierGlue.m
 // TextEdit
-// (AppleEventBridge 1.0)
+// AppleEventBridge 0.7.0
 //
 
 #import "TESpecifierGlue.h"

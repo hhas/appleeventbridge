@@ -65,8 +65,11 @@
         // AS-style names and convert these as required (not sure what difference this might make to performance
         // but if significant then cache the converted terms here in a key-value list using keywordConverter_ as
         // key (note: AEBDynamic must support >1 language at a time, so any caches must be client language-aware)
-        static AEBDefaultTerms *defaultRawTerms = nil;
-        if (!defaultRawTerms) defaultRawTerms = [[AEBDefaultTerms alloc] init];
+        static dispatch_once_t pred = 0;
+        __strong static AEBDefaultTerms *defaultRawTerms = nil;
+        dispatch_once(&pred, ^{
+            defaultRawTerms = [[AEBDefaultTerms alloc] init];
+        });
         [self addRawTerminology: defaultRawTerms];
     } else if ([defaultTerms conformsToProtocol: @protocol(AEMSelfPackingProtocol)]) { // an object containing raw (dumped) terminology
         [self addRawTerminology: defaultTerms];

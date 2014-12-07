@@ -2,6 +2,8 @@
 //  AEMSpecifier.m
 //
 
+#import <pthread.h>
+
 #import "AEMSpecifier.h"
 #import "AEMCodecs.h"
 
@@ -9,18 +11,6 @@
 /**********************************************************************/
 // initialise/dispose constants
 
-
-#define ENUMERATOR(name) \
-    descData = kAE##name; \
-    kEnum##name = [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeEnumerated bytes: &descData length: sizeof(descData)];
-
-#define ORDINAL(name) \
-    descData = kAE##name; \
-    kOrdinal##name = [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeAbsoluteOrdinal bytes: &descData length: sizeof(descData)];
-
-#define KEY_FORM(name) \
-    descData = form##name; \
-    kForm##name = [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeEnumerated bytes: &descData length: sizeof(descData)];
 
 // insertion locations
 static NSAppleEventDescriptor *kEnumBeginning,
@@ -49,46 +39,47 @@ static NSAppleEventDescriptor *kFormPropertyID,
 							  *kFormRange,
 							  *kFormTest;
 
-
 // prepacked value for keyDesiredClass for use by -packWithCodecs: in property specifiers
 static NSAppleEventDescriptor *kClassProperty;
 
 
-static BOOL specifierModulesAreInitialized = NO;
-
-
-void initSpecifierModule(void) {
-	initTestModule();
-	OSType descData;
-	// insertion locations
-	ENUMERATOR(Beginning);
-	ENUMERATOR(End);
-	ENUMERATOR(Before);
-	ENUMERATOR(After);
-	// relative positions
-	ENUMERATOR(Previous);
-	ENUMERATOR(Next);
-	// absolute ordinals
-	ORDINAL(First);
-	ORDINAL(Middle);
-	ORDINAL(Last);
-	ORDINAL(Any);
-	ORDINAL(All);
-	//key forms
-	KEY_FORM(PropertyID);
-	KEY_FORM(UserPropertyID);
-	KEY_FORM(Name);
-	KEY_FORM(AbsolutePosition);
-	KEY_FORM(UniqueID);
-	KEY_FORM(RelativePosition);
-	KEY_FORM(Range);
-	KEY_FORM(Test);
-	// miscellaneous
-	descData = cProperty;
-	kClassProperty = [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeType
-																	  bytes: &descData
-																	 length: sizeof(descData)];
-	specifierModulesAreInitialized = YES;
+static void InitSpecifierModule(void) {
+    static dispatch_once_t pred = 0;
+    dispatch_once(&pred, ^{
+        #define KEYDESC(constName, varName, descType) { \
+        OSType descData = constName; \
+        varName = [[NSAppleEventDescriptor alloc] initWithDescriptorType: descType bytes: &descData length: sizeof(descData)]; \
+        }
+        #define ORDINAL(name)    KEYDESC(kAE##name, kOrdinal##name, typeAbsoluteOrdinal)
+        #define ENUMERATOR(name) kEnum##name = [NSAppleEventDescriptor descriptorWithEnumCode: (kAE##name)];
+        #define KEY_FORM(name)   kForm##name = [NSAppleEventDescriptor descriptorWithEnumCode: (form##name)];
+        InitTestModule();
+        // absolute ordinals
+        ORDINAL(First);
+        ORDINAL(Middle);
+        ORDINAL(Last);
+        ORDINAL(Any);
+        ORDINAL(All);
+        // insertion locations
+        ENUMERATOR(Beginning);
+        ENUMERATOR(End);
+        ENUMERATOR(Before);
+        ENUMERATOR(After);
+        // relative positions
+        ENUMERATOR(Previous);
+        ENUMERATOR(Next);
+        //key forms
+        KEY_FORM(PropertyID);
+        KEY_FORM(UserPropertyID);
+        KEY_FORM(Name);
+        KEY_FORM(AbsolutePosition);
+        KEY_FORM(UniqueID);
+        KEY_FORM(RelativePosition);
+        KEY_FORM(Range);
+        KEY_FORM(Test);
+        // miscellaneous
+        KEYDESC(cProperty, kClassProperty, typeType);
+    });
 }
 
 
@@ -897,12 +888,13 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 @implementation AEMApplicationRoot
 
 + (AEMApplicationRoot *)applicationRoot {
-	static AEMApplicationRoot *root;
-	if (!root) {
-		if (!specifierModulesAreInitialized) initSpecifierModule();
-		root = [[AEMApplicationRoot alloc] initWithContainer: nil key: nil wantCode: '????'];
-	}
-	return root;
+    static dispatch_once_t pred = 0;
+    __strong static AEMApplicationRoot *root = nil;
+    dispatch_once(&pred, ^{
+        InitSpecifierModule();
+        root = [[AEMApplicationRoot alloc] initWithContainer: nil key: nil wantCode: '????'];
+    });
+    return root;
 }
 
 - (NSString *)description {
@@ -925,15 +917,16 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 // note: clients should avoid calling this initialiser directly; 
 // use AEMApp, AEMCon, AEMIts macros instead.
 + (AEMCurrentContainerRoot *)currentContainerRoot {
-	static AEMCurrentContainerRoot *root;
-	if (!root) {
-		if (!specifierModulesAreInitialized) initSpecifierModule();
-		root = [[AEMCurrentContainerRoot alloc] initWithContainer: nil key: nil wantCode: '????'];
-		[root setCachedDesc: [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeCurrentContainer
-																			  bytes: NULL
-																			 length: 0]];
-	}
-	return root;
+    static dispatch_once_t pred = 0;
+    __strong static AEMCurrentContainerRoot *root = nil;
+    dispatch_once(&pred, ^{
+        InitSpecifierModule();
+        root = [[AEMCurrentContainerRoot alloc] initWithContainer: nil key: nil wantCode: '????'];
+        [root setCachedDesc: [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeCurrentContainer
+                                                                              bytes: NULL
+                                                                             length: 0]];
+    });
+    return root;
 }
 
 - (NSString *)description {
@@ -950,15 +943,16 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 @implementation AEMObjectBeingExaminedRoot
 
 + (AEMObjectBeingExaminedRoot *)objectBeingExaminedRoot {
-	static AEMObjectBeingExaminedRoot *root;
-	if (!root) {
-		if (!specifierModulesAreInitialized) initSpecifierModule();
-		root = [[AEMObjectBeingExaminedRoot alloc] initWithContainer: nil key: nil wantCode: '????'];
-		[root setCachedDesc: [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeObjectBeingExamined
-																			  bytes: NULL
-																			 length: 0]];
-	}
-	return root;
+    static dispatch_once_t pred = 0;
+    __strong static AEMObjectBeingExaminedRoot *root = nil;
+    dispatch_once(&pred, ^{
+        InitSpecifierModule();
+        root = [[AEMObjectBeingExaminedRoot alloc] initWithContainer: nil key: nil wantCode: '????'];
+        [root setCachedDesc: [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeObjectBeingExamined
+                                                                              bytes: NULL
+                                                                             length: 0]];
+    });
+    return root;
 }
 
 - (NSString *)description {
@@ -975,8 +969,10 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 @implementation AEMCustomRoot
 
 + (AEMCustomRoot *)customRootWithObject:(id)rootObject_ {
-	if (!specifierModulesAreInitialized) initSpecifierModule();
-	return [[self alloc] initWithObject: rootObject_];
+    @synchronized(self) {
+        InitSpecifierModule();
+        return [[self alloc] initWithObject: rootObject_];
+    }
 }
 
 - (instancetype)initWithObject:(id)rootObject_ {

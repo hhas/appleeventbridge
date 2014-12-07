@@ -4,6 +4,9 @@
 
 #import "AEMApplication.h"
 
+#import "NSAppleEventDescriptor+AEDescExtensions.h"
+#import "NSAppleEventDescriptor+AEDescMoreExtensions.h"
+
 
 /**********************************************************************/
 

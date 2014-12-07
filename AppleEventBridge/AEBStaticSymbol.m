@@ -201,686 +201,550 @@
 /* Enumerators */
 
 + (AEBSymbol *)applicationResponses {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"applicationResponses" type: typeEnumerated code: 'rmte']);
+    AEB_RETURN_SYMBOL(@"applicationResponses", typeEnumerated, 'rmte');
 }
 
 + (AEBSymbol *)ask {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"ask" type: typeEnumerated code: 'ask ']);
+    AEB_RETURN_SYMBOL(@"ask", typeEnumerated, 'ask ');
 }
 
 + (AEBSymbol *)case_ {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"case_" type: typeEnumerated code: 'case']);
+    AEB_RETURN_SYMBOL(@"case_", typeEnumerated, 'case');
 }
 
 + (AEBSymbol *)diacriticals {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"diacriticals" type: typeEnumerated code: 'diac']);
+    AEB_RETURN_SYMBOL(@"diacriticals", typeEnumerated, 'diac');
 }
 
 + (AEBSymbol *)expansion {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"expansion" type: typeEnumerated code: 'expa']);
+    AEB_RETURN_SYMBOL(@"expansion", typeEnumerated, 'expa');
 }
 
 + (AEBSymbol *)hyphens {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"hyphens" type: typeEnumerated code: 'hyph']);
+    AEB_RETURN_SYMBOL(@"hyphens", typeEnumerated, 'hyph');
 }
 
 + (AEBSymbol *)no {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"no" type: typeEnumerated code: 'no  ']);
+    AEB_RETURN_SYMBOL(@"no", typeEnumerated, 'no  ');
 }
 
 + (AEBSymbol *)numericStrings {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"numericStrings" type: typeEnumerated code: 'nume']);
+    AEB_RETURN_SYMBOL(@"numericStrings", typeEnumerated, 'nume');
 }
 
 + (AEBSymbol *)punctuation {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"punctuation" type: typeEnumerated code: 'punc']);
+    AEB_RETURN_SYMBOL(@"punctuation", typeEnumerated, 'punc');
 }
 
 + (AEBSymbol *)whitespace {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"whitespace" type: typeEnumerated code: 'whit']);
+    AEB_RETURN_SYMBOL(@"whitespace", typeEnumerated, 'whit');
 }
 
 + (AEBSymbol *)yes {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"yes" type: typeEnumerated code: 'yes ']);
+    AEB_RETURN_SYMBOL(@"yes", typeEnumerated, 'yes ');
 }
 
 
 /* Types and properties */
 
 + (AEBSymbol *)April {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"April" type: typeType code: 'apr ']);
+    AEB_RETURN_SYMBOL(@"April", typeType, 'apr ');
 }
 
 + (AEBSymbol *)August {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"August" type: typeType code: 'aug ']);
+    AEB_RETURN_SYMBOL(@"August", typeType, 'aug ');
 }
 
 + (AEBSymbol *)December {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"December" type: typeType code: 'dec ']);
+    AEB_RETURN_SYMBOL(@"December", typeType, 'dec ');
 }
 
 + (AEBSymbol *)EPSPicture {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"EPSPicture" type: typeType code: 'EPS ']);
+    AEB_RETURN_SYMBOL(@"EPSPicture", typeType, 'EPS ');
 }
 
 + (AEBSymbol *)February {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"February" type: typeType code: 'feb ']);
+    AEB_RETURN_SYMBOL(@"February", typeType, 'feb ');
 }
 
 + (AEBSymbol *)Friday {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"Friday" type: typeType code: 'fri ']);
+    AEB_RETURN_SYMBOL(@"Friday", typeType, 'fri ');
 }
 
 + (AEBSymbol *)GIFPicture {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"GIFPicture" type: typeType code: 'GIFf']);
+    AEB_RETURN_SYMBOL(@"GIFPicture", typeType, 'GIFf');
 }
 
 + (AEBSymbol *)JPEGPicture {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"JPEGPicture" type: typeType code: 'JPEG']);
+    AEB_RETURN_SYMBOL(@"JPEGPicture", typeType, 'JPEG');
 }
 
 + (AEBSymbol *)January {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"January" type: typeType code: 'jan ']);
+    AEB_RETURN_SYMBOL(@"January", typeType, 'jan ');
 }
 
 + (AEBSymbol *)July {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"July" type: typeType code: 'jul ']);
+    AEB_RETURN_SYMBOL(@"July", typeType, 'jul ');
 }
 
 + (AEBSymbol *)June {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"June" type: typeType code: 'jun ']);
+    AEB_RETURN_SYMBOL(@"June", typeType, 'jun ');
 }
 
 + (AEBSymbol *)March {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"March" type: typeType code: 'mar ']);
+    AEB_RETURN_SYMBOL(@"March", typeType, 'mar ');
 }
 
 + (AEBSymbol *)May {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"May" type: typeType code: 'may ']);
+    AEB_RETURN_SYMBOL(@"May", typeType, 'may ');
 }
 
 + (AEBSymbol *)Monday {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"Monday" type: typeType code: 'mon ']);
+    AEB_RETURN_SYMBOL(@"Monday", typeType, 'mon ');
 }
 
 + (AEBSymbol *)November {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"November" type: typeType code: 'nov ']);
+    AEB_RETURN_SYMBOL(@"November", typeType, 'nov ');
 }
 
 + (AEBSymbol *)October {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"October" type: typeType code: 'oct ']);
+    AEB_RETURN_SYMBOL(@"October", typeType, 'oct ');
 }
 
 + (AEBSymbol *)PICTPicture {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"PICTPicture" type: typeType code: 'PICT']);
+    AEB_RETURN_SYMBOL(@"PICTPicture", typeType, 'PICT');
 }
 
 + (AEBSymbol *)RGB16Color {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"RGB16Color" type: typeType code: 'tr16']);
+    AEB_RETURN_SYMBOL(@"RGB16Color", typeType, 'tr16');
 }
 
 + (AEBSymbol *)RGB96Color {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"RGB96Color" type: typeType code: 'tr96']);
+    AEB_RETURN_SYMBOL(@"RGB96Color", typeType, 'tr96');
 }
 
 + (AEBSymbol *)RGBColor {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"RGBColor" type: typeType code: 'cRGB']);
+    AEB_RETURN_SYMBOL(@"RGBColor", typeType, 'cRGB');
 }
 
 + (AEBSymbol *)Saturday {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"Saturday" type: typeType code: 'sat ']);
+    AEB_RETURN_SYMBOL(@"Saturday", typeType, 'sat ');
 }
 
 + (AEBSymbol *)September {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"September" type: typeType code: 'sep ']);
+    AEB_RETURN_SYMBOL(@"September", typeType, 'sep ');
 }
 
 + (AEBSymbol *)Sunday {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"Sunday" type: typeType code: 'sun ']);
+    AEB_RETURN_SYMBOL(@"Sunday", typeType, 'sun ');
 }
 
 + (AEBSymbol *)TIFFPicture {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"TIFFPicture" type: typeType code: 'TIFF']);
+    AEB_RETURN_SYMBOL(@"TIFFPicture", typeType, 'TIFF');
 }
 
 + (AEBSymbol *)Thursday {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"Thursday" type: typeType code: 'thu ']);
+    AEB_RETURN_SYMBOL(@"Thursday", typeType, 'thu ');
 }
 
 + (AEBSymbol *)Tuesday {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"Tuesday" type: typeType code: 'tue ']);
+    AEB_RETURN_SYMBOL(@"Tuesday", typeType, 'tue ');
 }
 
 + (AEBSymbol *)Wednesday {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"Wednesday" type: typeType code: 'wed ']);
+    AEB_RETURN_SYMBOL(@"Wednesday", typeType, 'wed ');
 }
 
 + (AEBSymbol *)alias {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"alias" type: typeType code: 'alis']);
+    AEB_RETURN_SYMBOL(@"alias", typeType, 'alis');
 }
 
 + (AEBSymbol *)anything {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"anything" type: typeType code: '****']);
+    AEB_RETURN_SYMBOL(@"anything", typeType, '****');
 }
 
 + (AEBSymbol *)applicationBundleID {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"applicationBundleID" type: typeType code: 'bund']);
+    AEB_RETURN_SYMBOL(@"applicationBundleID", typeType, 'bund');
 }
 
 + (AEBSymbol *)applicationSignature {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"applicationSignature" type: typeType code: 'sign']);
+    AEB_RETURN_SYMBOL(@"applicationSignature", typeType, 'sign');
 }
 
 + (AEBSymbol *)applicationURL {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"applicationURL" type: typeType code: 'aprl']);
+    AEB_RETURN_SYMBOL(@"applicationURL", typeType, 'aprl');
 }
 
 + (AEBSymbol *)best {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"best" type: typeType code: 'best']);
+    AEB_RETURN_SYMBOL(@"best", typeType, 'best');
 }
 
 + (AEBSymbol *)bookmarkData {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"bookmarkData" type: typeType code: 'bmrk']);
+    AEB_RETURN_SYMBOL(@"bookmarkData", typeType, 'bmrk');
 }
 
 + (AEBSymbol *)boolean {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"boolean" type: typeType code: 'bool']);
+    AEB_RETURN_SYMBOL(@"boolean", typeType, 'bool');
 }
 
 + (AEBSymbol *)boundingRectangle {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"boundingRectangle" type: typeType code: 'qdrt']);
+    AEB_RETURN_SYMBOL(@"boundingRectangle", typeType, 'qdrt');
 }
 
 + (AEBSymbol *)centimeters {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"centimeters" type: typeType code: 'cmtr']);
+    AEB_RETURN_SYMBOL(@"centimeters", typeType, 'cmtr');
 }
 
 + (AEBSymbol *)class_ {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"class_" type: typeType code: 'pcls']);
+    AEB_RETURN_SYMBOL(@"class_", typeType, 'pcls');
 }
 
 + (AEBSymbol *)classInfo {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"classInfo" type: typeType code: 'gcli']);
+    AEB_RETURN_SYMBOL(@"classInfo", typeType, 'gcli');
 }
 
 + (AEBSymbol *)colorTable {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"colorTable" type: typeType code: 'clrt']);
+    AEB_RETURN_SYMBOL(@"colorTable", typeType, 'clrt');
 }
 
 + (AEBSymbol *)cubicCentimeters {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"cubicCentimeters" type: typeType code: 'ccmt']);
+    AEB_RETURN_SYMBOL(@"cubicCentimeters", typeType, 'ccmt');
 }
 
 + (AEBSymbol *)cubicFeet {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"cubicFeet" type: typeType code: 'cfet']);
+    AEB_RETURN_SYMBOL(@"cubicFeet", typeType, 'cfet');
 }
 
 + (AEBSymbol *)cubicInches {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"cubicInches" type: typeType code: 'cuin']);
+    AEB_RETURN_SYMBOL(@"cubicInches", typeType, 'cuin');
 }
 
 + (AEBSymbol *)cubicMeters {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"cubicMeters" type: typeType code: 'cmet']);
+    AEB_RETURN_SYMBOL(@"cubicMeters", typeType, 'cmet');
 }
 
 + (AEBSymbol *)cubicYards {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"cubicYards" type: typeType code: 'cyrd']);
+    AEB_RETURN_SYMBOL(@"cubicYards", typeType, 'cyrd');
 }
 
 + (AEBSymbol *)dashStyle {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"dashStyle" type: typeType code: 'tdas']);
+    AEB_RETURN_SYMBOL(@"dashStyle", typeType, 'tdas');
 }
 
 + (AEBSymbol *)data {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"data" type: typeType code: 'rdat']);
+    AEB_RETURN_SYMBOL(@"data", typeType, 'rdat');
 }
 
 + (AEBSymbol *)date {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"date" type: typeType code: 'ldt ']);
+    AEB_RETURN_SYMBOL(@"date", typeType, 'ldt ');
 }
 
 + (AEBSymbol *)decimalStruct {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"decimalStruct" type: typeType code: 'decm']);
+    AEB_RETURN_SYMBOL(@"decimalStruct", typeType, 'decm');
 }
 
 + (AEBSymbol *)degreesCelsius {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"degreesCelsius" type: typeType code: 'degc']);
+    AEB_RETURN_SYMBOL(@"degreesCelsius", typeType, 'degc');
 }
 
 + (AEBSymbol *)degreesFahrenheit {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"degreesFahrenheit" type: typeType code: 'degf']);
+    AEB_RETURN_SYMBOL(@"degreesFahrenheit", typeType, 'degf');
 }
 
 + (AEBSymbol *)degreesKelvin {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"degreesKelvin" type: typeType code: 'degk']);
+    AEB_RETURN_SYMBOL(@"degreesKelvin", typeType, 'degk');
 }
 
 + (AEBSymbol *)doubleInteger {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"doubleInteger" type: typeType code: 'comp']);
+    AEB_RETURN_SYMBOL(@"doubleInteger", typeType, 'comp');
 }
 
 + (AEBSymbol *)elementInfo {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"elementInfo" type: typeType code: 'elin']);
+    AEB_RETURN_SYMBOL(@"elementInfo", typeType, 'elin');
 }
 
 + (AEBSymbol *)encodedString {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"encodedString" type: typeType code: 'encs']);
+    AEB_RETURN_SYMBOL(@"encodedString", typeType, 'encs');
 }
 
 + (AEBSymbol *)enumerator {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"enumerator" type: typeType code: 'enum']);
+    AEB_RETURN_SYMBOL(@"enumerator", typeType, 'enum');
 }
 
 + (AEBSymbol *)eventInfo {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"eventInfo" type: typeType code: 'evin']);
+    AEB_RETURN_SYMBOL(@"eventInfo", typeType, 'evin');
 }
 
 + (AEBSymbol *)extendedFloat {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"extendedFloat" type: typeType code: 'exte']);
+    AEB_RETURN_SYMBOL(@"extendedFloat", typeType, 'exte');
 }
 
 + (AEBSymbol *)feet {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"feet" type: typeType code: 'feet']);
+    AEB_RETURN_SYMBOL(@"feet", typeType, 'feet');
 }
 
 + (AEBSymbol *)fileRef {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"fileRef" type: typeType code: 'fsrf']);
+    AEB_RETURN_SYMBOL(@"fileRef", typeType, 'fsrf');
 }
 
 + (AEBSymbol *)fileSpecification {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"fileSpecification" type: typeType code: 'fss ']);
+    AEB_RETURN_SYMBOL(@"fileSpecification", typeType, 'fss ');
 }
 
 + (AEBSymbol *)fileURL {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"fileURL" type: typeType code: 'furl']);
+    AEB_RETURN_SYMBOL(@"fileURL", typeType, 'furl');
 }
 
 + (AEBSymbol *)fixed {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"fixed" type: typeType code: 'fixd']);
+    AEB_RETURN_SYMBOL(@"fixed", typeType, 'fixd');
 }
 
 + (AEBSymbol *)fixedPoint {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"fixedPoint" type: typeType code: 'fpnt']);
+    AEB_RETURN_SYMBOL(@"fixedPoint", typeType, 'fpnt');
 }
 
 + (AEBSymbol *)fixedRectangle {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"fixedRectangle" type: typeType code: 'frct']);
+    AEB_RETURN_SYMBOL(@"fixedRectangle", typeType, 'frct');
 }
 
 + (AEBSymbol *)float_ {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"float_" type: typeType code: 'doub']);
+    AEB_RETURN_SYMBOL(@"float_", typeType, 'doub');
 }
 
 + (AEBSymbol *)float128bit {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"float128bit" type: typeType code: 'ldbl']);
+    AEB_RETURN_SYMBOL(@"float128bit", typeType, 'ldbl');
 }
 
 + (AEBSymbol *)gallons {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"gallons" type: typeType code: 'galn']);
+    AEB_RETURN_SYMBOL(@"gallons", typeType, 'galn');
 }
 
 + (AEBSymbol *)grams {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"grams" type: typeType code: 'gram']);
+    AEB_RETURN_SYMBOL(@"grams", typeType, 'gram');
 }
 
 + (AEBSymbol *)graphicText {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"graphicText" type: typeType code: 'cgtx']);
+    AEB_RETURN_SYMBOL(@"graphicText", typeType, 'cgtx');
 }
 
 + (AEBSymbol *)inches {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"inches" type: typeType code: 'inch']);
+    AEB_RETURN_SYMBOL(@"inches", typeType, 'inch');
 }
 
 + (AEBSymbol *)integer {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"integer" type: typeType code: 'long']);
+    AEB_RETURN_SYMBOL(@"integer", typeType, 'long');
 }
 
 + (AEBSymbol *)internationalText {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"internationalText" type: typeType code: 'itxt']);
+    AEB_RETURN_SYMBOL(@"internationalText", typeType, 'itxt');
 }
 
 + (AEBSymbol *)internationalWritingCode {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"internationalWritingCode" type: typeType code: 'intl']);
+    AEB_RETURN_SYMBOL(@"internationalWritingCode", typeType, 'intl');
 }
 
 + (AEBSymbol *)kernelProcessID {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"kernelProcessID" type: typeType code: 'kpid']);
+    AEB_RETURN_SYMBOL(@"kernelProcessID", typeType, 'kpid');
 }
 
 + (AEBSymbol *)kilograms {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"kilograms" type: typeType code: 'kgrm']);
+    AEB_RETURN_SYMBOL(@"kilograms", typeType, 'kgrm');
 }
 
 + (AEBSymbol *)kilometers {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"kilometers" type: typeType code: 'kmtr']);
+    AEB_RETURN_SYMBOL(@"kilometers", typeType, 'kmtr');
 }
 
 + (AEBSymbol *)list {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"list" type: typeType code: 'list']);
+    AEB_RETURN_SYMBOL(@"list", typeType, 'list');
 }
 
 + (AEBSymbol *)liters {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"liters" type: typeType code: 'litr']);
+    AEB_RETURN_SYMBOL(@"liters", typeType, 'litr');
 }
 
 + (AEBSymbol *)locationReference {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"locationReference" type: typeType code: 'insl']);
+    AEB_RETURN_SYMBOL(@"locationReference", typeType, 'insl');
 }
 
 + (AEBSymbol *)longFixed {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"longFixed" type: typeType code: 'lfxd']);
+    AEB_RETURN_SYMBOL(@"longFixed", typeType, 'lfxd');
 }
 
 + (AEBSymbol *)longFixedPoint {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"longFixedPoint" type: typeType code: 'lfpt']);
+    AEB_RETURN_SYMBOL(@"longFixedPoint", typeType, 'lfpt');
 }
 
 + (AEBSymbol *)longFixedRectangle {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"longFixedRectangle" type: typeType code: 'lfrc']);
+    AEB_RETURN_SYMBOL(@"longFixedRectangle", typeType, 'lfrc');
 }
 
 + (AEBSymbol *)longPoint {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"longPoint" type: typeType code: 'lpnt']);
+    AEB_RETURN_SYMBOL(@"longPoint", typeType, 'lpnt');
 }
 
 + (AEBSymbol *)longRectangle {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"longRectangle" type: typeType code: 'lrct']);
+    AEB_RETURN_SYMBOL(@"longRectangle", typeType, 'lrct');
 }
 
 + (AEBSymbol *)machPort {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"machPort" type: typeType code: 'port']);
+    AEB_RETURN_SYMBOL(@"machPort", typeType, 'port');
 }
 
 + (AEBSymbol *)machine {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"machine" type: typeType code: 'mach']);
+    AEB_RETURN_SYMBOL(@"machine", typeType, 'mach');
 }
 
 + (AEBSymbol *)machineLocation {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"machineLocation" type: typeType code: 'mLoc']);
+    AEB_RETURN_SYMBOL(@"machineLocation", typeType, 'mLoc');
 }
 
 + (AEBSymbol *)meters {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"meters" type: typeType code: 'metr']);
+    AEB_RETURN_SYMBOL(@"meters", typeType, 'metr');
 }
 
 + (AEBSymbol *)miles {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"miles" type: typeType code: 'mile']);
+    AEB_RETURN_SYMBOL(@"miles", typeType, 'mile');
 }
 
 + (AEBSymbol *)missingValue {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"missingValue" type: typeType code: 'msng']);
+    AEB_RETURN_SYMBOL(@"missingValue", typeType, 'msng');
 }
 
 + (AEBSymbol *)null {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"null" type: typeType code: 'null']);
+    AEB_RETURN_SYMBOL(@"null", typeType, 'null');
 }
 
 + (AEBSymbol *)ounces {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"ounces" type: typeType code: 'ozs ']);
+    AEB_RETURN_SYMBOL(@"ounces", typeType, 'ozs ');
 }
 
 + (AEBSymbol *)parameterInfo {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"parameterInfo" type: typeType code: 'pmin']);
+    AEB_RETURN_SYMBOL(@"parameterInfo", typeType, 'pmin');
 }
 
 + (AEBSymbol *)pixelMapRecord {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"pixelMapRecord" type: typeType code: 'tpmm']);
+    AEB_RETURN_SYMBOL(@"pixelMapRecord", typeType, 'tpmm');
 }
 
 + (AEBSymbol *)point {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"point" type: typeType code: 'QDpt']);
+    AEB_RETURN_SYMBOL(@"point", typeType, 'QDpt');
 }
 
 + (AEBSymbol *)pounds {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"pounds" type: typeType code: 'lbs ']);
+    AEB_RETURN_SYMBOL(@"pounds", typeType, 'lbs ');
 }
 
 + (AEBSymbol *)processSerialNumber {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"processSerialNumber" type: typeType code: 'psn ']);
+    AEB_RETURN_SYMBOL(@"processSerialNumber", typeType, 'psn ');
 }
 
 + (AEBSymbol *)property {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"property" type: typeType code: 'prop']);
+    AEB_RETURN_SYMBOL(@"property", typeType, 'prop');
 }
 
 + (AEBSymbol *)propertyInfo {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"propertyInfo" type: typeType code: 'pinf']);
+    AEB_RETURN_SYMBOL(@"propertyInfo", typeType, 'pinf');
 }
 
 + (AEBSymbol *)quarts {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"quarts" type: typeType code: 'qrts']);
+    AEB_RETURN_SYMBOL(@"quarts", typeType, 'qrts');
 }
 
 + (AEBSymbol *)record {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"record" type: typeType code: 'reco']);
+    AEB_RETURN_SYMBOL(@"record", typeType, 'reco');
 }
 
 + (AEBSymbol *)reference {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"reference" type: typeType code: 'obj ']);
+    AEB_RETURN_SYMBOL(@"reference", typeType, 'obj ');
 }
 
 + (AEBSymbol *)rotation {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"rotation" type: typeType code: 'trot']);
+    AEB_RETURN_SYMBOL(@"rotation", typeType, 'trot');
 }
 
 + (AEBSymbol *)script {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"script" type: typeType code: 'scpt']);
+    AEB_RETURN_SYMBOL(@"script", typeType, 'scpt');
 }
 
 + (AEBSymbol *)shortFloat {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"shortFloat" type: typeType code: 'sing']);
+    AEB_RETURN_SYMBOL(@"shortFloat", typeType, 'sing');
 }
 
 + (AEBSymbol *)shortInteger {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"shortInteger" type: typeType code: 'shor']);
+    AEB_RETURN_SYMBOL(@"shortInteger", typeType, 'shor');
 }
 
 + (AEBSymbol *)squareFeet {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"squareFeet" type: typeType code: 'sqft']);
+    AEB_RETURN_SYMBOL(@"squareFeet", typeType, 'sqft');
 }
 
 + (AEBSymbol *)squareKilometers {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"squareKilometers" type: typeType code: 'sqkm']);
+    AEB_RETURN_SYMBOL(@"squareKilometers", typeType, 'sqkm');
 }
 
 + (AEBSymbol *)squareMeters {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"squareMeters" type: typeType code: 'sqrm']);
+    AEB_RETURN_SYMBOL(@"squareMeters", typeType, 'sqrm');
 }
 
 + (AEBSymbol *)squareMiles {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"squareMiles" type: typeType code: 'sqmi']);
+    AEB_RETURN_SYMBOL(@"squareMiles", typeType, 'sqmi');
 }
 
 + (AEBSymbol *)squareYards {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"squareYards" type: typeType code: 'sqyd']);
+    AEB_RETURN_SYMBOL(@"squareYards", typeType, 'sqyd');
 }
 
 + (AEBSymbol *)string {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"string" type: typeType code: 'TEXT']);
+    AEB_RETURN_SYMBOL(@"string", typeType, 'TEXT');
 }
 
 + (AEBSymbol *)styledClipboardText {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"styledClipboardText" type: typeType code: 'styl']);
+    AEB_RETURN_SYMBOL(@"styledClipboardText", typeType, 'styl');
 }
 
 + (AEBSymbol *)styledText {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"styledText" type: typeType code: 'STXT']);
+    AEB_RETURN_SYMBOL(@"styledText", typeType, 'STXT');
 }
 
 + (AEBSymbol *)suiteInfo {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"suiteInfo" type: typeType code: 'suin']);
+    AEB_RETURN_SYMBOL(@"suiteInfo", typeType, 'suin');
 }
 
 + (AEBSymbol *)textStyleInfo {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"textStyleInfo" type: typeType code: 'tsty']);
+    AEB_RETURN_SYMBOL(@"textStyleInfo", typeType, 'tsty');
 }
 
 + (AEBSymbol *)typeClass {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"typeClass" type: typeType code: 'type']);
+    AEB_RETURN_SYMBOL(@"typeClass", typeType, 'type');
 }
 
 + (AEBSymbol *)unicodeText {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"unicodeText" type: typeType code: 'utxt']);
+    AEB_RETURN_SYMBOL(@"unicodeText", typeType, 'utxt');
 }
 
 + (AEBSymbol *)unsignedInteger {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"unsignedInteger" type: typeType code: 'magn']);
+    AEB_RETURN_SYMBOL(@"unsignedInteger", typeType, 'magn');
 }
 
 + (AEBSymbol *)utf16Text {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"utf16Text" type: typeType code: 'ut16']);
+    AEB_RETURN_SYMBOL(@"utf16Text", typeType, 'ut16');
 }
 
 + (AEBSymbol *)utf8Text {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"utf8Text" type: typeType code: 'utf8']);
+    AEB_RETURN_SYMBOL(@"utf8Text", typeType, 'utf8');
 }
 
 + (AEBSymbol *)version {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"version" type: typeType code: 'vers']);
+    AEB_RETURN_SYMBOL(@"version", typeType, 'vers');
 }
 
 + (AEBSymbol *)writingCode {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"writingCode" type: typeType code: 'psct']);
+    AEB_RETURN_SYMBOL(@"writingCode", typeType, 'psct');
 }
 
 + (AEBSymbol *)yards {
-    static id obj;
-    return obj ?: (obj = [AEBSymbol symbolWithName: @"yards" type: typeType code: 'yard']);
+    AEB_RETURN_SYMBOL(@"yards", typeType, 'yard');
 }
 
 

@@ -22,9 +22,7 @@
 /**********************************************************************/
 // initialise constants
 
-void initTestModule(void); // called automatically
-
-void disposeTestModule(void);
+void InitTestModule(void); // called automatically
 
 
 /**********************************************************************/

@@ -8,7 +8,6 @@
 #import "AEMCodecs.h"
 #import "AEMFormatter.h"
 #import "AEMUtils.h"
-#import "NSAppleEventDescriptor+AEDescExtensions.h"
 
 
 @class AEMApplication;
@@ -25,10 +24,22 @@ typedef enum {
 
 
 /**********************************************************************/
+// minimal wrapper for Mach port used to receive replies on non-main threads
+
+
+@interface AEMReplyPortDescriptor : NSAppleEventDescriptor {
+    mach_port_t port;
+}
+
+-(instancetype)initWithMachPort:(mach_port_t)port_;
+
+@end
+
+
+/**********************************************************************/
 // Event class
-/*
- * Note: clients shouldn't instantiate AEMEvent directly; instead use AEMApplication -eventWith... methods.
- */
+
+// Note: clients shouldn't instantiate AEMEvent directly; instead use -[AEMApplication event...] methods.
 
 @interface AEMEvent : NSObject {
     AEMApplication *appObj;
@@ -37,22 +48,14 @@ typedef enum {
 	AEMUnpackFormat resultFormat;
 }
 
-/*
- * The NSAppleEventDescriptor instance containing this AppleEvent
- */
+// The NSAppleEventDescriptor instance containing this AppleEvent.
 @property (retain, readonly) NSAppleEventDescriptor *descriptor; // TO DO: was named `-descriptor`
 
-/*
- * Note: new AEMEvent instances are constructed by AEMApplication objects; 
- * clients shouldn't instantiate this class directly.
- */
-
+// Note: new AEMEvent instances are constructed by AEMApplication objects; clients shouldn't instantiate this class directly.
 - (instancetype)initWithApplication:(AEMApplication *)appObj_ event:(NSAppleEventDescriptor *)descriptor_ codecs:(id)codecs_;
 
-/*
- * Get codecs object used by this AEMEvent instance
- */
- - (id)codecs;
+// The codecs object used by this AEMEvent instance
+@property (retain, readonly) id codecs;
 
 // Pack event's attributes and parameters, if any; returns self if successful or nil if an error occurred.
 

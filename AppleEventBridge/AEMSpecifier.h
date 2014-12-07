@@ -71,14 +71,6 @@
 
 
 /**********************************************************************/
-// initialise constants
-
-void initSpecifierModule(void); // called automatically
-
-void disposeSpecifierModule(void);
-
-
-/**********************************************************************/
 // Specifier base
 
 /*

@@ -3,7 +3,9 @@
 //
 
 #import "AEMCodecs.h"
+
 #import "NSAppleEventDescriptor+AEDescExtensions.h"
+#import "NSAppleEventDescriptor+AEDescMoreExtensions.h"
 
 //
 // Note: NSAppleEventDescriptors are not hashable so don't work as dictionary keys;
@@ -21,11 +23,12 @@
 @implementation AEMCodecs
 
 + (instancetype)defaultCodecs {
-    @synchronized(self) {
-        static AEMCodecs *defaultCodecs;
-        if (!defaultCodecs) defaultCodecs = [[self alloc] init];
-        return defaultCodecs;
-    }
+    static dispatch_once_t pred = 0;
+    __strong static id sharedObject = nil;
+    dispatch_once(&pred, ^{
+        sharedObject = [[self alloc] init];
+    });
+    return sharedObject;
 }
 
 
@@ -33,10 +36,6 @@
     self = [super init];
     if (!self) return self;
     applicationRootDescriptor = [NSAppleEventDescriptor nullDescriptor];
-    NSMutableDictionary *defsByName = nil, *defsByCode = nil;
-    AEMGetDefaultUnitTypeDefinitions(&defsByName, &defsByCode);
-    unitTypeDefinitionByName = defsByName;
-    unitTypeDefinitionByCode = defsByCode;
     disableCache = NO;
     allowUInt64 = NO;
     return self;
@@ -47,11 +46,6 @@
 
 /**********************************************************************/
 // compatibility options
-
-- (void)addUnitTypeDefinition:(AEMUnitTypeDefinition *)definition {
-    unitTypeDefinitionByName[[definition name]] = definition;
-    unitTypeDefinitionByCode[@([definition code])] = definition;
-}
 
 - (void)dontCacheUnpackedSpecifiers {
     disableCache = YES;
@@ -69,7 +63,6 @@
     UInt32 uint32;
     SInt64 sint64;
     UInt64 uint64;
-    AEMUnitTypeDefinition *unitTypeDefinition;
     NSAppleEventDescriptor *result = nil;
     
     if (error) *error = nil;
@@ -142,14 +135,6 @@
         result = anObject;
     } else if ([anObject isKindOfClass: NSNull.class]) {
         result = [NSAppleEventDescriptor nullDescriptor];
-    } else if ([anObject isKindOfClass: AEMUnits.class]) {
-        unitTypeDefinition = unitTypeDefinitionByName[[anObject units]];
-        if (unitTypeDefinition) {
-            result = [unitTypeDefinition pack: anObject error: error]; // TO DO: add args
-        } else if (error) {
-            *error = AEMErrorWithInfo(errAECoercionFail, [NSString stringWithFormat:
-                                                          @"Can't pack AEMUnits object (unknown unit type): %@", anObject]);
-        }
     } else {
         result = [self packUnknown: anObject error: error];
     }
@@ -246,7 +231,6 @@
     short qdPoint[2];
     short qdRect[4];
     unsigned short rgbColor[3];
-    AEMUnitTypeDefinition *unitTypeDefinition;
     id result = nil;
     if (error) *error = nil;
     switch (desc.descriptorType) {
@@ -363,12 +347,7 @@
             result = desc.booleanValue ? AEMTrue : AEMFalse;
             break;
         default:
-            unitTypeDefinition = unitTypeDefinitionByName[@(desc.descriptorType)];
-            if (unitTypeDefinition) {
-                result = [unitTypeDefinition unpack: desc error: error]; // TO DO: add args
-            } else {
-                result = [self unpackUnknown: desc error: error];
-            }
+            result = [self unpackUnknown: desc error: error];
     }
     if (!result && error && !*error) { // catch-all in case an unpacker returned nil without an accompanying NSError
         NSString *message = [NSString stringWithFormat:
@@ -556,10 +535,8 @@
                                                                   codecs: self];
             switch (keyForm) {
                 case formPropertyID:
-                    keyObj = [self unpack: key error: error];
-                    if (!keyObj) return nil;
                     ref = [[AEMPropertySpecifier alloc] initWithContainer: container
-                                                                      key: keyObj
+                                                                      key: key
                                                                  wantCode: wantCode];
                     break;
                 case formAbsolutePosition:

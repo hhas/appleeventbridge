@@ -191,11 +191,12 @@
 																			length: sizeof(considsAndIgnoresFlags)];
 	[aemEvent setAttribute: considerAndIgnoreDesc forKeyword: enumConsidsAndIgnores];
 	if (considsAndIgnoresFlags == kAECaseIgnoreMask) {
-        static NSAppleEventDescriptor *defaultIgnore = nil;
-        if (!defaultIgnore) {
+        static dispatch_once_t pred = 0;
+        __strong static NSAppleEventDescriptor *defaultIgnore = nil;
+        dispatch_once(&pred, ^{
             defaultIgnore = [NSAppleEventDescriptor listDescriptor];
             [defaultIgnore insertDescriptor: [NSAppleEventDescriptor descriptorWithEnumCode: kAECase] atIndex: 0];
-        }
+        });
 		[aemEvent setAttribute: defaultIgnore forKeyword: enumConsiderations];
 	} else {
 		ignoreListDesc = [NSAppleEventDescriptor listDescriptor];

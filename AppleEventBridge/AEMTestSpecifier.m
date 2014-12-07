@@ -9,11 +9,6 @@
 // initialise constants
 
 
-#define ENUMERATOR(name) \
-    descData = kAE##name; \
-    kEnum##name = [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeEnumerated bytes: &descData length: sizeof(descData)];
-
-
 // comparison tests
 static NSAppleEventDescriptor *kEnumGreaterThan,
 							  *kEnumGreaterThanEquals,
@@ -30,10 +25,9 @@ static NSAppleEventDescriptor *kEnumAND,
 							  *kEnumNOT;
 
 
-void initTestModule(void) { // called automatically
+void InitTestModule(void) { // called automatically
+    #define ENUMERATOR(name) kEnum##name = [NSAppleEventDescriptor descriptorWithEnumCode: (kAE##name)];
 	// comparison tests
-	OSType descData;
-	
 	ENUMERATOR(GreaterThan);
 	ENUMERATOR(GreaterThanEquals);
 	ENUMERATOR(Equals);
@@ -46,11 +40,6 @@ void initTestModule(void) { // called automatically
 	ENUMERATOR(AND);
 	ENUMERATOR(OR);
 	ENUMERATOR(NOT);
-}
-
-void disposeTestModule(void) {
-	// comparison tests
-	// logical tests
 }
 
 

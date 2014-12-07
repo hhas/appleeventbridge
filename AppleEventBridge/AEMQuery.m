@@ -14,22 +14,12 @@
 	self = [super init];
 	if (!self) return self;
 	cachedDesc = nil;
-	cachedHash = 0;
 	return self;
 }
 
 
-
-- (NSUInteger)hash {
-	if (!cachedHash) cachedHash = [[self description] hash];
-	return cachedHash;
-}
-
-
 - (void)setCachedDesc:(NSAppleEventDescriptor *)desc {
-	@synchronized(self) {
-		cachedDesc = desc;
-	}
+    cachedDesc = desc;
 }
 
 

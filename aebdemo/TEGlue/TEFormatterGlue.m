@@ -1,7 +1,7 @@
 //
 // TEFormatterGlue.m
 // TextEdit
-// (AppleEventBridge 1.0)
+// AppleEventBridge 0.7.0
 //
 
 #import "TEFormatterGlue.h"

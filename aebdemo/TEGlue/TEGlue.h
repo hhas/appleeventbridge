@@ -1,7 +1,7 @@
 //
 // TEGlue.h
 // TextEdit
-// (AppleEventBridge 1.0)
+// AppleEventBridge 0.7.0
 //
 
 #import <Foundation/Foundation.h>

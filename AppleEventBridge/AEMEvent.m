@@ -5,6 +5,9 @@
 #import "AEMEvent.h"
 #import "AEMApplication.h"
 
+#import "NSAppleEventDescriptor+AEDescExtensions.h"
+#import "NSAppleEventDescriptor+AEDescMoreExtensions.h"
+
 
 /**********************************************************************/
 // Attribute keys
@@ -30,8 +33,31 @@ static AEMEventAttributeDef AttributeKeys[] = {
 	{"Considerations   ", enumConsiderations},
 	{"ConsidsAndIgnores", enumConsidsAndIgnores},
 	{"Subject          ", keySubjectAttr},
+	{"ReplyPort        ", keyReplyPortAttr},
 	{NULL, 0}
 };
+
+
+static NSString *kAEMReplyPortDescriptor = @"kAEMReplyPortDescriptor";
+
+
+/**********************************************************************/
+
+
+@implementation AEMReplyPortDescriptor
+
+-(instancetype)initWithMachPort:(mach_port_t)port_ {
+    self = [super init];
+    if (!self) return self;
+    port = port_;
+    return self;
+}
+
+-(void)dealloc {
+    mach_port_destroy(mach_task_self(), port);
+}
+
+@end
 
 
 /**********************************************************************/
@@ -49,7 +75,7 @@ static AEMEventAttributeDef AttributeKeys[] = {
 	self = [super init];
 	if (!self) return self;
     appObj = appObj_;
-	descriptor = event_; // note: AEMEvent instance takes ownership of the given AppleEvent descriptor
+	descriptor = event_;
 	codecs = codecs_;
 	resultFormat = kAEMUnpackAsItem;
 	resultType = typeWildCard;
@@ -195,7 +221,29 @@ static AEMEventAttributeDef AttributeKeys[] = {
     NSAppleEventDescriptor *result;
 	NSString *errorDescription;
 	if (error) *error = nil;
-	// send event
+    OSStatus errorNumber = noErr;
+    // if sending event on non-main thread, specify Mach port on which to receive reply
+    if (!NSThread.isMainThread && sendMode & kAEWaitReply) {
+        NSMutableDictionary *threadInfo = NSThread.currentThread.threadDictionary;
+        AEMReplyPortDescriptor *replyPortDescriptor = threadInfo[kAEMReplyPortDescriptor];
+        if (!replyPortDescriptor) { // allocate a Mach port to receive reply events on this thread
+            mach_port_t replyPort = MACH_PORT_NULL;
+            errorNumber = (OSStatus)mach_port_allocate(mach_task_self(), MACH_PORT_RIGHT_RECEIVE, &replyPort);
+            if (errorNumber) {
+                if (error) {
+                    *error = [NSError errorWithDomain: kAEMErrorDomain code: errorNumber
+                                             userInfo: @{NSLocalizedDescriptionKey: @"Failed to allocate Mach port.",
+                                                         kAEMErrorNumberKey: @(errorNumber),
+                                                         kAEMErrorFailedEvent: self}];
+                }
+                return nil;
+            }
+            replyPortDescriptor = [[AEMReplyPortDescriptor alloc] initWithMachPort: replyPort];
+            threadInfo[kAEMReplyPortDescriptor] = replyPortDescriptor;
+        }
+        [descriptor setAttributeDescriptor: replyPortDescriptor forKeyword: keyReplyPortAttr];
+    }
+    // send event
     NSError *sendError = nil;
     NSAppleEventDescriptor *replyData = [descriptor sendAppleEventWithMode: sendMode timeout: timeoutInTicks error: &sendError];
 	// check for an Apple Event Manager error
@@ -225,7 +273,7 @@ static AEMEventAttributeDef AttributeKeys[] = {
 	 *	
 	 *	Note: some apps (e.g. Finder) may return noErr on success, so ignore that too.
 	 */
-	OSStatus errorNumber = [[replyData paramDescriptorForKeyword: keyErrorNumber] int32Value];
+	errorNumber = [[replyData paramDescriptorForKeyword: keyErrorNumber] int32Value];
 	if (errorNumber) {
 		// if an application error occurred, generate an NSError if one is requested, then return nil
 		if (error) {

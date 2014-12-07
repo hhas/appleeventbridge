@@ -1,55 +1,90 @@
 //
 //  NSAppleEventDescriptor+AEDescExtensions.h
 //
-//  Adds missing functionality to NSAppleEventDescriptor.
+//  Adds essential missing functionality to NSAppleEventDescriptor.
 //
-//  The following methods wrap essential legacy/deprecated Carbon APIs (third-party code should not have to rely on such APIs to build and send Apple events):
+//  These methods wrap legacy/deprecated Carbon APIs that are essential in building and sending Apple events.
 //
-//      +descriptorWithDate:
-//      +currentProcessDescriptor
-//      -isRecordDescriptor
-//      -dateValue
-//      -sendAppleEventWithMode:timeout:error:
-//
-//  Other methods are provided for convenience/completeness.
-//
-//  To keep patch size to a minimum, this does not implement a comprehensive set of pack/unpack methods. e.g. +descriptorWithBundleID: is not provided as Apple Event Manager may be flaky with bundle IDs; +descriptorWithNumber: is not provided as no one mapping strategy is guaranteed to work with all processes (e.g. some apps may have problems with typeUInt64, but packing all NSNumbers as typeSInt32/typeIEEE64BitFloatingPoint could cause other problems due to lost precision).
-//
-
 
 #import <Foundation/Foundation.h>
 #import <Carbon/Carbon.h>
 
 
-// TO DO: if/when <rdar://problem/4976113> is fixed, delete next line and get rid of AESendThreadSafe files
-#import "AESendThreadSafe.h"
-
-
 @interface NSAppleEventDescriptor (AEDescExtensions)
 
-// Given a value, create and return an autoreleased NSAppleEventDescriptor that contains that value, with an appropriate type (typeLongDateTime, typeIEEE64BitFloatingPoint, or typeFileURL, respectively).
+// Creating and Initializing Descriptors
+
+/*
+ Creates a descriptor initialized with Apple event type typeLongDateTime that stores the specified date.
+
+ Parameters
+ 
+    date -- The date to be stored in the returned descriptor.
+ 
+ Return Value
+ 
+    A descriptor containing the specified date, or nil if an error occurs.
+ */
 + (instancetype)descriptorWithDate:(NSDate *)date;
-+ (instancetype)descriptorWithDouble:(double)number;
-+ (instancetype)descriptorWithFileURL:(NSURL *)fileURL;
 
 
-// Given a target process identifier, create and return an autoreleased NSAppleEventDescriptor suitable for use in +appleEventWithEventClass:eventID:targetDescriptor:returnID:transactionID:.
+/*
+ Creates an address descriptor initialized with Apple event type typeProcessSerialNumber that identifies the current process.
+ 
+ Return Value
+ 
+    A descriptor identifying the current process, or nil if an error occurs.
+ */
 + (instancetype)currentProcessDescriptor;
-+ (instancetype)descriptorWithProcessID:(pid_t)pid;
-+ (instancetype)descriptorWithApplicationURL:(NSURL *)url; // Note: Apple Event Manager only recognizes `eppc:` URLs in targetDescriptor.
 
 
-// AERecords can have an abitrary descriptorType. This allows you to check if the descriptor is truly an AERecord.
+
+// Getting Information About a Descriptor
+
+/*
+ Apple event records can have an abitrary descriptorType. This allows you to check if the descriptor is truly a record.
+ 
+ Return Value
+    
+    YES if the descriptor is an Apple event record; otherwise, NO.
+ */
 - (BOOL)isRecordDescriptor;
 
 
-// Return the contents of a descriptor, after coercing the descriptor's contents to typeLongDateTime, typeIEEE64BitFloatingPoint, or typeFileURL, respectively.
+/*
+ Returns the contents of the receiver as a date, coercing (to typeLongDateTime) if necessary.
+ 
+ Return Value
+ 
+    The contents of the descriptor, as a date, or nil if an error occurs.
+ */
 @property (readonly) NSDate *dateValue;
-@property (readonly) double doubleValue;
-@property (readonly) NSURL *fileURLValue;
 
 
-// Send an Apple event to a target process. On success, returns the reply event containing the result value or error returned by the target process. If an Apple Event Manager error occurs, returns nil and if `error` is not nil an NSError containing the Carbon error code.
+
+// Sending an Apple event
+
+/*
+ Sends an Apple event to a target process.
+ 
+ Parameters
+ 
+    sendMode -- Specifies various options for how the server application should handle the Apple event. To obtain a value for this parameter, you add together constants to set bits that specify the reply mode, the interaction level, and the application switch mode. For more information, see “AESendMode”.
+ 
+    timeOutInTicks -- If the reply mode specified in the sendMode parameter is kAEWaitReply, this parameter specifies the length of time (in ticks) that the client application is willing to wait for the reply from the server application before timing out. Most applications should use the kAEDefaultTimeout constant, which tells the Apple Event Manager to provide an appropriate timeout duration. If the value of this parameter is kNoTimeOut, the Apple event never times out. These constants are described in “Timeout Constants.”
+ 
+    error -- The error that occurred if the event could not be sent. For more information, see “Apple Event Manager Result Codes.”
+
+ Return Value
+ 
+    The reply Apple event from the server application, if you specified the kAEWaitReply flag in the sendMode parameter, or a null descriptor (one with descriptor type typeNull) if you specified the kAEQueueReply or kAENoReply flag, or nil if an error occurred. If you specify the kAEQueueReply flag in the sendMode parameter, you receive the reply Apple event in your event queue.
+ 
+ Special Considerations
+ 
+    The -sendAppleEventWithMode:timeout:error: method is both asynchronous and thread-safe, so you could, for example, set up a thread to send an Apple event and wait for a reply. If you use threads, you must add a typeReplyPortAttr attribute to your event that identifies the Mach port on which to receive the reply.
+ */
 - (instancetype)sendAppleEventWithMode:(AESendMode)sendMode timeout:(long)timeOutInTicks error:(NSError * __autoreleasing *)error;
 
 @end
+
+

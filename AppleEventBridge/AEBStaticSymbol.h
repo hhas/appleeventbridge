@@ -22,6 +22,19 @@
 #import "AEMUtils.h"
 
 /**********************************************************************/
+// macros
+
+
+#define AEB_RETURN_SYMBOL(aName, aType, aCode) \
+    static dispatch_once_t pred = 0; \
+    __strong static id obj = nil; \
+    dispatch_once(&pred, ^{ \
+    obj = [AEBSymbol symbolWithName: (aName) type: (aType) code: (aCode)]; \
+    }); \
+    return obj;
+
+
+/**********************************************************************/
 // base class for standard and application-defined symbols
 
 @interface AEBSymbol : NSObject<NSCopying> {

@@ -108,28 +108,3 @@ enum { typeFSS = 'fss ' };
 @end
 
 
-/**********************************************************************/
-// Unit types
-
-@interface AEMUnits : NSObject {
-	NSNumber *value;
-	NSString *units;
-}
-
-+ (instancetype)unitsWithNumber:(NSNumber *)value_ type:(NSString *)units_;
-
-+ (instancetype)unitsWithInt:(int)value_ type:(NSString *)units_;
-
-+ (instancetype)unitsWithDouble:(double)value_ type:(NSString *)units_;
-
-- (instancetype)initWithNumber:(NSNumber *)value_ type:(NSString *)units_;
-
-- (NSNumber *)numberValue;
-
-- (int)intValue;
-
-- (double)doubleValue;
-
-- (NSString *)units;
-
-@end

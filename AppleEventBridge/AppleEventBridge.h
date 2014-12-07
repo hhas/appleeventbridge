@@ -7,11 +7,8 @@
 //  WARNING: As this framework relies on legacy and deprecated Carbon APIs, it is not
 //  recommended for production use.
 //
-//  TO DO: generate .bridgesupport automatically
-//
 //  TO DO: remove `k` prefix from all AEM/AEB enums (c.f. Cocoa enums)?
 //
-//  TO DO: is AESendThreadSafe module (<rdar://problem/4976113>) still required?
 
 #import <Foundation/Foundation.h>
 
@@ -31,10 +28,7 @@ FOUNDATION_EXPORT const unsigned char AppleEventBridgeVersionString[];
 #import "AEMTestSpecifier.h"
 #import "AEMFormatter.h"
 #import "AEMTypes.h"
-#import "AEMUnitTypes.h"
 #import "AEMUtils.h"
-
-#import "AESendThreadSafe.h"
 
 // AEB (static/dynamic classes for building high-level bridges to ObjC and other languages)
 #import "AEBAppData.h"

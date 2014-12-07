@@ -332,7 +332,7 @@ class ImplementationRenderer:
             fn('//')
             fn('// <PREFIX>%s.%s' % (name, suffix))
             print >> f, '// ' + self._appname
-            fn('// (%s %s)' % (kFrameworkName, kGlueVersion))
+            fn('// %s %s' % (kFrameworkName, kGlueVersion))
             fn('//')
             fn('')
         self.writeh('#import <Foundation/Foundation.h>')
@@ -438,16 +438,15 @@ class ClassBuilder:
         src += '    }'
         src.endmethod()
         # symbol constructors
-        prevkind = None
+        prevkind = const = None
         for name, desc in sorted(self.typebyname, key=lambda o: o[1].descriptorType()):
             kind = desc.descriptorType()
             if prevkind != kind:
-                src.comment({kEnum: 'Enumerators', kType: 'Types and properties'}[kind])
+                label, const = {kType:('Types and properties','typeType'), kEnum:('Enumerators','typeEnumerated')}[kind]
+                src.comment(label)
             prevkind = kind
             src.newmethod('+ (instancetype)%s' % name)
-            src += '    static id obj;'
-            src += '    return obj ?: (obj = [self.class symbolWithName: @"%s" type: %s code: %s]);' % (
-                    name, kind == kType and 'typeType' or 'typeEnumerated', self._formatcode(desc.typeCodeValue()))
+            src += '    AEB_RETURN_SYMBOL(@"%s", %s, %s);' % (name, const, self._formatcode(desc.typeCodeValue()))
             src.endmethod()
         src.endclass()
     

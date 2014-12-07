@@ -14,7 +14,6 @@
 
 #import "AEMSpecifier.h"
 #import "AEMTypes.h"
-#import "AEMUnitTypes.h"
 #import "AEMURL.h"
 #import "AEMUtils.h"
 
@@ -26,7 +25,6 @@
 @interface AEMCodecs : NSObject <AEMCodecsProtocol> {
 	id applicationRootDescriptor;
 	BOOL disableCache, allowUInt64;
-	NSMutableDictionary *unitTypeDefinitionByName, *unitTypeDefinitionByCode;
 }
 
 + (instancetype)defaultCodecs;
@@ -34,14 +32,6 @@
 
 /**********************************************************************/
 // compatibility options
-
-/*
- * Some applications may define custom unit types in addition to those
- * normally recognised by AppleScript/AEBridge. Clients can add
- * definitions for these types to an AEMCodecs object so that these
- * types can be packed and unpacked automatically.
- */
-- (void)addUnitTypeDefinition:(AEMUnitTypeDefinition *)definition;
 
 /*
  * When unpacking object specifiers, unlike AppleScript, AEBridge caches
