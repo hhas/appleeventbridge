@@ -748,7 +748,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# generate .bridgeSupport file\n\nframeworkDir=\"$TARGET_BUILD_DIR/AppleEventBridge.framework\"\nbridgeSupportDir=\"$frameworkDir/Resources/BridgeSupport\"\n\nmkdir -p \"$bridgeSupportDir\"\n\ncd \"$frameworkDir/Headers\"\n\n# TO DO: if .bridgeSupport already exists, don't regenerate unless headers are newer\n\ngen_bridge_metadata -f \"$frameworkDir\" \\\n  -o \"$bridgeSupportDir/AppleEventBridge.bridgesupport\" \\\n  -c \"-I $SDKROOT/usr/include -F $SDKROOT/System/Library/Frameworks\"\n\n\n";
+			shellScript = "# generate .bridgeSupport file\n\nframeworkDir=\"$TARGET_BUILD_DIR/AppleEventBridge.framework\"\nbridgeSupportDir=\"$frameworkDir/Resources/BridgeSupport\"\n\nmkdir -p \"$bridgeSupportDir\"\n\ncd \"$frameworkDir/Headers\"\n\n\nheaderDir=\"$frameworkDir/Headers\"\nbridgeFile=\"$bridgeSupportDir/AppleEventBridge.bridgesupport\"\n\ncd \"$headerDir\"\n\n# gen_bridge_metadata is slow, so if .bridgeSupport file already exists then\n# don't bother regenerating it unless the header files have since changed\n\nfor headerFile in `ls \"$headerDir\"`\ndo\n  if [[ \"$headerFile\" -nt \"$bridgeFile\" ]]\n  then\n    gen_bridge_metadata -f \"$frameworkDir\"  -o \"$bridgeFile\" \\\n        -c \"-I $SDKROOT/usr/include -F $SDKROOT/System/Library/Frameworks\"\n    exit 0\n  fi\ndone\n\n\n\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
