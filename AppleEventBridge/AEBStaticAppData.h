@@ -1,7 +1,7 @@
 //
 //  AEBStaticAppData.h
 //
-// Concrete AppData class used in AEBridge's own static ObjC glues.
+// Concrete AppData class used in AEB's own static ObjC/Swift glues.
 // Extends AEBAppData with additional pack/unpack methods used to
 // pack and unpack AEB... objects.
 //
@@ -9,7 +9,7 @@
 
 #import "AEBAppData.h"
 
-#import "AEBStaticSpecifier.h"
+#import "AEBSpecifier.h"
 
 
 /**********************************************************************/

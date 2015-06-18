@@ -7,14 +7,14 @@
 #import "TECommandGlue.h"
 
 @implementation TECommand
-- (NSString *)AEBFormatObject:(id)obj appData:(id)appData {
+- (NSString *)aebFormatObject:(id)obj appData:(id)appData {
     return [TEFormatter formatObject: obj appData: appData];
 }
 @end
 
 
 @implementation TEActivateCommand
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"activate";
 }
 @end
@@ -29,15 +29,15 @@
     [self setParameter: value forKeyword: 'kfil'];
     return self;
 }
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"close";
 }
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 'savo': return @"saving";
         case 'kfil': return @"savingIn";
     }
-    return [super AEBParameterNameForCode: code];
+    return [super aebParameterNameForCode: code];
 }
 @end
 
@@ -47,20 +47,20 @@
     [self setParameter: value forKeyword: 'kocl'];
     return self;
 }
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"count";
 }
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 'kocl': return @"each";
     }
-    return [super AEBParameterNameForCode: code];
+    return [super aebParameterNameForCode: code];
 }
 @end
 
 
 @implementation TEDeleteCommand
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"delete";
 }
 @end
@@ -75,35 +75,35 @@
     [self setParameter: value forKeyword: 'prdt'];
     return self;
 }
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"duplicate";
 }
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 'insh': return @"to";
         case 'prdt': return @"withProperties";
     }
-    return [super AEBParameterNameForCode: code];
+    return [super aebParameterNameForCode: code];
 }
 @end
 
 
 @implementation TEExistsCommand
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"exists";
 }
 @end
 
 
 @implementation TEGetCommand
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"get";
 }
 @end
 
 
 @implementation TELaunchCommand
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"launch";
 }
 @end
@@ -126,17 +126,17 @@
     [self setParameter: value forKeyword: 'prdt'];
     return self;
 }
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"make";
 }
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 'insh': return @"at";
         case 'kocl': return @"new_";
         case 'data': return @"withData";
         case 'prdt': return @"withProperties";
     }
-    return [super AEBParameterNameForCode: code];
+    return [super aebParameterNameForCode: code];
 }
 @end
 
@@ -146,20 +146,20 @@
     [self setParameter: value forKeyword: 'insh'];
     return self;
 }
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"move";
 }
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 'insh': return @"to";
     }
-    return [super AEBParameterNameForCode: code];
+    return [super aebParameterNameForCode: code];
 }
 @end
 
 
 @implementation TEOpenCommand
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"open";
 }
 @end
@@ -170,14 +170,14 @@
     [self setParameter: value forKeyword: 'WIND'];
     return self;
 }
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"openLocation";
 }
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 'WIND': return @"window";
     }
-    return [super AEBParameterNameForCode: code];
+    return [super aebParameterNameForCode: code];
 }
 @end
 
@@ -191,15 +191,15 @@
     [self setParameter: value forKeyword: 'prdt'];
     return self;
 }
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"print";
 }
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 'pdlg': return @"printDialog";
         case 'prdt': return @"withProperties";
     }
-    return [super AEBParameterNameForCode: code];
+    return [super aebParameterNameForCode: code];
 }
 @end
 
@@ -209,27 +209,27 @@
     [self setParameter: value forKeyword: 'savo'];
     return self;
 }
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"quit";
 }
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 'savo': return @"saving";
     }
-    return [super AEBParameterNameForCode: code];
+    return [super aebParameterNameForCode: code];
 }
 @end
 
 
 @implementation TEReopenCommand
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"reopen";
 }
 @end
 
 
 @implementation TERunCommand
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"run";
 }
 @end
@@ -244,15 +244,15 @@
     [self setParameter: value forKeyword: 'kfil'];
     return self;
 }
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"save";
 }
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 'fltp': return @"as";
         case 'kfil': return @"in_";
     }
-    return [super AEBParameterNameForCode: code];
+    return [super aebParameterNameForCode: code];
 }
 @end
 
@@ -262,14 +262,14 @@
     [self setParameter: value forKeyword: 'data'];
     return self;
 }
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
     return @"set";
 }
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 'data': return @"to";
     }
-    return [super AEBParameterNameForCode: code];
+    return [super aebParameterNameForCode: code];
 }
 @end
 

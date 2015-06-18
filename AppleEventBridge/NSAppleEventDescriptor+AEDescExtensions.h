@@ -11,6 +11,7 @@
 #import <Foundation/Foundation.h>
 #import <Carbon/Carbon.h>
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < 101100
 
 @interface NSAppleEventDescriptor (AEDescExtensions)
 
@@ -73,7 +74,7 @@
  
     sendMode -- Specifies various options for how the server application should handle the Apple event. To obtain a value for this parameter, you add together constants to set bits that specify the reply mode, the interaction level, and the application switch mode. For more information, see “AESendMode”.
  
-    timeOutInTicks -- If the reply mode specified in the sendMode parameter is kAEWaitReply, this parameter specifies the length of time (in ticks) that the client application is willing to wait for the reply from the server application before timing out. Most applications should use the kAEDefaultTimeout constant, which tells the Apple Event Manager to provide an appropriate timeout duration. If the value of this parameter is kNoTimeOut, the Apple event never times out. These constants are described in “Timeout Constants.”
+    timeoutInSeconds -- If the reply mode specified in the sendMode parameter is kAEWaitReply, this parameter specifies the length of time (in seconds) that the client application is willing to wait for the reply from the server application before timing out. Most applications should use the kAEDefaultTimeout constant, which tells the Apple Event Manager to provide an appropriate timeout duration. If the value of this parameter is kNoTimeOut, the Apple event never times out. These constants are described in “Timeout Constants.”
  
     error -- The error that occurred if the event could not be sent. For more information, see “Apple Event Manager Result Codes.”
 
@@ -83,10 +84,13 @@
  
  Special Considerations
  
-    The -sendAppleEventWithMode:timeout:error: method is both asynchronous and thread-safe, so you could, for example, set up a thread to send an Apple event and wait for a reply. If you use threads, you must add a typeReplyPortAttr attribute to your event that identifies the Mach port on which to receive the reply.
+    The -sendEventWithOptions:timeout:error: method is both asynchronous and thread-safe, so you could, for example, set up a thread to send an Apple event and wait for a reply. If you use threads, you must add a typeReplyPortAttr attribute to your event that identifies the Mach port on which to receive the reply.
  */
-- (instancetype)sendAppleEventWithMode:(AESendMode)sendMode timeout:(long)timeOutInTicks error:(NSError * __autoreleasing *)error;
+
+- (instancetype)sendEventWithOptions:(AESendMode)sendOptions timeout:(NSTimeInterval)timeoutInSeconds error:(NSError * __autoreleasing *)error;
+
 
 @end
 
+#endif
 

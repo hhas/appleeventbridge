@@ -4,9 +4,6 @@
 //  Mid-level object-oriented wrapper for Carbon Apple Event Manager APIs, plus base classes
 //  for high-level static-generated ObjC glues and dynamic bridges.
 //
-//  WARNING: As this framework relies on legacy and deprecated Carbon APIs, it is not
-//  recommended for production use.
-//
 //  TO DO: remove `k` prefix from all AEM/AEB enums (c.f. Cocoa enums)?
 //
 
@@ -22,22 +19,24 @@ FOUNDATION_EXPORT const unsigned char AppleEventBridgeVersionString[];
 // AEM (mid-level OO wrapper for low-level procedural Carbon Apple Event Manager API)
 #import "AEMApplication.h"
 #import "AEMCodecs.h"
-#import "AEMEvent.h"
 #import "AEMQuery.h"
 #import "AEMSpecifier.h"
-#import "AEMTestSpecifier.h"
-#import "AEMFormatter.h"
+#import "AEMTestClause.h"
+#import "AEMEvent.h"
 #import "AEMTypes.h"
+#import "AEMFormatter.h"
 #import "AEMUtils.h"
 
-// AEB (static/dynamic classes for building high-level bridges to ObjC and other languages)
+// AEB (base classes for high-level static/dynamic bridges to ObjC and other languages)
 #import "AEBAppData.h"
+#import "AEBSpecifier.h"
 #import "AEBCommand.h"
+#import "AEBSymbol.h"
+#import "AEBDefaultTerms.h"
 
 #import "AEBStaticAppData.h"
-#import "AEBStaticCommand.h"
-#import "AEBStaticSymbol.h"
 #import "AEBStaticSpecifier.h"
+#import "AEBStaticCommand.h"
 #import "AEBStaticFormatter.h"
 
 #import "AEBDynamicAppData.h"
@@ -45,9 +44,11 @@ FOUNDATION_EXPORT const unsigned char AppleEventBridgeVersionString[];
 #import "AEBDynamicSDEFParser.h"
 #import "AEBDynamicTerm.h"
 #import "AEBDynamicTerminology.h"
+#import "AEBDefaultKeywordConverter.h"
 
-// NSAppleEventDescriptor patches for commonly used functionality
-// (Radar enhancement requests 19169736 and 19169791)
+// NSAppleEventDescriptor patches for 10.10.x and earlier
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < 101100
 #import "NSAppleEventDescriptor+AEDescExtensions.h"
 #import "NSAppleEventDescriptor+AEDescMoreExtensions.h"
+#endif
 

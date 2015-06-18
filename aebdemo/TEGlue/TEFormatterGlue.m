@@ -48,7 +48,7 @@
         default: return nil;
     }
 }
-- (NSString *)elementByCode:(OSType)code {
+- (NSString *)elementsByCode:(OSType)code {
     switch (code) {
         case 'capp': return @"applications";
         case 'atts': return @"attachment";

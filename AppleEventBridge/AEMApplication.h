@@ -51,14 +51,13 @@ typedef enum {
 	AEMTargetType targetType;
 	id targetData;
 	NSAppleEventDescriptor *addressDesc;
-	id defaultCodecs;
 	AETransactionID transactionID;
     NSWorkspaceLaunchOptions launchOptions;
 }
 
 // hooks for specifying classes used to create, pack, and send AppleEvents
 @property (retain) Class AppleEventDescriptorClass, AEMEventClass;
-
+@property (retain) id <AEMCodecsProtocol> defaultCodecs;
 
 // Utility class methods
 
@@ -182,7 +181,7 @@ typedef enum {
 - (id)eventWithEventClass:(AEEventClass)eventClass
                   eventID:(AEEventID)eventID
 				 returnID:(AEReturnID)returnID
-				   codecs:(id)codecs;
+				   codecs:(id <AEMCodecsProtocol>)codecs;
 
 // shortcut for above, using kAutoGenerateReturnID and standard AEMCodecs
 - (id)eventWithEventClass:(AEEventClass)eventClass eventID:(AEEventID)eventID;

@@ -37,8 +37,13 @@
 @implementation AEBDynamicAETEParser
 
 - (instancetype)init {
+    return [self initWithKeywordConverter: nil];
+}
+
+- (instancetype)initWithKeywordConverter:(AEBDefaultKeywordConverter *)converter_ {
 	self = [super init];
 	if (!self) return self;
+    keywordConverter = converter_ ?: [[AEBDefaultKeywordConverter alloc] init];
 	commands    = [[NSMutableDictionary alloc] init];
 	properties  = [[NSMutableSet alloc] init];
 	elements    = [[NSMutableSet alloc] init];
@@ -78,7 +83,7 @@
 		s = [[NSString alloc] init];
 	}
 	cursor += len;
-	return s;
+    return [keywordConverter convert: s];
 }
 
 // Parse methods

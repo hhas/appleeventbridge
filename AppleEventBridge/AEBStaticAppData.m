@@ -27,7 +27,7 @@
 
 - (NSAppleEventDescriptor *)pack:(id)object error:(NSError * __autoreleasing *)error {
 	if ([object isKindOfClass: AEBSpecifier.class] || [object isKindOfClass: AEBSymbol.class]) { // TO DO: use self-packing protocol
-		return [object AEBPackSelf: self error: error];
+		return [object aebPackSelf: self error: error];
 	} else {
 		return [super pack: object error: error];
     }
@@ -64,8 +64,7 @@
 
 // TO DO: FIX (also rename)
 - (id)unpackContainsCompDescriptorWithOperand1:(id)op1 operand2:(id)op2 error:(NSError * __autoreleasing *)error {
-	if ([op1 isKindOfClass: AEBSpecifier.class]
-            && [[[(AEBSpecifier *)op1 AEMQuery] root] isEqual: AEMIts]) {
+	if ([op1 isKindOfClass: AEBSpecifier.class] && [((AEBSpecifier *)op1).aemQuery.root isEqual: AEMIts]) {
 		return [op1 contains: op2];
 	} else {
 		return [super unpackContainsCompDescriptorWithOperand1: op1 operand2: op2 error: error];

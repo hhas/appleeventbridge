@@ -17,7 +17,7 @@
                            launchOptions:(NSWorkspaceLaunchOptions)options
                              targetTerms:(id)targetTerms_
                             defaultTerms:(id)defaultTerms_
-                        keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_ {
+                        keywordConverter:(AEBDefaultKeywordConverter *)converter_ {
 	self = [super initWithApplicationClass: appClass
                                 targetType: type
                                 targetData: data
@@ -33,7 +33,7 @@
 
 - (instancetype)initWithApplicationURL:(NSURL *)url
                                useSDEF:(bool)useSDEF
-                      keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_ {
+                      keywordConverter:(AEBDefaultKeywordConverter *)converter_ {
     return [self initWithApplicationClass: AEMApplication.class
                                targetType: (url ? kAEBTargetURL : kAEBTargetCurrent)
                                targetData: url
@@ -69,7 +69,7 @@
         if ([targetTerms isEqual: kAEBUseAETETerminology]) { // obtain AETE terminology from application by sending `ascrgdte` event
             id aetes = [self aetesWithError: &tempError];
             if (aetes) {
-                AEBDynamicAETEParser *parser = [[AEBDynamicAETEParser alloc] init];
+                AEBDynamicAETEParser *parser = [[AEBDynamicAETEParser alloc] initWithKeywordConverter: keywordConverter];
                 if (![parser parse: aetes error: error]) return nil;
                 // TO DO: cache parser result? (names haven't been converted yet, so this data is language-agnostic; Q. what to use as key - not kAEBTargetProcessID, obviously; what about file/eppc url?) or just leave clients to do all their own caching once they've converted raw terms to finished terminology tables?
                 [termTable addRawTerminology: parser];
@@ -80,7 +80,7 @@
             } // else no AETE, probably because app is 'non-scriptable' or an SE applet
  //           NSLog(@"AETE resource not found: %@", tempError); // DEBUG
         } else if ([targetTerms isEqual: kAEBUseSDEFTerminology]) { // obtain SDEF terminology via AEMCopyScriptingDefinitionFromURL
-            AEBDynamicSDEFParser *parser = [[AEBDynamicSDEFParser alloc] init];
+            AEBDynamicSDEFParser *parser = [[AEBDynamicSDEFParser alloc] initWithKeywordConverter: keywordConverter];
             [parser parseURL: self.targetData error: error];
             [termTable addRawTerminology: parser];
         } else if ([targetTerms conformsToProtocol: @protocol(AEMSelfPackingProtocol)]) { // an object containing raw (dumped) terminology

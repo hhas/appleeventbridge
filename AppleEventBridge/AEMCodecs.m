@@ -14,7 +14,7 @@
 //
 
 
-// TO DO: in -[NSNumber objCType], 'c' indicates either char or bool; is there any way to reliably tell the difference? (if there was, AEMBoolean could be eliminated and NSNumber mapped instead to typeTrue/typeFalse)
+// TO DO: in -[NSNumber objCType], 'c' indicates either char or bool; is there any way to reliably tell the difference? (if there was, AEMBoolean could be eliminated and NSNumber mapped instead to typeTrue/typeFalse), at least in ObjC bridge (note: Swift bridge should map directly to native true/false, so will either need to override pack/unpack or else AEMCodes should break those types out into overrideable methods)
 
 
 /**********************************************************************/
@@ -673,7 +673,7 @@
 }
 
 - (id)unpackContainsCompDescriptorWithOperand1:(id)op1 operand2:(id)op2 error:(NSError * __autoreleasing *)error {
-    if ([op1 isKindOfClass: AEMTest.class]) { // check op1 is an its-based test specifier, e.g. `its text contains "foo"`
+    if ([op1 isKindOfClass: AEMTestClause.class]) { // check op1 is an its-based test specifier, e.g. `its text contains "foo"`
         return [op1 contains: op2];
     } else { // else op2 is [presumably] the its-based specifier, e.g. `its name is in {"bar", "baz", "fub"}`
         return [op2 isIn: op1];

@@ -28,17 +28,17 @@ int main(int argc, const char * argv[]) {
                 TEMakeCommand *cmd = [[[te.documents.end make] new_: TESymbol.document]
                                                      withProperties: @{TESymbol.name: @"TEST1", TESymbol.text: @"Hi!"}];
                 id result = [cmd sendWithError: &error];
-                NSLog(@"2\nRESULT: %@\nERROR: %@", result, error); // result is specifier for newly created document
+                NSLog(@"2\nRESULT: %@\nERROR: %@", result, error); // result is specifier for newly created document: [[TEApplication applicationWithName: @"/Applications/TextEdit.app"].documents byName: @"TEST1"]
             }
             {
                 // tell app "TextEdit" to get name of document 1
                 id result = [[te.documents at: 1].name getItemWithError: &error];
-                NSLog(@"3\nRESULT: %@\nERROR: %@", result, error); // result is front document's name
+                NSLog(@"3\nRESULT: %@\nERROR: %@", result, error); // result is front document's name: "TEST1"
             }
             {
                 // tell app "TextEdit" to get document 1000
                 id result = [[te.documents at: 1000] getItemWithError: &error];
-                NSLog(@"4\nRESULT: %@\nERROR: %@", result, error); // reports bad index error (-1719)
+                NSLog(@"4\nRESULT: %@\nERROR: %@", result, error); // reports error: "Application error: Can't get reference. Invalid index. (-1719)"
             }
         }
     }

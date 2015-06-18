@@ -43,7 +43,7 @@ typedef enum {
 
 @interface AEMEvent : NSObject {
     AEMApplication *appObj;
-	id codecs;
+	id <AEMCodecsProtocol> codecs;
 	DescType resultType; // type to coerce returned value to before unpacking it
 	AEMUnpackFormat resultFormat;
 }
@@ -55,7 +55,7 @@ typedef enum {
 - (instancetype)initWithApplication:(AEMApplication *)appObj_ event:(NSAppleEventDescriptor *)descriptor_ codecs:(id)codecs_;
 
 // The codecs object used by this AEMEvent instance
-@property (retain, readonly) id codecs;
+@property (retain, readonly) id <AEMCodecsProtocol> codecs;
 
 // Pack event's attributes and parameters, if any; returns self if successful or nil if an error occurred.
 
@@ -91,7 +91,7 @@ typedef enum {
  * sendMode
  *    kAEWaitReply
  *
- * timeoutInTicks
+ * timeoutInSeconds
  *    kAEDefaultTimeout
  *
  * error
@@ -109,9 +109,9 @@ typedef enum {
  *
  */
 
-- (id)sendWithMode:(AESendMode)sendMode timeout:(long)timeoutInTicks error:(NSError * __autoreleasing *)error;
+- (id)sendWithOptions:(AESendMode)sendMode timeout:(NSTimeInterval)timeoutInSeconds error:(NSError * __autoreleasing *)error;
 
-// shortcuts for -sendWithMode:timeout:error:
+// shortcuts for -sendWithOptions:timeout:error:
 
 - (id)sendWithError:(NSError * __autoreleasing *)error;
 

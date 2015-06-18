@@ -4,7 +4,7 @@
 
 # TO DO: use correct signatures for appdata.terminologyWithError_, AEBDynamicSDEFParser.copyScriptingDefinitionAtURL_error_ so error description is returned; see objc.setSignatureForSelector()
 
-# TO DO: XXXSymbol.m shouldn't include type and enum symbols already defined by AEBSymbol (also check how partial matches, e.g. where name is same but code is different, are treated)
+# TO DO: XXXSymbol.m shouldn't include type and enum symbols already defined by AEBStaticSymbol (also check how partial matches, e.g. where name is same but code is different, are treated)
 
 # TO DO: SDEF exporter needs to support synonyms
 
@@ -46,13 +46,16 @@ kGlueVersion =  bundle.infoDictionary()['CFBundleShortVersionString']
 # KEYWORD CONVERTER
 ######################################################################
 
-# Important: the following must be reserved:
+# Important: the following must be reserved so that terminology-defined properties and methods don't conflict
+# with existing superclass properties and methods:
 #
 # - names of ObjC keywords
 # - names of NSObject class and instance methods
-# - names of methods used in AEBSymbol, AEBSpecifier classes
+# - names of methods used in AEBStaticSymbol, AEBStaticSpecifier classes
 # - names of additional methods used in Application classes
 # - names of built-in keyword arguments in AEBStaticCommand
+#
+# note: superclass methods that take two or more arguments do not need to be reserved
 
 
 kObjectiveCKeywords = [
@@ -158,8 +161,13 @@ kNSObjectMethods = [
 
 
 kAppleEventBridgeMethods = [
-    # used by AEBSpecifier
-    "ID",
+    # used by AEBSpecifier, AEBStaticSpecifier
+    "at",
+    "byIndex",
+    "byName",
+    "byID",
+    "byTest",
+    # (-at:to:, -byRange:to: have multiple args so don't need escaped as they can't conflict)
     "beginning",
     "end",
     "before",
@@ -170,6 +178,13 @@ kAppleEventBridgeMethods = [
     "middle",
     "last",
     "any",
+                            
+    "greaterThan",
+    "greaterOrEquals",
+    "equals",
+    "notEquals",
+    "lessThan",
+    "lessOrEquals",
     "beginsWith",
     "endsWith",
     "contains",
@@ -218,7 +233,7 @@ kAppleEventBridgeMethods = [
     "abortTransactionWithError",
     "specifierWithObject",
     
-    # used by AEBSymbol
+    # used by AEBStaticSymbol
     "symbolWithName",
     "symbolWithCode",
     
@@ -283,8 +298,8 @@ class KeywordConverter(NSObject):
                         res = '_' # avoid creating an invalid identifier
                     res += '0x%2.2X' % ord(c)
                 legal = self._alphanum
-            if (res in self._reservedwords or res.startswith('_') or res.startswith('AEM') 
-                    or res.startswith('AEB') or not res):
+            if (res in self._reservedwords or res.startswith('_')
+                or res.startswith('AEM') or res.startswith('AEB') or not res): # TO DO: update
                 res = self.escape_(res)
             self._cache[s] = str(res)
         return self._cache[s]
@@ -428,7 +443,7 @@ class ClassBuilder:
     
     def render_symbol(self, src):
         src.newglue('SymbolGlue')
-        src.newclass('<PREFIX>Symbol', 'AEBSymbol')
+        src.newclass('<PREFIX>Symbol', 'AEBStaticSymbol')
         # AE code to symbol converter
         src.submethod('+ (instancetype)symbolWithCode:(OSType)code_')
         src += '    switch (code_) {'
@@ -457,7 +472,7 @@ class ClassBuilder:
         src.importmacro('<PREFIX>FormatterGlue.h')
         # add -description support
         src.newclass('<PREFIX>Command', 'AEBStaticCommand')
-        src.submethod('- (NSString *)AEBFormatObject:(id)obj appData:(id)appData')
+        src.submethod('- (NSString *)aebFormatObject:(id)obj appData:(id)appData') # TO DO: better type sigs
         src += '    return [<PREFIX>Formatter formatObject: obj appData: appData];'
         src.endmethod()
         src.endclass()
@@ -471,16 +486,16 @@ class ClassBuilder:
                     src += '    [self setParameter: value forKeyword: %s];' % self._formatcode(paramcode)
                     src += '    return self;'
                     src.endmethod()
-                src.submethod('- (NSString *)AEBCommandName')
+                src.submethod('- (NSString *)aebCommandName')
                 src += '    return @"%s";' % name
                 src.endmethod()
                 if params:
-                    src.submethod('- (NSString *)AEBParameterNameForCode:(DescType)code')
+                    src.submethod('- (NSString *)aebParameterNameForCode:(DescType)code')
                     src += '    switch (code) {'
                     for paramname, paramcode in params:
                         src += '        case %s: return @"%s";' % (self._formatcode(paramcode), paramname)
                     src += '    }'
-                    src += '    return [super AEBParameterNameForCode: code];'
+                    src += '    return [super aebParameterNameForCode: code];'
                     src += '}'
                 src.endclass()
 
@@ -492,10 +507,10 @@ class ClassBuilder:
         src.importmacro('<PREFIX>FormatterGlue.h')
         for name in ['App', 'Con', 'Its']:
             src.definemacro('<PREFIX>%s' % name, '[<PREFIX>Specifier specifierWithAppData: nil aemQuery: AEM%s]' % name)
-        src.newclass('<PREFIX>Specifier', 'AEBSpecifier')
+        src.newclass('<PREFIX>Specifier', 'AEBStaticSpecifier')
         # add -description support
         src.submethod('- (NSString *)description')
-        src += '    return [<PREFIX>Formatter formatObject: aemQuery appData: appData];'
+        src += '    return [<PREFIX>Formatter formatObject: aemQuery appData: self.aebAppData];'
         src.endmethod()
         # add dictionary-defined property, element and command methods
         prevkind = None
@@ -508,7 +523,7 @@ class ClassBuilder:
                 classname = '<PREFIX>' + self._capname(name) + 'Command'
                 for directParam in ['', ':(id)directParameter']:
                     src.newmethod('- (%s *)%s%s' % (classname, name, directParam))
-                    src += '    return [%s commandWithAppData: appData' % classname
+                    src += '    return [%s commandWithAppData: self.aebAppData' % classname
                     src += '                       eventClass: %s' % self._formatcode(term.eventClass())
                     src += '                          eventID: %s' % self._formatcode(term.eventID())
                     src += '                  directParameter: %s' % (
@@ -517,7 +532,7 @@ class ClassBuilder:
                     src.endmethod()
             else:
                 src.newmethod('- (instancetype)%s' % name)
-                src += '    return [self.class specifierWithAppData: appData'
+                src += '    return [self.class specifierWithAppData: self.aebAppData'
                 src += '                                   aemQuery: [(AEMObjectSpecifier *)aemQuery %s: %s]];' % (
                         {kProperty: 'property', kElement: 'elements'}[kind], self._formatcode(term.code()))
                 src.endmethod()
@@ -583,13 +598,13 @@ class ClassBuilder:
         src.comment('misc')
         src.newmethod('- (<PREFIX>Specifier *)specifierWithObject:(id)object')
         src += '    if ([object isKindOfClass: <PREFIX>Specifier.class]) {'
-        src += '        return <AUTOSTART>[[<PREFIX>Specifier alloc] initWithAppData: appData aemQuery: [object AEMQuery]]<AUTOEND>;'
+        src += '        return <AUTOSTART>[[<PREFIX>Specifier alloc] initWithAppData: self.aebAppData aemQuery: [object AEMQuery]]<AUTOEND>;'
         src += '    } else if ([object isKindOfClass: AEMQuery.class]) {'
-        src += '        return <AUTOSTART>[[<PREFIX>Specifier alloc] initWithAppData: appData aemQuery: object]<AUTOEND>;'
+        src += '        return <AUTOSTART>[[<PREFIX>Specifier alloc] initWithAppData: self.aebAppData aemQuery: object]<AUTOEND>;'
         src += '    } else if (!object) {'
-        src += '        return <AUTOSTART>[[<PREFIX>Specifier alloc] initWithAppData: appData aemQuery: AEMApp]<AUTOEND>;'
+        src += '        return <AUTOSTART>[[<PREFIX>Specifier alloc] initWithAppData: self.aebAppData aemQuery: AEMApp]<AUTOEND>;'
         src += '    } else {'
-        src += '        return <AUTOSTART>[[<PREFIX>Specifier alloc] initWithAppData: appData aemQuery: AEMRoot(object)]<AUTOEND>;'
+        src += '        return <AUTOSTART>[[<PREFIX>Specifier alloc] initWithAppData: self.aebAppData aemQuery: AEMRoot(object)]<AUTOEND>;'
         src += '    }'
         src.endmethod()
         src.endclass()

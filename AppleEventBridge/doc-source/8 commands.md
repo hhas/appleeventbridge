@@ -67,7 +67,7 @@ The `flags` argument should be composed from zero or more of the following bit m
 
 Every command object provides a `-sendMode:` method for specifying how the target application should handle the event:
 
-    - (id)sendMode:(AESendMode)flags;
+    - (instancetype)sendMode:(AESendMode)flags;
 
 The Apple Event Manager defines the following `AESendMode` constants:
 
@@ -92,9 +92,9 @@ By default, AppleEventBridge uses `kAEWaitReply` and `kAECanSwitchLayer`.
 
 For convenience, a command object's reply mode can also be specified via the following methods:
 
-    - (id)ignoreReply;
-    - (id)queueReply;
-    - (id)waitForReply;
+    - (instancetype)ignoreReply;
+    - (instancetype)queueReply;
+    - (instancetype)waitForReply;
 
 See the Apple Event Manager documentation for more information.
 
@@ -119,8 +119,8 @@ See the Apple Event Manager documentation for more information.
 
 Where supported by the target application's event handler, the sender can use a command object's `-requestedClass:`/`-requestedType:` method to specify the desired type for the reply value:
 
-    - (id)requestedClass:(AEBSymbol *)classSymbol;
-    - (id)requestedType:(DescType)type;
+    - (instancetype)requestedClass:(AEBSymbol *)classSymbol;
+    - (instancetype)requestedType:(DescType)type;
 
 
 The target application will attempt to coerce the reply value to this type before returning it. The argument for `-requestedClass:` is usually a standard AE type, e.g. `[AEBSymbol alias]`, though may occasionally be an application-defined type. The `-requestedType:` method takes a descriptor type, e.g. `typeAlias` as argument.
@@ -132,15 +132,15 @@ Note that most applications don't support this option, and those that do usually
 
 Command objects provide the following methods to control how `-sendWithError:` unpacks the returned result descriptor:
 
-    - (id)returnClass:(AEBSymbol *)typeName;
-    - (id)returnType:(DescType)type;
+    - (instancetype)returnClass:(AEBSymbol *)typeName;
+    - (instancetype)returnType:(DescType)type;
 
-    - (id)returnList;
+    - (instancetype)returnList;
 
-    - (id)returnListOfClass:(AEBSymbol *)classSymbol;
-    - (id)returnListOfType:(DescType)type;
+    - (instancetype)returnListOfClass:(AEBSymbol *)classSymbol;
+    - (instancetype)returnListOfType:(DescType)type;
 
-    - (id)returnDescriptor;
+    - (instancetype)returnDescriptor;
 
 The `-returnClass:`/`-returnType:` method can be used to specify the AE type that the result descriptor returned by the application must be coerced to before unpacking. The default is `[AEBSymbol anything]`/`typeWildCard`.
 

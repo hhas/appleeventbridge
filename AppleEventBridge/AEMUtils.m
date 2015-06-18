@@ -32,6 +32,16 @@ NSError *AEMErrorWithInfo(NSInteger code, NSString *message) {
 /**********************************************************************/
 
 
+OSType AEM4CC(NSString *codeStr) {
+    char code[5];
+    if (!(codeStr.length == 4 && [codeStr getCString: code maxLength: 5 encoding: NSMacOSRomanStringEncoding])) return -1;
+    return CFSwapInt32HostToBig(*((uint32_t *)code));
+}
+
+
+/**********************************************************************/
+
+
 NSString *AEMDescriptionForError(OSStatus err) {
     return @{
              // Following error descriptions are mostly cribbed from AppleScript Language Guide.

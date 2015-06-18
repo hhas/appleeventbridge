@@ -32,7 +32,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 
 @implementation AEMApplication
 
-@synthesize AppleEventDescriptorClass, AEMEventClass;
+@synthesize AppleEventDescriptorClass, AEMEventClass, defaultCodecs;
 
 // utility class methods
 
@@ -110,7 +110,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
             return nil;
         }
     }
-    return [NSAppleEventDescriptor descriptorWithProcessID: pid];
+    return [NSAppleEventDescriptor descriptorWithProcessIdentifier: pid];
 }
 
 
@@ -281,7 +281,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 }
 
 - (instancetype)initWithProcessID:(pid_t)pid {
-    NSAppleEventDescriptor *desc = [NSAppleEventDescriptor descriptorWithProcessID: pid];
+    NSAppleEventDescriptor *desc = [NSAppleEventDescriptor descriptorWithProcessIdentifier: pid];
 	return [self initWithTargetType: kAEMTargetProcessID data: desc launchOptions: kAEMDefaultLaunchOptions error: nil];
 }
 
@@ -335,7 +335,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 
 // get address desc
 
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return addressDesc;
 }
 
@@ -368,7 +368,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 - (id)eventWithEventClass:(AEEventClass)eventClass
                   eventID:(AEEventID)eventID
                  returnID:(AEReturnID)returnID
-                   codecs:(id)codecs {
+                   codecs:(id <AEMCodecsProtocol>)codecs {
     NSAppleEventDescriptor *desc = [self.AppleEventDescriptorClass appleEventWithEventClass: eventClass
                                                                                     eventID: eventID
                                                                            targetDescriptor: addressDesc

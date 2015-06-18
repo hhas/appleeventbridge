@@ -32,12 +32,12 @@
                            launchOptions:(NSWorkspaceLaunchOptions)options
                              targetTerms:(id)targetTerms_
                             defaultTerms:(id)defaultTerms_
-                        keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_;
+                        keywordConverter:(AEBDefaultKeywordConverter *)converter_;
 
 // used by aebglue
 - (instancetype)initWithApplicationURL:(NSURL *)url
                                useSDEF:(bool)useSDEF
-                      keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_;
+                      keywordConverter:(AEBDefaultKeywordConverter *)converter_;
 
 
 - (AEBDynamicTerminology *)terminologyWithError:(NSError * __autoreleasing *)error;

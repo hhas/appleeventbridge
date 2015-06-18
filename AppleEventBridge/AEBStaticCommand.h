@@ -3,17 +3,11 @@
 //
 //  Base class for all XXCommand classes in static ObjC glues.
 //
-//  TO DO: given modern @{...} syntax, might be cleaner to add withParameters:
-//  and withAttributes: args to commandWithAppData:... method that takes all
-//  takes all params and/or attrs as dictionaries? (OTOH, dictionary keys would
-//  need to be defined in glues as constants, and static checking would be lost,
-//  so it may not work so well in practice; need to consider further)
-//
 
 #import "AEBCommand.h"
 
-#import "AEBStaticSpecifier.h"
-#import "AEBStaticSymbol.h"
+#import "AEBSpecifier.h"
+#import "AEBSymbol.h"
 
 
 /**********************************************************************/
@@ -72,9 +66,9 @@
 
 // display formatting; subclasses will override these
 
-- (NSString *)AEBCommandName;
-- (NSString *)AEBParameterNameForCode:(DescType)code;
-- (NSString *)AEBFormatObject:(id)obj appData:(id)appData;
+- (NSString *)aebCommandName; // TO DO: rename these
+- (NSString *)aebParameterNameForCode:(DescType)code;
+- (NSString *)aebFormatObject:(id)obj appData:(id)appData; // TO DO: better type sig for appData arg
 
 @end
 

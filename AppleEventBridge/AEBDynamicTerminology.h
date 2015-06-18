@@ -14,6 +14,7 @@
 
 #import "AEBDynamicTerm.h"
 #import "AEBDefaultTerms.h"
+#import "AEBDefaultKeywordConverter.h"
 
 
 /**********************************************************************/
@@ -39,8 +40,7 @@
 // non-trivial application dictionaries) to ensureß application compatibility.
 @interface AEBDynamicTerminology : NSObject {
 
-	id keywordConverter;
-	NSMutableDictionary *keywordCache;
+	AEBDefaultKeywordConverter *keywordConverter; // -escape: is used to disambiguate dictionary-defined terms that conflict with built-in terms
     NSDictionary *defaultTypeByName, *defaultCommandByName;
 
 }
@@ -58,8 +58,8 @@
 
 // PUBLIC
 
-- (instancetype)initWithKeywordConverter:(id<AEBDynamicTermNameConverterProtocol>)keywordConverter_
-                      defaultTerminology:(id)defaultTerms_; // kAEBUseDefaultTerminology/kAEBNoTerminology/AEBDynamicRawTermsProtocol
+- (instancetype)initWithKeywordConverter:(AEBDefaultKeywordConverter *)converter // may be nil (i.e. no conversion)
+                      defaultTerminology:(id)defaultTerms; // kAEBUseDefaultTerminology/kAEBNoTerminology/AEBDynamicRawTermsProtocol
 
 /*
  * add data from AEBDynamicAETEParser or equivalent

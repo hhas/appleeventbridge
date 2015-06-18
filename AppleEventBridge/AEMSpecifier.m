@@ -9,7 +9,7 @@
 
 
 /**********************************************************************/
-// initialise/dispose constants
+// initialise constants
 
 
 // insertion locations
@@ -43,7 +43,9 @@ static NSAppleEventDescriptor *kFormPropertyID,
 static NSAppleEventDescriptor *kClassProperty;
 
 
-static void InitSpecifierModule(void) {
+// module initializer; called by AEMQueryRoot
+
+static void AEMInitSpecifierModule(void) {
     static dispatch_once_t pred = 0;
     dispatch_once(&pred, ^{
         #define KEYDESC(constName, varName, descType) { \
@@ -53,7 +55,7 @@ static void InitSpecifierModule(void) {
         #define ORDINAL(name)    KEYDESC(kAE##name, kOrdinal##name, typeAbsoluteOrdinal)
         #define ENUMERATOR(name) kEnum##name = [NSAppleEventDescriptor descriptorWithEnumCode: (kAE##name)];
         #define KEY_FORM(name)   kForm##name = [NSAppleEventDescriptor descriptorWithEnumCode: (form##name)];
-        InitTestModule();
+        AEMInitTestClauseModule();
         // absolute ordinals
         ORDINAL(First);
         ORDINAL(Middle);
@@ -84,9 +86,6 @@ static void InitSpecifierModule(void) {
 
 
 /**********************************************************************/
-
-
-#define ELEMENT_WANT_CODE ([NSAppleEventDescriptor descriptorWithTypeCode: wantCode])
 
 
 NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
@@ -224,7 +223,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 	}
 }
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     NSAppleEventDescriptor *containerDesc = [container packWithCodecs: codecs error: error];
     if (!containerDesc) return nil;
 	NSAppleEventDescriptor *desc = AEMNewRecordOfType(typeInsertionLoc);
@@ -393,7 +392,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 // reserved methods
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return AEMNewObjectSpecifier(codecs, container, kClassProperty, kFormPropertyID, key, error);
 }
 
@@ -415,7 +414,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 // reserved methods
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     NSAppleEventDescriptor *keyDesc = [[NSAppleEventDescriptor descriptorWithString: key] coerceToDescriptorType: typeChar]; // TO DO: check if typeUnicodeText is supported now
     if (!keyDesc) {
         if (error) *error = AEMErrorWithInfo(errAECoercionFail, @"Invalid user property name.");
@@ -459,10 +458,10 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 // reserved methods
 
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     NSAppleEventDescriptor *keyDesc = [codecs pack: key error: error];
     if (!keyDesc) return nil; // TO DO: better error message
-    return AEMNewObjectSpecifier(codecs, container, ELEMENT_WANT_CODE, kFormName, keyDesc, error);
+    return AEMNewObjectSpecifier(codecs, container, [NSAppleEventDescriptor descriptorWithTypeCode: wantCode], kFormName, keyDesc, error);
 }
 
 -(id)resolveWithObject:(id)object { 
@@ -480,10 +479,10 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 // reserved methods
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     NSAppleEventDescriptor *keyDesc = [codecs pack: key error: error];
     if (!keyDesc) return nil; // TO DO: better error message
-    return AEMNewObjectSpecifier(codecs, container, ELEMENT_WANT_CODE, kFormAbsolutePosition, keyDesc, error);
+    return AEMNewObjectSpecifier(codecs, container, [NSAppleEventDescriptor descriptorWithTypeCode: wantCode], kFormAbsolutePosition, keyDesc, error);
 }
 
 -(id)resolveWithObject:(id)object { 
@@ -501,10 +500,10 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 // reserved methods
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     NSAppleEventDescriptor *keyDesc = [codecs pack: key error: error];
     if (!keyDesc) return nil; // TO DO: better error message
-    return AEMNewObjectSpecifier(codecs, container, ELEMENT_WANT_CODE, kFormUniqueID, keyDesc, error);
+    return AEMNewObjectSpecifier(codecs, container, [NSAppleEventDescriptor descriptorWithTypeCode: wantCode], kFormUniqueID, keyDesc, error);
 }
 
 -(id)resolveWithObject:(id)object { 
@@ -533,8 +532,8 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 // reserved methods
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
-    return AEMNewObjectSpecifier(codecs, container, ELEMENT_WANT_CODE, kFormAbsolutePosition, key, error);
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
+    return AEMNewObjectSpecifier(codecs, container, [NSAppleEventDescriptor descriptorWithTypeCode: wantCode], kFormAbsolutePosition, key, error);
 }
 
 -(id)resolveWithObject:(id)object { 
@@ -572,8 +571,8 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 // reserved methods
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
-    return AEMNewObjectSpecifier(codecs, container, ELEMENT_WANT_CODE, kFormRelativePosition, key, error);
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
+    return AEMNewObjectSpecifier(codecs, container, [NSAppleEventDescriptor descriptorWithTypeCode: wantCode], kFormRelativePosition, key, error);
 }
 
 
@@ -684,7 +683,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 // by-test selector
 
-- (AEMElementsByTestSpecifier *)byTest:(AEMTest *)testSpecifier {
+- (AEMElementsByTestSpecifier *)byTest:(AEMTestClause *)testSpecifier {
 	return [[AEMElementsByTestSpecifier alloc]
 							 initWithContainer: self
 										   key: testSpecifier
@@ -729,7 +728,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 // reserved methods
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	id start, stop;
 	// expand non-specifier values to con-based specifiers
 	// (note: doesn't bother to check if specifiers are app- or con-based;
@@ -758,7 +757,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 	NSAppleEventDescriptor *keyDesc = AEMNewRecordOfType(typeRangeDescriptor);
 	[keyDesc setDescriptor: startDesc forKeyword: keyAERangeStart];
 	[keyDesc setDescriptor: stopDesc forKeyword: keyAERangeStop];
-    return AEMNewObjectSpecifier(codecs, container, ELEMENT_WANT_CODE, kFormRange, keyDesc, error);
+    return AEMNewObjectSpecifier(codecs, container, [NSAppleEventDescriptor descriptorWithTypeCode: wantCode], kFormRange, keyDesc, error);
 }
 
 
@@ -771,7 +770,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 @implementation AEMElementsByTestSpecifier
 
-- (instancetype)initWithContainer:(AEMSpecifier *)container_ key:(AEMTest *)key_ wantCode:(OSType)wantCode_; {
+- (instancetype)initWithContainer:(AEMSpecifier *)container_ key:(AEMTestClause *)key_ wantCode:(OSType)wantCode_; {
 	return [super initWithContainer: [container_ trueSelf] key: key_ wantCode: wantCode_];
 }
 
@@ -781,11 +780,11 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 // reserved methods
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     NSAppleEventDescriptor *keyDesc = [codecs pack: key error: error];
     // TO DO: check keyDesc.descriptorType is a valid comparison/logic test type as apps may not check this themselves?
     if (!keyDesc) return nil; // TO DO: better error message
-    return AEMNewObjectSpecifier(codecs, container, ELEMENT_WANT_CODE, kFormTest, keyDesc, error);
+    return AEMNewObjectSpecifier(codecs, container, [NSAppleEventDescriptor descriptorWithTypeCode: wantCode], kFormTest, keyDesc, error);
 }
 
 
@@ -817,8 +816,8 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 	return container; 
 }
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
-    return AEMNewObjectSpecifier(codecs, container, ELEMENT_WANT_CODE, kFormAbsolutePosition, kOrdinalAll, error);
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
+    return AEMNewObjectSpecifier(codecs, container, [NSAppleEventDescriptor descriptorWithTypeCode: wantCode], kFormAbsolutePosition, kOrdinalAll, error);
 }
 
 -(id)resolveWithObject:(id)object { 
@@ -852,7 +851,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 	return [NSString stringWithFormat: @"[%@ elements: '%@']", container, AEMFormatOSType(wantCode)];
 }
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return [container packWithCodecs: codecs error: error]; // forward to next container
 }
 
@@ -868,6 +867,14 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 @implementation AEMQueryRoot
 
+- (instancetype)init {
+    static dispatch_once_t pred = 0;
+    dispatch_once(&pred, ^{
+        AEMInitSpecifierModule();
+    });
+    return [[super init] initWithContainer: nil key: nil wantCode: '????'];
+}
+
 - (BOOL)isEqual:(id)object {
 	if (self == object) return YES;
 	if (!object || ![object isMemberOfClass: self.class]) return NO;
@@ -878,7 +885,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 	return self;
 }
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return cachedDesc;
 }
 
@@ -886,16 +893,6 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 
 @implementation AEMApplicationRoot
-
-+ (AEMApplicationRoot *)applicationRoot {
-    static dispatch_once_t pred = 0;
-    __strong static AEMApplicationRoot *root = nil;
-    dispatch_once(&pred, ^{
-        InitSpecifierModule();
-        root = [[AEMApplicationRoot alloc] initWithContainer: nil key: nil wantCode: '????'];
-    });
-    return root;
-}
 
 - (NSString *)description {
 	return @"AEMApp";
@@ -905,7 +902,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 	return [object app];
 }
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return [codecs applicationRootDescriptor];
 }
 
@@ -914,19 +911,14 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 @implementation AEMCurrentContainerRoot
 
-// note: clients should avoid calling this initialiser directly; 
-// use AEMApp, AEMCon, AEMIts macros instead.
-+ (AEMCurrentContainerRoot *)currentContainerRoot {
-    static dispatch_once_t pred = 0;
-    __strong static AEMCurrentContainerRoot *root = nil;
-    dispatch_once(&pred, ^{
-        InitSpecifierModule();
-        root = [[AEMCurrentContainerRoot alloc] initWithContainer: nil key: nil wantCode: '????'];
-        [root setCachedDesc: [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeCurrentContainer
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [self setCachedDesc: [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeCurrentContainer
                                                                               bytes: NULL
                                                                              length: 0]];
-    });
-    return root;
+    }
+    return self;
 }
 
 - (NSString *)description {
@@ -942,17 +934,14 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 @implementation AEMObjectBeingExaminedRoot
 
-+ (AEMObjectBeingExaminedRoot *)objectBeingExaminedRoot {
-    static dispatch_once_t pred = 0;
-    __strong static AEMObjectBeingExaminedRoot *root = nil;
-    dispatch_once(&pred, ^{
-        InitSpecifierModule();
-        root = [[AEMObjectBeingExaminedRoot alloc] initWithContainer: nil key: nil wantCode: '????'];
-        [root setCachedDesc: [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeObjectBeingExamined
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [self setCachedDesc: [[NSAppleEventDescriptor alloc] initWithDescriptorType: typeObjectBeingExamined
                                                                               bytes: NULL
                                                                              length: 0]];
-    });
-    return root;
+    }
+    return self;
 }
 
 - (NSString *)description {
@@ -968,17 +957,11 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 
 @implementation AEMCustomRoot
 
-+ (AEMCustomRoot *)customRootWithObject:(id)rootObject_ {
-    @synchronized(self) {
-        InitSpecifierModule();
-        return [[self alloc] initWithObject: rootObject_];
+- (instancetype)initWithRootObject:(id)rootObject_ {
+	self = [super init];
+    if (self) {
+        rootObject = rootObject_;
     }
-}
-
-- (instancetype)initWithObject:(id)rootObject_ {
-	self = [super initWithContainer: nil key: nil wantCode: '????'];
-	if (!self) return self;
-	rootObject = rootObject_;
 	return self;
 }
 
@@ -1006,7 +989,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 	return [object customRoot: rootObject];
 }
 
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return [codecs pack: rootObject error: error];
 }
 

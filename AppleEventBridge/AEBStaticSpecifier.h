@@ -1,69 +1,13 @@
 //
-//  AEBSpecifier.h
+//  AEBStaticSpecifier.h
 //
-//  Base class for static ObjC glues' own XXSpecifier class.
+//  Extends AEBSpecifier with selector methods for ObjC.
 //
 
-#import "AEMApplication.h"
-#import "AEMSpecifier.h"
-#import "AEMTestSpecifier.h"
-#import "AEMUtils.h"
+#import "AEBSpecifier.h"
+#import "AEBStaticCommand.h"
 
-#import "AEBStaticSymbol.h"
-
-
-@class AEBStaticAppData;
-
-/**********************************************************************/
-// Specifier base
-
-
-@interface AEBSpecifier : NSObject {
-	AEBStaticAppData *appData;
-    AEMQuery *aemQuery;
-}
-
-+ (instancetype)specifierWithAppData:(AEBStaticAppData *)appData_ aemQuery:(AEMQuery *)aemQuery_;
-
-- (instancetype)initWithAppData:(AEBStaticAppData *)appData_ aemQuery:(AEMQuery *)aemQuery_;
-
-- (NSAppleEventDescriptor *)AEBPackSelf:(id)codecs error:(NSError * __autoreleasing *)error;
-
-// internal objects may be accessed for special use
-@property (readonly) id AEBAppData, AEMQuery;
-
-// should application be automatically relaunched when sending command if no longer running?
-@property AEBRelaunchMode relaunchMode;
-
-// is target application running?
-@property (readonly) BOOL isRunning;
-
-// launch the target application without sending it the usual 'run' event;
-// equivalent to 'launch' command in AppleScript.
-- (BOOL)launchApplicationWithError:(NSError * __autoreleasing *)error; // may be nil
-
-- (BOOL)launchApplication; // convenience shortcut for the above
-
-
-// restart local application and/or update AEAddressDesc if needed
-// (typically used after application has quit; refreshes existing
-// application object without the need to recreate it)
-// note: only works for apps specified by name/path/bundle ID
-
-- (BOOL)reconnectApplicationWithError:(NSError * __autoreleasing *)error;
-
-- (BOOL)reconnectApplication;
-
-
-// transaction support
-
-- (BOOL)beginTransactionWithError:(NSError * __autoreleasing *)error;
-
-- (BOOL)beginTransactionWithSession:(id)session error:(NSError * __autoreleasing *)error;
-
-- (BOOL)endTransactionWithError:(NSError * __autoreleasing *)error;
-
-- (BOOL)abortTransactionWithError:(NSError * __autoreleasing *)error;
+@interface AEBStaticSpecifier : AEBSpecifier
 
 // get/set shortcuts
 
@@ -72,7 +16,7 @@
 - (id)setItem:(id)data error:(NSError * __autoreleasing *)error;
 
 // shortcut for [[ref get] send]
-- (id)getItem; 
+- (id)getItem;
 - (id)getItemWithError:(NSError * __autoreleasing *)error;
 
 // shortcut for [[[ref get] returnList] send]
@@ -159,6 +103,5 @@
 - (instancetype)AND:(id)remainingOperands;
 - (instancetype)OR:(id)remainingOperands;
 - (instancetype)NOT;
+
 @end
-
-

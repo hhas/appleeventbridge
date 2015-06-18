@@ -10,6 +10,7 @@
 
 @implementation AEBCommand
 
+@synthesize aemEvent;
 
 - (instancetype)initWithAppData:(AEBAppData *)appData
                      eventClass:(AEEventClass)eventClass_
@@ -22,7 +23,7 @@
     directParameter = (__bridge id)kAEBNoDirectParameter;
     parentQuery = parentQuery_;
 	sendMode = kAEWaitReply | kAECanSwitchLayer;
-	timeoutInTicks = kAEDefaultTimeout;
+	timeoutInSeconds = kAEDefaultTimeout;
 	considsAndIgnoresFlags = kAECaseIgnoreMask;
 	// if -targetWithError: fails, store NSError and return it when -sendWithError: is invoked
     NSError *err = nil;
@@ -54,11 +55,6 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat: @"<AEBCommand %@>", aemEvent];
-}
-
-
-- (AEMEvent *)AEMEvent {
-	return aemEvent;
 }
 
 
@@ -103,18 +99,18 @@
 	return self;
 }
 
-- (instancetype)timeout:(long)timeout_ {
-	timeoutInTicks = timeout_ * 60;
+- (instancetype)timeout:(NSTimeInterval)timeout_ {
+	timeoutInSeconds = timeout_;
 	return self;
 }
 
 - (instancetype)defaultTimeout {
-	timeoutInTicks = kAEDefaultTimeout;
+	timeoutInSeconds = kAEDefaultTimeout;
 	return self;
 }
 
 - (instancetype)noTimeout {
-	timeoutInTicks = kNoTimeOut;
+	timeoutInSeconds = kNoTimeOut;
 	return self;
 }
 
@@ -232,7 +228,7 @@
 	}
 	// send event
 	NSError *eventError = nil;
-	id result = [aemEvent sendWithMode: sendMode timeout: timeoutInTicks error: &eventError];
+	id result = [aemEvent sendWithOptions: sendMode timeout: timeoutInSeconds error: &eventError];
 	if (eventError && error) {
 		NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary: eventError.userInfo];
 		userInfo[kAEMErrorFailedEvent] = self;

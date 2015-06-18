@@ -22,7 +22,7 @@ The major AEM classes are as follows:
 
 * `AEMEvent` – Represents an Apple event, and provides methods for adding parameters and attributes, and for sending it.
 
-* `AEMQuery`, `AEMSpecifier`, `AEMTest` – Abstract base classes for all object and test specifiers (see later). 
+* `AEMQuery`, `AEMSpecifier`, `AEMTestClause` – Abstract base classes for all object and test specifiers (see later). 
 
 * `AEMCodecs` – Provides `-pack:` and `-unpack:` methods for converting Foundation values to NSAppleEventDescriptors, and vice-versa. Clients usually don't need to access this class directly.
 
@@ -141,7 +141,7 @@ which is short for:
 
 ### Reference forms
 
-AEM defines a number of classes representing each of the AEOM reference forms (see `AEMQuery.h`, `AEMSpecifier.h`, and `AEMTestSpecifier.h`). There are nine AEOM reference forms, each represented by a different `AEMSpecifier` subclass:
+AEM defines a number of classes representing each of the AEOM reference forms (see `AEMQuery.h`, `AEMSpecifier.h`, and `AEMTestClause.h`). There are nine AEOM reference forms, each represented by a different `AEMSpecifier` subclass:
 
 * insertion location – `AEMInsertionSpecifier` refers to insertion point before or after/at start or end of element(s); e.g. `ref.before`
 
@@ -171,7 +171,7 @@ The following diagram shows the AEM reference class hierarchy (slightly simplifi
 
 Clients shouldn't instantiate these classes directly; instead, AEM will instantiate them as appropriate when the client calls the methods of other AEM query objects, starting with the `AEMApp`, `AEMCon` and `AEMIts` objects that form the root of all AEM queries.
 
-In fact, it isn't really necessary to remember the class hierarchy at all, only to know which concrete classes (shown in bold on the above diagram) support which methods. All public methods are inherited from just three abstract superclasses: `AEMObjectSpecifier`, `AEMMultipleElementsSpecifier`, and `AEMTest` (highlighted above). The following sections list these methods for reference.
+In fact, it isn't really necessary to remember the class hierarchy at all, only to know which concrete classes (shown in bold on the above diagram) support which methods. All public methods are inherited from just three abstract superclasses: `AEMObjectSpecifier`, `AEMMultipleElementsSpecifier`, and `AEMTestClause` (highlighted above). The following sections list these methods for reference.
 
 ### `AEMObjectSpecifier` methods
 
@@ -244,18 +244,18 @@ The abstract `AEMMultipleElementsSpecifier` class extends `AEMObjectSpecifier` w
 
 * Identify multiple elements by test (the `testSpecifier` argument must be an `AEMIts`-based specifier):
 
-        - (AEMElementsByTestSpecifier *)byTest:(AEMTest *)testSpecifier;
+        - (AEMElementsByTestSpecifier *)byTest:(AEMTestClause *)testSpecifier;
 
 
-### `AEMTest` methods
+### `AEMTestClause` methods
 
-The abstract `AEMTest` class implements Boolean logic tests applicable to all test specifiers:
+The abstract `AEMTestClause` class implements Boolean logic tests applicable to all test specifiers:
 
     - (AEMANDTest *)AND:(id)remainingOperands;
     - (AEMORTest  *)OR:(id)remainingOperands;
     - (AEMNOTTest *)NOT;
 
-(The `-AND:` and `-OR:` methods' `remainingOperands` argument may be either a single AEMTest instance or an NSArray of AEMTest instances.)
+(The `-AND:` and `-OR:` methods' `remainingOperands` argument may be either a single AEMTestClause instance or an NSArray of AEMTestClause instances.)
 
 
 ## Creating application objects
@@ -347,9 +347,9 @@ The `AEM` APIs streamline this process as follows:
 
 3. The following `AEMEvent` method is used to dispatch the Apple event:
 
-        - (id)sendWithMode:(AESendMode)sendMode 
-                   timeout:(long)timeoutInTicks
-                     error:(NSError **)error;
+        - (id)sendWithOptions:(AESendMode)sendMode 
+                      timeout:(NSTimeInterval)timeoutInSeconds
+                        error:(NSError **)error;
 
    The `sendMode` argument should be composed via bitwise-OR of zero or more of the following flags (see the Apple Event Manager documentation for details):
 
@@ -363,7 +363,7 @@ The `AEM` APIs streamline this process as follows:
         kAEAlwaysInteract
         kAECanSwitchLayer
    
-   The `timeoutInTicks` argument is the number of ticks (1 tick = 1/60 sec) that the Apple Event Manager should wait for the target process to reply. If the process doesn't reply within that time, a timeout error is returned instead. The following constants may also be used: `kDefaultTimeout` or `kNoTimeOut`.
+   The `timeoutInSeconds` argument is the number of seconds that the Apple Event Manager should wait for the target process to reply. If the process doesn't reply within that time, a timeout error is returned instead. The following constants may also be used: `kDefaultTimeout` or `kNoTimeOut`.
     
    On success, the reply event's return value is returned, or an `NSNull` or empty `NSArray` (depending on the unpack format specified) if no return value was given. If the event fails due to an Apple Event Manager error or an application error, `nil` is returned; if the `error` argument is not `nil` then an `NSError` object containing the `OSStatus` code and any other error details is also returned.
 
@@ -372,7 +372,7 @@ The `AEM` APIs streamline this process as follows:
         - (id)sendWithError:(NSError **)error;
         - (id)send;
 
-   (Tip: Should you need to send an event without processing the reply event, extract the underlying `NSAppleEventDescriptor` from `AEMEvent.descriptor` and invoke its `-sendAppleEventWithMode:timeout:error:` method directly. The result is an `NSAppleEventDescriptor` instance containing the full reply event (or `nil` if an Apple Event Manager error occurred). This can be useful with applications such as Final Cut Pro that use non-standard parameter keys in their reply events.)
+   (Tip: Should you need to send an event without processing the reply event, extract the underlying `NSAppleEventDescriptor` from `AEMEvent.descriptor` and invoke its `-sendEventWithOptions:timeout:error:` method directly. The result is an `NSAppleEventDescriptor` instance containing the full reply event (or `nil` if an Apple Event Manager error occurred). This can be useful with applications such as Final Cut Pro that use non-standard parameter keys in their reply events.)
    
    Note that `-send...` methods are intended to be invoked once per `AEMEvent` instance. (The Apple Event Manager documentation doesn't specify behavior where multiple identical Apple events are received by a process; at miminum, each event should have a unique return ID to ensure reply events are correctly returned.)
 

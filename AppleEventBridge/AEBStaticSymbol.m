@@ -1,5 +1,5 @@
 //
-//  AEBSymbol.m
+//  AEBStaticSymbol.m
 //
 
 #import "AEBStaticSymbol.h"
@@ -8,52 +8,9 @@
 /**********************************************************************/
 
 
-@implementation AEBSymbol
+@implementation AEBStaticSymbol
 
-+ (instancetype)symbolWithName:(NSString *)name_ type:(DescType)type_ code:(OSType)code_ {
-    NSAppleEventDescriptor *desc_;
-	desc_ = [[NSAppleEventDescriptor alloc] initWithDescriptorType: type_
-															 bytes: &code_
-															length: sizeof(code_)];
-    return [[self alloc] initWithName: name_ descriptor: desc_];
-}
-
-- (instancetype)initWithName:(NSString *)name_ descriptor:(NSAppleEventDescriptor *)desc_ {
-	self = [super init];
-	if (!self) return self;
-	name = name_;
-	desc = desc_;
-	return self;
-}
-
-
-- (NSString *)description {
-	return [NSString stringWithFormat: @"[%@ %@]", self.class, name];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-	return self;
-}
-
-- (NSUInteger)hash {
-	return (NSUInteger)[desc typeCodeValue];
-}
-
-- (NSString *)AEBName {
-	return name;
-}
-
-- (OSType)AEBCode {
-	return [desc typeCodeValue];
-}
-
-- (NSAppleEventDescriptor *)AEBPackSelf:(id)codecs error:(NSError * __autoreleasing *)error {
-	return desc;
-}
-
-
-/***********************************/
-// Apple Event Manager-defined types and enumerators
+// used by AEBAppData unpack AEDescs representing standard types and enumerators defined by Apple Event Manager/AppleScript
 
 + (AEBSymbol *)symbolWithCode:(OSType)code_ {
     switch (code_) {
@@ -193,10 +150,11 @@
         case 'vers': return self.version;
         case 'psct': return self.writingCode;
         case 'yard': return self.yards;
-        default: return nil;
+        default: return [super symbolWithCode: code_];
     }
 }
 
+// constructors for standard symbol instances representing types and enumerators defined by Apple Event Manager/AppleScript
 
 /* Enumerators */
 

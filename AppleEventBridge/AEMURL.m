@@ -22,7 +22,7 @@
 }
 
 
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     if (error) *error = nil;
     if (!desc) {
         if (!self.fileURL) {

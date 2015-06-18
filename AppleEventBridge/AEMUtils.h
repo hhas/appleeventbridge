@@ -28,6 +28,13 @@ NSError *AEMErrorWithInfo(NSInteger code, NSString *message);
 
 
 /**********************************************************************/
+// Convert NSString to four-char code
+
+
+OSType AEM4CC(NSString * codeStr);
+
+
+/**********************************************************************/
 
 
 #define AEMNewRecordOfType(descType) ([[NSAppleEventDescriptor recordDescriptor] coerceToDescriptorType: (descType)])
@@ -39,16 +46,7 @@ NSError *AEMErrorWithInfo(NSInteger code, NSString *message);
 
 
 /**********************************************************************/
-// supported by all self-packing objects
 
-@protocol AEMSelfPackingProtocol <NSObject>
-
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error;
-
-@end
-
-
-/**********************************************************************/
 
 @protocol AEMCodecsProtocol <NSObject>
 
@@ -64,6 +62,17 @@ NSError *AEMErrorWithInfo(NSInteger code, NSString *message);
 
 
 /**********************************************************************/
+// supported by all self-packing objects
+
+@protocol AEMSelfPackingProtocol <NSObject>
+
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error;
+
+@end
+
+
+/**********************************************************************/
+
 
 typedef enum {
 	kAEBRelaunchNever,

@@ -32,11 +32,11 @@
 }
 
 - (instancetype)returnClass:(AEBSymbol *)classConstant {
-	return [self returnType: classConstant.AEBCode];
+	return [self returnType: classConstant.aebCode];
 }
 
 - (instancetype)returnListOfClass:(AEBSymbol *)classConstant {
-	return [self returnListOfType: classConstant.AEBCode];
+	return [self returnListOfType: classConstant.aebCode];
 }
 
 // send
@@ -47,17 +47,17 @@
 
 // display formatting
 
-- (NSString *)AEBCommandName {
+- (NSString *)aebCommandName {
 	return [NSString stringWithFormat: @"<%@%@>",
-			AEMFormatOSType([(AEMType *)[aemEvent attributeForKeyword: keyEventClassAttr] code]),
-			AEMFormatOSType([(AEMType *)[aemEvent attributeForKeyword: keyEventIDAttr] code])];
+			AEMFormatOSType([(AEMType *)[self.aemEvent attributeForKeyword: keyEventClassAttr] code]),
+			AEMFormatOSType([(AEMType *)[self.aemEvent attributeForKeyword: keyEventIDAttr] code])];
 }
 
-- (NSString *)AEBParameterNameForCode:(DescType)code {
+- (NSString *)aebParameterNameForCode:(DescType)code {
 	return [NSString stringWithFormat: @"<%@>", AEMFormatOSType(code)];
 }
 
-- (NSString *)AEBFormatObject:(id)obj appData:(id)appData {
+- (NSString *)aebFormatObject:(id)obj appData:(id)appData {
 	return AEMFormatObject(obj);
 }
 
@@ -65,8 +65,8 @@
 - (NSString *)description {
 	NSString *result;
 	// format command target and direct parameter, if any
-	id subjectAttr = [aemEvent attributeForKeyword: keySubjectAttr];
-	id directParam = [aemEvent parameterForKeyword: keyDirectObject];
+	id subjectAttr = [self.aemEvent attributeForKeyword: keySubjectAttr];
+	id directParam = [self.aemEvent parameterForKeyword: keyDirectObject];
     // TO DO: FIX: 'make' currently gets formatted as:
     //
     // [[[AEMApp make: (null)] new_: [TEConstant document]] ...]
@@ -74,41 +74,41 @@
 	if (subjectAttr && !([subjectAttr isEqual: AEMApp] || [subjectAttr isEqual: NSNull.null])) {
 		result = [NSString stringWithFormat: @"[%@ %@: %@]",
 						 					 subjectAttr,
-											 [self AEBCommandName],
-											 [self AEBFormatObject: directParam appData: aemEvent.codecs]];
+											 [self aebCommandName],
+											 [self aebFormatObject: directParam appData: self.aemEvent.codecs]];
 	} else if ([directParam isKindOfClass: AEBSpecifier.class]) {
-		result = [NSString stringWithFormat: @"[%@ %@]", directParam, [self AEBCommandName]];
+		result = [NSString stringWithFormat: @"[%@ %@]", directParam, [self aebCommandName]];
 	} else if (directParam) {
 		result = [NSString stringWithFormat: @"[%@ %@: %@]",
-											 [self AEBFormatObject: AEMApp appData: aemEvent.codecs],
-											 [self AEBCommandName],
-											 [self AEBFormatObject: directParam appData: aemEvent.codecs]];
+											 [self aebFormatObject: AEMApp appData: self.aemEvent.codecs],
+											 [self aebCommandName],
+											 [self aebFormatObject: directParam appData: self.aemEvent.codecs]];
 	} else {
 		result = [NSString stringWithFormat: @"[%@ %@]",
-											 [self AEBFormatObject: AEMApp appData: aemEvent.codecs],
-											 [self AEBCommandName]];
+											 [self aebFormatObject: AEMApp appData: self.aemEvent.codecs],
+											 [self aebCommandName]];
 	}
     // format keyword parameters
-	NSAppleEventDescriptor *desc = aemEvent.descriptor;
+	NSAppleEventDescriptor *desc = self.aemEvent.descriptor;
 	for (int i = 1; i <= [desc numberOfItems]; i++) {
 		DescType code = [desc keywordForDescriptorAtIndex: i];
-		id value = [aemEvent parameterForKeyword: code];
+		id value = [self.aemEvent parameterForKeyword: code];
 		switch (code) {
 			case keyDirectObject:
 				continue;
 			case keyAERequestedType:
 				result = [NSString stringWithFormat: @"[%@requestedClass: %@]", result,
-													 [self AEBFormatObject: value appData: aemEvent.codecs]];
+													 [self aebFormatObject: value appData: self.aemEvent.codecs]];
 				break;
 			default:
 				result = [NSString stringWithFormat: @"[%@%@: %@]", result,
-													 [self AEBParameterNameForCode: code],
-													 [self AEBFormatObject: value appData: aemEvent.codecs]];
+													 [self aebParameterNameForCode: code],
+													 [self aebFormatObject: value appData: self.aemEvent.codecs]];
 		}
 	}
 	// format attributes
-	if (timeoutInTicks != kAEDefaultTimeout) {
-		result = [NSString stringWithFormat: @"[%@ timeout: %li]", result, timeoutInTicks / 60];
+	if (timeoutInSeconds != kAEDefaultTimeout) {
+		result = [NSString stringWithFormat: @"[%@ timeout: %f]", result, timeoutInSeconds];
     }
 	if (sendMode != (kAEWaitReply | kAECanSwitchLayer)) {
 		if ((sendMode & ~(kAEWaitReply | kAEQueueReply | kAENoReply)) == kAECanSwitchLayer) {
@@ -124,7 +124,7 @@
 	// format unpacking options
 	AEMUnpackFormat format;
 	DescType type;
-	[aemEvent getUnpackFormat: &format type: &type];
+	[self.aemEvent getUnpackFormat: &format type: &type];
 	if (format == kAEMUnpackAsItem && type != typeWildCard) {
         result = [NSString stringWithFormat: @"[%@ returnType: '%@']", result, AEMFormatOSType(type)];
     }
@@ -151,12 +151,12 @@
  */
 @implementation AEBGetSetItemCommand
 
-- (NSString *)AEBCommandName {
-    return ([(AEMType *)[aemEvent attributeForKeyword: keyEventIDAttr] code] == kAEGetData) ? @"get" : @"set";
+- (NSString *)aebCommandName {
+    return ([(AEMType *)[self.aemEvent attributeForKeyword: keyEventIDAttr] code] == kAEGetData) ? @"get" : @"set";
 }
 
-- (NSString *)AEBParameterNameForCode:(DescType)code {
-    return (code == keyAEData) ? @"to" : [super AEBParameterNameForCode: code];
+- (NSString *)aebParameterNameForCode:(DescType)code {
+    return (code == keyAEData) ? @"to" : [super aebParameterNameForCode: code];
 }
 
 

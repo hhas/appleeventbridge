@@ -48,7 +48,7 @@
 	return boolValue;
 }
 
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return cachedDesc;
 }
 
@@ -112,7 +112,7 @@
     return code;
 }
 
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     @synchronized(self) {
         if (!cachedDesc) cachedDesc = [[NSAppleEventDescriptor alloc] initWithDescriptorType: type
                                                                                        bytes: &code

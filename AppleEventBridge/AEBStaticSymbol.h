@@ -1,35 +1,29 @@
 //
 //  AEBStaticSymbol.h
 //
-//  Built-in typeType/typeEnum definitions, as found in AppleScript's own AETE.
-//  Standard AE type names (integer, list), common enumerators (January, yes), etc.
-//  Provided by default as some applications may use them without defining their
-//  terminology in their own dictionaries.
+//  Base class for all named symbols used by static ObjC bridge
+//
+//  Extends AEBSymbol with class methods for constructing built-in typeType/typeEnum definitions,
+//  equivalent to those defined in AppleScript's own AETE.
 //
 
-// TO DO: define macro names as shortcuts? e.g.:
-//
-// AEBTypeUnicodeText
-// AEBSymbol.unicodeText
-// AEBSymbol.unicodeText
-// AEBEnumNo
-// AEBSymbol.no
-// @{TEPropName: @"README.txt"}
-// @{TEConstant.name: @"README.txt"}
+// TO DO: make sure return types are all sorted out (ideally, AEM/AS-defined symbols should be same class regardless of app glue)
 
-
-
-#import "AEMUtils.h"
+#import "AEBSymbol.h"
 
 /**********************************************************************/
 // macros
 
+// convenience shortcut for writing e.g. `kAE.unicodeText` rather than `AEBStaticSymbol.unicodeText`
+#define kAEB (AEBStaticSymbol)
 
+
+// used here and by AEBStaticSymbol subclasses in generated glues to initialize instances lazily on first use
 #define AEB_RETURN_SYMBOL(aName, aType, aCode) \
     static dispatch_once_t pred = 0; \
     __strong static id obj = nil; \
     dispatch_once(&pred, ^{ \
-    obj = [AEBSymbol symbolWithName: (aName) type: (aType) code: (aCode)]; \
+        obj = [AEBStaticSymbol symbolWithName: (aName) type: (aType) code: (aCode)]; \
     }); \
     return obj;
 
@@ -37,21 +31,7 @@
 /**********************************************************************/
 // base class for standard and application-defined symbols
 
-@interface AEBSymbol : NSObject<NSCopying> {
-	NSString *name;
-	NSAppleEventDescriptor *desc;
-}
-
-+ (instancetype)symbolWithName:(NSString *)name_ type:(DescType)type_ code:(OSType)code_ NS_RETURNS_RETAINED;
-+ (instancetype)symbolWithCode:(OSType)code_;
-
-- (instancetype)initWithName: (NSString *)name_ descriptor:(NSAppleEventDescriptor *)desc_;
-
-- (NSString *)AEBName;
-- (OSType)AEBCode;
-
-- (NSAppleEventDescriptor *)AEBPackSelf:(id)codecs error:(NSError * __autoreleasing *)error;
-
+@interface AEBStaticSymbol : AEBSymbol
 
 /***********************************/
 // Apple Event Manager-defined types and enumerators

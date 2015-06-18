@@ -32,7 +32,7 @@
 <ul>
 <li><p><code>AEMApplication</code> – Represents a scriptable application, and provides methods for constructing <code>AEMEvent</code> instances.</p></li>
 <li><p><code>AEMEvent</code> – Represents an Apple event, and provides methods for adding parameters and attributes, and for sending it.</p></li>
-<li><p><code>AEMQuery</code>, <code>AEMSpecifier</code>, <code>AEMTest</code> – Abstract base classes for all object and test specifiers (see later). </p></li>
+<li><p><code>AEMQuery</code>, <code>AEMSpecifier</code>, <code>AEMTestClause</code> – Abstract base classes for all object and test specifiers (see later). </p></li>
 <li><p><code>AEMCodecs</code> – Provides <code>-pack:</code> and <code>-unpack:</code> methods for converting Foundation values to NSAppleEventDescriptors, and vice-versa. Clients usually don't need to access this class directly.</p></li>
 <li><p><code>AEMType</code>, <code>AEMEnum</code>, <code>AEMProperty</code> – Represent Apple event type, enumerator, and property name values.</p></li>
 </ul>
@@ -152,7 +152,7 @@
 
 <h3>Reference forms</h3>
 
-<p>AEM defines a number of classes representing each of the AEOM reference forms (see <code>AEMQuery.h</code>, <code>AEMSpecifier.h</code>, and <code>AEMTestSpecifier.h</code>). There are nine AEOM reference forms, each represented by a different <code>AEMSpecifier</code> subclass:</p>
+<p>AEM defines a number of classes representing each of the AEOM reference forms (see <code>AEMQuery.h</code>, <code>AEMSpecifier.h</code>, and <code>AEMTestClause.h</code>). There are nine AEOM reference forms, each represented by a different <code>AEMSpecifier</code> subclass:</p>
 
 <ul>
 <li><p>insertion location – <code>AEMInsertionSpecifier</code> refers to insertion point before or after/at start or end of element(s); e.g. <code>ref.before</code></p></li>
@@ -173,7 +173,7 @@
 
 <p>Clients shouldn't instantiate these classes directly; instead, AEM will instantiate them as appropriate when the client calls the methods of other AEM query objects, starting with the <code>AEMApp</code>, <code>AEMCon</code> and <code>AEMIts</code> objects that form the root of all AEM queries.</p>
 
-<p>In fact, it isn't really necessary to remember the class hierarchy at all, only to know which concrete classes (shown in bold on the above diagram) support which methods. All public methods are inherited from just three abstract superclasses: <code>AEMObjectSpecifier</code>, <code>AEMMultipleElementsSpecifier</code>, and <code>AEMTest</code> (highlighted above). The following sections list these methods for reference.</p>
+<p>In fact, it isn't really necessary to remember the class hierarchy at all, only to know which concrete classes (shown in bold on the above diagram) support which methods. All public methods are inherited from just three abstract superclasses: <code>AEMObjectSpecifier</code>, <code>AEMMultipleElementsSpecifier</code>, and <code>AEMTestClause</code> (highlighted above). The following sections list these methods for reference.</p>
 
 <h3><code>AEMObjectSpecifier</code> methods</h3>
 
@@ -249,20 +249,20 @@
 <p>(The <code>-byRange:to:</code> method normally takes two <code>AEMApp</code>-/<code>AEMCon</code>-based specifiers, indicating the first and last elements in the range. <code>NSInteger</code> and <code>NSString</code> are also acceptable; these are automatically expanded to <code>AEMCon</code>-based by-index and by-name specifiers. The <code>-at:to:</code> method provides a convenient shortcut when using <code>int</code>-based indexes.)</p></li>
 <li><p>Identify multiple elements by test (the <code>testSpecifier</code> argument must be an <code>AEMIts</code>-based specifier):</p>
 
-<pre><code>    - (AEMElementsByTestSpecifier *)byTest:(AEMTest *)testSpecifier;
+<pre><code>    - (AEMElementsByTestSpecifier *)byTest:(AEMTestClause *)testSpecifier;
 </code></pre></li>
 </ul>
 
-<h3><code>AEMTest</code> methods</h3>
+<h3><code>AEMTestClause</code> methods</h3>
 
-<p>The abstract <code>AEMTest</code> class implements Boolean logic tests applicable to all test specifiers:</p>
+<p>The abstract <code>AEMTestClause</code> class implements Boolean logic tests applicable to all test specifiers:</p>
 
 <pre><code>  - (AEMANDTest *)AND:(id)remainingOperands;
   - (AEMORTest  *)OR:(id)remainingOperands;
   - (AEMNOTTest *)NOT;
 </code></pre>
 
-<p>(The <code>-AND:</code> and <code>-OR:</code> methods' <code>remainingOperands</code> argument may be either a single AEMTest instance or an NSArray of AEMTest instances.)</p>
+<p>(The <code>-AND:</code> and <code>-OR:</code> methods' <code>remainingOperands</code> argument may be either a single AEMTestClause instance or an NSArray of AEMTestClause instances.)</p>
 
 <h2>Creating application objects</h2>
 
@@ -358,9 +358,9 @@
 </ul></li>
 <li><p>The following <code>AEMEvent</code> method is used to dispatch the Apple event:</p>
 
-<pre><code>    - (id)sendWithMode:(AESendMode)sendMode 
-               timeout:(long)timeoutInTicks
-                 error:(NSError **)error;
+<pre><code>    - (id)sendWithOptions:(AESendMode)sendMode
+                  timeout:(NSTimeInterval)timeoutInSeconds
+                    error:(NSError **)error;
 </code></pre>
 
 <p>The <code>sendMode</code> argument should be composed via bitwise-OR of zero or more of the following flags (see the Apple Event Manager documentation for details):</p>
@@ -376,7 +376,7 @@
     kAECanSwitchLayer
 </code></pre>
 
-<p>The <code>timeoutInTicks</code> argument is the number of ticks (1 tick = 1/60 sec) that the Apple Event Manager should wait for the target process to reply. If the process doesn't reply within that time, a timeout error is returned instead. The following constants may also be used: <code>kDefaultTimeout</code> or <code>kNoTimeOut</code>.</p>
+<p>The <code>timeoutInSeconds</code> argument is the number of seconds that the Apple Event Manager should wait for the target process to reply. If the process doesn't reply within that time, a timeout error is returned instead. The following constants may also be used: <code>kDefaultTimeout</code> or <code>kNoTimeOut</code>.</p>
 
 <p>On success, the reply event's return value is returned, or an <code>NSNull</code> or empty <code>NSArray</code> (depending on the unpack format specified) if no return value was given. If the event fails due to an Apple Event Manager error or an application error, <code>nil</code> is returned; if the <code>error</code> argument is not <code>nil</code> then an <code>NSError</code> object containing the <code>OSStatus</code> code and any other error details is also returned.</p>
 
@@ -386,7 +386,7 @@
     - (id)send;
 </code></pre>
 
-<p>(Tip: Should you need to send an event without processing the reply event, extract the underlying <code>NSAppleEventDescriptor</code> from <code>AEMEvent.descriptor</code> and invoke its <code>-sendAppleEventWithMode:timeout:error:</code> method directly. The result is an <code>NSAppleEventDescriptor</code> instance containing the full reply event (or <code>nil</code> if an Apple Event Manager error occurred). This can be useful with applications such as Final Cut Pro that use non-standard parameter keys in their reply events.)</p>
+<p>(Tip: Should you need to send an event without processing the reply event, extract the underlying <code>NSAppleEventDescriptor</code> from <code>AEMEvent.descriptor</code> and invoke its <code>-sendEventWithOptions:timeout:error:</code> method directly. The result is an <code>NSAppleEventDescriptor</code> instance containing the full reply event (or <code>nil</code> if an Apple Event Manager error occurred). This can be useful with applications such as Final Cut Pro that use non-standard parameter keys in their reply events.)</p>
 
 <p>Note that <code>-send...</code> methods are intended to be invoked once per <code>AEMEvent</code> instance. (The Apple Event Manager documentation doesn't specify behavior where multiple identical Apple events are received by a process; at miminum, each event should have a unique return ID to ensure reply events are correctly returned.)</p></li>
 </ol>
