@@ -52,6 +52,9 @@ one problem: overloading 'get(...)throws->AnyObject' with 'get(...)->AnyObject?'
 - what about overriding return type for String, Int, Array<String>, etc? (this could generate a lot of methods; will need to stress-test glues on InDesign, etc.)
 
 
+- is `defer` any use for auto-closing transactions? (not that many, if any, apps use those these days)
+
+
 
 Notes:
 

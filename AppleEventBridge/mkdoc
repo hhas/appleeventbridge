@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+""" Generate HTML user guide (doc-html) from Markdown files (doc-source). """
+
 import os, os.path, shutil, sys
 from markdown2 import markdown
 

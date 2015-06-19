@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		4F0D52971B344E8B0081A1B3 /* TETGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0D52961B344E8B0081A1B3 /* TETGlue.swift */; };
+		4F0D529A1B349C8A0081A1B3 /* ObjCImplementationGlueTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F0D52991B349C8A0081A1B3 /* ObjCImplementationGlueTemplate.txt */; };
+		4F0D529C1B349C910081A1B3 /* ObjCInterfaceGlueTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F0D529B1B349C910081A1B3 /* ObjCInterfaceGlueTemplate.txt */; };
+		4F0D52A41B34C36E0081A1B3 /* TEGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0D52A31B34C36E0081A1B3 /* TEGlue.m */; };
 		4F1A9FFA19F92A9F00FBD23E /* AppleEventBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1A9FF919F92A9F00FBD23E /* AppleEventBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1AA00019F92A9F00FBD23E /* AppleEventBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */; };
 		4F1AA00719F92A9F00FBD23E /* AppleEventBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA00619F92A9F00FBD23E /* AppleEventBridgeTests.m */; };
@@ -77,11 +80,6 @@
 		4FA7A8C21A0A79B900F0E578 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1AA01119F92B4C00FBD23E /* Foundation.framework */; };
 		4FA7A8C31A0A79BC00F0E578 /* AppleEventBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */; };
 		4FA7A8C51A0A99AE00F0E578 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA7A8C41A0A99AE00F0E578 /* Carbon.framework */; };
-		4FCE81081A0C2E3500C54EAC /* TEApplicationGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FCE80FD1A0C2E3500C54EAC /* TEApplicationGlue.m */; };
-		4FCE81091A0C2E3500C54EAC /* TECommandGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FCE80FF1A0C2E3500C54EAC /* TECommandGlue.m */; };
-		4FCE810A1A0C2E3500C54EAC /* TESymbolGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FCE81011A0C2E3500C54EAC /* TESymbolGlue.m */; };
-		4FCE810B1A0C2E3500C54EAC /* TEFormatterGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FCE81031A0C2E3500C54EAC /* TEFormatterGlue.m */; };
-		4FCE810C1A0C2E3500C54EAC /* TESpecifierGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FCE81071A0C2E3500C54EAC /* TESpecifierGlue.m */; };
 		4FD8E4A11B334D63004B5CD5 /* AEBKeywordConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */; };
 		4FD8E4A71B342A97004B5CD5 /* ITUGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A61B342A97004B5CD5 /* ITUGlue.swift */; };
@@ -195,6 +193,10 @@
 /* Begin PBXFileReference section */
 		4F0D52961B344E8B0081A1B3 /* TETGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TETGlue.swift; sourceTree = "<group>"; };
 		4F0D52981B3450BB0081A1B3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
+		4F0D52991B349C8A0081A1B3 /* ObjCImplementationGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ObjCImplementationGlueTemplate.txt; sourceTree = "<group>"; };
+		4F0D529B1B349C910081A1B3 /* ObjCInterfaceGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ObjCInterfaceGlueTemplate.txt; sourceTree = "<group>"; };
+		4F0D52A21B34C36E0081A1B3 /* TEGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEGlue.h; sourceTree = "<group>"; };
+		4F0D52A31B34C36E0081A1B3 /* TEGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEGlue.m; sourceTree = "<group>"; };
 		4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppleEventBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1A9FF919F92A9F00FBD23E /* AppleEventBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppleEventBridge.h; sourceTree = "<group>"; };
 		4F1A9FFF19F92A9F00FBD23E /* AppleEventBridgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleEventBridgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,18 +269,6 @@
 		4FA7A8BD1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = AEMCopyScriptingDefinitionFromURL.c; sourceTree = "<group>"; };
 		4FA7A8BE1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMCopyScriptingDefinitionFromURL.h; sourceTree = "<group>"; };
 		4FA7A8C41A0A99AE00F0E578 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		4FCE80FC1A0C2E3500C54EAC /* TEApplicationGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEApplicationGlue.h; sourceTree = "<group>"; };
-		4FCE80FD1A0C2E3500C54EAC /* TEApplicationGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEApplicationGlue.m; sourceTree = "<group>"; };
-		4FCE80FE1A0C2E3500C54EAC /* TECommandGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TECommandGlue.h; sourceTree = "<group>"; };
-		4FCE80FF1A0C2E3500C54EAC /* TECommandGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TECommandGlue.m; sourceTree = "<group>"; };
-		4FCE81001A0C2E3500C54EAC /* TESymbolGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TESymbolGlue.h; sourceTree = "<group>"; };
-		4FCE81011A0C2E3500C54EAC /* TESymbolGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TESymbolGlue.m; sourceTree = "<group>"; };
-		4FCE81021A0C2E3500C54EAC /* TEFormatterGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEFormatterGlue.h; sourceTree = "<group>"; };
-		4FCE81031A0C2E3500C54EAC /* TEFormatterGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEFormatterGlue.m; sourceTree = "<group>"; };
-		4FCE81041A0C2E3500C54EAC /* TERawCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TERawCodes.h; sourceTree = "<group>"; };
-		4FCE81051A0C2E3500C54EAC /* TEGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEGlue.h; sourceTree = "<group>"; };
-		4FCE81061A0C2E3500C54EAC /* TESpecifierGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TESpecifierGlue.h; sourceTree = "<group>"; };
-		4FCE81071A0C2E3500C54EAC /* TESpecifierGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TESpecifierGlue.m; sourceTree = "<group>"; };
 		4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBKeywordConverter.h; sourceTree = "<group>"; };
 		4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBKeywordConverter.m; sourceTree = "<group>"; };
 		4FD8E4A31B33700F004B5CD5 /* aebglue-swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "aebglue-swift"; sourceTree = "<group>"; };
@@ -445,6 +435,8 @@
 			isa = PBXGroup;
 			children = (
 				4F1AA02519F92D6000FBD23E /* aebglue */,
+				4F0D529B1B349C910081A1B3 /* ObjCInterfaceGlueTemplate.txt */,
+				4F0D52991B349C8A0081A1B3 /* ObjCImplementationGlueTemplate.txt */,
 				4FFA2D5B1A129AD700AF09E4 /* mkdoc */,
 			);
 			name = bin;
@@ -604,18 +596,8 @@
 		4FCE80FB1A0C2E3500C54EAC /* TEGlue */ = {
 			isa = PBXGroup;
 			children = (
-				4FCE81051A0C2E3500C54EAC /* TEGlue.h */,
-				4FCE80FC1A0C2E3500C54EAC /* TEApplicationGlue.h */,
-				4FCE80FD1A0C2E3500C54EAC /* TEApplicationGlue.m */,
-				4FCE80FE1A0C2E3500C54EAC /* TECommandGlue.h */,
-				4FCE80FF1A0C2E3500C54EAC /* TECommandGlue.m */,
-				4FCE81021A0C2E3500C54EAC /* TEFormatterGlue.h */,
-				4FCE81031A0C2E3500C54EAC /* TEFormatterGlue.m */,
-				4FCE81041A0C2E3500C54EAC /* TERawCodes.h */,
-				4FCE81061A0C2E3500C54EAC /* TESpecifierGlue.h */,
-				4FCE81071A0C2E3500C54EAC /* TESpecifierGlue.m */,
-				4FCE81001A0C2E3500C54EAC /* TESymbolGlue.h */,
-				4FCE81011A0C2E3500C54EAC /* TESymbolGlue.m */,
+				4F0D52A21B34C36E0081A1B3 /* TEGlue.h */,
+				4F0D52A31B34C36E0081A1B3 /* TEGlue.m */,
 				4FF619C81A0EC9C1002277B8 /* TextEdit.sdef */,
 			);
 			path = TEGlue;
@@ -849,6 +831,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F0D529A1B349C8A0081A1B3 /* ObjCImplementationGlueTemplate.txt in Resources */,
+				4F0D529C1B349C910081A1B3 /* ObjCInterfaceGlueTemplate.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -939,12 +923,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FCE81081A0C2E3500C54EAC /* TEApplicationGlue.m in Sources */,
-				4FCE81091A0C2E3500C54EAC /* TECommandGlue.m in Sources */,
-				4FCE810B1A0C2E3500C54EAC /* TEFormatterGlue.m in Sources */,
 				4FA7A8B91A0A607400F0E578 /* main.m in Sources */,
-				4FCE810C1A0C2E3500C54EAC /* TESpecifierGlue.m in Sources */,
-				4FCE810A1A0C2E3500C54EAC /* TESymbolGlue.m in Sources */,
+				4F0D52A41B34C36E0081A1B3 /* TEGlue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

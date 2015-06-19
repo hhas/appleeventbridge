@@ -1,5 +1,5 @@
 //
-// ITSGlue.swift
+// ITUGlue.swift
 // iTunes 12.1.2
 // AppleEventBridge.framework 0.7.0
 //

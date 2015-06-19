@@ -55,16 +55,6 @@
 
 - (BOOL)reconnectApplication;
 
-/* TO DO: sort this
-// missing terminology support
-
-- (id)propertyByOSType:(OSType)code;
-- (id)elementsByOSType:(OSType)code;
-- (id)propertyByFourCharCode:(NSString *)code;
-- (id)elementsByFourCharCode:(NSString *)code;
-// TO DO: eventBy...
- */
-
 // transaction support
 
 - (BOOL)beginTransactionWithError:(NSError * __autoreleasing *)error;

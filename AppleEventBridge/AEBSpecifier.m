@@ -75,25 +75,6 @@
 	return [[aebAppData targetWithError: error] reconnectWithError: error];
 }
 
-/*
-// missing terminology support // TO DO: these return id since they're available on both application and specifier objects but
-
-- (id)propertyByOSType:(OSType)code {
-    return [[self.class alloc] initWithAppData: aebAppData aemQuery: [((AEMObjectSpecifier *)aemQuery) property: code]];
-}
-
-- (id)elementsByOSType:(OSType)code {
-    return [[self.class alloc] initWithAppData: aebAppData aemQuery: [((AEMObjectSpecifier *)aemQuery) elements: code]];
-}
-
-- (id)propertyByFourCharCode:(NSString *)code {
-    return [self propertyByOSType: AEM4CC(code)];
-}
-
-- (id)elementsByFourCharCode:(NSString *)code {
-    return [self elementsByOSType: AEM4CC(code)];
-}*/
-
 
 // transaction support
 

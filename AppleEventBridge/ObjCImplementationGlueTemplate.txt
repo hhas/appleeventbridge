@@ -1,0 +1,197 @@
+//
+// «GLUE_NAME»
+// «APP_NAME» «APP_VERSION»
+// «FRAMEWORK_NAME» «FRAMEWORK_VERSION»
+//
+
+#import "«PREFIX»Glue.h"
+
+
+@implementation «PREFIX»Formatter
+- (NSString *)propertyByCode:(OSType)code {
+    switch (code) {
+«+PROPERTY_FORMATTER»
+        case «CODE»: return @"«NAME»";
+«-PROPERTY_FORMATTER»
+        default: return [super propertyByCode: code];
+    }
+}
+- (NSString *)elementsByCode:(OSType)code {
+    switch (code) {
+«+ELEMENTS_FORMATTER»
+        case «CODE»: return @"«NAME»";
+«-ELEMENTS_FORMATTER»
+        default: return [super elementsByCode: code];
+    }
+}
+- (NSString *)prefix {
+    return @"«PREFIX»";
+}
+@end
+
+
+
+
+@implementation «PREFIX»Symbol
++ (instancetype)symbolWithCode:(OSType)code_ {
+    switch (code_) {
+«+SYMBOL_SWITCH»
+        case «CODE»: return self.«NAME»;
+«-SYMBOL_SWITCH»
+        default: return [super symbolWithCode: code_];
+    }
+}
+// Types/properties 
+«+TYPE_SYMBOL»
++ (instancetype)«NAME» {AEB_RETURN_SYMBOL(@"«NAME»", typeType, «CODE»);}
+«-TYPE_SYMBOL»
+// Enumerators
+«+ENUM_SYMBOL»
++ (instancetype)«NAME» {AEB_RETURN_SYMBOL(@"«NAME»", typeEnumerated, «CODE»);}
+«-ENUM_SYMBOL»
+@end
+
+
+
+«+COMMAND»
+
+@implementation «PREFIX»«CAP_NAME»Command
+«+PARAMETER»
+- (instancetype)«NAME»:(id)value {
+    [self setParameter: value forKeyword: «CODE»];
+    return self;
+}
+«-PARAMETER»
+- (NSString *)aebCommandName {
+    return @"«COMMAND_NAME»";
+}
+- (NSString *)aebParameterNameForCode:(DescType)code {
+    switch (code) {
+«+PARAMETER»
+        case «CODE»: return @"«NAME»";
+«-PARAMETER»
+    }
+    return [super aebParameterNameForCode: code];
+}
+@end
+«-COMMAND»
+
+
+
+
+@implementation «PREFIX»Specifier
+- (NSString *)description {
+    return [«PREFIX»Formatter formatObject: self.aemQuery appData: self.aebAppData];
+}
+// Properties
+«+PROPERTY_SPECIFIER»
+- (instancetype)«NAME» {
+    return [self.class specifierWithAppData: self.aebAppData
+                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: «CODE»]];
+}
+«-PROPERTY_SPECIFIER»
+// Elements
+«+ELEMENTS_SPECIFIER»
+- (instancetype)«NAME» {
+    return [self.class specifierWithAppData: self.aebAppData
+                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: «CODE»]];
+}
+«-ELEMENTS_SPECIFIER»
+// Commands
+«+COMMAND2»
+- («PREFIX»«CAP_NAME»Command *)«COMMAND_NAME» {
+    return [«PREFIX»«CAP_NAME»Command commandWithAppData: self.aebAppData
+                       eventClass: «EVENT_CLASS»
+                          eventID: «EVENT_ID»
+                  directParameter: (__bridge id)kAEBNoDirectParameter
+                      parentQuery: self.aemQuery];
+}
+- («PREFIX»«CAP_NAME»Command *)«COMMAND_NAME»:(id)directParameter {
+    return [«PREFIX»«CAP_NAME»Command commandWithAppData: self.aebAppData
+                       eventClass: «EVENT_CLASS»
+                          eventID: «EVENT_ID»
+                  directParameter: directParameter
+                      parentQuery: self.aemQuery];
+}
+«-COMMAND2»
+@end
+
+
+
+
+@implementation «PREFIX»Application
+
+/* note: clients shouldn't need to call -initWithTargetType:data: themselves */
+
+- (instancetype)initWithTargetType:(AEBTargetType)targetType_ data:(id)targetData_ {
+    AEBStaticAppData *data = [[AEBStaticAppData alloc] initWithApplicationClass: AEMApplication.class
+                                                                    symbolClass: «PREFIX»Symbol.class
+                                                                 specifierClass: «PREFIX»Specifier.class
+                                                                     targetType: targetType_
+                                                                     targetData: targetData_];
+    self = [super initWithAppData: data aemQuery: AEMApp];
+
+    if (!self) return self;
+    return self;
+}
+
+/* initialisers */
+
++ (instancetype)application {
+    return [[self alloc] init];
+}
++ (instancetype)currentApplication {
+    return [[self alloc] initCurrentApplication];
+}
++ (instancetype)applicationWithName:(NSString *)name {
+    return [[self alloc] initWithName: name];
+}
++ (instancetype)applicationWithURL:(NSURL *)url {
+    return [[self alloc] initWithURL: url];
+}
++ (instancetype)applicationWithBundleID:(NSString *)bundleID {
+    return [[self alloc] initWithBundleID: bundleID];
+}
++ (instancetype)applicationWithProcessID:(pid_t)pid {
+    return [[self alloc] initWithProcessID: pid];
+}
++ (instancetype)applicationWithDescriptor:(NSAppleEventDescriptor *)desc {
+    return [[self alloc] initWithDescriptor: desc];
+}
+- (instancetype)init {
+    return [self initWithBundleID: @"«BUNDLE_ID»"];
+}
+- (instancetype)initCurrentApplication {
+    return [self initWithTargetType: kAEBTargetCurrent data: nil];
+}
+- (instancetype)initWithName:(NSString *)name {
+    return [self initWithTargetType: kAEBTargetName data: name];
+}
+- (instancetype)initWithURL:(NSURL *)url {
+    return [self initWithTargetType: kAEBTargetURL data: url];
+}
+- (instancetype)initWithBundleID:(NSString *)bundleID {
+    return [self initWithTargetType: kAEBTargetBundleID data: bundleID];
+}
+- (instancetype)initWithProcessID:(pid_t)pid {
+    return [self initWithTargetType: kAEBTargetProcessID data: [NSNumber numberWithInteger: pid]];
+}
+- (instancetype)initWithDescriptor:(NSAppleEventDescriptor *)desc {
+    return [self initWithTargetType: kAEBTargetDescriptor data: desc];
+}
+
+/* misc */
+
+- («PREFIX»Specifier *)customRoot:(id)object {
+    if ([object isKindOfClass: «PREFIX»Specifier.class]) {
+        return [[«PREFIX»Specifier alloc] initWithAppData: self.aebAppData aemQuery: [object aemQuery]];
+    } else if ([object isKindOfClass: AEMQuery.class]) {
+        return [[«PREFIX»Specifier alloc] initWithAppData: self.aebAppData aemQuery: object];
+    } else if (!object) {
+        return [[«PREFIX»Specifier alloc] initWithAppData: self.aebAppData aemQuery: AEMApp];
+    } else {
+        return [[«PREFIX»Specifier alloc] initWithAppData: self.aebAppData aemQuery: AEMRoot(object)];
+    }
+}
+@end
+

@@ -8,9 +8,9 @@ import Foundation
 import AppleEventBridge
 
 
-class ITSFormatter: SwiftAEFormatter { // used internally to generate description strings
+class ITUFormatter: SwiftAEFormatter { // used internally to generate description strings
     
-    override var prefix: String {return "ITS"}
+    override var prefix: String {return "ITU"}
     
     override func propertyByCode(code: OSType) -> String? {
         switch (code) {
@@ -185,9 +185,9 @@ class ITSFormatter: SwiftAEFormatter { // used internally to generate descriptio
 }
 
 
-class ITSSymbol: SwiftAESymbol {
+class ITUSymbol: SwiftAESymbol {
     
-    override var description: String {return "kITS.\(self.aebName)"}
+    override var description: String {return "kITU.\(self.aebName)"}
     
     override class func symbol(code: OSType) -> AEBSymbol {
         switch (code) {
@@ -537,590 +537,612 @@ class ITSSymbol: SwiftAESymbol {
     }
 
     // Types/properties    // TO DO: add 'override' if var is already defined in AEBSymbol
-    static var April: ITSSymbol {return ITSSymbol(name: "April", type: 0x74797065, code: 0x61707220)}
-    static var August: ITSSymbol {return ITSSymbol(name: "August", type: 0x74797065, code: 0x61756720)}
-    static var CString: ITSSymbol {return ITSSymbol(name: "CString", type: 0x74797065, code: 0x63737472)}
-    static var December: ITSSymbol {return ITSSymbol(name: "December", type: 0x74797065, code: 0x64656320)}
-    static var EPSPicture: ITSSymbol {return ITSSymbol(name: "EPSPicture", type: 0x74797065, code: 0x45505320)}
-    static var EQ: ITSSymbol {return ITSSymbol(name: "EQ", type: 0x74797065, code: 0x70455170)}
-    static var EQEnabled: ITSSymbol {return ITSSymbol(name: "EQEnabled", type: 0x74797065, code: 0x70455120)}
-    static var EQPreset: ITSSymbol {return ITSSymbol(name: "EQPreset", type: 0x74797065, code: 0x63455150)}
-    static var EQWindow: ITSSymbol {return ITSSymbol(name: "EQWindow", type: 0x74797065, code: 0x63455157)}
-    static var February: ITSSymbol {return ITSSymbol(name: "February", type: 0x74797065, code: 0x66656220)}
-    static var Friday: ITSSymbol {return ITSSymbol(name: "Friday", type: 0x74797065, code: 0x66726920)}
-    static var GIFPicture: ITSSymbol {return ITSSymbol(name: "GIFPicture", type: 0x74797065, code: 0x47494666)}
-    static var JPEGPicture: ITSSymbol {return ITSSymbol(name: "JPEGPicture", type: 0x74797065, code: 0x4a504547)}
-    static var January: ITSSymbol {return ITSSymbol(name: "January", type: 0x74797065, code: 0x6a616e20)}
-    static var July: ITSSymbol {return ITSSymbol(name: "July", type: 0x74797065, code: 0x6a756c20)}
-    static var June: ITSSymbol {return ITSSymbol(name: "June", type: 0x74797065, code: 0x6a756e20)}
-    static var March: ITSSymbol {return ITSSymbol(name: "March", type: 0x74797065, code: 0x6d617220)}
-    static var May: ITSSymbol {return ITSSymbol(name: "May", type: 0x74797065, code: 0x6d617920)}
-    static var Monday: ITSSymbol {return ITSSymbol(name: "Monday", type: 0x74797065, code: 0x6d6f6e20)}
-    static var November: ITSSymbol {return ITSSymbol(name: "November", type: 0x74797065, code: 0x6e6f7620)}
-    static var October: ITSSymbol {return ITSSymbol(name: "October", type: 0x74797065, code: 0x6f637420)}
-    static var PICTPicture: ITSSymbol {return ITSSymbol(name: "PICTPicture", type: 0x74797065, code: 0x50494354)}
-    static var PascalString: ITSSymbol {return ITSSymbol(name: "PascalString", type: 0x74797065, code: 0x70737472)}
-    static var RGB16Color: ITSSymbol {return ITSSymbol(name: "RGB16Color", type: 0x74797065, code: 0x74723136)}
-    static var RGB96Color: ITSSymbol {return ITSSymbol(name: "RGB96Color", type: 0x74797065, code: 0x74723936)}
-    static var RGBColor: ITSSymbol {return ITSSymbol(name: "RGBColor", type: 0x74797065, code: 0x63524742)}
-    static var Saturday: ITSSymbol {return ITSSymbol(name: "Saturday", type: 0x74797065, code: 0x73617420)}
-    static var September: ITSSymbol {return ITSSymbol(name: "September", type: 0x74797065, code: 0x73657020)}
-    static var Sunday: ITSSymbol {return ITSSymbol(name: "Sunday", type: 0x74797065, code: 0x73756e20)}
-    static var TIFFPicture: ITSSymbol {return ITSSymbol(name: "TIFFPicture", type: 0x74797065, code: 0x54494646)}
-    static var Thursday: ITSSymbol {return ITSSymbol(name: "Thursday", type: 0x74797065, code: 0x74687520)}
-    static var Tuesday: ITSSymbol {return ITSSymbol(name: "Tuesday", type: 0x74797065, code: 0x74756520)}
-    static var URLTrack: ITSSymbol {return ITSSymbol(name: "URLTrack", type: 0x74797065, code: 0x63555254)}
-    static var UTF16Text: ITSSymbol {return ITSSymbol(name: "UTF16Text", type: 0x74797065, code: 0x75743136)}
-    static var UTF8Text: ITSSymbol {return ITSSymbol(name: "UTF8Text", type: 0x74797065, code: 0x75746638)}
-    static var UnicodeText: ITSSymbol {return ITSSymbol(name: "UnicodeText", type: 0x74797065, code: 0x75747874)}
-    static var Wednesday: ITSSymbol {return ITSSymbol(name: "Wednesday", type: 0x74797065, code: 0x77656420)}
-    static var address: ITSSymbol {return ITSSymbol(name: "address", type: 0x74797065, code: 0x7055524c)}
-    static var album: ITSSymbol {return ITSSymbol(name: "album", type: 0x74797065, code: 0x70416c62)}
-    static var albumArtist: ITSSymbol {return ITSSymbol(name: "albumArtist", type: 0x74797065, code: 0x70416c41)}
-    static var albumRating: ITSSymbol {return ITSSymbol(name: "albumRating", type: 0x74797065, code: 0x70416c52)}
-    static var albumRatingKind: ITSSymbol {return ITSSymbol(name: "albumRatingKind", type: 0x74797065, code: 0x7041526b)}
-    static var alias: ITSSymbol {return ITSSymbol(name: "alias", type: 0x74797065, code: 0x616c6973)}
-    static var anything: ITSSymbol {return ITSSymbol(name: "anything", type: 0x74797065, code: 0x2a2a2a2a)}
-    static var application: ITSSymbol {return ITSSymbol(name: "application", type: 0x74797065, code: 0x63617070)}
-    static var applicationBundleID: ITSSymbol {return ITSSymbol(name: "applicationBundleID", type: 0x74797065, code: 0x62756e64)}
-    static var applicationSignature: ITSSymbol {return ITSSymbol(name: "applicationSignature", type: 0x74797065, code: 0x7369676e)}
-    static var applicationURL: ITSSymbol {return ITSSymbol(name: "applicationURL", type: 0x74797065, code: 0x6170726c)}
-    static var artist: ITSSymbol {return ITSSymbol(name: "artist", type: 0x74797065, code: 0x70417274)}
-    static var artwork: ITSSymbol {return ITSSymbol(name: "artwork", type: 0x74797065, code: 0x63417274)}
-    static var audioCDPlaylist: ITSSymbol {return ITSSymbol(name: "audioCDPlaylist", type: 0x74797065, code: 0x63434450)}
-    static var audioCDTrack: ITSSymbol {return ITSSymbol(name: "audioCDTrack", type: 0x74797065, code: 0x63434454)}
-    static var band1: ITSSymbol {return ITSSymbol(name: "band1", type: 0x74797065, code: 0x70455131)}
-    static var band10: ITSSymbol {return ITSSymbol(name: "band10", type: 0x74797065, code: 0x70455130)}
-    static var band2: ITSSymbol {return ITSSymbol(name: "band2", type: 0x74797065, code: 0x70455132)}
-    static var band3: ITSSymbol {return ITSSymbol(name: "band3", type: 0x74797065, code: 0x70455133)}
-    static var band4: ITSSymbol {return ITSSymbol(name: "band4", type: 0x74797065, code: 0x70455134)}
-    static var band5: ITSSymbol {return ITSSymbol(name: "band5", type: 0x74797065, code: 0x70455135)}
-    static var band6: ITSSymbol {return ITSSymbol(name: "band6", type: 0x74797065, code: 0x70455136)}
-    static var band7: ITSSymbol {return ITSSymbol(name: "band7", type: 0x74797065, code: 0x70455137)}
-    static var band8: ITSSymbol {return ITSSymbol(name: "band8", type: 0x74797065, code: 0x70455138)}
-    static var band9: ITSSymbol {return ITSSymbol(name: "band9", type: 0x74797065, code: 0x70455139)}
-    static var best: ITSSymbol {return ITSSymbol(name: "best", type: 0x74797065, code: 0x62657374)}
-    static var bitRate: ITSSymbol {return ITSSymbol(name: "bitRate", type: 0x74797065, code: 0x70425274)}
-    static var bookmark: ITSSymbol {return ITSSymbol(name: "bookmark", type: 0x74797065, code: 0x70426b74)}
-    static var bookmarkable: ITSSymbol {return ITSSymbol(name: "bookmarkable", type: 0x74797065, code: 0x70426b6d)}
-    static var boolean: ITSSymbol {return ITSSymbol(name: "boolean", type: 0x74797065, code: 0x626f6f6c)}
-    static var boundingRectangle: ITSSymbol {return ITSSymbol(name: "boundingRectangle", type: 0x74797065, code: 0x71647274)}
-    static var bounds: ITSSymbol {return ITSSymbol(name: "bounds", type: 0x74797065, code: 0x70626e64)}
-    static var bpm: ITSSymbol {return ITSSymbol(name: "bpm", type: 0x74797065, code: 0x7042504d)}
-    static var browserWindow: ITSSymbol {return ITSSymbol(name: "browserWindow", type: 0x74797065, code: 0x63427257)}
-    static var capacity: ITSSymbol {return ITSSymbol(name: "capacity", type: 0x74797065, code: 0x63617061)}
-    static var category: ITSSymbol {return ITSSymbol(name: "category", type: 0x74797065, code: 0x70436174)}
-    static var centimeters: ITSSymbol {return ITSSymbol(name: "centimeters", type: 0x74797065, code: 0x636d7472)}
-    static var classInfo: ITSSymbol {return ITSSymbol(name: "classInfo", type: 0x74797065, code: 0x67636c69)}
-    static var class_: ITSSymbol {return ITSSymbol(name: "class_", type: 0x74797065, code: 0x70636c73)}
-    static var closeable: ITSSymbol {return ITSSymbol(name: "closeable", type: 0x74797065, code: 0x68636c62)}
-    static var collapseable: ITSSymbol {return ITSSymbol(name: "collapseable", type: 0x74797065, code: 0x70575368)}
-    static var collapsed: ITSSymbol {return ITSSymbol(name: "collapsed", type: 0x74797065, code: 0x77736864)}
-    static var collating: ITSSymbol {return ITSSymbol(name: "collating", type: 0x74797065, code: 0x6c77636c)}
-    static var colorTable: ITSSymbol {return ITSSymbol(name: "colorTable", type: 0x74797065, code: 0x636c7274)}
-    static var comment: ITSSymbol {return ITSSymbol(name: "comment", type: 0x74797065, code: 0x70436d74)}
-    static var compilation: ITSSymbol {return ITSSymbol(name: "compilation", type: 0x74797065, code: 0x70416e74)}
-    static var composer: ITSSymbol {return ITSSymbol(name: "composer", type: 0x74797065, code: 0x70436d70)}
-    static var container: ITSSymbol {return ITSSymbol(name: "container", type: 0x74797065, code: 0x63746e72)}
-    static var copies: ITSSymbol {return ITSSymbol(name: "copies", type: 0x74797065, code: 0x6c776370)}
-    static var cubicCentimeters: ITSSymbol {return ITSSymbol(name: "cubicCentimeters", type: 0x74797065, code: 0x63636d74)}
-    static var cubicFeet: ITSSymbol {return ITSSymbol(name: "cubicFeet", type: 0x74797065, code: 0x63666574)}
-    static var cubicInches: ITSSymbol {return ITSSymbol(name: "cubicInches", type: 0x74797065, code: 0x6375696e)}
-    static var cubicMeters: ITSSymbol {return ITSSymbol(name: "cubicMeters", type: 0x74797065, code: 0x636d6574)}
-    static var cubicYards: ITSSymbol {return ITSSymbol(name: "cubicYards", type: 0x74797065, code: 0x63797264)}
-    static var currentEQPreset: ITSSymbol {return ITSSymbol(name: "currentEQPreset", type: 0x74797065, code: 0x70455150)}
-    static var currentEncoder: ITSSymbol {return ITSSymbol(name: "currentEncoder", type: 0x74797065, code: 0x70456e63)}
-    static var currentPlaylist: ITSSymbol {return ITSSymbol(name: "currentPlaylist", type: 0x74797065, code: 0x70506c61)}
-    static var currentStreamTitle: ITSSymbol {return ITSSymbol(name: "currentStreamTitle", type: 0x74797065, code: 0x70537454)}
-    static var currentStreamURL: ITSSymbol {return ITSSymbol(name: "currentStreamURL", type: 0x74797065, code: 0x70537455)}
-    static var currentTrack: ITSSymbol {return ITSSymbol(name: "currentTrack", type: 0x74797065, code: 0x7054726b)}
-    static var currentVisual: ITSSymbol {return ITSSymbol(name: "currentVisual", type: 0x74797065, code: 0x70566973)}
-    static var dashStyle: ITSSymbol {return ITSSymbol(name: "dashStyle", type: 0x74797065, code: 0x74646173)}
-    static var data: ITSSymbol {return ITSSymbol(name: "data", type: 0x74797065, code: 0x72646174)}
-    static var data_: ITSSymbol {return ITSSymbol(name: "data_", type: 0x74797065, code: 0x70504354)}
-    static var databaseID: ITSSymbol {return ITSSymbol(name: "databaseID", type: 0x74797065, code: 0x70444944)}
-    static var date: ITSSymbol {return ITSSymbol(name: "date", type: 0x74797065, code: 0x6c647420)}
-    static var dateAdded: ITSSymbol {return ITSSymbol(name: "dateAdded", type: 0x74797065, code: 0x70416464)}
-    static var decimalStruct: ITSSymbol {return ITSSymbol(name: "decimalStruct", type: 0x74797065, code: 0x6465636d)}
-    static var degreesCelsius: ITSSymbol {return ITSSymbol(name: "degreesCelsius", type: 0x74797065, code: 0x64656763)}
-    static var degreesFahrenheit: ITSSymbol {return ITSSymbol(name: "degreesFahrenheit", type: 0x74797065, code: 0x64656766)}
-    static var degreesKelvin: ITSSymbol {return ITSSymbol(name: "degreesKelvin", type: 0x74797065, code: 0x6465676b)}
-    static var description_: ITSSymbol {return ITSSymbol(name: "description_", type: 0x74797065, code: 0x70446573)}
-    static var devicePlaylist: ITSSymbol {return ITSSymbol(name: "devicePlaylist", type: 0x74797065, code: 0x63447650)}
-    static var deviceTrack: ITSSymbol {return ITSSymbol(name: "deviceTrack", type: 0x74797065, code: 0x63447654)}
-    static var discCount: ITSSymbol {return ITSSymbol(name: "discCount", type: 0x74797065, code: 0x70447343)}
-    static var discNumber: ITSSymbol {return ITSSymbol(name: "discNumber", type: 0x74797065, code: 0x7044734e)}
-    static var doubleInteger: ITSSymbol {return ITSSymbol(name: "doubleInteger", type: 0x74797065, code: 0x636f6d70)}
-    static var downloaded: ITSSymbol {return ITSSymbol(name: "downloaded", type: 0x74797065, code: 0x70446c41)}
-    static var duration: ITSSymbol {return ITSSymbol(name: "duration", type: 0x74797065, code: 0x70447572)}
-    static var elementInfo: ITSSymbol {return ITSSymbol(name: "elementInfo", type: 0x74797065, code: 0x656c696e)}
-    static var enabled: ITSSymbol {return ITSSymbol(name: "enabled", type: 0x74797065, code: 0x656e626c)}
-    static var encodedString: ITSSymbol {return ITSSymbol(name: "encodedString", type: 0x74797065, code: 0x656e6373)}
-    static var encoder: ITSSymbol {return ITSSymbol(name: "encoder", type: 0x74797065, code: 0x63456e63)}
-    static var endingPage: ITSSymbol {return ITSSymbol(name: "endingPage", type: 0x74797065, code: 0x6c776c70)}
-    static var enumerator: ITSSymbol {return ITSSymbol(name: "enumerator", type: 0x74797065, code: 0x656e756d)}
-    static var episodeID: ITSSymbol {return ITSSymbol(name: "episodeID", type: 0x74797065, code: 0x70457044)}
-    static var episodeNumber: ITSSymbol {return ITSSymbol(name: "episodeNumber", type: 0x74797065, code: 0x7045704e)}
-    static var errorHandling: ITSSymbol {return ITSSymbol(name: "errorHandling", type: 0x74797065, code: 0x6c776568)}
-    static var eventInfo: ITSSymbol {return ITSSymbol(name: "eventInfo", type: 0x74797065, code: 0x6576696e)}
-    static var extendedFloat: ITSSymbol {return ITSSymbol(name: "extendedFloat", type: 0x74797065, code: 0x65787465)}
-    static var faxNumber: ITSSymbol {return ITSSymbol(name: "faxNumber", type: 0x74797065, code: 0x6661786e)}
-    static var feet: ITSSymbol {return ITSSymbol(name: "feet", type: 0x74797065, code: 0x66656574)}
-    static var fileRef: ITSSymbol {return ITSSymbol(name: "fileRef", type: 0x74797065, code: 0x66737266)}
-    static var fileSpecification: ITSSymbol {return ITSSymbol(name: "fileSpecification", type: 0x74797065, code: 0x66737320)}
-    static var fileTrack: ITSSymbol {return ITSSymbol(name: "fileTrack", type: 0x74797065, code: 0x63466c54)}
-    static var fileURL: ITSSymbol {return ITSSymbol(name: "fileURL", type: 0x74797065, code: 0x6675726c)}
-    static var finish: ITSSymbol {return ITSSymbol(name: "finish", type: 0x74797065, code: 0x70537470)}
-    static var fixed: ITSSymbol {return ITSSymbol(name: "fixed", type: 0x74797065, code: 0x66697864)}
-    static var fixedIndexing: ITSSymbol {return ITSSymbol(name: "fixedIndexing", type: 0x74797065, code: 0x70466978)}
-    static var fixedPoint: ITSSymbol {return ITSSymbol(name: "fixedPoint", type: 0x74797065, code: 0x66706e74)}
-    static var fixedRectangle: ITSSymbol {return ITSSymbol(name: "fixedRectangle", type: 0x74797065, code: 0x66726374)}
-    static var float: ITSSymbol {return ITSSymbol(name: "float", type: 0x74797065, code: 0x646f7562)}
-    static var float128bit: ITSSymbol {return ITSSymbol(name: "float128bit", type: 0x74797065, code: 0x6c64626c)}
-    static var folderPlaylist: ITSSymbol {return ITSSymbol(name: "folderPlaylist", type: 0x74797065, code: 0x63466f50)}
-    static var format: ITSSymbol {return ITSSymbol(name: "format", type: 0x74797065, code: 0x70466d74)}
-    static var freeSpace: ITSSymbol {return ITSSymbol(name: "freeSpace", type: 0x74797065, code: 0x66727370)}
-    static var frontmost: ITSSymbol {return ITSSymbol(name: "frontmost", type: 0x74797065, code: 0x70697366)}
-    static var fullScreen: ITSSymbol {return ITSSymbol(name: "fullScreen", type: 0x74797065, code: 0x70465363)}
-    static var gallons: ITSSymbol {return ITSSymbol(name: "gallons", type: 0x74797065, code: 0x67616c6e)}
-    static var gapless: ITSSymbol {return ITSSymbol(name: "gapless", type: 0x74797065, code: 0x7047706c)}
-    static var genre: ITSSymbol {return ITSSymbol(name: "genre", type: 0x74797065, code: 0x7047656e)}
-    static var grams: ITSSymbol {return ITSSymbol(name: "grams", type: 0x74797065, code: 0x6772616d)}
-    static var graphicText: ITSSymbol {return ITSSymbol(name: "graphicText", type: 0x74797065, code: 0x63677478)}
-    static var grouping: ITSSymbol {return ITSSymbol(name: "grouping", type: 0x74797065, code: 0x70477270)}
-    static var id: ITSSymbol {return ITSSymbol(name: "id", type: 0x74797065, code: 0x49442020)}
-    static var inches: ITSSymbol {return ITSSymbol(name: "inches", type: 0x74797065, code: 0x696e6368)}
-    static var index: ITSSymbol {return ITSSymbol(name: "index", type: 0x74797065, code: 0x70696478)}
-    static var integer: ITSSymbol {return ITSSymbol(name: "integer", type: 0x74797065, code: 0x6c6f6e67)}
-    static var internationalText: ITSSymbol {return ITSSymbol(name: "internationalText", type: 0x74797065, code: 0x69747874)}
-    static var internationalWritingCode: ITSSymbol {return ITSSymbol(name: "internationalWritingCode", type: 0x74797065, code: 0x696e746c)}
-    static var item: ITSSymbol {return ITSSymbol(name: "item", type: 0x74797065, code: 0x636f626a)}
-    static var kernelProcessID: ITSSymbol {return ITSSymbol(name: "kernelProcessID", type: 0x74797065, code: 0x6b706964)}
-    static var kilograms: ITSSymbol {return ITSSymbol(name: "kilograms", type: 0x74797065, code: 0x6b67726d)}
-    static var kilometers: ITSSymbol {return ITSSymbol(name: "kilometers", type: 0x74797065, code: 0x6b6d7472)}
-    static var kind: ITSSymbol {return ITSSymbol(name: "kind", type: 0x74797065, code: 0x704b6e64)}
-    static var libraryPlaylist: ITSSymbol {return ITSSymbol(name: "libraryPlaylist", type: 0x74797065, code: 0x634c6950)}
-    static var list: ITSSymbol {return ITSSymbol(name: "list", type: 0x74797065, code: 0x6c697374)}
-    static var liters: ITSSymbol {return ITSSymbol(name: "liters", type: 0x74797065, code: 0x6c697472)}
-    static var location: ITSSymbol {return ITSSymbol(name: "location", type: 0x74797065, code: 0x704c6f63)}
-    static var locationReference: ITSSymbol {return ITSSymbol(name: "locationReference", type: 0x74797065, code: 0x696e736c)}
-    static var longDescription: ITSSymbol {return ITSSymbol(name: "longDescription", type: 0x74797065, code: 0x704c6473)}
-    static var longFixed: ITSSymbol {return ITSSymbol(name: "longFixed", type: 0x74797065, code: 0x6c667864)}
-    static var longFixedPoint: ITSSymbol {return ITSSymbol(name: "longFixedPoint", type: 0x74797065, code: 0x6c667074)}
-    static var longFixedRectangle: ITSSymbol {return ITSSymbol(name: "longFixedRectangle", type: 0x74797065, code: 0x6c667263)}
-    static var longPoint: ITSSymbol {return ITSSymbol(name: "longPoint", type: 0x74797065, code: 0x6c706e74)}
-    static var longRectangle: ITSSymbol {return ITSSymbol(name: "longRectangle", type: 0x74797065, code: 0x6c726374)}
-    static var lyrics: ITSSymbol {return ITSSymbol(name: "lyrics", type: 0x74797065, code: 0x704c7972)}
-    static var machPort: ITSSymbol {return ITSSymbol(name: "machPort", type: 0x74797065, code: 0x706f7274)}
-    static var machine: ITSSymbol {return ITSSymbol(name: "machine", type: 0x74797065, code: 0x6d616368)}
-    static var machineLocation: ITSSymbol {return ITSSymbol(name: "machineLocation", type: 0x74797065, code: 0x6d4c6f63)}
-    static var meters: ITSSymbol {return ITSSymbol(name: "meters", type: 0x74797065, code: 0x6d657472)}
-    static var miles: ITSSymbol {return ITSSymbol(name: "miles", type: 0x74797065, code: 0x6d696c65)}
-    static var minimized: ITSSymbol {return ITSSymbol(name: "minimized", type: 0x74797065, code: 0x704d696e)}
-    static var missingValue: ITSSymbol {return ITSSymbol(name: "missingValue", type: 0x74797065, code: 0x6d736e67)}
-    static var modifiable: ITSSymbol {return ITSSymbol(name: "modifiable", type: 0x74797065, code: 0x704d6f64)}
-    static var modificationDate: ITSSymbol {return ITSSymbol(name: "modificationDate", type: 0x74797065, code: 0x61736d6f)}
-    static var mute: ITSSymbol {return ITSSymbol(name: "mute", type: 0x74797065, code: 0x704d7574)}
-    static var name: ITSSymbol {return ITSSymbol(name: "name", type: 0x74797065, code: 0x706e616d)}
-    static var null: ITSSymbol {return ITSSymbol(name: "null", type: 0x74797065, code: 0x6e756c6c)}
-    static var ounces: ITSSymbol {return ITSSymbol(name: "ounces", type: 0x74797065, code: 0x6f7a7320)}
-    static var pagesAcross: ITSSymbol {return ITSSymbol(name: "pagesAcross", type: 0x74797065, code: 0x6c776c61)}
-    static var pagesDown: ITSSymbol {return ITSSymbol(name: "pagesDown", type: 0x74797065, code: 0x6c776c64)}
-    static var parameterInfo: ITSSymbol {return ITSSymbol(name: "parameterInfo", type: 0x74797065, code: 0x706d696e)}
-    static var parent: ITSSymbol {return ITSSymbol(name: "parent", type: 0x74797065, code: 0x70506c50)}
-    static var persistentID: ITSSymbol {return ITSSymbol(name: "persistentID", type: 0x74797065, code: 0x70504953)}
-    static var picture: ITSSymbol {return ITSSymbol(name: "picture", type: 0x74797065, code: 0x50494354)}
-    static var pixelMapRecord: ITSSymbol {return ITSSymbol(name: "pixelMapRecord", type: 0x74797065, code: 0x74706d6d)}
-    static var playedCount: ITSSymbol {return ITSSymbol(name: "playedCount", type: 0x74797065, code: 0x70506c43)}
-    static var playedDate: ITSSymbol {return ITSSymbol(name: "playedDate", type: 0x74797065, code: 0x70506c44)}
-    static var playerPosition: ITSSymbol {return ITSSymbol(name: "playerPosition", type: 0x74797065, code: 0x70506f73)}
-    static var playerState: ITSSymbol {return ITSSymbol(name: "playerState", type: 0x74797065, code: 0x70506c53)}
-    static var playlist: ITSSymbol {return ITSSymbol(name: "playlist", type: 0x74797065, code: 0x63506c79)}
-    static var playlistWindow: ITSSymbol {return ITSSymbol(name: "playlistWindow", type: 0x74797065, code: 0x63506c57)}
-    static var podcast: ITSSymbol {return ITSSymbol(name: "podcast", type: 0x74797065, code: 0x70545063)}
-    static var point: ITSSymbol {return ITSSymbol(name: "point", type: 0x74797065, code: 0x51447074)}
-    static var position: ITSSymbol {return ITSSymbol(name: "position", type: 0x74797065, code: 0x70706f73)}
-    static var pounds: ITSSymbol {return ITSSymbol(name: "pounds", type: 0x74797065, code: 0x6c627320)}
-    static var preamp: ITSSymbol {return ITSSymbol(name: "preamp", type: 0x74797065, code: 0x70455141)}
-    static var printSettings: ITSSymbol {return ITSSymbol(name: "printSettings", type: 0x74797065, code: 0x70736574)}
-    static var printerFeatures: ITSSymbol {return ITSSymbol(name: "printerFeatures", type: 0x74797065, code: 0x6c777066)}
-    static var processSerialNumber: ITSSymbol {return ITSSymbol(name: "processSerialNumber", type: 0x74797065, code: 0x70736e20)}
-    static var properties: ITSSymbol {return ITSSymbol(name: "properties", type: 0x74797065, code: 0x70414c4c)}
-    static var property: ITSSymbol {return ITSSymbol(name: "property", type: 0x74797065, code: 0x70726f70)}
-    static var propertyInfo: ITSSymbol {return ITSSymbol(name: "propertyInfo", type: 0x74797065, code: 0x70696e66)}
-    static var quarts: ITSSymbol {return ITSSymbol(name: "quarts", type: 0x74797065, code: 0x71727473)}
-    static var radioTunerPlaylist: ITSSymbol {return ITSSymbol(name: "radioTunerPlaylist", type: 0x74797065, code: 0x63525450)}
-    static var rating: ITSSymbol {return ITSSymbol(name: "rating", type: 0x74797065, code: 0x70527465)}
-    static var ratingKind: ITSSymbol {return ITSSymbol(name: "ratingKind", type: 0x74797065, code: 0x7052746b)}
-    static var rawData: ITSSymbol {return ITSSymbol(name: "rawData", type: 0x74797065, code: 0x74647461)}
-    static var record: ITSSymbol {return ITSSymbol(name: "record", type: 0x74797065, code: 0x7265636f)}
-    static var reference: ITSSymbol {return ITSSymbol(name: "reference", type: 0x74797065, code: 0x6f626a20)}
-    static var releaseDate: ITSSymbol {return ITSSymbol(name: "releaseDate", type: 0x74797065, code: 0x70526c44)}
-    static var requestedPrintTime: ITSSymbol {return ITSSymbol(name: "requestedPrintTime", type: 0x74797065, code: 0x6c777174)}
-    static var resizable: ITSSymbol {return ITSSymbol(name: "resizable", type: 0x74797065, code: 0x7072737a)}
-    static var rotation: ITSSymbol {return ITSSymbol(name: "rotation", type: 0x74797065, code: 0x74726f74)}
-    static var sampleRate: ITSSymbol {return ITSSymbol(name: "sampleRate", type: 0x74797065, code: 0x70535274)}
-    static var script: ITSSymbol {return ITSSymbol(name: "script", type: 0x74797065, code: 0x73637074)}
-    static var seasonNumber: ITSSymbol {return ITSSymbol(name: "seasonNumber", type: 0x74797065, code: 0x7053654e)}
-    static var selection: ITSSymbol {return ITSSymbol(name: "selection", type: 0x74797065, code: 0x73656c65)}
-    static var shared: ITSSymbol {return ITSSymbol(name: "shared", type: 0x74797065, code: 0x70536872)}
-    static var sharedTrack: ITSSymbol {return ITSSymbol(name: "sharedTrack", type: 0x74797065, code: 0x63536854)}
-    static var shortFloat: ITSSymbol {return ITSSymbol(name: "shortFloat", type: 0x74797065, code: 0x73696e67)}
-    static var shortInteger: ITSSymbol {return ITSSymbol(name: "shortInteger", type: 0x74797065, code: 0x73686f72)}
-    static var show: ITSSymbol {return ITSSymbol(name: "show", type: 0x74797065, code: 0x70536877)}
-    static var shufflable: ITSSymbol {return ITSSymbol(name: "shufflable", type: 0x74797065, code: 0x70536661)}
-    static var shuffle: ITSSymbol {return ITSSymbol(name: "shuffle", type: 0x74797065, code: 0x70536866)}
-    static var size: ITSSymbol {return ITSSymbol(name: "size", type: 0x74797065, code: 0x7053697a)}
-    static var skippedCount: ITSSymbol {return ITSSymbol(name: "skippedCount", type: 0x74797065, code: 0x70536b43)}
-    static var skippedDate: ITSSymbol {return ITSSymbol(name: "skippedDate", type: 0x74797065, code: 0x70536b44)}
-    static var smart: ITSSymbol {return ITSSymbol(name: "smart", type: 0x74797065, code: 0x70536d74)}
-    static var songRepeat: ITSSymbol {return ITSSymbol(name: "songRepeat", type: 0x74797065, code: 0x70527074)}
-    static var sortAlbum: ITSSymbol {return ITSSymbol(name: "sortAlbum", type: 0x74797065, code: 0x7053416c)}
-    static var sortAlbumArtist: ITSSymbol {return ITSSymbol(name: "sortAlbumArtist", type: 0x74797065, code: 0x70534141)}
-    static var sortArtist: ITSSymbol {return ITSSymbol(name: "sortArtist", type: 0x74797065, code: 0x70534172)}
-    static var sortComposer: ITSSymbol {return ITSSymbol(name: "sortComposer", type: 0x74797065, code: 0x7053436d)}
-    static var sortName: ITSSymbol {return ITSSymbol(name: "sortName", type: 0x74797065, code: 0x70534e6d)}
-    static var sortShow: ITSSymbol {return ITSSymbol(name: "sortShow", type: 0x74797065, code: 0x7053534e)}
-    static var soundVolume: ITSSymbol {return ITSSymbol(name: "soundVolume", type: 0x74797065, code: 0x70566f6c)}
-    static var source: ITSSymbol {return ITSSymbol(name: "source", type: 0x74797065, code: 0x63537263)}
-    static var specialKind: ITSSymbol {return ITSSymbol(name: "specialKind", type: 0x74797065, code: 0x7053704b)}
-    static var squareFeet: ITSSymbol {return ITSSymbol(name: "squareFeet", type: 0x74797065, code: 0x73716674)}
-    static var squareKilometers: ITSSymbol {return ITSSymbol(name: "squareKilometers", type: 0x74797065, code: 0x73716b6d)}
-    static var squareMeters: ITSSymbol {return ITSSymbol(name: "squareMeters", type: 0x74797065, code: 0x7371726d)}
-    static var squareMiles: ITSSymbol {return ITSSymbol(name: "squareMiles", type: 0x74797065, code: 0x73716d69)}
-    static var squareYards: ITSSymbol {return ITSSymbol(name: "squareYards", type: 0x74797065, code: 0x73717964)}
-    static var start: ITSSymbol {return ITSSymbol(name: "start", type: 0x74797065, code: 0x70537472)}
-    static var startingPage: ITSSymbol {return ITSSymbol(name: "startingPage", type: 0x74797065, code: 0x6c776670)}
-    static var string: ITSSymbol {return ITSSymbol(name: "string", type: 0x74797065, code: 0x54455854)}
-    static var styledClipboardText: ITSSymbol {return ITSSymbol(name: "styledClipboardText", type: 0x74797065, code: 0x7374796c)}
-    static var styledText: ITSSymbol {return ITSSymbol(name: "styledText", type: 0x74797065, code: 0x53545854)}
-    static var styledUnicodeText: ITSSymbol {return ITSSymbol(name: "styledUnicodeText", type: 0x74797065, code: 0x73757478)}
-    static var suiteInfo: ITSSymbol {return ITSSymbol(name: "suiteInfo", type: 0x74797065, code: 0x7375696e)}
-    static var targetPrinter: ITSSymbol {return ITSSymbol(name: "targetPrinter", type: 0x74797065, code: 0x74727072)}
-    static var textStyleInfo: ITSSymbol {return ITSSymbol(name: "textStyleInfo", type: 0x74797065, code: 0x74737479)}
-    static var time: ITSSymbol {return ITSSymbol(name: "time", type: 0x74797065, code: 0x7054696d)}
-    static var track: ITSSymbol {return ITSSymbol(name: "track", type: 0x74797065, code: 0x6354726b)}
-    static var trackCount: ITSSymbol {return ITSSymbol(name: "trackCount", type: 0x74797065, code: 0x70547243)}
-    static var trackNumber: ITSSymbol {return ITSSymbol(name: "trackNumber", type: 0x74797065, code: 0x7054724e)}
-    static var typeClass: ITSSymbol {return ITSSymbol(name: "typeClass", type: 0x74797065, code: 0x74797065)}
-    static var unplayed: ITSSymbol {return ITSSymbol(name: "unplayed", type: 0x74797065, code: 0x70556e70)}
-    static var unsignedInteger: ITSSymbol {return ITSSymbol(name: "unsignedInteger", type: 0x74797065, code: 0x6d61676e)}
-    static var updateTracks: ITSSymbol {return ITSSymbol(name: "updateTracks", type: 0x74797065, code: 0x70555443)}
-    static var userPlaylist: ITSSymbol {return ITSSymbol(name: "userPlaylist", type: 0x74797065, code: 0x63557350)}
-    static var version_: ITSSymbol {return ITSSymbol(name: "version_", type: 0x74797065, code: 0x76657273)}
-    static var videoKind: ITSSymbol {return ITSSymbol(name: "videoKind", type: 0x74797065, code: 0x7056644b)}
-    static var view: ITSSymbol {return ITSSymbol(name: "view", type: 0x74797065, code: 0x70506c79)}
-    static var visible: ITSSymbol {return ITSSymbol(name: "visible", type: 0x74797065, code: 0x70766973)}
-    static var visual: ITSSymbol {return ITSSymbol(name: "visual", type: 0x74797065, code: 0x63566973)}
-    static var visualSize: ITSSymbol {return ITSSymbol(name: "visualSize", type: 0x74797065, code: 0x7056537a)}
-    static var visualsEnabled: ITSSymbol {return ITSSymbol(name: "visualsEnabled", type: 0x74797065, code: 0x70567345)}
-    static var volumeAdjustment: ITSSymbol {return ITSSymbol(name: "volumeAdjustment", type: 0x74797065, code: 0x7041646a)}
-    static var window: ITSSymbol {return ITSSymbol(name: "window", type: 0x74797065, code: 0x6377696e)}
-    static var writingCode: ITSSymbol {return ITSSymbol(name: "writingCode", type: 0x74797065, code: 0x70736374)}
-    static var yards: ITSSymbol {return ITSSymbol(name: "yards", type: 0x74797065, code: 0x79617264)}
-    static var year: ITSSymbol {return ITSSymbol(name: "year", type: 0x74797065, code: 0x70597220)}
-    static var zoomable: ITSSymbol {return ITSSymbol(name: "zoomable", type: 0x74797065, code: 0x69737a6d)}
-    static var zoomed: ITSSymbol {return ITSSymbol(name: "zoomed", type: 0x74797065, code: 0x707a756d)}
+    static var April: ITUSymbol {return ITUSymbol(name: "April", type: 0x74797065, code: 0x61707220)}
+    static var August: ITUSymbol {return ITUSymbol(name: "August", type: 0x74797065, code: 0x61756720)}
+    static var CString: ITUSymbol {return ITUSymbol(name: "CString", type: 0x74797065, code: 0x63737472)}
+    static var December: ITUSymbol {return ITUSymbol(name: "December", type: 0x74797065, code: 0x64656320)}
+    static var EPSPicture: ITUSymbol {return ITUSymbol(name: "EPSPicture", type: 0x74797065, code: 0x45505320)}
+    static var EQ: ITUSymbol {return ITUSymbol(name: "EQ", type: 0x74797065, code: 0x70455170)}
+    static var EQEnabled: ITUSymbol {return ITUSymbol(name: "EQEnabled", type: 0x74797065, code: 0x70455120)}
+    static var EQPreset: ITUSymbol {return ITUSymbol(name: "EQPreset", type: 0x74797065, code: 0x63455150)}
+    static var EQWindow: ITUSymbol {return ITUSymbol(name: "EQWindow", type: 0x74797065, code: 0x63455157)}
+    static var February: ITUSymbol {return ITUSymbol(name: "February", type: 0x74797065, code: 0x66656220)}
+    static var Friday: ITUSymbol {return ITUSymbol(name: "Friday", type: 0x74797065, code: 0x66726920)}
+    static var GIFPicture: ITUSymbol {return ITUSymbol(name: "GIFPicture", type: 0x74797065, code: 0x47494666)}
+    static var JPEGPicture: ITUSymbol {return ITUSymbol(name: "JPEGPicture", type: 0x74797065, code: 0x4a504547)}
+    static var January: ITUSymbol {return ITUSymbol(name: "January", type: 0x74797065, code: 0x6a616e20)}
+    static var July: ITUSymbol {return ITUSymbol(name: "July", type: 0x74797065, code: 0x6a756c20)}
+    static var June: ITUSymbol {return ITUSymbol(name: "June", type: 0x74797065, code: 0x6a756e20)}
+    static var March: ITUSymbol {return ITUSymbol(name: "March", type: 0x74797065, code: 0x6d617220)}
+    static var May: ITUSymbol {return ITUSymbol(name: "May", type: 0x74797065, code: 0x6d617920)}
+    static var Monday: ITUSymbol {return ITUSymbol(name: "Monday", type: 0x74797065, code: 0x6d6f6e20)}
+    static var November: ITUSymbol {return ITUSymbol(name: "November", type: 0x74797065, code: 0x6e6f7620)}
+    static var October: ITUSymbol {return ITUSymbol(name: "October", type: 0x74797065, code: 0x6f637420)}
+    static var PICTPicture: ITUSymbol {return ITUSymbol(name: "PICTPicture", type: 0x74797065, code: 0x50494354)}
+    static var PascalString: ITUSymbol {return ITUSymbol(name: "PascalString", type: 0x74797065, code: 0x70737472)}
+    static var RGB16Color: ITUSymbol {return ITUSymbol(name: "RGB16Color", type: 0x74797065, code: 0x74723136)}
+    static var RGB96Color: ITUSymbol {return ITUSymbol(name: "RGB96Color", type: 0x74797065, code: 0x74723936)}
+    static var RGBColor: ITUSymbol {return ITUSymbol(name: "RGBColor", type: 0x74797065, code: 0x63524742)}
+    static var Saturday: ITUSymbol {return ITUSymbol(name: "Saturday", type: 0x74797065, code: 0x73617420)}
+    static var September: ITUSymbol {return ITUSymbol(name: "September", type: 0x74797065, code: 0x73657020)}
+    static var Sunday: ITUSymbol {return ITUSymbol(name: "Sunday", type: 0x74797065, code: 0x73756e20)}
+    static var TIFFPicture: ITUSymbol {return ITUSymbol(name: "TIFFPicture", type: 0x74797065, code: 0x54494646)}
+    static var Thursday: ITUSymbol {return ITUSymbol(name: "Thursday", type: 0x74797065, code: 0x74687520)}
+    static var Tuesday: ITUSymbol {return ITUSymbol(name: "Tuesday", type: 0x74797065, code: 0x74756520)}
+    static var URLTrack: ITUSymbol {return ITUSymbol(name: "URLTrack", type: 0x74797065, code: 0x63555254)}
+    static var UTF16Text: ITUSymbol {return ITUSymbol(name: "UTF16Text", type: 0x74797065, code: 0x75743136)}
+    static var UTF8Text: ITUSymbol {return ITUSymbol(name: "UTF8Text", type: 0x74797065, code: 0x75746638)}
+    static var UnicodeText: ITUSymbol {return ITUSymbol(name: "UnicodeText", type: 0x74797065, code: 0x75747874)}
+    static var Wednesday: ITUSymbol {return ITUSymbol(name: "Wednesday", type: 0x74797065, code: 0x77656420)}
+    static var address: ITUSymbol {return ITUSymbol(name: "address", type: 0x74797065, code: 0x7055524c)}
+    static var album: ITUSymbol {return ITUSymbol(name: "album", type: 0x74797065, code: 0x70416c62)}
+    static var albumArtist: ITUSymbol {return ITUSymbol(name: "albumArtist", type: 0x74797065, code: 0x70416c41)}
+    static var albumRating: ITUSymbol {return ITUSymbol(name: "albumRating", type: 0x74797065, code: 0x70416c52)}
+    static var albumRatingKind: ITUSymbol {return ITUSymbol(name: "albumRatingKind", type: 0x74797065, code: 0x7041526b)}
+    static var alias: ITUSymbol {return ITUSymbol(name: "alias", type: 0x74797065, code: 0x616c6973)}
+    static var anything: ITUSymbol {return ITUSymbol(name: "anything", type: 0x74797065, code: 0x2a2a2a2a)}
+    static var application: ITUSymbol {return ITUSymbol(name: "application", type: 0x74797065, code: 0x63617070)}
+    static var applicationBundleID: ITUSymbol {return ITUSymbol(name: "applicationBundleID", type: 0x74797065, code: 0x62756e64)}
+    static var applicationSignature: ITUSymbol {return ITUSymbol(name: "applicationSignature", type: 0x74797065, code: 0x7369676e)}
+    static var applicationURL: ITUSymbol {return ITUSymbol(name: "applicationURL", type: 0x74797065, code: 0x6170726c)}
+    static var artist: ITUSymbol {return ITUSymbol(name: "artist", type: 0x74797065, code: 0x70417274)}
+    static var artwork: ITUSymbol {return ITUSymbol(name: "artwork", type: 0x74797065, code: 0x63417274)}
+    static var audioCDPlaylist: ITUSymbol {return ITUSymbol(name: "audioCDPlaylist", type: 0x74797065, code: 0x63434450)}
+    static var audioCDTrack: ITUSymbol {return ITUSymbol(name: "audioCDTrack", type: 0x74797065, code: 0x63434454)}
+    static var band1: ITUSymbol {return ITUSymbol(name: "band1", type: 0x74797065, code: 0x70455131)}
+    static var band10: ITUSymbol {return ITUSymbol(name: "band10", type: 0x74797065, code: 0x70455130)}
+    static var band2: ITUSymbol {return ITUSymbol(name: "band2", type: 0x74797065, code: 0x70455132)}
+    static var band3: ITUSymbol {return ITUSymbol(name: "band3", type: 0x74797065, code: 0x70455133)}
+    static var band4: ITUSymbol {return ITUSymbol(name: "band4", type: 0x74797065, code: 0x70455134)}
+    static var band5: ITUSymbol {return ITUSymbol(name: "band5", type: 0x74797065, code: 0x70455135)}
+    static var band6: ITUSymbol {return ITUSymbol(name: "band6", type: 0x74797065, code: 0x70455136)}
+    static var band7: ITUSymbol {return ITUSymbol(name: "band7", type: 0x74797065, code: 0x70455137)}
+    static var band8: ITUSymbol {return ITUSymbol(name: "band8", type: 0x74797065, code: 0x70455138)}
+    static var band9: ITUSymbol {return ITUSymbol(name: "band9", type: 0x74797065, code: 0x70455139)}
+    static var best: ITUSymbol {return ITUSymbol(name: "best", type: 0x74797065, code: 0x62657374)}
+    static var bitRate: ITUSymbol {return ITUSymbol(name: "bitRate", type: 0x74797065, code: 0x70425274)}
+    static var bookmark: ITUSymbol {return ITUSymbol(name: "bookmark", type: 0x74797065, code: 0x70426b74)}
+    static var bookmarkable: ITUSymbol {return ITUSymbol(name: "bookmarkable", type: 0x74797065, code: 0x70426b6d)}
+    static var boolean: ITUSymbol {return ITUSymbol(name: "boolean", type: 0x74797065, code: 0x626f6f6c)}
+    static var boundingRectangle: ITUSymbol {return ITUSymbol(name: "boundingRectangle", type: 0x74797065, code: 0x71647274)}
+    static var bounds: ITUSymbol {return ITUSymbol(name: "bounds", type: 0x74797065, code: 0x70626e64)}
+    static var bpm: ITUSymbol {return ITUSymbol(name: "bpm", type: 0x74797065, code: 0x7042504d)}
+    static var browserWindow: ITUSymbol {return ITUSymbol(name: "browserWindow", type: 0x74797065, code: 0x63427257)}
+    static var capacity: ITUSymbol {return ITUSymbol(name: "capacity", type: 0x74797065, code: 0x63617061)}
+    static var category: ITUSymbol {return ITUSymbol(name: "category", type: 0x74797065, code: 0x70436174)}
+    static var centimeters: ITUSymbol {return ITUSymbol(name: "centimeters", type: 0x74797065, code: 0x636d7472)}
+    static var classInfo: ITUSymbol {return ITUSymbol(name: "classInfo", type: 0x74797065, code: 0x67636c69)}
+    static var class_: ITUSymbol {return ITUSymbol(name: "class_", type: 0x74797065, code: 0x70636c73)}
+    static var closeable: ITUSymbol {return ITUSymbol(name: "closeable", type: 0x74797065, code: 0x68636c62)}
+    static var collapseable: ITUSymbol {return ITUSymbol(name: "collapseable", type: 0x74797065, code: 0x70575368)}
+    static var collapsed: ITUSymbol {return ITUSymbol(name: "collapsed", type: 0x74797065, code: 0x77736864)}
+    static var collating: ITUSymbol {return ITUSymbol(name: "collating", type: 0x74797065, code: 0x6c77636c)}
+    static var colorTable: ITUSymbol {return ITUSymbol(name: "colorTable", type: 0x74797065, code: 0x636c7274)}
+    static var comment: ITUSymbol {return ITUSymbol(name: "comment", type: 0x74797065, code: 0x70436d74)}
+    static var compilation: ITUSymbol {return ITUSymbol(name: "compilation", type: 0x74797065, code: 0x70416e74)}
+    static var composer: ITUSymbol {return ITUSymbol(name: "composer", type: 0x74797065, code: 0x70436d70)}
+    static var container: ITUSymbol {return ITUSymbol(name: "container", type: 0x74797065, code: 0x63746e72)}
+    static var copies: ITUSymbol {return ITUSymbol(name: "copies", type: 0x74797065, code: 0x6c776370)}
+    static var cubicCentimeters: ITUSymbol {return ITUSymbol(name: "cubicCentimeters", type: 0x74797065, code: 0x63636d74)}
+    static var cubicFeet: ITUSymbol {return ITUSymbol(name: "cubicFeet", type: 0x74797065, code: 0x63666574)}
+    static var cubicInches: ITUSymbol {return ITUSymbol(name: "cubicInches", type: 0x74797065, code: 0x6375696e)}
+    static var cubicMeters: ITUSymbol {return ITUSymbol(name: "cubicMeters", type: 0x74797065, code: 0x636d6574)}
+    static var cubicYards: ITUSymbol {return ITUSymbol(name: "cubicYards", type: 0x74797065, code: 0x63797264)}
+    static var currentEQPreset: ITUSymbol {return ITUSymbol(name: "currentEQPreset", type: 0x74797065, code: 0x70455150)}
+    static var currentEncoder: ITUSymbol {return ITUSymbol(name: "currentEncoder", type: 0x74797065, code: 0x70456e63)}
+    static var currentPlaylist: ITUSymbol {return ITUSymbol(name: "currentPlaylist", type: 0x74797065, code: 0x70506c61)}
+    static var currentStreamTitle: ITUSymbol {return ITUSymbol(name: "currentStreamTitle", type: 0x74797065, code: 0x70537454)}
+    static var currentStreamURL: ITUSymbol {return ITUSymbol(name: "currentStreamURL", type: 0x74797065, code: 0x70537455)}
+    static var currentTrack: ITUSymbol {return ITUSymbol(name: "currentTrack", type: 0x74797065, code: 0x7054726b)}
+    static var currentVisual: ITUSymbol {return ITUSymbol(name: "currentVisual", type: 0x74797065, code: 0x70566973)}
+    static var dashStyle: ITUSymbol {return ITUSymbol(name: "dashStyle", type: 0x74797065, code: 0x74646173)}
+    static var data: ITUSymbol {return ITUSymbol(name: "data", type: 0x74797065, code: 0x72646174)}
+    static var data_: ITUSymbol {return ITUSymbol(name: "data_", type: 0x74797065, code: 0x70504354)}
+    static var databaseID: ITUSymbol {return ITUSymbol(name: "databaseID", type: 0x74797065, code: 0x70444944)}
+    static var date: ITUSymbol {return ITUSymbol(name: "date", type: 0x74797065, code: 0x6c647420)}
+    static var dateAdded: ITUSymbol {return ITUSymbol(name: "dateAdded", type: 0x74797065, code: 0x70416464)}
+    static var decimalStruct: ITUSymbol {return ITUSymbol(name: "decimalStruct", type: 0x74797065, code: 0x6465636d)}
+    static var degreesCelsius: ITUSymbol {return ITUSymbol(name: "degreesCelsius", type: 0x74797065, code: 0x64656763)}
+    static var degreesFahrenheit: ITUSymbol {return ITUSymbol(name: "degreesFahrenheit", type: 0x74797065, code: 0x64656766)}
+    static var degreesKelvin: ITUSymbol {return ITUSymbol(name: "degreesKelvin", type: 0x74797065, code: 0x6465676b)}
+    static var description_: ITUSymbol {return ITUSymbol(name: "description_", type: 0x74797065, code: 0x70446573)}
+    static var devicePlaylist: ITUSymbol {return ITUSymbol(name: "devicePlaylist", type: 0x74797065, code: 0x63447650)}
+    static var deviceTrack: ITUSymbol {return ITUSymbol(name: "deviceTrack", type: 0x74797065, code: 0x63447654)}
+    static var discCount: ITUSymbol {return ITUSymbol(name: "discCount", type: 0x74797065, code: 0x70447343)}
+    static var discNumber: ITUSymbol {return ITUSymbol(name: "discNumber", type: 0x74797065, code: 0x7044734e)}
+    static var doubleInteger: ITUSymbol {return ITUSymbol(name: "doubleInteger", type: 0x74797065, code: 0x636f6d70)}
+    static var downloaded: ITUSymbol {return ITUSymbol(name: "downloaded", type: 0x74797065, code: 0x70446c41)}
+    static var duration: ITUSymbol {return ITUSymbol(name: "duration", type: 0x74797065, code: 0x70447572)}
+    static var elementInfo: ITUSymbol {return ITUSymbol(name: "elementInfo", type: 0x74797065, code: 0x656c696e)}
+    static var enabled: ITUSymbol {return ITUSymbol(name: "enabled", type: 0x74797065, code: 0x656e626c)}
+    static var encodedString: ITUSymbol {return ITUSymbol(name: "encodedString", type: 0x74797065, code: 0x656e6373)}
+    static var encoder: ITUSymbol {return ITUSymbol(name: "encoder", type: 0x74797065, code: 0x63456e63)}
+    static var endingPage: ITUSymbol {return ITUSymbol(name: "endingPage", type: 0x74797065, code: 0x6c776c70)}
+    static var enumerator: ITUSymbol {return ITUSymbol(name: "enumerator", type: 0x74797065, code: 0x656e756d)}
+    static var episodeID: ITUSymbol {return ITUSymbol(name: "episodeID", type: 0x74797065, code: 0x70457044)}
+    static var episodeNumber: ITUSymbol {return ITUSymbol(name: "episodeNumber", type: 0x74797065, code: 0x7045704e)}
+    static var errorHandling: ITUSymbol {return ITUSymbol(name: "errorHandling", type: 0x74797065, code: 0x6c776568)}
+    static var eventInfo: ITUSymbol {return ITUSymbol(name: "eventInfo", type: 0x74797065, code: 0x6576696e)}
+    static var extendedFloat: ITUSymbol {return ITUSymbol(name: "extendedFloat", type: 0x74797065, code: 0x65787465)}
+    static var faxNumber: ITUSymbol {return ITUSymbol(name: "faxNumber", type: 0x74797065, code: 0x6661786e)}
+    static var feet: ITUSymbol {return ITUSymbol(name: "feet", type: 0x74797065, code: 0x66656574)}
+    static var fileRef: ITUSymbol {return ITUSymbol(name: "fileRef", type: 0x74797065, code: 0x66737266)}
+    static var fileSpecification: ITUSymbol {return ITUSymbol(name: "fileSpecification", type: 0x74797065, code: 0x66737320)}
+    static var fileTrack: ITUSymbol {return ITUSymbol(name: "fileTrack", type: 0x74797065, code: 0x63466c54)}
+    static var fileURL: ITUSymbol {return ITUSymbol(name: "fileURL", type: 0x74797065, code: 0x6675726c)}
+    static var finish: ITUSymbol {return ITUSymbol(name: "finish", type: 0x74797065, code: 0x70537470)}
+    static var fixed: ITUSymbol {return ITUSymbol(name: "fixed", type: 0x74797065, code: 0x66697864)}
+    static var fixedIndexing: ITUSymbol {return ITUSymbol(name: "fixedIndexing", type: 0x74797065, code: 0x70466978)}
+    static var fixedPoint: ITUSymbol {return ITUSymbol(name: "fixedPoint", type: 0x74797065, code: 0x66706e74)}
+    static var fixedRectangle: ITUSymbol {return ITUSymbol(name: "fixedRectangle", type: 0x74797065, code: 0x66726374)}
+    static var float: ITUSymbol {return ITUSymbol(name: "float", type: 0x74797065, code: 0x646f7562)}
+    static var float128bit: ITUSymbol {return ITUSymbol(name: "float128bit", type: 0x74797065, code: 0x6c64626c)}
+    static var folderPlaylist: ITUSymbol {return ITUSymbol(name: "folderPlaylist", type: 0x74797065, code: 0x63466f50)}
+    static var format: ITUSymbol {return ITUSymbol(name: "format", type: 0x74797065, code: 0x70466d74)}
+    static var freeSpace: ITUSymbol {return ITUSymbol(name: "freeSpace", type: 0x74797065, code: 0x66727370)}
+    static var frontmost: ITUSymbol {return ITUSymbol(name: "frontmost", type: 0x74797065, code: 0x70697366)}
+    static var fullScreen: ITUSymbol {return ITUSymbol(name: "fullScreen", type: 0x74797065, code: 0x70465363)}
+    static var gallons: ITUSymbol {return ITUSymbol(name: "gallons", type: 0x74797065, code: 0x67616c6e)}
+    static var gapless: ITUSymbol {return ITUSymbol(name: "gapless", type: 0x74797065, code: 0x7047706c)}
+    static var genre: ITUSymbol {return ITUSymbol(name: "genre", type: 0x74797065, code: 0x7047656e)}
+    static var grams: ITUSymbol {return ITUSymbol(name: "grams", type: 0x74797065, code: 0x6772616d)}
+    static var graphicText: ITUSymbol {return ITUSymbol(name: "graphicText", type: 0x74797065, code: 0x63677478)}
+    static var grouping: ITUSymbol {return ITUSymbol(name: "grouping", type: 0x74797065, code: 0x70477270)}
+    static var id: ITUSymbol {return ITUSymbol(name: "id", type: 0x74797065, code: 0x49442020)}
+    static var inches: ITUSymbol {return ITUSymbol(name: "inches", type: 0x74797065, code: 0x696e6368)}
+    static var index: ITUSymbol {return ITUSymbol(name: "index", type: 0x74797065, code: 0x70696478)}
+    static var integer: ITUSymbol {return ITUSymbol(name: "integer", type: 0x74797065, code: 0x6c6f6e67)}
+    static var internationalText: ITUSymbol {return ITUSymbol(name: "internationalText", type: 0x74797065, code: 0x69747874)}
+    static var internationalWritingCode: ITUSymbol {return ITUSymbol(name: "internationalWritingCode", type: 0x74797065, code: 0x696e746c)}
+    static var item: ITUSymbol {return ITUSymbol(name: "item", type: 0x74797065, code: 0x636f626a)}
+    static var kernelProcessID: ITUSymbol {return ITUSymbol(name: "kernelProcessID", type: 0x74797065, code: 0x6b706964)}
+    static var kilograms: ITUSymbol {return ITUSymbol(name: "kilograms", type: 0x74797065, code: 0x6b67726d)}
+    static var kilometers: ITUSymbol {return ITUSymbol(name: "kilometers", type: 0x74797065, code: 0x6b6d7472)}
+    static var kind: ITUSymbol {return ITUSymbol(name: "kind", type: 0x74797065, code: 0x704b6e64)}
+    static var libraryPlaylist: ITUSymbol {return ITUSymbol(name: "libraryPlaylist", type: 0x74797065, code: 0x634c6950)}
+    static var list: ITUSymbol {return ITUSymbol(name: "list", type: 0x74797065, code: 0x6c697374)}
+    static var liters: ITUSymbol {return ITUSymbol(name: "liters", type: 0x74797065, code: 0x6c697472)}
+    static var location: ITUSymbol {return ITUSymbol(name: "location", type: 0x74797065, code: 0x704c6f63)}
+    static var locationReference: ITUSymbol {return ITUSymbol(name: "locationReference", type: 0x74797065, code: 0x696e736c)}
+    static var longDescription: ITUSymbol {return ITUSymbol(name: "longDescription", type: 0x74797065, code: 0x704c6473)}
+    static var longFixed: ITUSymbol {return ITUSymbol(name: "longFixed", type: 0x74797065, code: 0x6c667864)}
+    static var longFixedPoint: ITUSymbol {return ITUSymbol(name: "longFixedPoint", type: 0x74797065, code: 0x6c667074)}
+    static var longFixedRectangle: ITUSymbol {return ITUSymbol(name: "longFixedRectangle", type: 0x74797065, code: 0x6c667263)}
+    static var longPoint: ITUSymbol {return ITUSymbol(name: "longPoint", type: 0x74797065, code: 0x6c706e74)}
+    static var longRectangle: ITUSymbol {return ITUSymbol(name: "longRectangle", type: 0x74797065, code: 0x6c726374)}
+    static var lyrics: ITUSymbol {return ITUSymbol(name: "lyrics", type: 0x74797065, code: 0x704c7972)}
+    static var machPort: ITUSymbol {return ITUSymbol(name: "machPort", type: 0x74797065, code: 0x706f7274)}
+    static var machine: ITUSymbol {return ITUSymbol(name: "machine", type: 0x74797065, code: 0x6d616368)}
+    static var machineLocation: ITUSymbol {return ITUSymbol(name: "machineLocation", type: 0x74797065, code: 0x6d4c6f63)}
+    static var meters: ITUSymbol {return ITUSymbol(name: "meters", type: 0x74797065, code: 0x6d657472)}
+    static var miles: ITUSymbol {return ITUSymbol(name: "miles", type: 0x74797065, code: 0x6d696c65)}
+    static var minimized: ITUSymbol {return ITUSymbol(name: "minimized", type: 0x74797065, code: 0x704d696e)}
+    static var missingValue: ITUSymbol {return ITUSymbol(name: "missingValue", type: 0x74797065, code: 0x6d736e67)}
+    static var modifiable: ITUSymbol {return ITUSymbol(name: "modifiable", type: 0x74797065, code: 0x704d6f64)}
+    static var modificationDate: ITUSymbol {return ITUSymbol(name: "modificationDate", type: 0x74797065, code: 0x61736d6f)}
+    static var mute: ITUSymbol {return ITUSymbol(name: "mute", type: 0x74797065, code: 0x704d7574)}
+    static var name: ITUSymbol {return ITUSymbol(name: "name", type: 0x74797065, code: 0x706e616d)}
+    static var null: ITUSymbol {return ITUSymbol(name: "null", type: 0x74797065, code: 0x6e756c6c)}
+    static var ounces: ITUSymbol {return ITUSymbol(name: "ounces", type: 0x74797065, code: 0x6f7a7320)}
+    static var pagesAcross: ITUSymbol {return ITUSymbol(name: "pagesAcross", type: 0x74797065, code: 0x6c776c61)}
+    static var pagesDown: ITUSymbol {return ITUSymbol(name: "pagesDown", type: 0x74797065, code: 0x6c776c64)}
+    static var parameterInfo: ITUSymbol {return ITUSymbol(name: "parameterInfo", type: 0x74797065, code: 0x706d696e)}
+    static var parent: ITUSymbol {return ITUSymbol(name: "parent", type: 0x74797065, code: 0x70506c50)}
+    static var persistentID: ITUSymbol {return ITUSymbol(name: "persistentID", type: 0x74797065, code: 0x70504953)}
+    static var picture: ITUSymbol {return ITUSymbol(name: "picture", type: 0x74797065, code: 0x50494354)}
+    static var pixelMapRecord: ITUSymbol {return ITUSymbol(name: "pixelMapRecord", type: 0x74797065, code: 0x74706d6d)}
+    static var playedCount: ITUSymbol {return ITUSymbol(name: "playedCount", type: 0x74797065, code: 0x70506c43)}
+    static var playedDate: ITUSymbol {return ITUSymbol(name: "playedDate", type: 0x74797065, code: 0x70506c44)}
+    static var playerPosition: ITUSymbol {return ITUSymbol(name: "playerPosition", type: 0x74797065, code: 0x70506f73)}
+    static var playerState: ITUSymbol {return ITUSymbol(name: "playerState", type: 0x74797065, code: 0x70506c53)}
+    static var playlist: ITUSymbol {return ITUSymbol(name: "playlist", type: 0x74797065, code: 0x63506c79)}
+    static var playlistWindow: ITUSymbol {return ITUSymbol(name: "playlistWindow", type: 0x74797065, code: 0x63506c57)}
+    static var podcast: ITUSymbol {return ITUSymbol(name: "podcast", type: 0x74797065, code: 0x70545063)}
+    static var point: ITUSymbol {return ITUSymbol(name: "point", type: 0x74797065, code: 0x51447074)}
+    static var position: ITUSymbol {return ITUSymbol(name: "position", type: 0x74797065, code: 0x70706f73)}
+    static var pounds: ITUSymbol {return ITUSymbol(name: "pounds", type: 0x74797065, code: 0x6c627320)}
+    static var preamp: ITUSymbol {return ITUSymbol(name: "preamp", type: 0x74797065, code: 0x70455141)}
+    static var printSettings: ITUSymbol {return ITUSymbol(name: "printSettings", type: 0x74797065, code: 0x70736574)}
+    static var printerFeatures: ITUSymbol {return ITUSymbol(name: "printerFeatures", type: 0x74797065, code: 0x6c777066)}
+    static var processSerialNumber: ITUSymbol {return ITUSymbol(name: "processSerialNumber", type: 0x74797065, code: 0x70736e20)}
+    static var properties: ITUSymbol {return ITUSymbol(name: "properties", type: 0x74797065, code: 0x70414c4c)}
+    static var property: ITUSymbol {return ITUSymbol(name: "property", type: 0x74797065, code: 0x70726f70)}
+    static var propertyInfo: ITUSymbol {return ITUSymbol(name: "propertyInfo", type: 0x74797065, code: 0x70696e66)}
+    static var quarts: ITUSymbol {return ITUSymbol(name: "quarts", type: 0x74797065, code: 0x71727473)}
+    static var radioTunerPlaylist: ITUSymbol {return ITUSymbol(name: "radioTunerPlaylist", type: 0x74797065, code: 0x63525450)}
+    static var rating: ITUSymbol {return ITUSymbol(name: "rating", type: 0x74797065, code: 0x70527465)}
+    static var ratingKind: ITUSymbol {return ITUSymbol(name: "ratingKind", type: 0x74797065, code: 0x7052746b)}
+    static var rawData: ITUSymbol {return ITUSymbol(name: "rawData", type: 0x74797065, code: 0x74647461)}
+    static var record: ITUSymbol {return ITUSymbol(name: "record", type: 0x74797065, code: 0x7265636f)}
+    static var reference: ITUSymbol {return ITUSymbol(name: "reference", type: 0x74797065, code: 0x6f626a20)}
+    static var releaseDate: ITUSymbol {return ITUSymbol(name: "releaseDate", type: 0x74797065, code: 0x70526c44)}
+    static var requestedPrintTime: ITUSymbol {return ITUSymbol(name: "requestedPrintTime", type: 0x74797065, code: 0x6c777174)}
+    static var resizable: ITUSymbol {return ITUSymbol(name: "resizable", type: 0x74797065, code: 0x7072737a)}
+    static var rotation: ITUSymbol {return ITUSymbol(name: "rotation", type: 0x74797065, code: 0x74726f74)}
+    static var sampleRate: ITUSymbol {return ITUSymbol(name: "sampleRate", type: 0x74797065, code: 0x70535274)}
+    static var script: ITUSymbol {return ITUSymbol(name: "script", type: 0x74797065, code: 0x73637074)}
+    static var seasonNumber: ITUSymbol {return ITUSymbol(name: "seasonNumber", type: 0x74797065, code: 0x7053654e)}
+    static var selection: ITUSymbol {return ITUSymbol(name: "selection", type: 0x74797065, code: 0x73656c65)}
+    static var shared: ITUSymbol {return ITUSymbol(name: "shared", type: 0x74797065, code: 0x70536872)}
+    static var sharedTrack: ITUSymbol {return ITUSymbol(name: "sharedTrack", type: 0x74797065, code: 0x63536854)}
+    static var shortFloat: ITUSymbol {return ITUSymbol(name: "shortFloat", type: 0x74797065, code: 0x73696e67)}
+    static var shortInteger: ITUSymbol {return ITUSymbol(name: "shortInteger", type: 0x74797065, code: 0x73686f72)}
+    static var show: ITUSymbol {return ITUSymbol(name: "show", type: 0x74797065, code: 0x70536877)}
+    static var shufflable: ITUSymbol {return ITUSymbol(name: "shufflable", type: 0x74797065, code: 0x70536661)}
+    static var shuffle: ITUSymbol {return ITUSymbol(name: "shuffle", type: 0x74797065, code: 0x70536866)}
+    static var size: ITUSymbol {return ITUSymbol(name: "size", type: 0x74797065, code: 0x7053697a)}
+    static var skippedCount: ITUSymbol {return ITUSymbol(name: "skippedCount", type: 0x74797065, code: 0x70536b43)}
+    static var skippedDate: ITUSymbol {return ITUSymbol(name: "skippedDate", type: 0x74797065, code: 0x70536b44)}
+    static var smart: ITUSymbol {return ITUSymbol(name: "smart", type: 0x74797065, code: 0x70536d74)}
+    static var songRepeat: ITUSymbol {return ITUSymbol(name: "songRepeat", type: 0x74797065, code: 0x70527074)}
+    static var sortAlbum: ITUSymbol {return ITUSymbol(name: "sortAlbum", type: 0x74797065, code: 0x7053416c)}
+    static var sortAlbumArtist: ITUSymbol {return ITUSymbol(name: "sortAlbumArtist", type: 0x74797065, code: 0x70534141)}
+    static var sortArtist: ITUSymbol {return ITUSymbol(name: "sortArtist", type: 0x74797065, code: 0x70534172)}
+    static var sortComposer: ITUSymbol {return ITUSymbol(name: "sortComposer", type: 0x74797065, code: 0x7053436d)}
+    static var sortName: ITUSymbol {return ITUSymbol(name: "sortName", type: 0x74797065, code: 0x70534e6d)}
+    static var sortShow: ITUSymbol {return ITUSymbol(name: "sortShow", type: 0x74797065, code: 0x7053534e)}
+    static var soundVolume: ITUSymbol {return ITUSymbol(name: "soundVolume", type: 0x74797065, code: 0x70566f6c)}
+    static var source: ITUSymbol {return ITUSymbol(name: "source", type: 0x74797065, code: 0x63537263)}
+    static var specialKind: ITUSymbol {return ITUSymbol(name: "specialKind", type: 0x74797065, code: 0x7053704b)}
+    static var squareFeet: ITUSymbol {return ITUSymbol(name: "squareFeet", type: 0x74797065, code: 0x73716674)}
+    static var squareKilometers: ITUSymbol {return ITUSymbol(name: "squareKilometers", type: 0x74797065, code: 0x73716b6d)}
+    static var squareMeters: ITUSymbol {return ITUSymbol(name: "squareMeters", type: 0x74797065, code: 0x7371726d)}
+    static var squareMiles: ITUSymbol {return ITUSymbol(name: "squareMiles", type: 0x74797065, code: 0x73716d69)}
+    static var squareYards: ITUSymbol {return ITUSymbol(name: "squareYards", type: 0x74797065, code: 0x73717964)}
+    static var start: ITUSymbol {return ITUSymbol(name: "start", type: 0x74797065, code: 0x70537472)}
+    static var startingPage: ITUSymbol {return ITUSymbol(name: "startingPage", type: 0x74797065, code: 0x6c776670)}
+    static var string: ITUSymbol {return ITUSymbol(name: "string", type: 0x74797065, code: 0x54455854)}
+    static var styledClipboardText: ITUSymbol {return ITUSymbol(name: "styledClipboardText", type: 0x74797065, code: 0x7374796c)}
+    static var styledText: ITUSymbol {return ITUSymbol(name: "styledText", type: 0x74797065, code: 0x53545854)}
+    static var styledUnicodeText: ITUSymbol {return ITUSymbol(name: "styledUnicodeText", type: 0x74797065, code: 0x73757478)}
+    static var suiteInfo: ITUSymbol {return ITUSymbol(name: "suiteInfo", type: 0x74797065, code: 0x7375696e)}
+    static var targetPrinter: ITUSymbol {return ITUSymbol(name: "targetPrinter", type: 0x74797065, code: 0x74727072)}
+    static var textStyleInfo: ITUSymbol {return ITUSymbol(name: "textStyleInfo", type: 0x74797065, code: 0x74737479)}
+    static var time: ITUSymbol {return ITUSymbol(name: "time", type: 0x74797065, code: 0x7054696d)}
+    static var track: ITUSymbol {return ITUSymbol(name: "track", type: 0x74797065, code: 0x6354726b)}
+    static var trackCount: ITUSymbol {return ITUSymbol(name: "trackCount", type: 0x74797065, code: 0x70547243)}
+    static var trackNumber: ITUSymbol {return ITUSymbol(name: "trackNumber", type: 0x74797065, code: 0x7054724e)}
+    static var typeClass: ITUSymbol {return ITUSymbol(name: "typeClass", type: 0x74797065, code: 0x74797065)}
+    static var unplayed: ITUSymbol {return ITUSymbol(name: "unplayed", type: 0x74797065, code: 0x70556e70)}
+    static var unsignedInteger: ITUSymbol {return ITUSymbol(name: "unsignedInteger", type: 0x74797065, code: 0x6d61676e)}
+    static var updateTracks: ITUSymbol {return ITUSymbol(name: "updateTracks", type: 0x74797065, code: 0x70555443)}
+    static var userPlaylist: ITUSymbol {return ITUSymbol(name: "userPlaylist", type: 0x74797065, code: 0x63557350)}
+    static var version_: ITUSymbol {return ITUSymbol(name: "version_", type: 0x74797065, code: 0x76657273)}
+    static var videoKind: ITUSymbol {return ITUSymbol(name: "videoKind", type: 0x74797065, code: 0x7056644b)}
+    static var view: ITUSymbol {return ITUSymbol(name: "view", type: 0x74797065, code: 0x70506c79)}
+    static var visible: ITUSymbol {return ITUSymbol(name: "visible", type: 0x74797065, code: 0x70766973)}
+    static var visual: ITUSymbol {return ITUSymbol(name: "visual", type: 0x74797065, code: 0x63566973)}
+    static var visualSize: ITUSymbol {return ITUSymbol(name: "visualSize", type: 0x74797065, code: 0x7056537a)}
+    static var visualsEnabled: ITUSymbol {return ITUSymbol(name: "visualsEnabled", type: 0x74797065, code: 0x70567345)}
+    static var volumeAdjustment: ITUSymbol {return ITUSymbol(name: "volumeAdjustment", type: 0x74797065, code: 0x7041646a)}
+    static var window: ITUSymbol {return ITUSymbol(name: "window", type: 0x74797065, code: 0x6377696e)}
+    static var writingCode: ITUSymbol {return ITUSymbol(name: "writingCode", type: 0x74797065, code: 0x70736374)}
+    static var yards: ITUSymbol {return ITUSymbol(name: "yards", type: 0x74797065, code: 0x79617264)}
+    static var year: ITUSymbol {return ITUSymbol(name: "year", type: 0x74797065, code: 0x70597220)}
+    static var zoomable: ITUSymbol {return ITUSymbol(name: "zoomable", type: 0x74797065, code: 0x69737a6d)}
+    static var zoomed: ITUSymbol {return ITUSymbol(name: "zoomed", type: 0x74797065, code: 0x707a756d)}
     
     // Enumerators    // TO DO: add 'override' if var is already defined in AEBSymbol
-    static var Books: ITSSymbol {return ITSSymbol(name: "Books", type: 0x656e756d, code: 0x6b537041)}
-    static var Genius: ITSSymbol {return ITSSymbol(name: "Genius", type: 0x656e756d, code: 0x6b537047)}
-    static var Library: ITSSymbol {return ITSSymbol(name: "Library", type: 0x656e756d, code: 0x6b53704c)}
-    static var MP3CD: ITSSymbol {return ITSSymbol(name: "MP3CD", type: 0x656e756d, code: 0x6b4d4344)}
-    static var Movies: ITSSymbol {return ITSSymbol(name: "Movies", type: 0x656e756d, code: 0x6b537049)}
-    static var Music: ITSSymbol {return ITSSymbol(name: "Music", type: 0x656e756d, code: 0x6b53705a)}
-    static var PartyShuffle: ITSSymbol {return ITSSymbol(name: "PartyShuffle", type: 0x656e756d, code: 0x6b537053)}
-    static var Podcasts: ITSSymbol {return ITSSymbol(name: "Podcasts", type: 0x656e756d, code: 0x6b537050)}
-    static var PurchasedMusic: ITSSymbol {return ITSSymbol(name: "PurchasedMusic", type: 0x656e756d, code: 0x6b53704d)}
-    static var TVShow: ITSSymbol {return ITSSymbol(name: "TVShow", type: 0x656e756d, code: 0x6b566454)}
-    static var TVShows: ITSSymbol {return ITSSymbol(name: "TVShows", type: 0x656e756d, code: 0x6b537054)}
-    static var albumListing: ITSSymbol {return ITSSymbol(name: "albumListing", type: 0x656e756d, code: 0x6b416c62)}
-    static var albums: ITSSymbol {return ITSSymbol(name: "albums", type: 0x656e756d, code: 0x6b53724c)}
-    static var all: ITSSymbol {return ITSSymbol(name: "all", type: 0x656e756d, code: 0x6b416c6c)}
-    static var applicationResponses: ITSSymbol {return ITSSymbol(name: "applicationResponses", type: 0x656e756d, code: 0x726d7465)}
-    static var artists: ITSSymbol {return ITSSymbol(name: "artists", type: 0x656e756d, code: 0x6b537252)}
-    static var ask: ITSSymbol {return ITSSymbol(name: "ask", type: 0x656e756d, code: 0x61736b20)}
-    static var audioCD: ITSSymbol {return ITSSymbol(name: "audioCD", type: 0x656e756d, code: 0x6b414344)}
-    static var case_: ITSSymbol {return ITSSymbol(name: "case_", type: 0x656e756d, code: 0x63617365)}
-    static var cdInsert: ITSSymbol {return ITSSymbol(name: "cdInsert", type: 0x656e756d, code: 0x6b434469)}
-    static var composers: ITSSymbol {return ITSSymbol(name: "composers", type: 0x656e756d, code: 0x6b537243)}
-    static var computed: ITSSymbol {return ITSSymbol(name: "computed", type: 0x656e756d, code: 0x6b527443)}
-    static var detailed: ITSSymbol {return ITSSymbol(name: "detailed", type: 0x656e756d, code: 0x6c776474)}
-    static var device: ITSSymbol {return ITSSymbol(name: "device", type: 0x656e756d, code: 0x6b446576)}
-    static var diacriticals: ITSSymbol {return ITSSymbol(name: "diacriticals", type: 0x656e756d, code: 0x64696163)}
-    static var displayed: ITSSymbol {return ITSSymbol(name: "displayed", type: 0x656e756d, code: 0x6b537256)}
-    static var expansion: ITSSymbol {return ITSSymbol(name: "expansion", type: 0x656e756d, code: 0x65787061)}
-    static var fastForwarding: ITSSymbol {return ITSSymbol(name: "fastForwarding", type: 0x656e756d, code: 0x6b505346)}
-    static var folder: ITSSymbol {return ITSSymbol(name: "folder", type: 0x656e756d, code: 0x6b537046)}
-    static var hyphens: ITSSymbol {return ITSSymbol(name: "hyphens", type: 0x656e756d, code: 0x68797068)}
-    static var iPod: ITSSymbol {return ITSSymbol(name: "iPod", type: 0x656e756d, code: 0x6b506f64)}
-    static var iTunesU: ITSSymbol {return ITSSymbol(name: "iTunesU", type: 0x656e756d, code: 0x6b537055)}
-    static var large: ITSSymbol {return ITSSymbol(name: "large", type: 0x656e756d, code: 0x6b56534c)}
-    static var library: ITSSymbol {return ITSSymbol(name: "library", type: 0x656e756d, code: 0x6b4c6962)}
-    static var medium: ITSSymbol {return ITSSymbol(name: "medium", type: 0x656e756d, code: 0x6b56534d)}
-    static var movie: ITSSymbol {return ITSSymbol(name: "movie", type: 0x656e756d, code: 0x6b56644d)}
-    static var musicVideo: ITSSymbol {return ITSSymbol(name: "musicVideo", type: 0x656e756d, code: 0x6b566456)}
-    static var no: ITSSymbol {return ITSSymbol(name: "no", type: 0x656e756d, code: 0x6e6f2020)}
-    static var none_: ITSSymbol {return ITSSymbol(name: "none_", type: 0x656e756d, code: 0x6b4e6f6e)}
-    static var numericStrings: ITSSymbol {return ITSSymbol(name: "numericStrings", type: 0x656e756d, code: 0x6e756d65)}
-    static var off: ITSSymbol {return ITSSymbol(name: "off", type: 0x656e756d, code: 0x6b52704f)}
-    static var one: ITSSymbol {return ITSSymbol(name: "one", type: 0x656e756d, code: 0x6b527031)}
-    static var paused: ITSSymbol {return ITSSymbol(name: "paused", type: 0x656e756d, code: 0x6b505370)}
-    static var playing: ITSSymbol {return ITSSymbol(name: "playing", type: 0x656e756d, code: 0x6b505350)}
-    static var punctuation: ITSSymbol {return ITSSymbol(name: "punctuation", type: 0x656e756d, code: 0x70756e63)}
-    static var radioTuner: ITSSymbol {return ITSSymbol(name: "radioTuner", type: 0x656e756d, code: 0x6b54756e)}
-    static var rewinding: ITSSymbol {return ITSSymbol(name: "rewinding", type: 0x656e756d, code: 0x6b505352)}
-    static var sharedLibrary: ITSSymbol {return ITSSymbol(name: "sharedLibrary", type: 0x656e756d, code: 0x6b536864)}
-    static var small: ITSSymbol {return ITSSymbol(name: "small", type: 0x656e756d, code: 0x6b565353)}
-    static var songs: ITSSymbol {return ITSSymbol(name: "songs", type: 0x656e756d, code: 0x6b537253)}
-    static var standard: ITSSymbol {return ITSSymbol(name: "standard", type: 0x656e756d, code: 0x6c777374)}
-    static var stopped: ITSSymbol {return ITSSymbol(name: "stopped", type: 0x656e756d, code: 0x6b505353)}
-    static var trackListing: ITSSymbol {return ITSSymbol(name: "trackListing", type: 0x656e756d, code: 0x6b54726b)}
-    static var unknown: ITSSymbol {return ITSSymbol(name: "unknown", type: 0x656e756d, code: 0x6b556e6b)}
-    static var user: ITSSymbol {return ITSSymbol(name: "user", type: 0x656e756d, code: 0x6b527455)}
-    static var whitespace: ITSSymbol {return ITSSymbol(name: "whitespace", type: 0x656e756d, code: 0x77686974)}
-    static var yes: ITSSymbol {return ITSSymbol(name: "yes", type: 0x656e756d, code: 0x79657320)}
+    static var Books: ITUSymbol {return ITUSymbol(name: "Books", type: 0x656e756d, code: 0x6b537041)}
+    static var Genius: ITUSymbol {return ITUSymbol(name: "Genius", type: 0x656e756d, code: 0x6b537047)}
+    static var Library: ITUSymbol {return ITUSymbol(name: "Library", type: 0x656e756d, code: 0x6b53704c)}
+    static var MP3CD: ITUSymbol {return ITUSymbol(name: "MP3CD", type: 0x656e756d, code: 0x6b4d4344)}
+    static var Movies: ITUSymbol {return ITUSymbol(name: "Movies", type: 0x656e756d, code: 0x6b537049)}
+    static var Music: ITUSymbol {return ITUSymbol(name: "Music", type: 0x656e756d, code: 0x6b53705a)}
+    static var PartyShuffle: ITUSymbol {return ITUSymbol(name: "PartyShuffle", type: 0x656e756d, code: 0x6b537053)}
+    static var Podcasts: ITUSymbol {return ITUSymbol(name: "Podcasts", type: 0x656e756d, code: 0x6b537050)}
+    static var PurchasedMusic: ITUSymbol {return ITUSymbol(name: "PurchasedMusic", type: 0x656e756d, code: 0x6b53704d)}
+    static var TVShow: ITUSymbol {return ITUSymbol(name: "TVShow", type: 0x656e756d, code: 0x6b566454)}
+    static var TVShows: ITUSymbol {return ITUSymbol(name: "TVShows", type: 0x656e756d, code: 0x6b537054)}
+    static var albumListing: ITUSymbol {return ITUSymbol(name: "albumListing", type: 0x656e756d, code: 0x6b416c62)}
+    static var albums: ITUSymbol {return ITUSymbol(name: "albums", type: 0x656e756d, code: 0x6b53724c)}
+    static var all: ITUSymbol {return ITUSymbol(name: "all", type: 0x656e756d, code: 0x6b416c6c)}
+    static var applicationResponses: ITUSymbol {return ITUSymbol(name: "applicationResponses", type: 0x656e756d, code: 0x726d7465)}
+    static var artists: ITUSymbol {return ITUSymbol(name: "artists", type: 0x656e756d, code: 0x6b537252)}
+    static var ask: ITUSymbol {return ITUSymbol(name: "ask", type: 0x656e756d, code: 0x61736b20)}
+    static var audioCD: ITUSymbol {return ITUSymbol(name: "audioCD", type: 0x656e756d, code: 0x6b414344)}
+    static var case_: ITUSymbol {return ITUSymbol(name: "case_", type: 0x656e756d, code: 0x63617365)}
+    static var cdInsert: ITUSymbol {return ITUSymbol(name: "cdInsert", type: 0x656e756d, code: 0x6b434469)}
+    static var composers: ITUSymbol {return ITUSymbol(name: "composers", type: 0x656e756d, code: 0x6b537243)}
+    static var computed: ITUSymbol {return ITUSymbol(name: "computed", type: 0x656e756d, code: 0x6b527443)}
+    static var detailed: ITUSymbol {return ITUSymbol(name: "detailed", type: 0x656e756d, code: 0x6c776474)}
+    static var device: ITUSymbol {return ITUSymbol(name: "device", type: 0x656e756d, code: 0x6b446576)}
+    static var diacriticals: ITUSymbol {return ITUSymbol(name: "diacriticals", type: 0x656e756d, code: 0x64696163)}
+    static var displayed: ITUSymbol {return ITUSymbol(name: "displayed", type: 0x656e756d, code: 0x6b537256)}
+    static var expansion: ITUSymbol {return ITUSymbol(name: "expansion", type: 0x656e756d, code: 0x65787061)}
+    static var fastForwarding: ITUSymbol {return ITUSymbol(name: "fastForwarding", type: 0x656e756d, code: 0x6b505346)}
+    static var folder: ITUSymbol {return ITUSymbol(name: "folder", type: 0x656e756d, code: 0x6b537046)}
+    static var hyphens: ITUSymbol {return ITUSymbol(name: "hyphens", type: 0x656e756d, code: 0x68797068)}
+    static var iPod: ITUSymbol {return ITUSymbol(name: "iPod", type: 0x656e756d, code: 0x6b506f64)}
+    static var iTunesU: ITUSymbol {return ITUSymbol(name: "iTunesU", type: 0x656e756d, code: 0x6b537055)}
+    static var large: ITUSymbol {return ITUSymbol(name: "large", type: 0x656e756d, code: 0x6b56534c)}
+    static var library: ITUSymbol {return ITUSymbol(name: "library", type: 0x656e756d, code: 0x6b4c6962)}
+    static var medium: ITUSymbol {return ITUSymbol(name: "medium", type: 0x656e756d, code: 0x6b56534d)}
+    static var movie: ITUSymbol {return ITUSymbol(name: "movie", type: 0x656e756d, code: 0x6b56644d)}
+    static var musicVideo: ITUSymbol {return ITUSymbol(name: "musicVideo", type: 0x656e756d, code: 0x6b566456)}
+    static var no: ITUSymbol {return ITUSymbol(name: "no", type: 0x656e756d, code: 0x6e6f2020)}
+    static var none_: ITUSymbol {return ITUSymbol(name: "none_", type: 0x656e756d, code: 0x6b4e6f6e)}
+    static var numericStrings: ITUSymbol {return ITUSymbol(name: "numericStrings", type: 0x656e756d, code: 0x6e756d65)}
+    static var off: ITUSymbol {return ITUSymbol(name: "off", type: 0x656e756d, code: 0x6b52704f)}
+    static var one: ITUSymbol {return ITUSymbol(name: "one", type: 0x656e756d, code: 0x6b527031)}
+    static var paused: ITUSymbol {return ITUSymbol(name: "paused", type: 0x656e756d, code: 0x6b505370)}
+    static var playing: ITUSymbol {return ITUSymbol(name: "playing", type: 0x656e756d, code: 0x6b505350)}
+    static var punctuation: ITUSymbol {return ITUSymbol(name: "punctuation", type: 0x656e756d, code: 0x70756e63)}
+    static var radioTuner: ITUSymbol {return ITUSymbol(name: "radioTuner", type: 0x656e756d, code: 0x6b54756e)}
+    static var rewinding: ITUSymbol {return ITUSymbol(name: "rewinding", type: 0x656e756d, code: 0x6b505352)}
+    static var sharedLibrary: ITUSymbol {return ITUSymbol(name: "sharedLibrary", type: 0x656e756d, code: 0x6b536864)}
+    static var small: ITUSymbol {return ITUSymbol(name: "small", type: 0x656e756d, code: 0x6b565353)}
+    static var songs: ITUSymbol {return ITUSymbol(name: "songs", type: 0x656e756d, code: 0x6b537253)}
+    static var standard: ITUSymbol {return ITUSymbol(name: "standard", type: 0x656e756d, code: 0x6c777374)}
+    static var stopped: ITUSymbol {return ITUSymbol(name: "stopped", type: 0x656e756d, code: 0x6b505353)}
+    static var trackListing: ITUSymbol {return ITUSymbol(name: "trackListing", type: 0x656e756d, code: 0x6b54726b)}
+    static var unknown: ITUSymbol {return ITUSymbol(name: "unknown", type: 0x656e756d, code: 0x6b556e6b)}
+    static var user: ITUSymbol {return ITUSymbol(name: "user", type: 0x656e756d, code: 0x6b527455)}
+    static var whitespace: ITUSymbol {return ITUSymbol(name: "whitespace", type: 0x656e756d, code: 0x77686974)}
+    static var yes: ITUSymbol {return ITUSymbol(name: "yes", type: 0x656e756d, code: 0x79657320)}
 }
 
 
-class ITSSpecifier: SwiftAESpecifier {
+class ITUSpecifier: SwiftAESpecifier {
         
-    override var description: String { return ITSFormatter.formatObject(aemQuery, appData: aebAppData) }
+    override var description: String { return ITUFormatter.formatObject(aemQuery, appData: aebAppData) }
     
     // Element(s) selectors
     // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
 
-    subscript(index: AnyObject!) -> ITSSpecifier! { // by-index, by-name, by-test
+    subscript(index: AnyObject!) -> ITUSpecifier! { // by-index, by-name, by-test
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
         switch (index) {
         case is String:
-            return ITSSpecifier(appData: aebAppData, aemQuery:  baseQuery.byName(index))
-        case is ITSSpecifier:
+            return ITUSpecifier(appData: aebAppData, aemQuery:  baseQuery.byName(index))
+        case is ITUSpecifier:
             let testClause = (index is AEBSpecifier ? (index as! AEBSpecifier).aemQuery : aemQuery) as! AEMTestClause
-            return ITSSpecifier(appData: aebAppData, aemQuery: baseQuery.byTest(testClause))
+            return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byTest(testClause))
         default:
-            return ITSSpecifier(appData: aebAppData, aemQuery: baseQuery.byIndex(index))
+            return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byIndex(index))
         }
     }
-    func ID(uid: AnyObject) -> ITSSpecifier { // by-id
+    func ID(uid: AnyObject) -> ITUSpecifier { // by-id
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITSSpecifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
     }
-    subscript(from: AnyObject!, to: AnyObject!) -> ITSSpecifier! { // by-range
+    subscript(from: AnyObject!, to: AnyObject!) -> ITUSpecifier! { // by-range
         let newQuery = (self.aemQuery as! AEMMultipleElementsSpecifier).byRange(from, to: to)
-        return ITSSpecifier(appData: aebAppData, aemQuery: newQuery)
+        return ITUSpecifier(appData: aebAppData, aemQuery: newQuery)
     }
     
-    func previous(class_: AEBSymbol) -> ITSSpecifier {
+    func previous(class_: AEBSymbol) -> ITUSpecifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITSSpecifier(appData: aebAppData, aemQuery: baseQuery.previous(class_.aebCode))
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.previous(class_.aebCode))
     }
-    func next(class_: AEBSymbol) -> ITSSpecifier {
+    func next(class_: AEBSymbol) -> ITUSpecifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITSSpecifier(appData: aebAppData, aemQuery: baseQuery.next(class_.aebCode))
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.next(class_.aebCode))
     }
     
-    var first:  ITSSpecifier {return ITSSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).first())}
-    var middle: ITSSpecifier {return ITSSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).middle())}
-    var last:   ITSSpecifier {return ITSSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
-    var any:    ITSSpecifier {return ITSSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
+    var first:  ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).first())}
+    var middle: ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).middle())}
+    var last:   ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
+    var any:    ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
     
-    func beginning() -> ITSSpecifier {
+    func beginning() -> ITUSpecifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITSSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
     }
-    func end() -> ITSSpecifier {
+    func end() -> ITUSpecifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITSSpecifier(appData: aebAppData, aemQuery: baseQuery.end())
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.end())
     }
-    func before() -> ITSSpecifier {
+    func before() -> ITUSpecifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITSSpecifier(appData: aebAppData, aemQuery: baseQuery.before())
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.before())
     }
-    func after() -> ITSSpecifier {
+    func after() -> ITUSpecifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITSSpecifier(appData: aebAppData, aemQuery: baseQuery.after())
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.after())
     }
     
     // Property and element specifiers
     
-    func propertyByCode(code: OSType) -> ITSSpecifier {
-        return ITSSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).property(code))
+    func propertyByCode(code: OSType) -> ITUSpecifier {
+        return ITUSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).property(code))
     }
-    func elementsByCode(code: OSType) -> ITSSpecifier {
-        return ITSSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).elements(code))
+    func elementsByCode(code: OSType) -> ITUSpecifier {
+        return ITUSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).elements(code))
     }
-    func propertyByFourCharCode(code: String) -> ITSSpecifier {
+    func propertyByFourCharCode(code: String) -> ITUSpecifier {
         return self.propertyByCode(AEM4CC(code))
     }
-    func elementsByFourCharCode(code: String) -> ITSSpecifier {
+    func elementsByFourCharCode(code: String) -> ITUSpecifier {
         return self.elementsByCode(AEM4CC(code))
+    }
+
+    // Test clause constructors
+    
+    func beginsWith(input: AnyObject!) -> ITUSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.beginsWith(input))
+    }
+    
+    func endsWith(input: AnyObject!) -> ITUSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.endsWith(input))
+    }
+    
+    func contains(input: AnyObject!) -> ITUSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.contains(input))
+    }
+    
+    func isIn(input: AnyObject!) -> ITUSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.isIn(input))
     }
     
     // Properties
     
-    var EQ: ITSSpecifier {return self.propertyByCode(0x70455170)}
-    var EQEnabled: ITSSpecifier {return self.propertyByCode(0x70455120)}
-    var address: ITSSpecifier {return self.propertyByCode(0x7055524c)}
-    var album: ITSSpecifier {return self.propertyByCode(0x70416c62)}
-    var albumArtist: ITSSpecifier {return self.propertyByCode(0x70416c41)}
-    var albumRating: ITSSpecifier {return self.propertyByCode(0x70416c52)}
-    var albumRatingKind: ITSSpecifier {return self.propertyByCode(0x7041526b)}
-    var artist: ITSSpecifier {return self.propertyByCode(0x70417274)}
-    var band1: ITSSpecifier {return self.propertyByCode(0x70455131)}
-    var band10: ITSSpecifier {return self.propertyByCode(0x70455130)}
-    var band2: ITSSpecifier {return self.propertyByCode(0x70455132)}
-    var band3: ITSSpecifier {return self.propertyByCode(0x70455133)}
-    var band4: ITSSpecifier {return self.propertyByCode(0x70455134)}
-    var band5: ITSSpecifier {return self.propertyByCode(0x70455135)}
-    var band6: ITSSpecifier {return self.propertyByCode(0x70455136)}
-    var band7: ITSSpecifier {return self.propertyByCode(0x70455137)}
-    var band8: ITSSpecifier {return self.propertyByCode(0x70455138)}
-    var band9: ITSSpecifier {return self.propertyByCode(0x70455139)}
-    var bitRate: ITSSpecifier {return self.propertyByCode(0x70425274)}
-    var bookmark: ITSSpecifier {return self.propertyByCode(0x70426b74)}
-    var bookmarkable: ITSSpecifier {return self.propertyByCode(0x70426b6d)}
-    var bounds: ITSSpecifier {return self.propertyByCode(0x70626e64)}
-    var bpm: ITSSpecifier {return self.propertyByCode(0x7042504d)}
-    var capacity: ITSSpecifier {return self.propertyByCode(0x63617061)}
-    var category: ITSSpecifier {return self.propertyByCode(0x70436174)}
-    var class_: ITSSpecifier {return self.propertyByCode(0x70636c73)}
-    var closeable: ITSSpecifier {return self.propertyByCode(0x68636c62)}
-    var collapseable: ITSSpecifier {return self.propertyByCode(0x70575368)}
-    var collapsed: ITSSpecifier {return self.propertyByCode(0x77736864)}
-    var collating: ITSSpecifier {return self.propertyByCode(0x6c77636c)}
-    var comment: ITSSpecifier {return self.propertyByCode(0x70436d74)}
-    var compilation: ITSSpecifier {return self.propertyByCode(0x70416e74)}
-    var composer: ITSSpecifier {return self.propertyByCode(0x70436d70)}
-    var container: ITSSpecifier {return self.propertyByCode(0x63746e72)}
-    var copies: ITSSpecifier {return self.propertyByCode(0x6c776370)}
-    var currentEQPreset: ITSSpecifier {return self.propertyByCode(0x70455150)}
-    var currentEncoder: ITSSpecifier {return self.propertyByCode(0x70456e63)}
-    var currentPlaylist: ITSSpecifier {return self.propertyByCode(0x70506c61)}
-    var currentStreamTitle: ITSSpecifier {return self.propertyByCode(0x70537454)}
-    var currentStreamURL: ITSSpecifier {return self.propertyByCode(0x70537455)}
-    var currentTrack: ITSSpecifier {return self.propertyByCode(0x7054726b)}
-    var currentVisual: ITSSpecifier {return self.propertyByCode(0x70566973)}
-    var data_: ITSSpecifier {return self.propertyByCode(0x70504354)}
-    var databaseID: ITSSpecifier {return self.propertyByCode(0x70444944)}
-    var dateAdded: ITSSpecifier {return self.propertyByCode(0x70416464)}
-    var description_: ITSSpecifier {return self.propertyByCode(0x70446573)}
-    var discCount: ITSSpecifier {return self.propertyByCode(0x70447343)}
-    var discNumber: ITSSpecifier {return self.propertyByCode(0x7044734e)}
-    var downloaded: ITSSpecifier {return self.propertyByCode(0x70446c41)}
-    var duration: ITSSpecifier {return self.propertyByCode(0x70447572)}
-    var enabled: ITSSpecifier {return self.propertyByCode(0x656e626c)}
-    var endingPage: ITSSpecifier {return self.propertyByCode(0x6c776c70)}
-    var episodeID: ITSSpecifier {return self.propertyByCode(0x70457044)}
-    var episodeNumber: ITSSpecifier {return self.propertyByCode(0x7045704e)}
-    var errorHandling: ITSSpecifier {return self.propertyByCode(0x6c776568)}
-    var faxNumber: ITSSpecifier {return self.propertyByCode(0x6661786e)}
-    var finish: ITSSpecifier {return self.propertyByCode(0x70537470)}
-    var fixedIndexing: ITSSpecifier {return self.propertyByCode(0x70466978)}
-    var format: ITSSpecifier {return self.propertyByCode(0x70466d74)}
-    var freeSpace: ITSSpecifier {return self.propertyByCode(0x66727370)}
-    var frontmost: ITSSpecifier {return self.propertyByCode(0x70697366)}
-    var fullScreen: ITSSpecifier {return self.propertyByCode(0x70465363)}
-    var gapless: ITSSpecifier {return self.propertyByCode(0x7047706c)}
-    var genre: ITSSpecifier {return self.propertyByCode(0x7047656e)}
-    var grouping: ITSSpecifier {return self.propertyByCode(0x70477270)}
-    var id: ITSSpecifier {return self.propertyByCode(0x49442020)}
-    var index: ITSSpecifier {return self.propertyByCode(0x70696478)}
-    var kind: ITSSpecifier {return self.propertyByCode(0x704b6e64)}
-    var location: ITSSpecifier {return self.propertyByCode(0x704c6f63)}
-    var longDescription: ITSSpecifier {return self.propertyByCode(0x704c6473)}
-    var lyrics: ITSSpecifier {return self.propertyByCode(0x704c7972)}
-    var minimized: ITSSpecifier {return self.propertyByCode(0x704d696e)}
-    var modifiable: ITSSpecifier {return self.propertyByCode(0x704d6f64)}
-    var modificationDate: ITSSpecifier {return self.propertyByCode(0x61736d6f)}
-    var mute: ITSSpecifier {return self.propertyByCode(0x704d7574)}
-    var name: ITSSpecifier {return self.propertyByCode(0x706e616d)}
-    var pagesAcross: ITSSpecifier {return self.propertyByCode(0x6c776c61)}
-    var pagesDown: ITSSpecifier {return self.propertyByCode(0x6c776c64)}
-    var parent: ITSSpecifier {return self.propertyByCode(0x70506c50)}
-    var persistentID: ITSSpecifier {return self.propertyByCode(0x70504953)}
-    var playedCount: ITSSpecifier {return self.propertyByCode(0x70506c43)}
-    var playedDate: ITSSpecifier {return self.propertyByCode(0x70506c44)}
-    var playerPosition: ITSSpecifier {return self.propertyByCode(0x70506f73)}
-    var playerState: ITSSpecifier {return self.propertyByCode(0x70506c53)}
-    var podcast: ITSSpecifier {return self.propertyByCode(0x70545063)}
-    var position: ITSSpecifier {return self.propertyByCode(0x70706f73)}
-    var preamp: ITSSpecifier {return self.propertyByCode(0x70455141)}
-    var printerFeatures: ITSSpecifier {return self.propertyByCode(0x6c777066)}
-    var properties: ITSSpecifier {return self.propertyByCode(0x70414c4c)}
-    var rating: ITSSpecifier {return self.propertyByCode(0x70527465)}
-    var ratingKind: ITSSpecifier {return self.propertyByCode(0x7052746b)}
-    var rawData: ITSSpecifier {return self.propertyByCode(0x70526177)}
-    var releaseDate: ITSSpecifier {return self.propertyByCode(0x70526c44)}
-    var requestedPrintTime: ITSSpecifier {return self.propertyByCode(0x6c777174)}
-    var resizable: ITSSpecifier {return self.propertyByCode(0x7072737a)}
-    var sampleRate: ITSSpecifier {return self.propertyByCode(0x70535274)}
-    var seasonNumber: ITSSpecifier {return self.propertyByCode(0x7053654e)}
-    var selection: ITSSpecifier {return self.propertyByCode(0x73656c65)}
-    var shared: ITSSpecifier {return self.propertyByCode(0x70536872)}
-    var show: ITSSpecifier {return self.propertyByCode(0x70536877)}
-    var shufflable: ITSSpecifier {return self.propertyByCode(0x70536661)}
-    var shuffle: ITSSpecifier {return self.propertyByCode(0x70536866)}
-    var size: ITSSpecifier {return self.propertyByCode(0x7053697a)}
-    var skippedCount: ITSSpecifier {return self.propertyByCode(0x70536b43)}
-    var skippedDate: ITSSpecifier {return self.propertyByCode(0x70536b44)}
-    var smart: ITSSpecifier {return self.propertyByCode(0x70536d74)}
-    var songRepeat: ITSSpecifier {return self.propertyByCode(0x70527074)}
-    var sortAlbum: ITSSpecifier {return self.propertyByCode(0x7053416c)}
-    var sortAlbumArtist: ITSSpecifier {return self.propertyByCode(0x70534141)}
-    var sortArtist: ITSSpecifier {return self.propertyByCode(0x70534172)}
-    var sortComposer: ITSSpecifier {return self.propertyByCode(0x7053436d)}
-    var sortName: ITSSpecifier {return self.propertyByCode(0x70534e6d)}
-    var sortShow: ITSSpecifier {return self.propertyByCode(0x7053534e)}
-    var soundVolume: ITSSpecifier {return self.propertyByCode(0x70566f6c)}
-    var specialKind: ITSSpecifier {return self.propertyByCode(0x7053704b)}
-    var start: ITSSpecifier {return self.propertyByCode(0x70537472)}
-    var startingPage: ITSSpecifier {return self.propertyByCode(0x6c776670)}
-    var targetPrinter: ITSSpecifier {return self.propertyByCode(0x74727072)}
-    var time: ITSSpecifier {return self.propertyByCode(0x7054696d)}
-    var trackCount: ITSSpecifier {return self.propertyByCode(0x70547243)}
-    var trackNumber: ITSSpecifier {return self.propertyByCode(0x7054724e)}
-    var unplayed: ITSSpecifier {return self.propertyByCode(0x70556e70)}
-    var updateTracks: ITSSpecifier {return self.propertyByCode(0x70555443)}
-    var version_: ITSSpecifier {return self.propertyByCode(0x76657273)}
-    var videoKind: ITSSpecifier {return self.propertyByCode(0x7056644b)}
-    var view: ITSSpecifier {return self.propertyByCode(0x70506c79)}
-    var visible: ITSSpecifier {return self.propertyByCode(0x70766973)}
-    var visualSize: ITSSpecifier {return self.propertyByCode(0x7056537a)}
-    var visualsEnabled: ITSSpecifier {return self.propertyByCode(0x70567345)}
-    var volumeAdjustment: ITSSpecifier {return self.propertyByCode(0x7041646a)}
-    var year: ITSSpecifier {return self.propertyByCode(0x70597220)}
-    var zoomable: ITSSpecifier {return self.propertyByCode(0x69737a6d)}
-    var zoomed: ITSSpecifier {return self.propertyByCode(0x707a756d)}
+    var EQ: ITUSpecifier {return self.propertyByCode(0x70455170)}
+    var EQEnabled: ITUSpecifier {return self.propertyByCode(0x70455120)}
+    var address: ITUSpecifier {return self.propertyByCode(0x7055524c)}
+    var album: ITUSpecifier {return self.propertyByCode(0x70416c62)}
+    var albumArtist: ITUSpecifier {return self.propertyByCode(0x70416c41)}
+    var albumRating: ITUSpecifier {return self.propertyByCode(0x70416c52)}
+    var albumRatingKind: ITUSpecifier {return self.propertyByCode(0x7041526b)}
+    var artist: ITUSpecifier {return self.propertyByCode(0x70417274)}
+    var band1: ITUSpecifier {return self.propertyByCode(0x70455131)}
+    var band10: ITUSpecifier {return self.propertyByCode(0x70455130)}
+    var band2: ITUSpecifier {return self.propertyByCode(0x70455132)}
+    var band3: ITUSpecifier {return self.propertyByCode(0x70455133)}
+    var band4: ITUSpecifier {return self.propertyByCode(0x70455134)}
+    var band5: ITUSpecifier {return self.propertyByCode(0x70455135)}
+    var band6: ITUSpecifier {return self.propertyByCode(0x70455136)}
+    var band7: ITUSpecifier {return self.propertyByCode(0x70455137)}
+    var band8: ITUSpecifier {return self.propertyByCode(0x70455138)}
+    var band9: ITUSpecifier {return self.propertyByCode(0x70455139)}
+    var bitRate: ITUSpecifier {return self.propertyByCode(0x70425274)}
+    var bookmark: ITUSpecifier {return self.propertyByCode(0x70426b74)}
+    var bookmarkable: ITUSpecifier {return self.propertyByCode(0x70426b6d)}
+    var bounds: ITUSpecifier {return self.propertyByCode(0x70626e64)}
+    var bpm: ITUSpecifier {return self.propertyByCode(0x7042504d)}
+    var capacity: ITUSpecifier {return self.propertyByCode(0x63617061)}
+    var category: ITUSpecifier {return self.propertyByCode(0x70436174)}
+    var class_: ITUSpecifier {return self.propertyByCode(0x70636c73)}
+    var closeable: ITUSpecifier {return self.propertyByCode(0x68636c62)}
+    var collapseable: ITUSpecifier {return self.propertyByCode(0x70575368)}
+    var collapsed: ITUSpecifier {return self.propertyByCode(0x77736864)}
+    var collating: ITUSpecifier {return self.propertyByCode(0x6c77636c)}
+    var comment: ITUSpecifier {return self.propertyByCode(0x70436d74)}
+    var compilation: ITUSpecifier {return self.propertyByCode(0x70416e74)}
+    var composer: ITUSpecifier {return self.propertyByCode(0x70436d70)}
+    var container: ITUSpecifier {return self.propertyByCode(0x63746e72)}
+    var copies: ITUSpecifier {return self.propertyByCode(0x6c776370)}
+    var currentEQPreset: ITUSpecifier {return self.propertyByCode(0x70455150)}
+    var currentEncoder: ITUSpecifier {return self.propertyByCode(0x70456e63)}
+    var currentPlaylist: ITUSpecifier {return self.propertyByCode(0x70506c61)}
+    var currentStreamTitle: ITUSpecifier {return self.propertyByCode(0x70537454)}
+    var currentStreamURL: ITUSpecifier {return self.propertyByCode(0x70537455)}
+    var currentTrack: ITUSpecifier {return self.propertyByCode(0x7054726b)}
+    var currentVisual: ITUSpecifier {return self.propertyByCode(0x70566973)}
+    var data_: ITUSpecifier {return self.propertyByCode(0x70504354)}
+    var databaseID: ITUSpecifier {return self.propertyByCode(0x70444944)}
+    var dateAdded: ITUSpecifier {return self.propertyByCode(0x70416464)}
+    var description_: ITUSpecifier {return self.propertyByCode(0x70446573)}
+    var discCount: ITUSpecifier {return self.propertyByCode(0x70447343)}
+    var discNumber: ITUSpecifier {return self.propertyByCode(0x7044734e)}
+    var downloaded: ITUSpecifier {return self.propertyByCode(0x70446c41)}
+    var duration: ITUSpecifier {return self.propertyByCode(0x70447572)}
+    var enabled: ITUSpecifier {return self.propertyByCode(0x656e626c)}
+    var endingPage: ITUSpecifier {return self.propertyByCode(0x6c776c70)}
+    var episodeID: ITUSpecifier {return self.propertyByCode(0x70457044)}
+    var episodeNumber: ITUSpecifier {return self.propertyByCode(0x7045704e)}
+    var errorHandling: ITUSpecifier {return self.propertyByCode(0x6c776568)}
+    var faxNumber: ITUSpecifier {return self.propertyByCode(0x6661786e)}
+    var finish: ITUSpecifier {return self.propertyByCode(0x70537470)}
+    var fixedIndexing: ITUSpecifier {return self.propertyByCode(0x70466978)}
+    var format: ITUSpecifier {return self.propertyByCode(0x70466d74)}
+    var freeSpace: ITUSpecifier {return self.propertyByCode(0x66727370)}
+    var frontmost: ITUSpecifier {return self.propertyByCode(0x70697366)}
+    var fullScreen: ITUSpecifier {return self.propertyByCode(0x70465363)}
+    var gapless: ITUSpecifier {return self.propertyByCode(0x7047706c)}
+    var genre: ITUSpecifier {return self.propertyByCode(0x7047656e)}
+    var grouping: ITUSpecifier {return self.propertyByCode(0x70477270)}
+    var id: ITUSpecifier {return self.propertyByCode(0x49442020)}
+    var index: ITUSpecifier {return self.propertyByCode(0x70696478)}
+    var kind: ITUSpecifier {return self.propertyByCode(0x704b6e64)}
+    var location: ITUSpecifier {return self.propertyByCode(0x704c6f63)}
+    var longDescription: ITUSpecifier {return self.propertyByCode(0x704c6473)}
+    var lyrics: ITUSpecifier {return self.propertyByCode(0x704c7972)}
+    var minimized: ITUSpecifier {return self.propertyByCode(0x704d696e)}
+    var modifiable: ITUSpecifier {return self.propertyByCode(0x704d6f64)}
+    var modificationDate: ITUSpecifier {return self.propertyByCode(0x61736d6f)}
+    var mute: ITUSpecifier {return self.propertyByCode(0x704d7574)}
+    var name: ITUSpecifier {return self.propertyByCode(0x706e616d)}
+    var pagesAcross: ITUSpecifier {return self.propertyByCode(0x6c776c61)}
+    var pagesDown: ITUSpecifier {return self.propertyByCode(0x6c776c64)}
+    var parent: ITUSpecifier {return self.propertyByCode(0x70506c50)}
+    var persistentID: ITUSpecifier {return self.propertyByCode(0x70504953)}
+    var playedCount: ITUSpecifier {return self.propertyByCode(0x70506c43)}
+    var playedDate: ITUSpecifier {return self.propertyByCode(0x70506c44)}
+    var playerPosition: ITUSpecifier {return self.propertyByCode(0x70506f73)}
+    var playerState: ITUSpecifier {return self.propertyByCode(0x70506c53)}
+    var podcast: ITUSpecifier {return self.propertyByCode(0x70545063)}
+    var position: ITUSpecifier {return self.propertyByCode(0x70706f73)}
+    var preamp: ITUSpecifier {return self.propertyByCode(0x70455141)}
+    var printerFeatures: ITUSpecifier {return self.propertyByCode(0x6c777066)}
+    var properties: ITUSpecifier {return self.propertyByCode(0x70414c4c)}
+    var rating: ITUSpecifier {return self.propertyByCode(0x70527465)}
+    var ratingKind: ITUSpecifier {return self.propertyByCode(0x7052746b)}
+    var rawData: ITUSpecifier {return self.propertyByCode(0x70526177)}
+    var releaseDate: ITUSpecifier {return self.propertyByCode(0x70526c44)}
+    var requestedPrintTime: ITUSpecifier {return self.propertyByCode(0x6c777174)}
+    var resizable: ITUSpecifier {return self.propertyByCode(0x7072737a)}
+    var sampleRate: ITUSpecifier {return self.propertyByCode(0x70535274)}
+    var seasonNumber: ITUSpecifier {return self.propertyByCode(0x7053654e)}
+    var selection: ITUSpecifier {return self.propertyByCode(0x73656c65)}
+    var shared: ITUSpecifier {return self.propertyByCode(0x70536872)}
+    var show: ITUSpecifier {return self.propertyByCode(0x70536877)}
+    var shufflable: ITUSpecifier {return self.propertyByCode(0x70536661)}
+    var shuffle: ITUSpecifier {return self.propertyByCode(0x70536866)}
+    var size: ITUSpecifier {return self.propertyByCode(0x7053697a)}
+    var skippedCount: ITUSpecifier {return self.propertyByCode(0x70536b43)}
+    var skippedDate: ITUSpecifier {return self.propertyByCode(0x70536b44)}
+    var smart: ITUSpecifier {return self.propertyByCode(0x70536d74)}
+    var songRepeat: ITUSpecifier {return self.propertyByCode(0x70527074)}
+    var sortAlbum: ITUSpecifier {return self.propertyByCode(0x7053416c)}
+    var sortAlbumArtist: ITUSpecifier {return self.propertyByCode(0x70534141)}
+    var sortArtist: ITUSpecifier {return self.propertyByCode(0x70534172)}
+    var sortComposer: ITUSpecifier {return self.propertyByCode(0x7053436d)}
+    var sortName: ITUSpecifier {return self.propertyByCode(0x70534e6d)}
+    var sortShow: ITUSpecifier {return self.propertyByCode(0x7053534e)}
+    var soundVolume: ITUSpecifier {return self.propertyByCode(0x70566f6c)}
+    var specialKind: ITUSpecifier {return self.propertyByCode(0x7053704b)}
+    var start: ITUSpecifier {return self.propertyByCode(0x70537472)}
+    var startingPage: ITUSpecifier {return self.propertyByCode(0x6c776670)}
+    var targetPrinter: ITUSpecifier {return self.propertyByCode(0x74727072)}
+    var time: ITUSpecifier {return self.propertyByCode(0x7054696d)}
+    var trackCount: ITUSpecifier {return self.propertyByCode(0x70547243)}
+    var trackNumber: ITUSpecifier {return self.propertyByCode(0x7054724e)}
+    var unplayed: ITUSpecifier {return self.propertyByCode(0x70556e70)}
+    var updateTracks: ITUSpecifier {return self.propertyByCode(0x70555443)}
+    var version_: ITUSpecifier {return self.propertyByCode(0x76657273)}
+    var videoKind: ITUSpecifier {return self.propertyByCode(0x7056644b)}
+    var view: ITUSpecifier {return self.propertyByCode(0x70506c79)}
+    var visible: ITUSpecifier {return self.propertyByCode(0x70766973)}
+    var visualSize: ITUSpecifier {return self.propertyByCode(0x7056537a)}
+    var visualsEnabled: ITUSpecifier {return self.propertyByCode(0x70567345)}
+    var volumeAdjustment: ITUSpecifier {return self.propertyByCode(0x7041646a)}
+    var year: ITUSpecifier {return self.propertyByCode(0x70597220)}
+    var zoomable: ITUSpecifier {return self.propertyByCode(0x69737a6d)}
+    var zoomed: ITUSpecifier {return self.propertyByCode(0x707a756d)}
     
     // Elements
     
-    var EQPresets: ITSSpecifier {return self.elementsByCode(0x63455150)}
-    var EQWindows: ITSSpecifier {return self.elementsByCode(0x63455157)}
-    var URLTracks: ITSSpecifier {return self.elementsByCode(0x63555254)}
-    var applications: ITSSpecifier {return self.elementsByCode(0x63617070)}
-    var artworks: ITSSpecifier {return self.elementsByCode(0x63417274)}
-    var audioCDPlaylists: ITSSpecifier {return self.elementsByCode(0x63434450)}
-    var audioCDTracks: ITSSpecifier {return self.elementsByCode(0x63434454)}
-    var browserWindows: ITSSpecifier {return self.elementsByCode(0x63427257)}
-    var devicePlaylists: ITSSpecifier {return self.elementsByCode(0x63447650)}
-    var deviceTracks: ITSSpecifier {return self.elementsByCode(0x63447654)}
-    var encoders: ITSSpecifier {return self.elementsByCode(0x63456e63)}
-    var fileTracks: ITSSpecifier {return self.elementsByCode(0x63466c54)}
-    var folderPlaylists: ITSSpecifier {return self.elementsByCode(0x63466f50)}
-    var items: ITSSpecifier {return self.elementsByCode(0x636f626a)}
-    var libraryPlaylists: ITSSpecifier {return self.elementsByCode(0x634c6950)}
-    var picture: ITSSpecifier {return self.elementsByCode(0x50494354)}
-    var playlistWindows: ITSSpecifier {return self.elementsByCode(0x63506c57)}
-    var playlists: ITSSpecifier {return self.elementsByCode(0x63506c79)}
-    var printSettings: ITSSpecifier {return self.elementsByCode(0x70736574)}
-    var radioTunerPlaylists: ITSSpecifier {return self.elementsByCode(0x63525450)}
-    var sharedTracks: ITSSpecifier {return self.elementsByCode(0x63536854)}
-    var sources: ITSSpecifier {return self.elementsByCode(0x63537263)}
-    var tracks: ITSSpecifier {return self.elementsByCode(0x6354726b)}
-    var userPlaylists: ITSSpecifier {return self.elementsByCode(0x63557350)}
-    var visuals: ITSSpecifier {return self.elementsByCode(0x63566973)}
-    var windows: ITSSpecifier {return self.elementsByCode(0x6377696e)}
+    var EQPresets: ITUSpecifier {return self.elementsByCode(0x63455150)}
+    var EQWindows: ITUSpecifier {return self.elementsByCode(0x63455157)}
+    var URLTracks: ITUSpecifier {return self.elementsByCode(0x63555254)}
+    var applications: ITUSpecifier {return self.elementsByCode(0x63617070)}
+    var artworks: ITUSpecifier {return self.elementsByCode(0x63417274)}
+    var audioCDPlaylists: ITUSpecifier {return self.elementsByCode(0x63434450)}
+    var audioCDTracks: ITUSpecifier {return self.elementsByCode(0x63434454)}
+    var browserWindows: ITUSpecifier {return self.elementsByCode(0x63427257)}
+    var devicePlaylists: ITUSpecifier {return self.elementsByCode(0x63447650)}
+    var deviceTracks: ITUSpecifier {return self.elementsByCode(0x63447654)}
+    var encoders: ITUSpecifier {return self.elementsByCode(0x63456e63)}
+    var fileTracks: ITUSpecifier {return self.elementsByCode(0x63466c54)}
+    var folderPlaylists: ITUSpecifier {return self.elementsByCode(0x63466f50)}
+    var items: ITUSpecifier {return self.elementsByCode(0x636f626a)}
+    var libraryPlaylists: ITUSpecifier {return self.elementsByCode(0x634c6950)}
+    var picture: ITUSpecifier {return self.elementsByCode(0x50494354)}
+    var playlistWindows: ITUSpecifier {return self.elementsByCode(0x63506c57)}
+    var playlists: ITUSpecifier {return self.elementsByCode(0x63506c79)}
+    var printSettings: ITUSpecifier {return self.elementsByCode(0x70736574)}
+    var radioTunerPlaylists: ITUSpecifier {return self.elementsByCode(0x63525450)}
+    var sharedTracks: ITUSpecifier {return self.elementsByCode(0x63536854)}
+    var sources: ITUSpecifier {return self.elementsByCode(0x63537263)}
+    var tracks: ITUSpecifier {return self.elementsByCode(0x6354726b)}
+    var userPlaylists: ITUSpecifier {return self.elementsByCode(0x63557350)}
+    var visuals: ITUSpecifier {return self.elementsByCode(0x63566973)}
+    var windows: ITUSpecifier {return self.elementsByCode(0x6377696e)}
     
     // Commands
     
@@ -1347,11 +1369,11 @@ class ITSSpecifier: SwiftAESpecifier {
 }
 
 
-class ITSApplication: ITSSpecifier {
+class ITUApplication: ITUSpecifier {
     private init(targetType: AEBTargetType, targetData: AnyObject?) {
         let data = AppleEventBridge.AEBStaticAppData(applicationClass: AEMApplication.self,
-                                                          symbolClass: ITSSymbol.self,
-                                                       specifierClass: ITSSpecifier.self,
+                                                          symbolClass: ITUSymbol.self,
+                                                       specifierClass: ITUSpecifier.self,
                                                            targetType: targetType,
                                                            targetData: targetData)
         super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
@@ -1374,39 +1396,81 @@ class ITSApplication: ITSSpecifier {
     convenience init(descriptor: NSAppleEventDescriptor) {
         self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
     }
-    class func currentApplication() -> ITSApplication {
+    class func currentApplication() -> ITUApplication {
         return self.init(targetType: kAEBTargetCurrent, targetData: nil)
     }
     
-    // Construct a ITSSpecifier using a raw AEMQuery or other custom object
+    // Construct a ITUSpecifier using a raw AEMQuery or other custom object
     // (e.g. if app's terminology is broken or when dealing with especially cranky old apps)
     
-    func customRoot(object: AnyObject!) -> ITSSpecifier {
-        if object is ITSSpecifier {
-            return ITSSpecifier(appData: aebAppData, aemQuery: (object as! ITSSpecifier).aemQuery)
+    func customRoot(object: AnyObject!) -> ITUSpecifier {
+        if object is ITUSpecifier {
+            return ITUSpecifier(appData: aebAppData, aemQuery: (object as! ITUSpecifier).aemQuery)
         } else if object is AppleEventBridge.AEMQuery {
-            return ITSSpecifier(appData: aebAppData, aemQuery: object as! AppleEventBridge.AEMQuery)
+            return ITUSpecifier(appData: aebAppData, aemQuery: object as! AppleEventBridge.AEMQuery)
         } else if object == nil {
-            return ITSSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.app())
+            return ITUSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.app())
         } else {
-            return ITSSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.customRoot(object))
+            return ITUSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.customRoot(object))
         }
     }
 }
 
 
-// Generic specifier roots. These can be used to construct ITSSpecifiers for use in other ITSSpecifiers and ITSCommands,
-// though only real specifiers constructed from a ITSApplication can be used to send commands to the target application.
+// construct ITUIts... test clauses
 
-let ITSApp = ITSSpecifier(appData: nil, aemQuery: AEMQuery.app())
-let ITSCon = ITSSpecifier(appData: nil, aemQuery: AEMQuery.con())
-let ITSIts = ITSSpecifier(appData: nil, aemQuery: AEMQuery.its())
+// note: == will return specifier when used in correct context
+
+func == (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.equals(right))
+}
+func != (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
+}
+func < (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessThan(right))
+}
+func > (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterThan(right))
+}
+func <= (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessOrEquals(right))
+}
+func >= (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterOrEquals(right))
+}
+func && (left: ITUSpecifier!, right: ITUSpecifier!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMTestClause
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.AND(right))
+}
+func || (left: ITUSpecifier!, right: ITUSpecifier!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMTestClause
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.OR(right))
+}
+prefix func ! (input: ITUSpecifier!) -> ITUSpecifier! {
+    let baseQuery = input.aemQuery as! AEMTestClause
+    return ITUSpecifier(appData: input.aebAppData, aemQuery: baseQuery.NOT())
+}
+
+
+// Generic specifier roots. These can be used to construct ITUSpecifiers for use in other ITUSpecifiers and ITUCommands,
+// though only real specifiers constructed from a ITUApplication can be used to send commands to the target application.
+
+let ITUApp = ITUSpecifier(appData: nil, aemQuery: AEMQuery.app())
+let ITUCon = ITUSpecifier(appData: nil, aemQuery: AEMQuery.con())
+let ITUIts = ITUSpecifier(appData: nil, aemQuery: AEMQuery.its())
 
 // Symbol namespace
 
-let kITS = ITSSymbol.self
+let kITU = ITUSymbol.self
 
 // Convenience constructor for application objects.
 
-var iTunes: ITSApplication {return ITSApplication()}
+var iTunes: ITUApplication {return ITUApplication()}
 
