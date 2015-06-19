@@ -38,13 +38,14 @@ FOUNDATION_EXPORT const unsigned char AppleEventBridgeVersionString[];
 #import "AEBStaticSpecifier.h"
 #import "AEBStaticCommand.h"
 #import "AEBStaticFormatter.h"
+#import "AEBStaticSymbol.h"
 
 #import "AEBDynamicAppData.h"
 #import "AEBDynamicAETEParser.h"
 #import "AEBDynamicSDEFParser.h"
 #import "AEBDynamicTerm.h"
 #import "AEBDynamicTerminology.h"
-#import "AEBDefaultKeywordConverter.h"
+#import "AEBKeywordConverter.h"
 
 // NSAppleEventDescriptor patches for 10.10.x and earlier
 #if __MAC_OS_X_VERSION_MIN_REQUIRED < 101100

@@ -1,0 +1,59 @@
+TO DO:
+
+- given all command methods return errors (since no Apple event is guaranteed to succeed), would it be worth overloading command methods to provide an alternative error handling scheme, allowing user to omit 'try' where they aren't concerned with error details, e.g. by passing a closure that returns a default value to be returned if command fails:
+
+    func get(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil, ifError: ErrorType -> AnyObject) -> AnyObject {
+        do {
+            return try self.get(directParameter, eventAttributes: eventAttributes)
+        } catch {
+            return ifError(error)  
+        }
+    }
+    
+user could then use a trailing closure to return a default value in the event an error occurs, with the NSError being passed to closure as argument if required:
+
+    print (TextEdit.documents[100].text.get(){$0; return "N/A"})
+
+
+Q. any way to allow closure to ignore error argument?, e.g. {$0; return -1} works with above but {-1} complains about mismatched signatures
+
+Q. should ifError: closure be optional? if omitted, what should it return? or would it be simpler just to return AnyObject? on error and leave user to unwrap? or should 'try' always be required? (i.e. 'try' is standard Swift error handling idiom, whereas others are not) note that if nil is returned, `??` operator can be used to supply a default value instead, so ifError: closure is essentially redundant anyway unless user wants to receive error object (however, really need to pick one or the other, as creating three different variants on every method would be excessive)
+
+
+one problem: overloading 'get(...)throws->AnyObject' with 'get(...)->AnyObject?' is that compiler complains about ambiguous use; any way around this?
+    
+    func get(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) -> AnyObject? {
+        do {
+            return try self.sendAppleEvent(0x636f7265, eventID: 0x67657464, parameters: [
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+        } catch {
+            return nil
+        }
+    }
+
+
+
+- native boolean packing/unpacking (Q. how does Swift<->ObjC bridge true/false? check if automatically bridges to __NSCFBoolean)
+
+- currently built-in terms aren't predefined in GlueSupport base classes, but are included in glue each time; not sure if this is best approach (though is prob. simplest as it avoids glue gen having to detect overridden terms and explicitly mark them `override`)
+
+- if user constructs a malformed SwiftAESpecifier - e.g. te.documents[1][2] - it should still be usable in commands (i.e. swift specifier constructors should never return nil or throw errors themselves); the only difference is that it'll contain an AEMQueryError instead of an AEMQuery, and the command will throw that along with any other errors that occur during packing (e.g. if user passes an unsupported type as a command param or a specifier selector)
+
+- move SwiftAEGlueSupport to framework and import here
+
+
+- how best to support event attributes? either an optional tuple of optional key-values that is passed to a standard attributes: arg, or else define separate args for each (though that'll make method signatures even longer than they already are)
+
+
+- how best to specify how reply descs should be unpacked? (TO DO: is it possible/practical to specify return type as a Swift type, e.g. Array<String>, and introspect that to determine what coercions to apply when unpacking descs?)
+
+- what about overriding return type for String, Int, Array<String>, etc? (this could generate a lot of methods; will need to stress-test glues on InDesign, etc.)
+
+
+
+Notes:
+
+- best to stick with ObjC-style classname prefixes in glues, as they'll make it easier to troubleshoot (since, unlike dynamic bridges, the glue and the target process are independent of each other so it is possible to use glue A with app B and vice-versa)
+

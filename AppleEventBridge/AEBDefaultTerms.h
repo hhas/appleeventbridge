@@ -8,7 +8,7 @@
 //
 
 #import "AEBDynamicTerm.h"
-#import "AEBDefaultKeywordConverter.h"
+#import "AEBKeywordConverter.h"
 
 
 @interface AEBDefaultTerms : NSObject<AEBDynamicRawTermsProtocol>
@@ -17,7 +17,7 @@
 
 @property (readonly) NSArray *types, *enumerators, *properties, *elements, *commands;
 
-- (instancetype)initWithKeywordConverter:(AEBDefaultKeywordConverter *)converter;
+- (instancetype)initWithKeywordConverter:(AEBKeywordConverter *)converter;
 
 @end
 

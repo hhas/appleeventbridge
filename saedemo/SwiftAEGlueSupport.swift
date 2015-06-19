@@ -2,25 +2,8 @@
 //  SwiftAEGlueSupport.swift
 //
 
-// TO DO: native boolean packing/unpacking
-
 import Foundation
 import AppleEventBridge
-
-// TO DO: currently built-in terms aren't predefined here, but are included in glue each time; not sure if this is best approach (though is prob. simplest)
-
-// TO DO: best to stick with classname prefixes, as they'll make it easier to troubleshoot (since, unlike dynamic bridges, the glue and the target process are independent of each other so it is possible to use glue A with app B and vice-versa)
-
-// TO DO: if user constructs a malformed SwiftAESpecifier - e.g. te.documents[1][2] - it should still be usable in commands (i.e. swift specifier constructors should never return nil or throw errors themselves); the only difference is that it'll contain an AEMQueryError instead of an AEMQuery, and the command will throw that along with any other errors that occur during packing (e.g. if user passes an unsupported type as a command param or a specifier selector)
-
-// TO DO: how does Swift<->ObjC bridge true/false?
-
-// TO DO: use objc-style class name prefixes or rely on Swift namespacing to disambiguate?
-// TO DO: use hex codes, with human-readable FCC as comment? or use generated raw code enums from rawcodes file?
-// TO DO: move SwiftAEGlueSupport to framework and import here
-// TO DO: glue generator should use ints
-// TO DO: how best to support event attributes? how best to specify how reply descs should be unpacked? (TO DO: is it possible/practical to specify return type as a Swift type, e.g. Array<String>, and introspect that to determine what coercions to apply when unpacking descs?)
-
 
 
 class SwiftAEFormatter: AEBStaticFormatter { // TO DO: need to implement whole new formatter specifically for Swift syntax that subclasses AEBQueryVisitor; for now, string representation currently returned by formatter is a mix of Swift and ObjC syntax, which is sufficient for testing
@@ -109,6 +92,7 @@ class SwiftAEFormatter: AEBStaticFormatter { // TO DO: need to implement whole n
 // base class for all standard and application-specific named symbols
 // (note: while an enum would be idiomatic Swift, the need to map reliably between human-readable names and AE codes, and/or represent such mappings even when one or other is unavailable, may make this tricky or impractical; need to research further)
 
+// TO DO: might be simpler for glues to subclass AEBSymbol, and define standard symbols as their own baseclass (Q. how best to generate that class? prob best done manually using glue generator, so that new types defined by Apple are permanently included in all subsequent framework releases)
 
 class SwiftAESymbol: AEBSymbol {
     
@@ -135,6 +119,9 @@ class SwiftAESymbol: AEBSymbol {
     
     // ...
 }
+
+
+// TO DO: define typle-based type for eventAttributes? (check if key order is ignored)
 
 
 // shortcut for constructing standard symbols, e.g. kAEB.unicodeText, kAEB.list

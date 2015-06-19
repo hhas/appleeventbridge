@@ -17,11 +17,11 @@
 	return [self initWithKeywordConverter: nil defaultTerminology: nil];
 }
 
-- (instancetype)initWithKeywordConverter:(AEBDefaultKeywordConverter *)converter
+- (instancetype)initWithKeywordConverter:(AEBKeywordConverter *)converter
                       defaultTerminology:(id)defaultTerms {
 	self = [super init];
 	if (!self) return self;
-	keywordConverter = converter ?: [[AEBDefaultKeywordConverter alloc] init];
+	keywordConverter = converter ?: [[AEBKeywordConverter alloc] init];
 
     typesByName = [[NSMutableDictionary alloc] init];
     propertiesByName = [[NSMutableDictionary alloc] init];
@@ -68,11 +68,11 @@
 		// to handle synonyms, if same code appears more than once then use name from last definition in list
         {
             AEBDynamicKeywordTerm *keywordTerm = definitions[i];
-            NSString *name = [keywordConverter convert: keywordTerm.name];
+            NSString *name = [keywordConverter convertSpecifierName: keywordTerm.name]; // TO DO: this should be redundant now; review, delete
             OSType code = keywordTerm.code;
             // escape definitions that semi-overlap default definitions
             NSAppleEventDescriptor *desc = defaultTypeByName[name];
-            if (desc && desc.typeCodeValue != code) name = keywordTerm.name = [keywordConverter escape: name];
+            if (desc && desc.typeCodeValue != code) name = keywordTerm.name = [keywordConverter escapeName: name];
             // add item
             typesByCode[@(code)] = name;
         }
@@ -84,7 +84,7 @@
             OSType code = keywordTerm.code;
             // escape definitions that semi-overlap default definitions
             NSAppleEventDescriptor *desc = defaultTypeByName[name];
-            if (desc && desc.typeCodeValue != code) name = keywordTerm.name = [keywordConverter escape: name];
+            if (desc && desc.typeCodeValue != code) name = keywordTerm.name = [keywordConverter escapeName: name];
             // add item
             typesByName[name] = desc = [[NSAppleEventDescriptor alloc] initWithDescriptorType: descType
                                                                                         bytes: (void *)(&code)
@@ -131,7 +131,7 @@
 		existingCommandDef = defaultCommandByName[name];
 		if (existingCommandDef && (existingCommandDef.eventClass != eventClass
                                    || existingCommandDef.eventID != eventID)) {
-			name = commandTerm.name = [keywordConverter escape: name];
+			name = commandTerm.name = [keywordConverter escapeName: name];
         }
 		// add item
 		commandDef = [[AEBDynamicCommandTerm alloc] initWithName: name

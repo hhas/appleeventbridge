@@ -50,10 +50,10 @@
     return [self initWithKeywordConverter: nil];
 }
 
-- (instancetype)initWithKeywordConverter:(AEBDefaultKeywordConverter *)converter_ {
+- (instancetype)initWithKeywordConverter:(AEBKeywordConverter *)converter_ {
     self = [super init];
     if (!self) return self;
-    keywordConverter = converter_ ?: [[AEBDefaultKeywordConverter alloc] init];
+    keywordConverter = converter_ ?: [[AEBKeywordConverter alloc] init];
     types = [NSMutableArray array];
     enumerators = [NSMutableArray array];
     properties = [NSMutableArray array];
@@ -83,7 +83,8 @@
 #define eCODE   (attributeDict[@"code"])
 #define ePLURAL (attributeDict[@"plural"])
 
-#define KEYWORD(aName) ([keywordConverter convert: (aName)])
+#define KEYWORD(aName)       ([keywordConverter convertSpecifierName: (aName)])
+#define KEYWORD_PARAM(aName) ([keywordConverter convertParameterName: (aName)])
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName
                                         namespaceURI:(NSString *)namespaceURI
@@ -128,7 +129,7 @@
         
     } else if ([elementName isEqualToString: @"parameter"]) {
         if (!((name = eNAME).length && [self getOSTypeForCode: eCODE code: &code])) goto malformedElement;
-        [currentCommand addParameterWithName: KEYWORD(name) code: code];
+        [currentCommand addParameterWithName: KEYWORD_PARAM(name) code: code];
     }
     return;
 malformedElement: // e.g. OSACopyScriptingDefinition's AETE-to-SDEF conversion is buggy

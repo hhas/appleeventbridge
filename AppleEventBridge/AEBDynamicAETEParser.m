@@ -11,6 +11,10 @@
 /**********************************************************************/
 
 
+#define KEYWORD(aName)       ([keywordConverter convertSpecifierName: (aName)])
+#define KEYWORD_PARAM(aName) ([keywordConverter convertParameterName: (aName)])
+
+
 // kAEInheritedProperties isn't defined in OpenScripting.h for some reason
 #define kAEBAEInheritedProperties 'c@#^'
 
@@ -40,10 +44,10 @@
     return [self initWithKeywordConverter: nil];
 }
 
-- (instancetype)initWithKeywordConverter:(AEBDefaultKeywordConverter *)converter_ {
+- (instancetype)initWithKeywordConverter:(AEBKeywordConverter *)converter_ {
 	self = [super init];
 	if (!self) return self;
-    keywordConverter = converter_ ?: [[AEBDefaultKeywordConverter alloc] init];
+    keywordConverter = converter_ ?: [[AEBKeywordConverter alloc] init];
 	commands    = [[NSMutableDictionary alloc] init];
 	properties  = [[NSMutableSet alloc] init];
 	elements    = [[NSMutableSet alloc] init];
@@ -83,13 +87,13 @@
 		s = [[NSString alloc] init];
 	}
 	cursor += len;
-    return [keywordConverter convert: s];
+    return s;
 }
 
 // Parse methods
 
 - (BOOL)parseCommand {
-	NSString *name = [self name];
+	NSString *name = KEYWORD([self name]);
 #ifdef AEB_DEBUG_PARSER
     NSLog(@"Parse Command %@\n", name);
 #endif
@@ -123,7 +127,7 @@
     }
 	int n = [self integer];
 	for (int i = 0; i < n; i++) {
-		NSString *paramName = [self name];
+		NSString *paramName = KEYWORD_PARAM([self name]);
 		ALIGN_CURSOR;
         OSType paramCode = [self word];
 		SKIP_OSTYPE;	// datatype
@@ -138,7 +142,7 @@
 
 - (BOOL)parseClass {
 	BOOL isPlural = NO;
-	NSString *className = [self name];
+	NSString *className = KEYWORD([self name]);
 #ifdef AEB_DEBUG_PARSER
     NSLog(@"Parse Class %@\n", className);
 #endif
@@ -149,7 +153,7 @@
 	// properties
 	int n = [self integer];
 	for (int i = 0; i < n; i++) {
-		NSString *propertyName = [self name];
+		NSString *propertyName = KEYWORD([self name]);
 #ifdef AEB_DEBUG_PARSER
         NSLog(@"    property: %@\n", propertyName);
 #endif
@@ -217,7 +221,7 @@
 #endif
 	// enumerators
 	for (int i = 0; i < n; i++) {
-		NSString *name = [self name];
+		NSString *name = KEYWORD([self name]);
 		ALIGN_CURSOR;
         AEBDynamicKeywordTerm *enumeratorDef;
 		enumeratorDef = [[AEBDynamicKeywordTerm alloc] initWithName: name code: [self word] kind: kAEBTermEnumerator];

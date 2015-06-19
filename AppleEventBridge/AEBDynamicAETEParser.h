@@ -20,7 +20,7 @@
 
 #import "AEBDynamicTerminology.h"
 #import "AEBDynamicTerm.h"
-#import "AEBDefaultKeywordConverter.h"
+#import "AEBKeywordConverter.h"
 
 #import "AEMUtils.h"
 
@@ -29,7 +29,7 @@
 
 
 @interface AEBDynamicAETEParser : NSObject<AEBDynamicRawTermsProtocol> {
-    AEBDefaultKeywordConverter *keywordConverter;
+    AEBKeywordConverter *keywordConverter;
 	char *aeteData;
 	unsigned long aeteSize, cursor;
 	// terminology tables; order is significant where synonym definitions occur
@@ -44,7 +44,7 @@
     NSString *errorMessage;
 }
 
-- (instancetype)initWithKeywordConverter:(AEBDefaultKeywordConverter *)converter_;
+- (instancetype)initWithKeywordConverter:(AEBKeywordConverter *)converter_;
 
 // private
 

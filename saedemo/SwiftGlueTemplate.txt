@@ -62,10 +62,8 @@ class «PREFIX»Specifier: SwiftAESpecifier {
     
     // Element(s) selectors
     // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
-    
-    // by-index, by-name, by-range, by-test
-    
-    subscript(index: AnyObject!) -> «PREFIX»Specifier! {
+
+    subscript(index: AnyObject!) -> «PREFIX»Specifier! { // by-index, by-name, by-test
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
         switch (index) {
         case is String:
@@ -77,27 +75,45 @@ class «PREFIX»Specifier: SwiftAESpecifier {
             return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.byIndex(index))
         }
     }
-    
-    subscript(from: AnyObject!, to: AnyObject!) -> «PREFIX»Specifier! {
+    func ID(uid: AnyObject) -> «PREFIX»Specifier { // by-id
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
+    }
+    subscript(from: AnyObject!, to: AnyObject!) -> «PREFIX»Specifier! { // by-range
         let newQuery = (self.aemQuery as! AEMMultipleElementsSpecifier).byRange(from, to: to)
         return «PREFIX»Specifier(appData: aebAppData, aemQuery: newQuery)
     }
     
-    // by-id
-    
-    func ID(uid: AnyObject) -> «PREFIX»Specifier {
+    func previous(class_: AEBSymbol) -> «PREFIX»Specifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.previous(class_.aebCode))
     }
-    
-    // ordinal
+    func next(class_: AEBSymbol) -> «PREFIX»Specifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.next(class_.aebCode))
+    }
     
     var first:  «PREFIX»Specifier {return «PREFIX»Specifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).first())}
     var middle: «PREFIX»Specifier {return «PREFIX»Specifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).middle())}
     var last:   «PREFIX»Specifier {return «PREFIX»Specifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
     var any:    «PREFIX»Specifier {return «PREFIX»Specifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
     
-    // TO DO: implement other selectors: before, after, beginning, end, previous(symbol), next(symbol)
+    func beginning() -> «PREFIX»Specifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.beginning())
+    }
+    func end() -> «PREFIX»Specifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.end())
+    }
+    func before() -> «PREFIX»Specifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.before())
+    }
+    func after() -> «PREFIX»Specifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.after())
+    }
     
     // Property and element specifiers
     
@@ -153,7 +169,7 @@ class «PREFIX»Application: «PREFIX»Specifier {
                                                            targetData: targetData)
         super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
     }
-    override convenience init() {
+    override convenience init() { // TO DO: delete/raise error if bundle id not given
         self.init(bundleIdentifier: "«BUNDLE_ID»")
     }
     convenience init(name: NSString) {

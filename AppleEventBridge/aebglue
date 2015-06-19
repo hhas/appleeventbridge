@@ -274,7 +274,7 @@ class KeywordConverter(NSObject):
             self._cache = {}
         return self
     
-    def convert_(self, s):
+    def convertSpecifierName_(self, s):
         """Convert string to identifier.
             s : str
             Result : str
@@ -300,11 +300,13 @@ class KeywordConverter(NSObject):
                 legal = self._alphanum
             if (res in self._reservedwords or res.startswith('_')
                 or res.startswith('AEM') or res.startswith('AEB') or not res): # TO DO: update
-                res = self.escape_(res)
+                res = self.escapeName_(res)
             self._cache[s] = str(res)
         return self._cache[s]
-        
-    def escape_(self, s):
+
+    convertParameterName_ = convertSpecifierName_ # TO DO: relax keyword requirements
+    
+    def escapeName_(self, s):
         return s + '_'
 
 
@@ -689,11 +691,13 @@ class ClassBuilder:
 # SDEF EXPORTER
 ######################################################################
 
+# TO DO: use shared module
+
 
 def _convertnode(node, attrname, suffix='', prefix=''):
     attr = node.get(attrname)
     if attr:
-        node.set(attrname, prefix+kKeywordConverter.convert_(attr)+suffix)
+        node.set(attrname, prefix+kKeywordConverter.convertSpecifierName_(attr)+suffix)
 
 
 def exportsdef(sdef, prefix, outpath):
@@ -766,7 +770,7 @@ def nametoprefix(name): # TO DO: currently unused; update to use 3-char prefixes
                 char = re.findall('[^AEIOUaeiou]', word[1:])[0]
             return (word[0] + char).upper()
     except:
-        prefix = kKeywordConverter.convert_(name)
+        prefix = kKeywordConverter.convertSpecifierName_(name)
         return prefix[0].upper() + prefix[1:]
 
 

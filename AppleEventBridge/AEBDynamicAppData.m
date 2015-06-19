@@ -17,7 +17,7 @@
                            launchOptions:(NSWorkspaceLaunchOptions)options
                              targetTerms:(id)targetTerms_
                             defaultTerms:(id)defaultTerms_
-                        keywordConverter:(AEBDefaultKeywordConverter *)converter_ {
+                        keywordConverter:(AEBKeywordConverter *)converter_ {
 	self = [super initWithApplicationClass: appClass
                                 targetType: type
                                 targetData: data
@@ -33,7 +33,7 @@
 
 - (instancetype)initWithApplicationURL:(NSURL *)url
                                useSDEF:(bool)useSDEF
-                      keywordConverter:(AEBDefaultKeywordConverter *)converter_ {
+                      keywordConverter:(AEBKeywordConverter *)converter_ {
     return [self initWithApplicationClass: AEMApplication.class
                                targetType: (url ? kAEBTargetURL : kAEBTargetCurrent)
                                targetData: url

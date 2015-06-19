@@ -11,13 +11,13 @@
 
 #import "AEBDynamicTerminology.h"
 #import "AEBDynamicTerm.h"
-#import "AEBDefaultKeywordConverter.h"
+#import "AEBKeywordConverter.h"
 
 #import "AEMUtils.h"
 
 
 @interface AEBDynamicSDEFParser : NSObject <NSXMLParserDelegate, AEBDynamicRawTermsProtocol> {
-    AEBDefaultKeywordConverter *keywordConverter;
+    AEBKeywordConverter *keywordConverter;
     NSMutableDictionary *commandsDict;
     AEBDynamicCommandTerm *currentCommand;
 }
@@ -26,7 +26,7 @@
 
 +(NSData *)copyScriptingDefinitionAtURL:(NSURL *)url error:(NSError * __autoreleasing *)error; // convenience method as alternative to AEMCopyScriptingDefinitionFromURL
 
-- (instancetype)initWithKeywordConverter:(AEBDefaultKeywordConverter *)converter_;
+- (instancetype)initWithKeywordConverter:(AEBKeywordConverter *)converter_;
 
 -(BOOL)parseURL:(NSURL *)url error:(NSError * __autoreleasing *)error;
 

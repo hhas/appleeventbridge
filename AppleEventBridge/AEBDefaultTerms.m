@@ -12,20 +12,20 @@
 
 // TO DO: check for any missing terms (e.g. ctxt); try using TextEdit with AppleEventBridge AEB_DEBUG_PARSER enabled
 
-#define KEYWORD(aName) (([converter convert: (aName)]))
+#define KEYWORD(aName) (([converter convertSpecifierName: (aName)]))
 
 #define TYPE_NAME(tName, tCode)          ([[AEBDynamicKeywordTerm alloc] initWithName: KEYWORD((tName)) code: (tCode) kind: kAEBTermType])
 #define PROP_NAME(tName, tCode)          ([[AEBDynamicKeywordTerm alloc] initWithName: KEYWORD((tName)) code: (tCode) kind: kAEBTermProperty])
 #define ENUM_NAME(tName, tCode)          ([[AEBDynamicKeywordTerm alloc] initWithName: KEYWORD((tName)) code: (tCode) kind: kAEBTermEnumerator])
 #define COMMAND_NAME(eName, eClass, eID) ([[AEBDynamicCommandTerm alloc] initWithName: KEYWORD((eName)) eventClass: (eClass) eventID: (eID)])
-#define PARAM(term, pName, pCode)        ([(term) addParameterWithName: KEYWORD((pName)) code: (pCode)])
+#define PARAM(term, pName, pCode)        ([(term) addParameterWithName: ([converter convertParameterName: (pName)]) code: (pCode)])
 
 
 @implementation AEBDefaultTerms
 
 @synthesize types, enumerators, properties, elements, commands;
 
-- (instancetype)initWithKeywordConverter:(AEBDefaultKeywordConverter *)converter {
+- (instancetype)initWithKeywordConverter:(AEBKeywordConverter *)converter {
     self = [super init];
     if (!self) return self;
     types = @[TYPE_NAME(@"anything", '****'),

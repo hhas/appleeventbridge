@@ -3,6 +3,7 @@
 //  saedemo
 //
 
+
 import Foundation
 
 //import AppleEventBridge
@@ -21,11 +22,19 @@ import Foundation
 //print(TEApp.documents[1].name)
 
 do {
-    print(try TextEdit.make(new_: kTE.document, withProperties: [kTE.text:"Hello World!"]))
+    print(try TextEdit.make(new: kTET.document, withProperties: [kTET.text:"Hello World!"]))
     print(try TextEdit.documents.text.get())
 } catch {
     print(error)
 }
+
+
+
+print(try iTunes.playlists["Top 25 Most Played"].tracks.name.get())
+
+
+
+
 
 // build a symbol (i.e. an AEDesc of typeType or typeEnumerated):
 //
