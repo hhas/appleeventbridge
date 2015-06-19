@@ -5,47 +5,80 @@
 
 
 import Foundation
+import AppleEventBridge
 
-//import AppleEventBridge
 
+let x = true
+if x {
 
-// build an object specifier (note: formatter is unfinished so some types still appear ObjC style):
-//
-//     tell application "TextEdit"
-//         name of document 1
-//     end
-//
-//let objSpec = TextEdit.documents[1].name
-//print(objSpec)
-// TEApplication(name: @"/Applications/TextEdit.app").documents.at(1).name
+    // build an object specifier (note: formatter is unfinished so some types still appear ObjC style):
+    //
+    //     tell application "TextEdit"
+    //         a reference to name of document 1
+    //     end
+    //
+    let objSpec = TextEdit.documents[1].name
+    print(objSpec) // TETApplication(name: @"/Applications/TextEdit.app").documents[1].name
 
-//print(TEApp.documents[1].name)
+    print(TETApp.documents[1].name) // 'generic' refs can be used as parameters to commands
 
-do {
-    print(try TextEdit.make(new: kTET.document, withProperties: [kTET.text:"Hello World!"]))
-    print(try TextEdit.documents.text.get())
-} catch {
-    print(error)
+    do {
+        // tell application "TextEdit" to make new document with properties {text:"Hello World!"}
+        print(try TextEdit.make(new: kTET.document, withProperties: [kTET.text:"Hello World!"]))
+        
+        // tell application "TextEdit" to get text of every document
+        print(try TextEdit.documents.text.get())
+        
+        // tell application "AppleScript" to set q to a reference to name of document 1
+        let q = TextEdit.documents[1].name
+        print(q) // q
+        print(try q.get()) // get contents of q
+    } catch {
+        print(error)
+    }
 }
 
 
 
+// All the joys of complex Apple event queries plus a nice juicy stdlib of zip(), sort(), etc. too... bliss!
+
+
+// tell application "iTunes" to get name of every track of playlist "Top 25 Most Played"
 print(try iTunes.playlists["Top 25 Most Played"].tracks.name.get())
 
 
+// tell application "iTunes" to get {name, rating} of (every track whose artist = "Sigur Ros" and (name begins with "G" or rating ≥ 60))
+let q = iTunes.tracks[ITUIts.artist == "Sigur Ros" && (ITUIts.name.beginsWith("G") || ITUIts.rating >= 60)]
+print(Array(zip(try q.name.get() as! Array<String>, try q.rating.get() as! Array<Int>)))
+// [("Gobbledigook", 80), ("Góðan Daginn", 40), ("Við Spilum Endalaust", 60), ...]
+
+//iTunes.make(new: kITU.playlist, withProperties: [kITU.name]
 
 
 
-// build a symbol (i.e. an AEDesc of typeType or typeEnumerated):
-//
-//     tell application "TextEdit"
-//         name
-//     end
-//let typeName = TESymbol.name
-//print(typeName)
-// TESymbol.name
 
-//print(kTE.document)
+
+
+
+
+
+
+
+/*
+let t: AnyObject = TETIts.documents.name == "test.rtf" // caution: using == outside of [...] can produce bool result...
+print("EQ: \(t)") // 0  // !!!
+let t1: TETSpecifier = TETIts.documents.name == "test.rtf" // ...unless result is explicitly typed ensure is correct type
+print("EQ: \(t1)") // [TETIts.documents.name equals: @"test.rtf"]
+
+print(TextEdit.documents[TETIts.name == "test.rtf"]) // this appears to produce correct result, but can it always be guaranteed to do so?
+
+
+let t2: AnyObject = TETIts.documents.name != "test.rtf"
+print("EQ: \(t2)")
+let t3: TETSpecifier = TETIts.documents.name != "test.rtf"
+print("EQ: \(t3)")
+*/
+
 
 
 /*

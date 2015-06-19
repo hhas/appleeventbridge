@@ -263,7 +263,7 @@ kKeywordConverter = KeywordConverter.alloc().init()
 ######################################################################
 
 
-kReservedPrefixes = {'NS', 'AEM', 'AEB'} # glues cannot use these prefixes
+kReservedPrefixes = {'NS', 'AEM', 'AEB', 'APP', 'CON', 'ITS'} # glues cannot use these prefixes
 
 
 def makeprefix(name, minlen=3): # TO DO: need to test this with various typical app names

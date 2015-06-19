@@ -84,7 +84,7 @@
 		4FCE810C1A0C2E3500C54EAC /* TESpecifierGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FCE81071A0C2E3500C54EAC /* TESpecifierGlue.m */; };
 		4FD8E4A11B334D63004B5CD5 /* AEBKeywordConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */; };
-		4FD8E4A71B342A97004B5CD5 /* ITSGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A61B342A97004B5CD5 /* ITSGlue.swift */; };
+		4FD8E4A71B342A97004B5CD5 /* ITUGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A61B342A97004B5CD5 /* ITUGlue.swift */; };
 		4FF619C51A0CF520002277B8 /* aebglue in Copy Files (aebglue) */ = {isa = PBXBuildFile; fileRef = 4F1AA02519F92D6000FBD23E /* aebglue */; };
 		4FFA2D721A129BCA00AF09E4 /* application-objects.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5E1A129B7E00AF09E4 /* application-objects.html */; };
 		4FFA2D731A129BCA00AF09E4 /* application_architecture.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5F1A129B7E00AF09E4 /* application_architecture.gif */; };
@@ -283,7 +283,7 @@
 		4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBKeywordConverter.m; sourceTree = "<group>"; };
 		4FD8E4A31B33700F004B5CD5 /* aebglue-swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "aebglue-swift"; sourceTree = "<group>"; };
 		4FD8E4A41B33700F004B5CD5 /* SwiftGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SwiftGlueTemplate.txt; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = "<none>"; };
-		4FD8E4A61B342A97004B5CD5 /* ITSGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITSGlue.swift; sourceTree = "<group>"; };
+		4FD8E4A61B342A97004B5CD5 /* ITUGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITUGlue.swift; sourceTree = "<group>"; };
 		4FF619C81A0EC9C1002277B8 /* TextEdit.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TextEdit.sdef; sourceTree = "<group>"; };
 		4FFA2D371A129AAE00AF09E4 /* 1 introduction.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "1 introduction.md"; sourceTree = "<group>"; };
 		4FFA2D381A129AAE00AF09E4 /* 10 optimizing-performance.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "10 optimizing-performance.md"; sourceTree = "<group>"; };
@@ -525,7 +525,7 @@
 				4F5EE3D41B2D7F1F007C58B5 /* main.swift */,
 				4F9B7FCB1B30416500BE621C /* SwiftAEGlueSupport.swift */,
 				4F0D52961B344E8B0081A1B3 /* TETGlue.swift */,
-				4FD8E4A61B342A97004B5CD5 /* ITSGlue.swift */,
+				4FD8E4A61B342A97004B5CD5 /* ITUGlue.swift */,
 				4F0D52981B3450BB0081A1B3 /* TODO.txt */,
 			);
 			path = saedemo;
@@ -929,7 +929,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F5EE3D51B2D7F1F007C58B5 /* main.swift in Sources */,
-				4FD8E4A71B342A97004B5CD5 /* ITSGlue.swift in Sources */,
+				4FD8E4A71B342A97004B5CD5 /* ITUGlue.swift in Sources */,
 				4F0D52971B344E8B0081A1B3 /* TETGlue.swift in Sources */,
 				4F9B7FCC1B30416500BE621C /* SwiftAEGlueSupport.swift in Sources */,
 			);

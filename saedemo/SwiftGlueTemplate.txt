@@ -129,6 +129,28 @@ class «PREFIX»Specifier: SwiftAESpecifier {
     func elementsByFourCharCode(code: String) -> «PREFIX»Specifier {
         return self.elementsByCode(AEM4CC(code))
     }
+
+    // Test clause constructors
+    
+    func beginsWith(input: AnyObject!) -> «PREFIX»Specifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.beginsWith(input))
+    }
+    
+    func endsWith(input: AnyObject!) -> «PREFIX»Specifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.endsWith(input))
+    }
+    
+    func contains(input: AnyObject!) -> «PREFIX»Specifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.contains(input))
+    }
+    
+    func isIn(input: AnyObject!) -> «PREFIX»Specifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.isIn(input))
+    }
     
     // Properties
     
@@ -205,6 +227,48 @@ class «PREFIX»Application: «PREFIX»Specifier {
             return «PREFIX»Specifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.customRoot(object))
         }
     }
+}
+
+
+// construct «PREFIX»Its... test clauses
+
+// note: == will return specifier when used in correct context
+
+func == (left: «PREFIX»Specifier!, right: AnyObject!) -> «PREFIX»Specifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return «PREFIX»Specifier(appData: left.aebAppData, aemQuery: baseQuery.equals(right))
+}
+func != (left: «PREFIX»Specifier!, right: AnyObject!) -> «PREFIX»Specifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return «PREFIX»Specifier(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
+}
+func < (left: «PREFIX»Specifier!, right: AnyObject!) -> «PREFIX»Specifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return «PREFIX»Specifier(appData: left.aebAppData, aemQuery: baseQuery.lessThan(right))
+}
+func > (left: «PREFIX»Specifier!, right: AnyObject!) -> «PREFIX»Specifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return «PREFIX»Specifier(appData: left.aebAppData, aemQuery: baseQuery.greaterThan(right))
+}
+func <= (left: «PREFIX»Specifier!, right: AnyObject!) -> «PREFIX»Specifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return «PREFIX»Specifier(appData: left.aebAppData, aemQuery: baseQuery.lessOrEquals(right))
+}
+func >= (left: «PREFIX»Specifier!, right: AnyObject!) -> «PREFIX»Specifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return «PREFIX»Specifier(appData: left.aebAppData, aemQuery: baseQuery.greaterOrEquals(right))
+}
+func && (left: «PREFIX»Specifier!, right: «PREFIX»Specifier!) -> «PREFIX»Specifier! {
+    let baseQuery = left.aemQuery as! AEMTestClause
+    return «PREFIX»Specifier(appData: left.aebAppData, aemQuery: baseQuery.AND(right))
+}
+func || (left: «PREFIX»Specifier!, right: «PREFIX»Specifier!) -> «PREFIX»Specifier! {
+    let baseQuery = left.aemQuery as! AEMTestClause
+    return «PREFIX»Specifier(appData: left.aebAppData, aemQuery: baseQuery.OR(right))
+}
+prefix func ! (input: «PREFIX»Specifier!) -> «PREFIX»Specifier! {
+    let baseQuery = input.aemQuery as! AEMTestClause
+    return «PREFIX»Specifier(appData: input.aebAppData, aemQuery: baseQuery.NOT())
 }
 
 

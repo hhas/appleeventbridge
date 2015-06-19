@@ -528,6 +528,28 @@ class TETSpecifier: SwiftAESpecifier {
     func elementsByFourCharCode(code: String) -> TETSpecifier {
         return self.elementsByCode(AEM4CC(code))
     }
+
+    // Test clause constructors
+    
+    func beginsWith(input: AnyObject!) -> TETSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.beginsWith(input))
+    }
+    
+    func endsWith(input: AnyObject!) -> TETSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.endsWith(input))
+    }
+    
+    func contains(input: AnyObject!) -> TETSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.contains(input))
+    }
+    
+    func isIn(input: AnyObject!) -> TETSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.isIn(input))
+    }
     
     // Properties
     
@@ -756,6 +778,48 @@ class TETApplication: TETSpecifier {
             return TETSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.customRoot(object))
         }
     }
+}
+
+
+// construct TETIts... test clauses
+
+// note: == will return specifier when used in correct context
+
+func == (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.equals(right))
+}
+func != (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
+}
+func < (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessThan(right))
+}
+func > (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterThan(right))
+}
+func <= (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessOrEquals(right))
+}
+func >= (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterOrEquals(right))
+}
+func && (left: TETSpecifier!, right: TETSpecifier!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMTestClause
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.AND(right))
+}
+func || (left: TETSpecifier!, right: TETSpecifier!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMTestClause
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.OR(right))
+}
+prefix func ! (input: TETSpecifier!) -> TETSpecifier! {
+    let baseQuery = input.aemQuery as! AEMTestClause
+    return TETSpecifier(appData: input.aebAppData, aemQuery: baseQuery.NOT())
 }
 
 
