@@ -14,7 +14,23 @@
 //
 
 
-// TO DO: in -[NSNumber objCType], 'c' indicates either char or bool; is there any way to reliably tell the difference? (if there was, AEMBoolean could be eliminated and NSNumber mapped instead to typeTrue/typeFalse)
+/* 
+ TO DO: pack/unpack booleans as __NSCFNumber
+ 
+     if ([anObject isKindOfClass: NSNumber.class]) {
+        if ([anObject isKindOfClass: [@YES class]]) { // is it an __NSCFBoolean?
+            result = [NSAppleEventDescriptor descriptorWithBoolean: [anObject boolValue]];
+        } else {
+
+ 
+        case typeBoolean:
+        case typeFalse:
+        case typeTrue:
+            result = desc.booleanValue ? @YES : @NO;
+
+ */
+
+
 
 
 /**********************************************************************/

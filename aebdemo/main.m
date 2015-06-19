@@ -8,8 +8,31 @@
 
 #import "TEGlue/TEGlue.h"
 
+
+@interface AEMThreadTest : NSThread
+@end
+
+@implementation AEMThreadTest
+
+-(void)main {
+    NSLog(@"start %@", self);
+    TEApplication *te = [TEApplication application];
+    NSError *err = nil;
+//    [[[[te.documents.end make] new_: TESymbol.document] timeout: 5] send];
+
+    AEBCommand *cmd = [[te.documents.name get] timeout: 2];
+    
+//    NSLog(@"%@", cmd.AEMEvent);
+    id result = [cmd sendWithError: &err];
+    NSLog(@"ended %@\n%@ %@", self, ((NSArray *)result), err);
+}
+
+@end
+
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
+        
         NSError *error = nil;
         // build and send event using low-level 'AEM' API with four-char codes
         {
@@ -41,6 +64,23 @@ int main(int argc, const char * argv[]) {
                 NSLog(@"4\nRESULT: %@\nERROR: %@", result, error); // reports bad index error (-1719)
             }
         }
+        
+        /*
+        {
+            AEMThreadTest *thread; // TO DO: do background threads need their own mach ports if there's a main event loop?
+            for (int i=0; i<5; i++) {
+                thread = [[AEMThreadTest alloc] init];
+                [thread start];//sleep(i/10.0 + 0.5);
+            }
+       //     int x = 0;
+            NSLog(@"WAIT");
+      //      for (int i=0;i<1000000000;i++) x = x + 2;
+      //      NSLog(@"DONE %i", x);
+            while (thread.executing) sleep(0.1);
+            NSLog(@"FIN");
+            sleep(1);
+        }
+         */
     }
     return 0;
 }
