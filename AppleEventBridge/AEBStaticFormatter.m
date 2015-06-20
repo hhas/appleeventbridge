@@ -87,6 +87,8 @@
 }
 
 
+// by-ordinal selectors
+
 - (instancetype)first {
 	[mutableResult appendString: @".first"];
     return self;
