@@ -1,6 +1,6 @@
 //
 // ITUGlue.swift
-// iTunes 12.1.2
+// iTunes.app 12.1.2
 // AppleEventBridge.framework 0.7.0
 //
 
@@ -185,10 +185,595 @@ class ITUFormatter: SwiftAEFormatter { // used internally to generate descriptio
 }
 
 
+class ITUSpecifier: SwiftAESpecifier {
+        
+    override var description: String { return ITUFormatter.formatObject(aemQuery, appData: aebAppData) }
+    
+    // Raw property and element specifiers, e.g. TextEdit.elementsByFourCharCode("docu") => TextEdit.documents
+    
+    func propertyByCode(code: OSType) -> ITUSpecifier {
+        return ITUSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).property(code))
+    }
+    func elementsByCode(code: OSType) -> ITUSpecifier {
+        return ITUSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).elements(code))
+    }
+    func propertyByFourCharCode(code: String) -> ITUSpecifier {
+        return self.propertyByCode(AEM4CC(code))
+    }
+    func elementsByFourCharCode(code: String) -> ITUSpecifier {
+        return self.elementsByCode(AEM4CC(code))
+    }
+    
+    // Element(s) selectors
+    // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
+
+    subscript(index: AnyObject!) -> ITUSpecifier! { // by-index, by-name, by-test
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        switch (index) {
+        case is String:
+            return ITUSpecifier(appData: aebAppData, aemQuery:  baseQuery.byName(index))
+        case is ITUSpecifier:
+            let testClause = (index is AEBSpecifier ? (index as! AEBSpecifier).aemQuery : aemQuery) as! AEMTestClause
+            return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byTest(testClause))
+        default:
+            return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byIndex(index))
+        }
+    }
+    func ID(uid: AnyObject) -> ITUSpecifier { // by-id
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
+    }
+    subscript(from: AnyObject!, to: AnyObject!) -> ITUSpecifier! { // by-range
+        let newQuery = (self.aemQuery as! AEMMultipleElementsSpecifier).byRange(from, to: to)
+        return ITUSpecifier(appData: aebAppData, aemQuery: newQuery)
+    }
+    
+    func previous(class_: AEBSymbol) -> ITUSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.previous(class_.aebCode))
+    }
+    func next(class_: AEBSymbol) -> ITUSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.next(class_.aebCode))
+    }
+    
+    var first:  ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).first())}
+    var middle: ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).middle())}
+    var last:   ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
+    var any:    ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
+    
+    func beginning() -> ITUSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
+    }
+    func end() -> ITUSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.end())
+    }
+    func before() -> ITUSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.before())
+    }
+    func after() -> ITUSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.after())
+    }
+
+    // Test clause constructors, e.g. ITU.its.name.beginsWith("foo")
+    
+    func beginsWith(input: AnyObject!) -> ITUSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.beginsWith(input))
+    }
+    func endsWith(input: AnyObject!) -> ITUSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.endsWith(input))
+    }
+    func contains(input: AnyObject!) -> ITUSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.contains(input))
+    }
+    func isIn(input: AnyObject!) -> ITUSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.isIn(input))
+    }
+    
+    // Properties
+    
+    var EQ: ITUSpecifier {return self.propertyByCode(0x70455170)}
+    var EQEnabled: ITUSpecifier {return self.propertyByCode(0x70455120)}
+    var address: ITUSpecifier {return self.propertyByCode(0x7055524c)}
+    var album: ITUSpecifier {return self.propertyByCode(0x70416c62)}
+    var albumArtist: ITUSpecifier {return self.propertyByCode(0x70416c41)}
+    var albumRating: ITUSpecifier {return self.propertyByCode(0x70416c52)}
+    var albumRatingKind: ITUSpecifier {return self.propertyByCode(0x7041526b)}
+    var artist: ITUSpecifier {return self.propertyByCode(0x70417274)}
+    var band1: ITUSpecifier {return self.propertyByCode(0x70455131)}
+    var band10: ITUSpecifier {return self.propertyByCode(0x70455130)}
+    var band2: ITUSpecifier {return self.propertyByCode(0x70455132)}
+    var band3: ITUSpecifier {return self.propertyByCode(0x70455133)}
+    var band4: ITUSpecifier {return self.propertyByCode(0x70455134)}
+    var band5: ITUSpecifier {return self.propertyByCode(0x70455135)}
+    var band6: ITUSpecifier {return self.propertyByCode(0x70455136)}
+    var band7: ITUSpecifier {return self.propertyByCode(0x70455137)}
+    var band8: ITUSpecifier {return self.propertyByCode(0x70455138)}
+    var band9: ITUSpecifier {return self.propertyByCode(0x70455139)}
+    var bitRate: ITUSpecifier {return self.propertyByCode(0x70425274)}
+    var bookmark: ITUSpecifier {return self.propertyByCode(0x70426b74)}
+    var bookmarkable: ITUSpecifier {return self.propertyByCode(0x70426b6d)}
+    var bounds: ITUSpecifier {return self.propertyByCode(0x70626e64)}
+    var bpm: ITUSpecifier {return self.propertyByCode(0x7042504d)}
+    var capacity: ITUSpecifier {return self.propertyByCode(0x63617061)}
+    var category: ITUSpecifier {return self.propertyByCode(0x70436174)}
+    var class_: ITUSpecifier {return self.propertyByCode(0x70636c73)}
+    var closeable: ITUSpecifier {return self.propertyByCode(0x68636c62)}
+    var collapseable: ITUSpecifier {return self.propertyByCode(0x70575368)}
+    var collapsed: ITUSpecifier {return self.propertyByCode(0x77736864)}
+    var collating: ITUSpecifier {return self.propertyByCode(0x6c77636c)}
+    var comment: ITUSpecifier {return self.propertyByCode(0x70436d74)}
+    var compilation: ITUSpecifier {return self.propertyByCode(0x70416e74)}
+    var composer: ITUSpecifier {return self.propertyByCode(0x70436d70)}
+    var container: ITUSpecifier {return self.propertyByCode(0x63746e72)}
+    var copies: ITUSpecifier {return self.propertyByCode(0x6c776370)}
+    var currentEQPreset: ITUSpecifier {return self.propertyByCode(0x70455150)}
+    var currentEncoder: ITUSpecifier {return self.propertyByCode(0x70456e63)}
+    var currentPlaylist: ITUSpecifier {return self.propertyByCode(0x70506c61)}
+    var currentStreamTitle: ITUSpecifier {return self.propertyByCode(0x70537454)}
+    var currentStreamURL: ITUSpecifier {return self.propertyByCode(0x70537455)}
+    var currentTrack: ITUSpecifier {return self.propertyByCode(0x7054726b)}
+    var currentVisual: ITUSpecifier {return self.propertyByCode(0x70566973)}
+    var data_: ITUSpecifier {return self.propertyByCode(0x70504354)}
+    var databaseID: ITUSpecifier {return self.propertyByCode(0x70444944)}
+    var dateAdded: ITUSpecifier {return self.propertyByCode(0x70416464)}
+    var description_: ITUSpecifier {return self.propertyByCode(0x70446573)}
+    var discCount: ITUSpecifier {return self.propertyByCode(0x70447343)}
+    var discNumber: ITUSpecifier {return self.propertyByCode(0x7044734e)}
+    var downloaded: ITUSpecifier {return self.propertyByCode(0x70446c41)}
+    var duration: ITUSpecifier {return self.propertyByCode(0x70447572)}
+    var enabled: ITUSpecifier {return self.propertyByCode(0x656e626c)}
+    var endingPage: ITUSpecifier {return self.propertyByCode(0x6c776c70)}
+    var episodeID: ITUSpecifier {return self.propertyByCode(0x70457044)}
+    var episodeNumber: ITUSpecifier {return self.propertyByCode(0x7045704e)}
+    var errorHandling: ITUSpecifier {return self.propertyByCode(0x6c776568)}
+    var faxNumber: ITUSpecifier {return self.propertyByCode(0x6661786e)}
+    var finish: ITUSpecifier {return self.propertyByCode(0x70537470)}
+    var fixedIndexing: ITUSpecifier {return self.propertyByCode(0x70466978)}
+    var format: ITUSpecifier {return self.propertyByCode(0x70466d74)}
+    var freeSpace: ITUSpecifier {return self.propertyByCode(0x66727370)}
+    var frontmost: ITUSpecifier {return self.propertyByCode(0x70697366)}
+    var fullScreen: ITUSpecifier {return self.propertyByCode(0x70465363)}
+    var gapless: ITUSpecifier {return self.propertyByCode(0x7047706c)}
+    var genre: ITUSpecifier {return self.propertyByCode(0x7047656e)}
+    var grouping: ITUSpecifier {return self.propertyByCode(0x70477270)}
+    var id: ITUSpecifier {return self.propertyByCode(0x49442020)}
+    var index: ITUSpecifier {return self.propertyByCode(0x70696478)}
+    var kind: ITUSpecifier {return self.propertyByCode(0x704b6e64)}
+    var location: ITUSpecifier {return self.propertyByCode(0x704c6f63)}
+    var longDescription: ITUSpecifier {return self.propertyByCode(0x704c6473)}
+    var lyrics: ITUSpecifier {return self.propertyByCode(0x704c7972)}
+    var minimized: ITUSpecifier {return self.propertyByCode(0x704d696e)}
+    var modifiable: ITUSpecifier {return self.propertyByCode(0x704d6f64)}
+    var modificationDate: ITUSpecifier {return self.propertyByCode(0x61736d6f)}
+    var mute: ITUSpecifier {return self.propertyByCode(0x704d7574)}
+    var name: ITUSpecifier {return self.propertyByCode(0x706e616d)}
+    var pagesAcross: ITUSpecifier {return self.propertyByCode(0x6c776c61)}
+    var pagesDown: ITUSpecifier {return self.propertyByCode(0x6c776c64)}
+    var parent: ITUSpecifier {return self.propertyByCode(0x70506c50)}
+    var persistentID: ITUSpecifier {return self.propertyByCode(0x70504953)}
+    var playedCount: ITUSpecifier {return self.propertyByCode(0x70506c43)}
+    var playedDate: ITUSpecifier {return self.propertyByCode(0x70506c44)}
+    var playerPosition: ITUSpecifier {return self.propertyByCode(0x70506f73)}
+    var playerState: ITUSpecifier {return self.propertyByCode(0x70506c53)}
+    var podcast: ITUSpecifier {return self.propertyByCode(0x70545063)}
+    var position: ITUSpecifier {return self.propertyByCode(0x70706f73)}
+    var preamp: ITUSpecifier {return self.propertyByCode(0x70455141)}
+    var printerFeatures: ITUSpecifier {return self.propertyByCode(0x6c777066)}
+    var properties: ITUSpecifier {return self.propertyByCode(0x70414c4c)}
+    var rating: ITUSpecifier {return self.propertyByCode(0x70527465)}
+    var ratingKind: ITUSpecifier {return self.propertyByCode(0x7052746b)}
+    var rawData: ITUSpecifier {return self.propertyByCode(0x70526177)}
+    var releaseDate: ITUSpecifier {return self.propertyByCode(0x70526c44)}
+    var requestedPrintTime: ITUSpecifier {return self.propertyByCode(0x6c777174)}
+    var resizable: ITUSpecifier {return self.propertyByCode(0x7072737a)}
+    var sampleRate: ITUSpecifier {return self.propertyByCode(0x70535274)}
+    var seasonNumber: ITUSpecifier {return self.propertyByCode(0x7053654e)}
+    var selection: ITUSpecifier {return self.propertyByCode(0x73656c65)}
+    var shared: ITUSpecifier {return self.propertyByCode(0x70536872)}
+    var show: ITUSpecifier {return self.propertyByCode(0x70536877)}
+    var shufflable: ITUSpecifier {return self.propertyByCode(0x70536661)}
+    var shuffle: ITUSpecifier {return self.propertyByCode(0x70536866)}
+    var size: ITUSpecifier {return self.propertyByCode(0x7053697a)}
+    var skippedCount: ITUSpecifier {return self.propertyByCode(0x70536b43)}
+    var skippedDate: ITUSpecifier {return self.propertyByCode(0x70536b44)}
+    var smart: ITUSpecifier {return self.propertyByCode(0x70536d74)}
+    var songRepeat: ITUSpecifier {return self.propertyByCode(0x70527074)}
+    var sortAlbum: ITUSpecifier {return self.propertyByCode(0x7053416c)}
+    var sortAlbumArtist: ITUSpecifier {return self.propertyByCode(0x70534141)}
+    var sortArtist: ITUSpecifier {return self.propertyByCode(0x70534172)}
+    var sortComposer: ITUSpecifier {return self.propertyByCode(0x7053436d)}
+    var sortName: ITUSpecifier {return self.propertyByCode(0x70534e6d)}
+    var sortShow: ITUSpecifier {return self.propertyByCode(0x7053534e)}
+    var soundVolume: ITUSpecifier {return self.propertyByCode(0x70566f6c)}
+    var specialKind: ITUSpecifier {return self.propertyByCode(0x7053704b)}
+    var start: ITUSpecifier {return self.propertyByCode(0x70537472)}
+    var startingPage: ITUSpecifier {return self.propertyByCode(0x6c776670)}
+    var targetPrinter: ITUSpecifier {return self.propertyByCode(0x74727072)}
+    var time: ITUSpecifier {return self.propertyByCode(0x7054696d)}
+    var trackCount: ITUSpecifier {return self.propertyByCode(0x70547243)}
+    var trackNumber: ITUSpecifier {return self.propertyByCode(0x7054724e)}
+    var unplayed: ITUSpecifier {return self.propertyByCode(0x70556e70)}
+    var updateTracks: ITUSpecifier {return self.propertyByCode(0x70555443)}
+    var version_: ITUSpecifier {return self.propertyByCode(0x76657273)}
+    var videoKind: ITUSpecifier {return self.propertyByCode(0x7056644b)}
+    var view: ITUSpecifier {return self.propertyByCode(0x70506c79)}
+    var visible: ITUSpecifier {return self.propertyByCode(0x70766973)}
+    var visualSize: ITUSpecifier {return self.propertyByCode(0x7056537a)}
+    var visualsEnabled: ITUSpecifier {return self.propertyByCode(0x70567345)}
+    var volumeAdjustment: ITUSpecifier {return self.propertyByCode(0x7041646a)}
+    var year: ITUSpecifier {return self.propertyByCode(0x70597220)}
+    var zoomable: ITUSpecifier {return self.propertyByCode(0x69737a6d)}
+    var zoomed: ITUSpecifier {return self.propertyByCode(0x707a756d)}
+    
+    // Elements
+    
+    var EQPresets: ITUSpecifier {return self.elementsByCode(0x63455150)}
+    var EQWindows: ITUSpecifier {return self.elementsByCode(0x63455157)}
+    var URLTracks: ITUSpecifier {return self.elementsByCode(0x63555254)}
+    var applications: ITUSpecifier {return self.elementsByCode(0x63617070)}
+    var artworks: ITUSpecifier {return self.elementsByCode(0x63417274)}
+    var audioCDPlaylists: ITUSpecifier {return self.elementsByCode(0x63434450)}
+    var audioCDTracks: ITUSpecifier {return self.elementsByCode(0x63434454)}
+    var browserWindows: ITUSpecifier {return self.elementsByCode(0x63427257)}
+    var devicePlaylists: ITUSpecifier {return self.elementsByCode(0x63447650)}
+    var deviceTracks: ITUSpecifier {return self.elementsByCode(0x63447654)}
+    var encoders: ITUSpecifier {return self.elementsByCode(0x63456e63)}
+    var fileTracks: ITUSpecifier {return self.elementsByCode(0x63466c54)}
+    var folderPlaylists: ITUSpecifier {return self.elementsByCode(0x63466f50)}
+    var items: ITUSpecifier {return self.elementsByCode(0x636f626a)}
+    var libraryPlaylists: ITUSpecifier {return self.elementsByCode(0x634c6950)}
+    var picture: ITUSpecifier {return self.elementsByCode(0x50494354)}
+    var playlistWindows: ITUSpecifier {return self.elementsByCode(0x63506c57)}
+    var playlists: ITUSpecifier {return self.elementsByCode(0x63506c79)}
+    var printSettings: ITUSpecifier {return self.elementsByCode(0x70736574)}
+    var radioTunerPlaylists: ITUSpecifier {return self.elementsByCode(0x63525450)}
+    var sharedTracks: ITUSpecifier {return self.elementsByCode(0x63536854)}
+    var sources: ITUSpecifier {return self.elementsByCode(0x63537263)}
+    var tracks: ITUSpecifier {return self.elementsByCode(0x6354726b)}
+    var userPlaylists: ITUSpecifier {return self.elementsByCode(0x63557350)}
+    var visuals: ITUSpecifier {return self.elementsByCode(0x63566973)}
+    var windows: ITUSpecifier {return self.elementsByCode(0x6377696e)}
+    
+    // Commands
+    
+    func activate(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x6d697363, eventID: 0x61637476, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func add(directParameter: AnyObject = kAEBNoParameter,
+            to: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x41646420, parameters: [
+            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func backTrack(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x4261636b, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func close(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x636c6f73, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func convert(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x436f6e76, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func count(directParameter: AnyObject = kAEBNoParameter,
+            each: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x636e7465, parameters: [
+            SwiftAEParameter(name: "each", code: 0x6b6f636c, value: each),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func delete(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x64656c6f, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func download(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x44776e6c, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func duplicate(directParameter: AnyObject = kAEBNoParameter,
+            to: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x636c6f6e, parameters: [
+            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func eject(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x456a6374, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func exists(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x646f6578, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func fastForward(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x46617374, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func get(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x67657464, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func launch(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61736372, eventID: 0x6e6f6f70, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func make(directParameter: AnyObject = kAEBNoParameter,
+            at: AnyObject = kAEBNoParameter,
+            new: AnyObject = kAEBNoParameter,
+            withProperties: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x6372656c, parameters: [
+            SwiftAEParameter(name: "at", code: 0x696e7368, value: at),
+            SwiftAEParameter(name: "new", code: 0x6b6f636c, value: new),
+            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func move(directParameter: AnyObject = kAEBNoParameter,
+            to: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x6d6f7665, parameters: [
+            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func nextTrack(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x4e657874, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func open(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61657674, eventID: 0x6f646f63, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func openLocation(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x4755524c, eventID: 0x4755524c, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func pause(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x50617573, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func play(directParameter: AnyObject = kAEBNoParameter,
+            once: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x506c6179, parameters: [
+            SwiftAEParameter(name: "once", code: 0x504f6e65, value: once),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func playpause(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x506c5073, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func previousTrack(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x50726576, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func print(directParameter: AnyObject = kAEBNoParameter,
+            kind: AnyObject = kAEBNoParameter,
+            theme: AnyObject = kAEBNoParameter,
+            printDialog: AnyObject = kAEBNoParameter,
+            withProperties: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61657674, eventID: 0x70646f63, parameters: [
+            SwiftAEParameter(name: "kind", code: 0x704b6e64, value: kind),
+            SwiftAEParameter(name: "theme", code: 0x7054686d, value: theme),
+            SwiftAEParameter(name: "printDialog", code: 0x70646c67, value: printDialog),
+            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func quit(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61657674, eventID: 0x71756974, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func refresh(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x52667273, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func reopen(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61657674, eventID: 0x72617070, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func resume(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x52657375, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func reveal(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x5265766c, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func rewind(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x52776e64, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func run(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61657674, eventID: 0x6f617070, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func search(directParameter: AnyObject = kAEBNoParameter,
+            only: AnyObject = kAEBNoParameter,
+            for_: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x53726368, parameters: [
+            SwiftAEParameter(name: "only", code: 0x70417265, value: only),
+            SwiftAEParameter(name: "for_", code: 0x7054726d, value: for_),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func set(directParameter: AnyObject = kAEBNoParameter,
+            to: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x73657464, parameters: [
+            SwiftAEParameter(name: "to", code: 0x64617461, value: to),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func stop(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x53746f70, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func subscribe(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x70537562, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func update(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x55706474, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func updateAllPodcasts(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x55706470, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func updatePodcast(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x55706431, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+}
+
+
+class ITUApplication: ITUSpecifier {
+    private init(targetType: AEBTargetType, targetData: AnyObject?) {
+        let data = AppleEventBridge.AEBStaticAppData(applicationClass: AEMApplication.self,
+                                                          symbolClass: ITUSymbol.self,
+                                                       specifierClass: ITUSpecifier.self,
+                                                           targetType: targetType,
+                                                           targetData: targetData)
+        super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
+    }
+    override convenience init() { // TO DO: delete/raise error if bundle id not given
+        self.init(bundleIdentifier: "com.apple.iTunes")
+    }
+    convenience init(name: NSString) {
+        self.init(targetType: kAEBTargetName, targetData: name)
+    }
+    convenience init(url: NSURL) {
+        self.init(targetType: kAEBTargetURL, targetData: url)
+    }
+    convenience init(bundleIdentifier: NSString) {
+        self.init(targetType: kAEBTargetBundleID, targetData: bundleIdentifier)
+    }
+    convenience init(processIdentifier: Int) {
+        self.init(targetType: kAEBTargetProcessID, targetData: processIdentifier)
+    }
+    convenience init(descriptor: NSAppleEventDescriptor) {
+        self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
+    }
+    class func currentApplication() -> ITUApplication {
+        return self.init(targetType: kAEBTargetCurrent, targetData: nil)
+    }
+    
+    // Construct a ITUSpecifier using a raw AEMQuery or other custom object
+    // (e.g. if app's terminology is broken or when dealing with especially cranky old apps)
+    
+    func customRoot(object: AnyObject!) -> ITUSpecifier {
+        if object is ITUSpecifier {
+            return ITUSpecifier(appData: aebAppData, aemQuery: (object as! ITUSpecifier).aemQuery)
+        } else if object is AppleEventBridge.AEMQuery {
+            return ITUSpecifier(appData: aebAppData, aemQuery: object as! AppleEventBridge.AEMQuery)
+        } else if object == nil {
+            return ITUSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.app())
+        } else {
+            return ITUSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.customRoot(object))
+        }
+    }
+}
+
+
+// test clause constructors, e.g. ITU.its.name != "foo"
+// note: the == operator will return a ITUSpecifier when used in elements[...] specifier; however, when
+// binding its result to a variable, it must be explicitly typed as (e.g.) AnyObject or Swift will infer Bool
+
+func == (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.equals(right))
+}
+func != (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
+}
+func < (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessThan(right))
+}
+func > (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterThan(right))
+}
+func <= (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessOrEquals(right))
+}
+func >= (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterOrEquals(right))
+}
+func && (left: ITUSpecifier!, right: ITUSpecifier!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMTestClause
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.AND(right))
+}
+func || (left: ITUSpecifier!, right: ITUSpecifier!) -> ITUSpecifier! {
+    let baseQuery = left.aemQuery as! AEMTestClause
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.OR(right))
+}
+prefix func ! (input: ITUSpecifier!) -> ITUSpecifier! {
+    let baseQuery = input.aemQuery as! AEMTestClause
+    return ITUSpecifier(appData: input.aebAppData, aemQuery: baseQuery.NOT())
+}
+
+
+/******************************************************************************/
+// SYMBOLS
+
+
 class ITUSymbol: SwiftAESymbol {
-    
-    override var description: String {return "kITU.\(self.aebName)"}
-    
+
+    override var description: String {return "ITU.\(self.aebName)"}
+
+    // Generic specifier roots. These can be used to construct ITUSpecifiers for use in other
+    // ITUSpecifiers and ITUCommands, though only real specifiers constructed from a
+    // ITUApplication can be used to send commands to the target application.
+
+    static let app = ITUSpecifier(appData: nil, aemQuery: AEMQuery.app())
+    static let con = ITUSpecifier(appData: nil, aemQuery: AEMQuery.con())
+    static let its = ITUSpecifier(appData: nil, aemQuery: AEMQuery.its())
+
     override class func symbol(code: OSType) -> AEBSymbol {
         switch (code) {
         case 0x61707220: return self.April
@@ -821,7 +1406,7 @@ class ITUSymbol: SwiftAESymbol {
     static var year: ITUSymbol {return ITUSymbol(name: "year", type: 0x74797065, code: 0x70597220)}
     static var zoomable: ITUSymbol {return ITUSymbol(name: "zoomable", type: 0x74797065, code: 0x69737a6d)}
     static var zoomed: ITUSymbol {return ITUSymbol(name: "zoomed", type: 0x74797065, code: 0x707a756d)}
-    
+
     // Enumerators    // TO DO: add 'override' if var is already defined in AEBSymbol
     static var Books: ITUSymbol {return ITUSymbol(name: "Books", type: 0x656e756d, code: 0x6b537041)}
     static var Genius: ITUSymbol {return ITUSymbol(name: "Genius", type: 0x656e756d, code: 0x6b537047)}
@@ -883,594 +1468,12 @@ class ITUSymbol: SwiftAESymbol {
 }
 
 
-class ITUSpecifier: SwiftAESpecifier {
-        
-    override var description: String { return ITUFormatter.formatObject(aemQuery, appData: aebAppData) }
-    
-    // Element(s) selectors
-    // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
+/******************************************************************************/
+// TOP-LEVEL CONSTANTS
 
-    subscript(index: AnyObject!) -> ITUSpecifier! { // by-index, by-name, by-test
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        switch (index) {
-        case is String:
-            return ITUSpecifier(appData: aebAppData, aemQuery:  baseQuery.byName(index))
-        case is ITUSpecifier:
-            let testClause = (index is AEBSpecifier ? (index as! AEBSpecifier).aemQuery : aemQuery) as! AEMTestClause
-            return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byTest(testClause))
-        default:
-            return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byIndex(index))
-        }
-    }
-    func ID(uid: AnyObject) -> ITUSpecifier { // by-id
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
-    }
-    subscript(from: AnyObject!, to: AnyObject!) -> ITUSpecifier! { // by-range
-        let newQuery = (self.aemQuery as! AEMMultipleElementsSpecifier).byRange(from, to: to)
-        return ITUSpecifier(appData: aebAppData, aemQuery: newQuery)
-    }
-    
-    func previous(class_: AEBSymbol) -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.previous(class_.aebCode))
-    }
-    func next(class_: AEBSymbol) -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.next(class_.aebCode))
-    }
-    
-    var first:  ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).first())}
-    var middle: ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).middle())}
-    var last:   ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
-    var any:    ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
-    
-    func beginning() -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
-    }
-    func end() -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.end())
-    }
-    func before() -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.before())
-    }
-    func after() -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.after())
-    }
-    
-    // Property and element specifiers
-    
-    func propertyByCode(code: OSType) -> ITUSpecifier {
-        return ITUSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).property(code))
-    }
-    func elementsByCode(code: OSType) -> ITUSpecifier {
-        return ITUSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).elements(code))
-    }
-    func propertyByFourCharCode(code: String) -> ITUSpecifier {
-        return self.propertyByCode(AEM4CC(code))
-    }
-    func elementsByFourCharCode(code: String) -> ITUSpecifier {
-        return self.elementsByCode(AEM4CC(code))
-    }
+// Namespace for generic specifiers and symbols, e.g. ITU.app.name, ITU.unicodeText
+let ITU = ITUSymbol.self
 
-    // Test clause constructors
-    
-    func beginsWith(input: AnyObject!) -> ITUSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.beginsWith(input))
-    }
-    
-    func endsWith(input: AnyObject!) -> ITUSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.endsWith(input))
-    }
-    
-    func contains(input: AnyObject!) -> ITUSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.contains(input))
-    }
-    
-    func isIn(input: AnyObject!) -> ITUSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.isIn(input))
-    }
-    
-    // Properties
-    
-    var EQ: ITUSpecifier {return self.propertyByCode(0x70455170)}
-    var EQEnabled: ITUSpecifier {return self.propertyByCode(0x70455120)}
-    var address: ITUSpecifier {return self.propertyByCode(0x7055524c)}
-    var album: ITUSpecifier {return self.propertyByCode(0x70416c62)}
-    var albumArtist: ITUSpecifier {return self.propertyByCode(0x70416c41)}
-    var albumRating: ITUSpecifier {return self.propertyByCode(0x70416c52)}
-    var albumRatingKind: ITUSpecifier {return self.propertyByCode(0x7041526b)}
-    var artist: ITUSpecifier {return self.propertyByCode(0x70417274)}
-    var band1: ITUSpecifier {return self.propertyByCode(0x70455131)}
-    var band10: ITUSpecifier {return self.propertyByCode(0x70455130)}
-    var band2: ITUSpecifier {return self.propertyByCode(0x70455132)}
-    var band3: ITUSpecifier {return self.propertyByCode(0x70455133)}
-    var band4: ITUSpecifier {return self.propertyByCode(0x70455134)}
-    var band5: ITUSpecifier {return self.propertyByCode(0x70455135)}
-    var band6: ITUSpecifier {return self.propertyByCode(0x70455136)}
-    var band7: ITUSpecifier {return self.propertyByCode(0x70455137)}
-    var band8: ITUSpecifier {return self.propertyByCode(0x70455138)}
-    var band9: ITUSpecifier {return self.propertyByCode(0x70455139)}
-    var bitRate: ITUSpecifier {return self.propertyByCode(0x70425274)}
-    var bookmark: ITUSpecifier {return self.propertyByCode(0x70426b74)}
-    var bookmarkable: ITUSpecifier {return self.propertyByCode(0x70426b6d)}
-    var bounds: ITUSpecifier {return self.propertyByCode(0x70626e64)}
-    var bpm: ITUSpecifier {return self.propertyByCode(0x7042504d)}
-    var capacity: ITUSpecifier {return self.propertyByCode(0x63617061)}
-    var category: ITUSpecifier {return self.propertyByCode(0x70436174)}
-    var class_: ITUSpecifier {return self.propertyByCode(0x70636c73)}
-    var closeable: ITUSpecifier {return self.propertyByCode(0x68636c62)}
-    var collapseable: ITUSpecifier {return self.propertyByCode(0x70575368)}
-    var collapsed: ITUSpecifier {return self.propertyByCode(0x77736864)}
-    var collating: ITUSpecifier {return self.propertyByCode(0x6c77636c)}
-    var comment: ITUSpecifier {return self.propertyByCode(0x70436d74)}
-    var compilation: ITUSpecifier {return self.propertyByCode(0x70416e74)}
-    var composer: ITUSpecifier {return self.propertyByCode(0x70436d70)}
-    var container: ITUSpecifier {return self.propertyByCode(0x63746e72)}
-    var copies: ITUSpecifier {return self.propertyByCode(0x6c776370)}
-    var currentEQPreset: ITUSpecifier {return self.propertyByCode(0x70455150)}
-    var currentEncoder: ITUSpecifier {return self.propertyByCode(0x70456e63)}
-    var currentPlaylist: ITUSpecifier {return self.propertyByCode(0x70506c61)}
-    var currentStreamTitle: ITUSpecifier {return self.propertyByCode(0x70537454)}
-    var currentStreamURL: ITUSpecifier {return self.propertyByCode(0x70537455)}
-    var currentTrack: ITUSpecifier {return self.propertyByCode(0x7054726b)}
-    var currentVisual: ITUSpecifier {return self.propertyByCode(0x70566973)}
-    var data_: ITUSpecifier {return self.propertyByCode(0x70504354)}
-    var databaseID: ITUSpecifier {return self.propertyByCode(0x70444944)}
-    var dateAdded: ITUSpecifier {return self.propertyByCode(0x70416464)}
-    var description_: ITUSpecifier {return self.propertyByCode(0x70446573)}
-    var discCount: ITUSpecifier {return self.propertyByCode(0x70447343)}
-    var discNumber: ITUSpecifier {return self.propertyByCode(0x7044734e)}
-    var downloaded: ITUSpecifier {return self.propertyByCode(0x70446c41)}
-    var duration: ITUSpecifier {return self.propertyByCode(0x70447572)}
-    var enabled: ITUSpecifier {return self.propertyByCode(0x656e626c)}
-    var endingPage: ITUSpecifier {return self.propertyByCode(0x6c776c70)}
-    var episodeID: ITUSpecifier {return self.propertyByCode(0x70457044)}
-    var episodeNumber: ITUSpecifier {return self.propertyByCode(0x7045704e)}
-    var errorHandling: ITUSpecifier {return self.propertyByCode(0x6c776568)}
-    var faxNumber: ITUSpecifier {return self.propertyByCode(0x6661786e)}
-    var finish: ITUSpecifier {return self.propertyByCode(0x70537470)}
-    var fixedIndexing: ITUSpecifier {return self.propertyByCode(0x70466978)}
-    var format: ITUSpecifier {return self.propertyByCode(0x70466d74)}
-    var freeSpace: ITUSpecifier {return self.propertyByCode(0x66727370)}
-    var frontmost: ITUSpecifier {return self.propertyByCode(0x70697366)}
-    var fullScreen: ITUSpecifier {return self.propertyByCode(0x70465363)}
-    var gapless: ITUSpecifier {return self.propertyByCode(0x7047706c)}
-    var genre: ITUSpecifier {return self.propertyByCode(0x7047656e)}
-    var grouping: ITUSpecifier {return self.propertyByCode(0x70477270)}
-    var id: ITUSpecifier {return self.propertyByCode(0x49442020)}
-    var index: ITUSpecifier {return self.propertyByCode(0x70696478)}
-    var kind: ITUSpecifier {return self.propertyByCode(0x704b6e64)}
-    var location: ITUSpecifier {return self.propertyByCode(0x704c6f63)}
-    var longDescription: ITUSpecifier {return self.propertyByCode(0x704c6473)}
-    var lyrics: ITUSpecifier {return self.propertyByCode(0x704c7972)}
-    var minimized: ITUSpecifier {return self.propertyByCode(0x704d696e)}
-    var modifiable: ITUSpecifier {return self.propertyByCode(0x704d6f64)}
-    var modificationDate: ITUSpecifier {return self.propertyByCode(0x61736d6f)}
-    var mute: ITUSpecifier {return self.propertyByCode(0x704d7574)}
-    var name: ITUSpecifier {return self.propertyByCode(0x706e616d)}
-    var pagesAcross: ITUSpecifier {return self.propertyByCode(0x6c776c61)}
-    var pagesDown: ITUSpecifier {return self.propertyByCode(0x6c776c64)}
-    var parent: ITUSpecifier {return self.propertyByCode(0x70506c50)}
-    var persistentID: ITUSpecifier {return self.propertyByCode(0x70504953)}
-    var playedCount: ITUSpecifier {return self.propertyByCode(0x70506c43)}
-    var playedDate: ITUSpecifier {return self.propertyByCode(0x70506c44)}
-    var playerPosition: ITUSpecifier {return self.propertyByCode(0x70506f73)}
-    var playerState: ITUSpecifier {return self.propertyByCode(0x70506c53)}
-    var podcast: ITUSpecifier {return self.propertyByCode(0x70545063)}
-    var position: ITUSpecifier {return self.propertyByCode(0x70706f73)}
-    var preamp: ITUSpecifier {return self.propertyByCode(0x70455141)}
-    var printerFeatures: ITUSpecifier {return self.propertyByCode(0x6c777066)}
-    var properties: ITUSpecifier {return self.propertyByCode(0x70414c4c)}
-    var rating: ITUSpecifier {return self.propertyByCode(0x70527465)}
-    var ratingKind: ITUSpecifier {return self.propertyByCode(0x7052746b)}
-    var rawData: ITUSpecifier {return self.propertyByCode(0x70526177)}
-    var releaseDate: ITUSpecifier {return self.propertyByCode(0x70526c44)}
-    var requestedPrintTime: ITUSpecifier {return self.propertyByCode(0x6c777174)}
-    var resizable: ITUSpecifier {return self.propertyByCode(0x7072737a)}
-    var sampleRate: ITUSpecifier {return self.propertyByCode(0x70535274)}
-    var seasonNumber: ITUSpecifier {return self.propertyByCode(0x7053654e)}
-    var selection: ITUSpecifier {return self.propertyByCode(0x73656c65)}
-    var shared: ITUSpecifier {return self.propertyByCode(0x70536872)}
-    var show: ITUSpecifier {return self.propertyByCode(0x70536877)}
-    var shufflable: ITUSpecifier {return self.propertyByCode(0x70536661)}
-    var shuffle: ITUSpecifier {return self.propertyByCode(0x70536866)}
-    var size: ITUSpecifier {return self.propertyByCode(0x7053697a)}
-    var skippedCount: ITUSpecifier {return self.propertyByCode(0x70536b43)}
-    var skippedDate: ITUSpecifier {return self.propertyByCode(0x70536b44)}
-    var smart: ITUSpecifier {return self.propertyByCode(0x70536d74)}
-    var songRepeat: ITUSpecifier {return self.propertyByCode(0x70527074)}
-    var sortAlbum: ITUSpecifier {return self.propertyByCode(0x7053416c)}
-    var sortAlbumArtist: ITUSpecifier {return self.propertyByCode(0x70534141)}
-    var sortArtist: ITUSpecifier {return self.propertyByCode(0x70534172)}
-    var sortComposer: ITUSpecifier {return self.propertyByCode(0x7053436d)}
-    var sortName: ITUSpecifier {return self.propertyByCode(0x70534e6d)}
-    var sortShow: ITUSpecifier {return self.propertyByCode(0x7053534e)}
-    var soundVolume: ITUSpecifier {return self.propertyByCode(0x70566f6c)}
-    var specialKind: ITUSpecifier {return self.propertyByCode(0x7053704b)}
-    var start: ITUSpecifier {return self.propertyByCode(0x70537472)}
-    var startingPage: ITUSpecifier {return self.propertyByCode(0x6c776670)}
-    var targetPrinter: ITUSpecifier {return self.propertyByCode(0x74727072)}
-    var time: ITUSpecifier {return self.propertyByCode(0x7054696d)}
-    var trackCount: ITUSpecifier {return self.propertyByCode(0x70547243)}
-    var trackNumber: ITUSpecifier {return self.propertyByCode(0x7054724e)}
-    var unplayed: ITUSpecifier {return self.propertyByCode(0x70556e70)}
-    var updateTracks: ITUSpecifier {return self.propertyByCode(0x70555443)}
-    var version_: ITUSpecifier {return self.propertyByCode(0x76657273)}
-    var videoKind: ITUSpecifier {return self.propertyByCode(0x7056644b)}
-    var view: ITUSpecifier {return self.propertyByCode(0x70506c79)}
-    var visible: ITUSpecifier {return self.propertyByCode(0x70766973)}
-    var visualSize: ITUSpecifier {return self.propertyByCode(0x7056537a)}
-    var visualsEnabled: ITUSpecifier {return self.propertyByCode(0x70567345)}
-    var volumeAdjustment: ITUSpecifier {return self.propertyByCode(0x7041646a)}
-    var year: ITUSpecifier {return self.propertyByCode(0x70597220)}
-    var zoomable: ITUSpecifier {return self.propertyByCode(0x69737a6d)}
-    var zoomed: ITUSpecifier {return self.propertyByCode(0x707a756d)}
-    
-    // Elements
-    
-    var EQPresets: ITUSpecifier {return self.elementsByCode(0x63455150)}
-    var EQWindows: ITUSpecifier {return self.elementsByCode(0x63455157)}
-    var URLTracks: ITUSpecifier {return self.elementsByCode(0x63555254)}
-    var applications: ITUSpecifier {return self.elementsByCode(0x63617070)}
-    var artworks: ITUSpecifier {return self.elementsByCode(0x63417274)}
-    var audioCDPlaylists: ITUSpecifier {return self.elementsByCode(0x63434450)}
-    var audioCDTracks: ITUSpecifier {return self.elementsByCode(0x63434454)}
-    var browserWindows: ITUSpecifier {return self.elementsByCode(0x63427257)}
-    var devicePlaylists: ITUSpecifier {return self.elementsByCode(0x63447650)}
-    var deviceTracks: ITUSpecifier {return self.elementsByCode(0x63447654)}
-    var encoders: ITUSpecifier {return self.elementsByCode(0x63456e63)}
-    var fileTracks: ITUSpecifier {return self.elementsByCode(0x63466c54)}
-    var folderPlaylists: ITUSpecifier {return self.elementsByCode(0x63466f50)}
-    var items: ITUSpecifier {return self.elementsByCode(0x636f626a)}
-    var libraryPlaylists: ITUSpecifier {return self.elementsByCode(0x634c6950)}
-    var picture: ITUSpecifier {return self.elementsByCode(0x50494354)}
-    var playlistWindows: ITUSpecifier {return self.elementsByCode(0x63506c57)}
-    var playlists: ITUSpecifier {return self.elementsByCode(0x63506c79)}
-    var printSettings: ITUSpecifier {return self.elementsByCode(0x70736574)}
-    var radioTunerPlaylists: ITUSpecifier {return self.elementsByCode(0x63525450)}
-    var sharedTracks: ITUSpecifier {return self.elementsByCode(0x63536854)}
-    var sources: ITUSpecifier {return self.elementsByCode(0x63537263)}
-    var tracks: ITUSpecifier {return self.elementsByCode(0x6354726b)}
-    var userPlaylists: ITUSpecifier {return self.elementsByCode(0x63557350)}
-    var visuals: ITUSpecifier {return self.elementsByCode(0x63566973)}
-    var windows: ITUSpecifier {return self.elementsByCode(0x6377696e)}
-    
-    // Commands
-    
-    func activate(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x6d697363, eventID: 0x61637476, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func add(directParameter: AnyObject = kAEBNoParameter,
-            to: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x41646420, parameters: [
-            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func backTrack(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x4261636b, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func close(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x636c6f73, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func convert(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x436f6e76, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func count(directParameter: AnyObject = kAEBNoParameter,
-            each: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x636e7465, parameters: [
-            SwiftAEParameter(name: "each", code: 0x6b6f636c, value: each),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func delete(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x64656c6f, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func download(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x44776e6c, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func duplicate(directParameter: AnyObject = kAEBNoParameter,
-            to: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x636c6f6e, parameters: [
-            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func eject(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x456a6374, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func exists(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x646f6578, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func fastForward(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x46617374, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func get(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x67657464, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func launch(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61736372, eventID: 0x6e6f6f70, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func make(directParameter: AnyObject = kAEBNoParameter,
-            at: AnyObject = kAEBNoParameter,
-            new: AnyObject = kAEBNoParameter,
-            withProperties: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x6372656c, parameters: [
-            SwiftAEParameter(name: "at", code: 0x696e7368, value: at),
-            SwiftAEParameter(name: "new", code: 0x6b6f636c, value: new),
-            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func move(directParameter: AnyObject = kAEBNoParameter,
-            to: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x6d6f7665, parameters: [
-            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func nextTrack(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x4e657874, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func open(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61657674, eventID: 0x6f646f63, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func openLocation(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x4755524c, eventID: 0x4755524c, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func pause(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x50617573, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func play(directParameter: AnyObject = kAEBNoParameter,
-            once: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x506c6179, parameters: [
-            SwiftAEParameter(name: "once", code: 0x504f6e65, value: once),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func playpause(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x506c5073, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func previousTrack(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x50726576, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func print(directParameter: AnyObject = kAEBNoParameter,
-            kind: AnyObject = kAEBNoParameter,
-            theme: AnyObject = kAEBNoParameter,
-            printDialog: AnyObject = kAEBNoParameter,
-            withProperties: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61657674, eventID: 0x70646f63, parameters: [
-            SwiftAEParameter(name: "kind", code: 0x704b6e64, value: kind),
-            SwiftAEParameter(name: "theme", code: 0x7054686d, value: theme),
-            SwiftAEParameter(name: "printDialog", code: 0x70646c67, value: printDialog),
-            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func quit(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61657674, eventID: 0x71756974, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func refresh(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x52667273, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func reopen(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61657674, eventID: 0x72617070, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func resume(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x52657375, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func reveal(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x5265766c, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func rewind(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x52776e64, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func run(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61657674, eventID: 0x6f617070, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func search(directParameter: AnyObject = kAEBNoParameter,
-            only: AnyObject = kAEBNoParameter,
-            for_: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x53726368, parameters: [
-            SwiftAEParameter(name: "only", code: 0x70417265, value: only),
-            SwiftAEParameter(name: "for_", code: 0x7054726d, value: for_),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func set(directParameter: AnyObject = kAEBNoParameter,
-            to: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x73657464, parameters: [
-            SwiftAEParameter(name: "to", code: 0x64617461, value: to),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func stop(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x53746f70, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func subscribe(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x70537562, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func update(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x55706474, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func updateAllPodcasts(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x55706470, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func updatePodcast(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x686f6f6b, eventID: 0x55706431, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-}
-
-
-class ITUApplication: ITUSpecifier {
-    private init(targetType: AEBTargetType, targetData: AnyObject?) {
-        let data = AppleEventBridge.AEBStaticAppData(applicationClass: AEMApplication.self,
-                                                          symbolClass: ITUSymbol.self,
-                                                       specifierClass: ITUSpecifier.self,
-                                                           targetType: targetType,
-                                                           targetData: targetData)
-        super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
-    }
-    override convenience init() { // TO DO: delete/raise error if bundle id not given
-        self.init(bundleIdentifier: "com.apple.iTunes")
-    }
-    convenience init(name: NSString) {
-        self.init(targetType: kAEBTargetName, targetData: name)
-    }
-    convenience init(url: NSURL) {
-        self.init(targetType: kAEBTargetURL, targetData: url)
-    }
-    convenience init(bundleIdentifier: NSString) {
-        self.init(targetType: kAEBTargetBundleID, targetData: bundleIdentifier)
-    }
-    convenience init(processIdentifier: Int) {
-        self.init(targetType: kAEBTargetProcessID, targetData: processIdentifier)
-    }
-    convenience init(descriptor: NSAppleEventDescriptor) {
-        self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
-    }
-    class func currentApplication() -> ITUApplication {
-        return self.init(targetType: kAEBTargetCurrent, targetData: nil)
-    }
-    
-    // Construct a ITUSpecifier using a raw AEMQuery or other custom object
-    // (e.g. if app's terminology is broken or when dealing with especially cranky old apps)
-    
-    func customRoot(object: AnyObject!) -> ITUSpecifier {
-        if object is ITUSpecifier {
-            return ITUSpecifier(appData: aebAppData, aemQuery: (object as! ITUSpecifier).aemQuery)
-        } else if object is AppleEventBridge.AEMQuery {
-            return ITUSpecifier(appData: aebAppData, aemQuery: object as! AppleEventBridge.AEMQuery)
-        } else if object == nil {
-            return ITUSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.app())
-        } else {
-            return ITUSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.customRoot(object))
-        }
-    }
-}
-
-
-// construct ITUIts... test clauses
-
-// note: == will return specifier when used in correct context
-
-func == (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.equals(right))
-}
-func != (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
-}
-func < (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessThan(right))
-}
-func > (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterThan(right))
-}
-func <= (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessOrEquals(right))
-}
-func >= (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterOrEquals(right))
-}
-func && (left: ITUSpecifier!, right: ITUSpecifier!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMTestClause
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.AND(right))
-}
-func || (left: ITUSpecifier!, right: ITUSpecifier!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMTestClause
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.OR(right))
-}
-prefix func ! (input: ITUSpecifier!) -> ITUSpecifier! {
-    let baseQuery = input.aemQuery as! AEMTestClause
-    return ITUSpecifier(appData: input.aebAppData, aemQuery: baseQuery.NOT())
-}
-
-
-// Generic specifier roots. These can be used to construct ITUSpecifiers for use in other ITUSpecifiers and ITUCommands,
-// though only real specifiers constructed from a ITUApplication can be used to send commands to the target application.
-
-let ITUApp = ITUSpecifier(appData: nil, aemQuery: AEMQuery.app())
-let ITUCon = ITUSpecifier(appData: nil, aemQuery: AEMQuery.con())
-let ITUIts = ITUSpecifier(appData: nil, aemQuery: AEMQuery.its())
-
-// Symbol namespace
-
-let kITU = ITUSymbol.self
-
-// Convenience constructor for application objects.
-
+// Convenience constructor for application objects, e.g. iTunes.activate()
 var iTunes: ITUApplication {return ITUApplication()}
 

@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F0D52971B344E8B0081A1B3 /* TETGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0D52961B344E8B0081A1B3 /* TETGlue.swift */; };
-		4F0D529A1B349C8A0081A1B3 /* ObjCImplementationGlueTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F0D52991B349C8A0081A1B3 /* ObjCImplementationGlueTemplate.txt */; };
-		4F0D529C1B349C910081A1B3 /* ObjCInterfaceGlueTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F0D529B1B349C910081A1B3 /* ObjCInterfaceGlueTemplate.txt */; };
-		4F0D52A41B34C36E0081A1B3 /* TEGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0D52A31B34C36E0081A1B3 /* TEGlue.m */; };
 		4F1A9FFA19F92A9F00FBD23E /* AppleEventBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1A9FF919F92A9F00FBD23E /* AppleEventBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1AA00019F92A9F00FBD23E /* AppleEventBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */; };
 		4F1AA00719F92A9F00FBD23E /* AppleEventBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA00619F92A9F00FBD23E /* AppleEventBridgeTests.m */; };
@@ -60,6 +56,15 @@
 		4F1AA07319F92D6000FBD23E /* AEMTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA03F19F92D6000FBD23E /* AEMTypes.m */; };
 		4F1AA07619F92D6000FBD23E /* AEMUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA04219F92D6000FBD23E /* AEMUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1AA07719F92D6000FBD23E /* AEMUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA04319F92D6000FBD23E /* AEMUtils.m */; };
+		4F4ADE791B35C3600017EE65 /* ObjCImplementationGlueTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F4ADE771B35C3600017EE65 /* ObjCImplementationGlueTemplate.txt */; };
+		4F4ADE7A1B35C3600017EE65 /* ObjCInterfaceGlueTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F4ADE781B35C3600017EE65 /* ObjCInterfaceGlueTemplate.txt */; };
+		4F4ADE7C1B35C3700017EE65 /* SwiftGlueTemplate.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4F4ADE7B1B35C3700017EE65 /* SwiftGlueTemplate.txt */; };
+		4F4ADE7D1B35C3870017EE65 /* aebglue in Copy Files (aebglue) */ = {isa = PBXBuildFile; fileRef = 4F4ADE741B35C2E50017EE65 /* aebglue */; };
+		4F4ADE831B35C49E0017EE65 /* AEBSwiftGlueBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADE821B35C49E0017EE65 /* AEBSwiftGlueBase.swift */; };
+		4F4ADECE1B35DB270017EE65 /* ITUGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADEC91B35DB270017EE65 /* ITUGlue.m */; };
+		4F4ADECF1B35DB270017EE65 /* TETGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADECD1B35DB270017EE65 /* TETGlue.m */; };
+		4F4ADED21B35DC2B0017EE65 /* ITUGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */; };
+		4F4ADED51B35DC330017EE65 /* TETGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADED31B35DC330017EE65 /* TETGlue.swift */; };
 		4F5EE3D51B2D7F1F007C58B5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5EE3D41B2D7F1F007C58B5 /* main.swift */; };
 		4F5EE3DD1B2D9BD4007C58B5 /* AEMQueryVisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F5EE3DB1B2D9BD4007C58B5 /* AEMQueryVisitor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F5EE3DE1B2D9BD4007C58B5 /* AEMQueryVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5EE3DC1B2D9BD4007C58B5 /* AEMQueryVisitor.m */; };
@@ -67,7 +72,6 @@
 		4F70FBD71A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F70FBD51A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m */; };
 		4F9B7FC91B30292200BE621C /* AEBStaticSpecifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9B7FC71B30292200BE621C /* AEBStaticSpecifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F9B7FCA1B30292200BE621C /* AEBStaticSpecifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FC81B30292200BE621C /* AEBStaticSpecifier.m */; };
-		4F9B7FCC1B30416500BE621C /* AEBSwiftGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FCB1B30416500BE621C /* AEBSwiftGlue.swift */; };
 		4F9B7FCF1B30A4B900BE621C /* AEBStaticSymbol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9B7FCD1B30A4B900BE621C /* AEBStaticSymbol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F9B7FD01B30A4B900BE621C /* AEBStaticSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FCE1B30A4B900BE621C /* AEBStaticSymbol.m */; };
 		4FA7A88D1A02412600F0E578 /* AEMURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA7A88B1A02412600F0E578 /* AEMURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -75,15 +79,13 @@
 		4FA7A8AE1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA7A8AC1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FA7A8AF1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA7A8AD1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.m */; };
 		4FA7A8B91A0A607400F0E578 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA7A8B81A0A607400F0E578 /* main.m */; };
-		4FA7A8BF1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.c in Sources */ = {isa = PBXBuildFile; fileRef = 4FA7A8BD1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.c */; };
-		4FA7A8C01A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA7A8BE1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		4FA7A8BF1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA7A8BD1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.m */; };
+		4FA7A8C01A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA7A8BE1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FA7A8C21A0A79B900F0E578 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1AA01119F92B4C00FBD23E /* Foundation.framework */; };
 		4FA7A8C31A0A79BC00F0E578 /* AppleEventBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */; };
 		4FA7A8C51A0A99AE00F0E578 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA7A8C41A0A99AE00F0E578 /* Carbon.framework */; };
 		4FD8E4A11B334D63004B5CD5 /* AEBKeywordConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */; };
-		4FD8E4A71B342A97004B5CD5 /* ITUGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A61B342A97004B5CD5 /* ITUGlue.swift */; };
-		4FF619C51A0CF520002277B8 /* aebglue in Copy Files (aebglue) */ = {isa = PBXBuildFile; fileRef = 4F1AA02519F92D6000FBD23E /* aebglue */; };
 		4FFA2D721A129BCA00AF09E4 /* application-objects.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5E1A129B7E00AF09E4 /* application-objects.html */; };
 		4FFA2D731A129BCA00AF09E4 /* application_architecture.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5F1A129B7E00AF09E4 /* application_architecture.gif */; };
 		4FFA2D741A129BCA00AF09E4 /* application_architecture2.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D601A129B7E00AF09E4 /* application_architecture2.gif */; };
@@ -154,7 +156,7 @@
 			dstPath = bin;
 			dstSubfolderSpec = 7;
 			files = (
-				4FF619C51A0CF520002277B8 /* aebglue in Copy Files (aebglue) */,
+				4F4ADE7D1B35C3870017EE65 /* aebglue in Copy Files (aebglue) */,
 			);
 			name = "Copy Files (aebglue)";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -191,12 +193,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4F0D52961B344E8B0081A1B3 /* TETGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TETGlue.swift; sourceTree = "<group>"; };
 		4F0D52981B3450BB0081A1B3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
-		4F0D52991B349C8A0081A1B3 /* ObjCImplementationGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ObjCImplementationGlueTemplate.txt; sourceTree = "<group>"; };
-		4F0D529B1B349C910081A1B3 /* ObjCInterfaceGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ObjCInterfaceGlueTemplate.txt; sourceTree = "<group>"; };
-		4F0D52A21B34C36E0081A1B3 /* TEGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEGlue.h; sourceTree = "<group>"; };
-		4F0D52A31B34C36E0081A1B3 /* TEGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEGlue.m; sourceTree = "<group>"; };
 		4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppleEventBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1A9FF919F92A9F00FBD23E /* AppleEventBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppleEventBridge.h; sourceTree = "<group>"; };
 		4F1A9FFF19F92A9F00FBD23E /* AppleEventBridgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleEventBridgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -220,7 +217,6 @@
 		4F1AA02219F92D6000FBD23E /* AEBDynamicTerm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AEBDynamicTerm.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4F1AA02319F92D6000FBD23E /* AEBDynamicTerminology.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBDynamicTerminology.h; sourceTree = "<group>"; };
 		4F1AA02419F92D6000FBD23E /* AEBDynamicTerminology.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBDynamicTerminology.m; sourceTree = "<group>"; };
-		4F1AA02519F92D6000FBD23E /* aebglue */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; lineEnding = 0; path = aebglue; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
 		4F1AA02619F92D6000FBD23E /* AEBStaticAppData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBStaticAppData.h; sourceTree = "<group>"; };
 		4F1AA02719F92D6000FBD23E /* AEBStaticAppData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBStaticAppData.m; sourceTree = "<group>"; };
 		4F1AA02819F92D6000FBD23E /* AEBStaticCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AEBStaticCommand.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -249,6 +245,21 @@
 		4F1AA03F19F92D6000FBD23E /* AEMTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AEMTypes.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4F1AA04219F92D6000FBD23E /* AEMUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMUtils.h; sourceTree = "<group>"; };
 		4F1AA04319F92D6000FBD23E /* AEMUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEMUtils.m; sourceTree = "<group>"; };
+		4F4ADE741B35C2E50017EE65 /* aebglue */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = aebglue; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
+		4F4ADE771B35C3600017EE65 /* ObjCImplementationGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ObjCImplementationGlueTemplate.txt; sourceTree = "<group>"; };
+		4F4ADE781B35C3600017EE65 /* ObjCInterfaceGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ObjCInterfaceGlueTemplate.txt; sourceTree = "<group>"; };
+		4F4ADE7B1B35C3700017EE65 /* SwiftGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SwiftGlueTemplate.txt; sourceTree = "<group>"; };
+		4F4ADE821B35C49E0017EE65 /* AEBSwiftGlueBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEBSwiftGlueBase.swift; sourceTree = "<group>"; };
+		4F4ADEC71B35DB270017EE65 /* ITUGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITUGlue.h; sourceTree = "<group>"; };
+		4F4ADEC81B35DB270017EE65 /* ITUGlue.h.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ITUGlue.h.sdef; sourceTree = "<group>"; };
+		4F4ADEC91B35DB270017EE65 /* ITUGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITUGlue.m; sourceTree = "<group>"; };
+		4F4ADECB1B35DB270017EE65 /* TETGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TETGlue.h; sourceTree = "<group>"; };
+		4F4ADECC1B35DB270017EE65 /* TETGlue.h.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TETGlue.h.sdef; sourceTree = "<group>"; };
+		4F4ADECD1B35DB270017EE65 /* TETGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TETGlue.m; sourceTree = "<group>"; };
+		4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITUGlue.swift; sourceTree = "<group>"; };
+		4F4ADED11B35DC2B0017EE65 /* ITUGlue.swift.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ITUGlue.swift.sdef; sourceTree = "<group>"; };
+		4F4ADED31B35DC330017EE65 /* TETGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TETGlue.swift; sourceTree = "<group>"; };
+		4F4ADED41B35DC330017EE65 /* TETGlue.swift.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TETGlue.swift.sdef; sourceTree = "<group>"; };
 		4F5EE3D21B2D7F1F007C58B5 /* saedemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = saedemo; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F5EE3D41B2D7F1F007C58B5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4F5EE3DB1B2D9BD4007C58B5 /* AEMQueryVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMQueryVisitor.h; sourceTree = "<group>"; };
@@ -257,7 +268,6 @@
 		4F70FBD51A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAppleEventDescriptor+AEDescMoreExtensions.m"; sourceTree = "<group>"; };
 		4F9B7FC71B30292200BE621C /* AEBStaticSpecifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBStaticSpecifier.h; sourceTree = "<group>"; };
 		4F9B7FC81B30292200BE621C /* AEBStaticSpecifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBStaticSpecifier.m; sourceTree = "<group>"; };
-		4F9B7FCB1B30416500BE621C /* AEBSwiftGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEBSwiftGlue.swift; sourceTree = "<group>"; };
 		4F9B7FCD1B30A4B900BE621C /* AEBStaticSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBStaticSymbol.h; sourceTree = "<group>"; };
 		4F9B7FCE1B30A4B900BE621C /* AEBStaticSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBStaticSymbol.m; sourceTree = "<group>"; };
 		4FA7A88B1A02412600F0E578 /* AEMURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMURL.h; sourceTree = "<group>"; };
@@ -266,15 +276,11 @@
 		4FA7A8AD1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAppleEventDescriptor+AEDescExtensions.m"; sourceTree = "<group>"; };
 		4FA7A8B61A0A607400F0E578 /* aebdemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = aebdemo; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA7A8B81A0A607400F0E578 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		4FA7A8BD1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = AEMCopyScriptingDefinitionFromURL.c; sourceTree = "<group>"; };
+		4FA7A8BD1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEMCopyScriptingDefinitionFromURL.m; sourceTree = "<group>"; };
 		4FA7A8BE1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMCopyScriptingDefinitionFromURL.h; sourceTree = "<group>"; };
 		4FA7A8C41A0A99AE00F0E578 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBKeywordConverter.h; sourceTree = "<group>"; };
 		4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBKeywordConverter.m; sourceTree = "<group>"; };
-		4FD8E4A31B33700F004B5CD5 /* aebglue-swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "aebglue-swift"; sourceTree = "<group>"; };
-		4FD8E4A41B33700F004B5CD5 /* SwiftGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SwiftGlueTemplate.txt; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = "<none>"; };
-		4FD8E4A61B342A97004B5CD5 /* ITUGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITUGlue.swift; sourceTree = "<group>"; };
-		4FF619C81A0EC9C1002277B8 /* TextEdit.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TextEdit.sdef; sourceTree = "<group>"; };
 		4FFA2D371A129AAE00AF09E4 /* 1 introduction.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "1 introduction.md"; sourceTree = "<group>"; };
 		4FFA2D381A129AAE00AF09E4 /* 10 optimizing-performance.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "10 optimizing-performance.md"; sourceTree = "<group>"; };
 		4FFA2D391A129AAE00AF09E4 /* 11 low-level-apis.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "11 low-level-apis.md"; sourceTree = "<group>"; };
@@ -434,9 +440,7 @@
 		4F1AA07D19F92D7D00FBD23E /* bin */ = {
 			isa = PBXGroup;
 			children = (
-				4F1AA02519F92D6000FBD23E /* aebglue */,
-				4F0D529B1B349C910081A1B3 /* ObjCInterfaceGlueTemplate.txt */,
-				4F0D52991B349C8A0081A1B3 /* ObjCImplementationGlueTemplate.txt */,
+				4F4ADE741B35C2E50017EE65 /* aebglue */,
 				4FFA2D5B1A129AD700AF09E4 /* mkdoc */,
 			);
 			name = bin;
@@ -466,8 +470,8 @@
 			children = (
 				4F1AA02619F92D6000FBD23E /* AEBStaticAppData.h */,
 				4F1AA02719F92D6000FBD23E /* AEBStaticAppData.m */,
-				4F9B7FD11B30B90B00BE621C /* ObjC */,
 				4F9B7FD21B30B95000BE621C /* Swift */,
+				4F9B7FD11B30B90B00BE621C /* ObjC */,
 			);
 			name = "Static glues (base classes)";
 			sourceTree = "<group>";
@@ -510,15 +514,36 @@
 			name = "AEB* (high-level, glue-based APIs)";
 			sourceTree = "<group>";
 		};
+		4F4ADEC61B35DB270017EE65 /* ITUGlue */ = {
+			isa = PBXGroup;
+			children = (
+				4F4ADEC71B35DB270017EE65 /* ITUGlue.h */,
+				4F4ADEC81B35DB270017EE65 /* ITUGlue.h.sdef */,
+				4F4ADEC91B35DB270017EE65 /* ITUGlue.m */,
+			);
+			path = ITUGlue;
+			sourceTree = "<group>";
+		};
+		4F4ADECA1B35DB270017EE65 /* TETGlue */ = {
+			isa = PBXGroup;
+			children = (
+				4F4ADECB1B35DB270017EE65 /* TETGlue.h */,
+				4F4ADECC1B35DB270017EE65 /* TETGlue.h.sdef */,
+				4F4ADECD1B35DB270017EE65 /* TETGlue.m */,
+			);
+			path = TETGlue;
+			sourceTree = "<group>";
+		};
 		4F5EE3D31B2D7F1F007C58B5 /* saedemo */ = {
 			isa = PBXGroup;
 			children = (
-				4FD8E4A51B337015004B5CD5 /* bin */,
 				4F5EE3D41B2D7F1F007C58B5 /* main.swift */,
-				4F9B7FCB1B30416500BE621C /* AEBSwiftGlue.swift */,
-				4F0D52961B344E8B0081A1B3 /* TETGlue.swift */,
-				4FD8E4A61B342A97004B5CD5 /* ITUGlue.swift */,
+				4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */,
+				4F4ADED11B35DC2B0017EE65 /* ITUGlue.swift.sdef */,
+				4F4ADED31B35DC330017EE65 /* TETGlue.swift */,
+				4F4ADED41B35DC330017EE65 /* TETGlue.swift.sdef */,
 				4F0D52981B3450BB0081A1B3 /* TODO.txt */,
+				4F4ADE821B35C49E0017EE65 /* AEBSwiftGlueBase.swift */,
 			);
 			path = saedemo;
 			sourceTree = "<group>";
@@ -526,6 +551,8 @@
 		4F9B7FD11B30B90B00BE621C /* ObjC */ = {
 			isa = PBXGroup;
 			children = (
+				4F4ADE781B35C3600017EE65 /* ObjCInterfaceGlueTemplate.txt */,
+				4F4ADE771B35C3600017EE65 /* ObjCImplementationGlueTemplate.txt */,
 				4F9B7FC71B30292200BE621C /* AEBStaticSpecifier.h */,
 				4F9B7FC81B30292200BE621C /* AEBStaticSpecifier.m */,
 				4F1AA02819F92D6000FBD23E /* AEBStaticCommand.h */,
@@ -541,6 +568,7 @@
 		4F9B7FD21B30B95000BE621C /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				4F4ADE7B1B35C3700017EE65 /* SwiftGlueTemplate.txt */,
 			);
 			name = Swift;
 			sourceTree = "<group>";
@@ -575,7 +603,8 @@
 			isa = PBXGroup;
 			children = (
 				4FA7A8B81A0A607400F0E578 /* main.m */,
-				4FCE80FB1A0C2E3500C54EAC /* TEGlue */,
+				4F4ADEC61B35DB270017EE65 /* ITUGlue */,
+				4F4ADECA1B35DB270017EE65 /* TETGlue */,
 			);
 			path = aebdemo;
 			sourceTree = "<group>";
@@ -588,28 +617,9 @@
 				4F70FBD41A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.h */,
 				4F70FBD51A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m */,
 				4FA7A8BE1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.h */,
-				4FA7A8BD1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.c */,
+				4FA7A8BD1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.m */,
 			);
 			name = "Legacy support (10.10.x and earlier)";
-			sourceTree = "<group>";
-		};
-		4FCE80FB1A0C2E3500C54EAC /* TEGlue */ = {
-			isa = PBXGroup;
-			children = (
-				4F0D52A21B34C36E0081A1B3 /* TEGlue.h */,
-				4F0D52A31B34C36E0081A1B3 /* TEGlue.m */,
-				4FF619C81A0EC9C1002277B8 /* TextEdit.sdef */,
-			);
-			path = TEGlue;
-			sourceTree = "<group>";
-		};
-		4FD8E4A51B337015004B5CD5 /* bin */ = {
-			isa = PBXGroup;
-			children = (
-				4FD8E4A31B33700F004B5CD5 /* aebglue-swift */,
-				4FD8E4A41B33700F004B5CD5 /* SwiftGlueTemplate.txt */,
-			);
-			name = bin;
 			sourceTree = "<group>";
 		};
 		4FFA2D361A129AAE00AF09E4 /* doc-source */ = {
@@ -831,8 +841,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F0D529A1B349C8A0081A1B3 /* ObjCImplementationGlueTemplate.txt in Resources */,
-				4F0D529C1B349C910081A1B3 /* ObjCInterfaceGlueTemplate.txt in Resources */,
+				4F4ADE7C1B35C3700017EE65 /* SwiftGlueTemplate.txt in Resources */,
+				4F4ADE7A1B35C3600017EE65 /* ObjCInterfaceGlueTemplate.txt in Resources */,
+				4F4ADE791B35C3600017EE65 /* ObjCImplementationGlueTemplate.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -893,7 +904,7 @@
 				4F9B7FD01B30A4B900BE621C /* AEBStaticSymbol.m in Sources */,
 				4F1AA05D19F92D6000FBD23E /* AEBStaticCommand.m in Sources */,
 				4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */,
-				4FA7A8BF1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.c in Sources */,
+				4FA7A8BF1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.m in Sources */,
 				4F1AA05419F92D6000FBD23E /* AEBDynamicSDEFParser.m in Sources */,
 				4F1AA07719F92D6000FBD23E /* AEMUtils.m in Sources */,
 				4F1AA07319F92D6000FBD23E /* AEMTypes.m in Sources */,
@@ -912,10 +923,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F4ADED21B35DC2B0017EE65 /* ITUGlue.swift in Sources */,
+				4F4ADE831B35C49E0017EE65 /* AEBSwiftGlueBase.swift in Sources */,
+				4F4ADED51B35DC330017EE65 /* TETGlue.swift in Sources */,
 				4F5EE3D51B2D7F1F007C58B5 /* main.swift in Sources */,
-				4FD8E4A71B342A97004B5CD5 /* ITUGlue.swift in Sources */,
-				4F0D52971B344E8B0081A1B3 /* TETGlue.swift in Sources */,
-				4F9B7FCC1B30416500BE621C /* AEBSwiftGlue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -924,7 +935,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FA7A8B91A0A607400F0E578 /* main.m in Sources */,
-				4F0D52A41B34C36E0081A1B3 /* TEGlue.m in Sources */,
+				4F4ADECF1B35DB270017EE65 /* TETGlue.m in Sources */,
+				4F4ADECE1B35DB270017EE65 /* ITUGlue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1034,6 +1046,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DEPLOYMENT_LOCATION = YES;
@@ -1049,6 +1062,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.bitbucket.hhas.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -1056,6 +1070,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DEPLOYMENT_LOCATION = YES;

@@ -6,7 +6,7 @@
 #import <Foundation/Foundation.h>
 #import "AppleEventBridge/AppleEventBridge.h"
 
-#import "TEGlue/TEGlue.h"
+#import "TETGlue/TETGlue.h"
 
 void AEMLog(NSString *format, ...) {
     va_list argList; va_start (argList, format);
@@ -28,11 +28,11 @@ int main(int argc, const char * argv[]) {
         }
         // build and send event using high-level 'AEB' API with statically-generated glue classes
         {
-            TEApplication *te = [TEApplication application];
+            TETApplication *te = [TETApplication application];
             {
                 // tell app "TextEdit" to make new document with properties {name: "TEST1", text: @"Hi!"}
-                TEMakeCommand *cmd = [[[te.documents.end make] new_: TESymbol.document]
-                                                     withProperties: @{TESymbol.name: @"TEST1", TESymbol.text: @"Hi!"}];
+                TETMakeCommand *cmd = [[[te.documents.end make] new_: TETSymbol.document]
+                                                     withProperties: @{TET.name: @"TEST1", TET.text: @"Hi!"}];
                 id result = [cmd sendWithError: &error];
                 AEMLog(@"2\nRESULT: %@\nERROR: %@", result, error); // result is specifier for newly created document: [[TEApplication applicationWithName: @"/Applications/TextEdit.app"].documents byName: @"TEST1"]
             }

@@ -1,6 +1,6 @@
 //
 // TETGlue.swift
-// TextEdit 1.11
+// TextEdit.app 1.11
 // AppleEventBridge.framework 0.7.0
 //
 
@@ -73,10 +73,387 @@ class TETFormatter: SwiftAEFormatter { // used internally to generate descriptio
 }
 
 
+class TETSpecifier: SwiftAESpecifier {
+        
+    override var description: String { return TETFormatter.formatObject(aemQuery, appData: aebAppData) }
+    
+    // Raw property and element specifiers, e.g. TextEdit.elementsByFourCharCode("docu") => TextEdit.documents
+    
+    func propertyByCode(code: OSType) -> TETSpecifier {
+        return TETSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).property(code))
+    }
+    func elementsByCode(code: OSType) -> TETSpecifier {
+        return TETSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).elements(code))
+    }
+    func propertyByFourCharCode(code: String) -> TETSpecifier {
+        return self.propertyByCode(AEM4CC(code))
+    }
+    func elementsByFourCharCode(code: String) -> TETSpecifier {
+        return self.elementsByCode(AEM4CC(code))
+    }
+    
+    // Element(s) selectors
+    // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
+
+    subscript(index: AnyObject!) -> TETSpecifier! { // by-index, by-name, by-test
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        switch (index) {
+        case is String:
+            return TETSpecifier(appData: aebAppData, aemQuery:  baseQuery.byName(index))
+        case is TETSpecifier:
+            let testClause = (index is AEBSpecifier ? (index as! AEBSpecifier).aemQuery : aemQuery) as! AEMTestClause
+            return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.byTest(testClause))
+        default:
+            return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.byIndex(index))
+        }
+    }
+    func ID(uid: AnyObject) -> TETSpecifier { // by-id
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
+    }
+    subscript(from: AnyObject!, to: AnyObject!) -> TETSpecifier! { // by-range
+        let newQuery = (self.aemQuery as! AEMMultipleElementsSpecifier).byRange(from, to: to)
+        return TETSpecifier(appData: aebAppData, aemQuery: newQuery)
+    }
+    
+    func previous(class_: AEBSymbol) -> TETSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.previous(class_.aebCode))
+    }
+    func next(class_: AEBSymbol) -> TETSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.next(class_.aebCode))
+    }
+    
+    var first:  TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).first())}
+    var middle: TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).middle())}
+    var last:   TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
+    var any:    TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
+    
+    func beginning() -> TETSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
+    }
+    func end() -> TETSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.end())
+    }
+    func before() -> TETSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.before())
+    }
+    func after() -> TETSpecifier {
+        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.after())
+    }
+
+    // Test clause constructors, e.g. TET.its.name.beginsWith("foo")
+    
+    func beginsWith(input: AnyObject!) -> TETSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.beginsWith(input))
+    }
+    func endsWith(input: AnyObject!) -> TETSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.endsWith(input))
+    }
+    func contains(input: AnyObject!) -> TETSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.contains(input))
+    }
+    func isIn(input: AnyObject!) -> TETSpecifier! {
+        let baseQuery = self.aemQuery as! AEMObjectSpecifier
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.isIn(input))
+    }
+    
+    // Properties
+    
+    var bounds: TETSpecifier {return self.propertyByCode(0x70626e64)}
+    var class_: TETSpecifier {return self.propertyByCode(0x70636c73)}
+    var closeable: TETSpecifier {return self.propertyByCode(0x68636c62)}
+    var collating: TETSpecifier {return self.propertyByCode(0x6c77636c)}
+    var color: TETSpecifier {return self.propertyByCode(0x636f6c72)}
+    var copies: TETSpecifier {return self.propertyByCode(0x6c776370)}
+    var document: TETSpecifier {return self.propertyByCode(0x646f6375)}
+    var endingPage: TETSpecifier {return self.propertyByCode(0x6c776c70)}
+    var errorHandling: TETSpecifier {return self.propertyByCode(0x6c776568)}
+    var faxNumber: TETSpecifier {return self.propertyByCode(0x6661786e)}
+    var fileName: TETSpecifier {return self.propertyByCode(0x6174666e)}
+    var floating: TETSpecifier {return self.propertyByCode(0x6973666c)}
+    var font: TETSpecifier {return self.propertyByCode(0x666f6e74)}
+    var frontmost: TETSpecifier {return self.propertyByCode(0x70697366)}
+    var id: TETSpecifier {return self.propertyByCode(0x49442020)}
+    var index: TETSpecifier {return self.propertyByCode(0x70696478)}
+    var miniaturizable: TETSpecifier {return self.propertyByCode(0x69736d6e)}
+    var miniaturized: TETSpecifier {return self.propertyByCode(0x706d6e64)}
+    var modal: TETSpecifier {return self.propertyByCode(0x706d6f64)}
+    var modified: TETSpecifier {return self.propertyByCode(0x696d6f64)}
+    var name: TETSpecifier {return self.propertyByCode(0x706e616d)}
+    var pagesAcross: TETSpecifier {return self.propertyByCode(0x6c776c61)}
+    var pagesDown: TETSpecifier {return self.propertyByCode(0x6c776c64)}
+    var path: TETSpecifier {return self.propertyByCode(0x70707468)}
+    var properties: TETSpecifier {return self.propertyByCode(0x70414c4c)}
+    var requestedPrintTime: TETSpecifier {return self.propertyByCode(0x6c777174)}
+    var resizable: TETSpecifier {return self.propertyByCode(0x7072737a)}
+    var size: TETSpecifier {return self.propertyByCode(0x7074737a)}
+    var startingPage: TETSpecifier {return self.propertyByCode(0x6c776670)}
+    var targetPrinter: TETSpecifier {return self.propertyByCode(0x74727072)}
+    var titled: TETSpecifier {return self.propertyByCode(0x70746974)}
+    var version_: TETSpecifier {return self.propertyByCode(0x76657273)}
+    var visible: TETSpecifier {return self.propertyByCode(0x70766973)}
+    var zoomable: TETSpecifier {return self.propertyByCode(0x69737a6d)}
+    var zoomed: TETSpecifier {return self.propertyByCode(0x707a756d)}
+    
+    // Elements
+    
+    var applications: TETSpecifier {return self.elementsByCode(0x63617070)}
+    var attachment: TETSpecifier {return self.elementsByCode(0x61747473)}
+    var attributeRuns: TETSpecifier {return self.elementsByCode(0x63617472)}
+    var characters: TETSpecifier {return self.elementsByCode(0x63686120)}
+    var colors: TETSpecifier {return self.elementsByCode(0x636f6c72)}
+    var documents: TETSpecifier {return self.elementsByCode(0x646f6375)}
+    var items: TETSpecifier {return self.elementsByCode(0x636f626a)}
+    var paragraphs: TETSpecifier {return self.elementsByCode(0x63706172)}
+    var printSettings: TETSpecifier {return self.elementsByCode(0x70736574)}
+    var text: TETSpecifier {return self.elementsByCode(0x63747874)}
+    var windows: TETSpecifier {return self.elementsByCode(0x6377696e)}
+    var words: TETSpecifier {return self.elementsByCode(0x63776f72)}
+    
+    // Commands
+    
+    func activate(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x6d697363, eventID: 0x61637476, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func close(directParameter: AnyObject = kAEBNoParameter,
+            savingIn: AnyObject = kAEBNoParameter,
+            saving: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x636c6f73, parameters: [
+            SwiftAEParameter(name: "savingIn", code: 0x6b66696c, value: savingIn),
+            SwiftAEParameter(name: "saving", code: 0x7361766f, value: saving),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func count(directParameter: AnyObject = kAEBNoParameter,
+            each: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x636e7465, parameters: [
+            SwiftAEParameter(name: "each", code: 0x6b6f636c, value: each),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func delete(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x64656c6f, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func duplicate(directParameter: AnyObject = kAEBNoParameter,
+            to: AnyObject = kAEBNoParameter,
+            withProperties: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x636c6f6e, parameters: [
+            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
+            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func exists(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x646f6578, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func get(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x67657464, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func launch(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61736372, eventID: 0x6e6f6f70, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func make(directParameter: AnyObject = kAEBNoParameter,
+            withData: AnyObject = kAEBNoParameter,
+            at: AnyObject = kAEBNoParameter,
+            new: AnyObject = kAEBNoParameter,
+            withProperties: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x6372656c, parameters: [
+            SwiftAEParameter(name: "withData", code: 0x64617461, value: withData),
+            SwiftAEParameter(name: "at", code: 0x696e7368, value: at),
+            SwiftAEParameter(name: "new", code: 0x6b6f636c, value: new),
+            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func move(directParameter: AnyObject = kAEBNoParameter,
+            to: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x6d6f7665, parameters: [
+            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func open(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61657674, eventID: 0x6f646f63, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func openLocation(directParameter: AnyObject = kAEBNoParameter,
+            window: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x4755524c, eventID: 0x4755524c, parameters: [
+            SwiftAEParameter(name: "window", code: 0x57494e44, value: window),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func print(directParameter: AnyObject = kAEBNoParameter,
+            printDialog: AnyObject = kAEBNoParameter,
+            withProperties: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61657674, eventID: 0x70646f63, parameters: [
+            SwiftAEParameter(name: "printDialog", code: 0x70646c67, value: printDialog),
+            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func quit(directParameter: AnyObject = kAEBNoParameter,
+            saving: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61657674, eventID: 0x71756974, parameters: [
+            SwiftAEParameter(name: "saving", code: 0x7361766f, value: saving),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func reopen(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61657674, eventID: 0x72617070, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func run(directParameter: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x61657674, eventID: 0x6f617070, parameters: [
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func save(directParameter: AnyObject = kAEBNoParameter,
+            as_: AnyObject = kAEBNoParameter,
+            in_: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x73617665, parameters: [
+            SwiftAEParameter(name: "as_", code: 0x666c7470, value: as_),
+            SwiftAEParameter(name: "in_", code: 0x6b66696c, value: in_),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+    func set(directParameter: AnyObject = kAEBNoParameter,
+            to: AnyObject = kAEBNoParameter,
+            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+        return try self.sendAppleEvent(0x636f7265, eventID: 0x73657464, parameters: [
+            SwiftAEParameter(name: "to", code: 0x64617461, value: to),
+            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+    }
+}
+
+
+class TETApplication: TETSpecifier {
+    private init(targetType: AEBTargetType, targetData: AnyObject?) {
+        let data = AppleEventBridge.AEBStaticAppData(applicationClass: AEMApplication.self,
+                                                          symbolClass: TETSymbol.self,
+                                                       specifierClass: TETSpecifier.self,
+                                                           targetType: targetType,
+                                                           targetData: targetData)
+        super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
+    }
+    override convenience init() { // TO DO: delete/raise error if bundle id not given
+        self.init(bundleIdentifier: "com.apple.TextEdit")
+    }
+    convenience init(name: NSString) {
+        self.init(targetType: kAEBTargetName, targetData: name)
+    }
+    convenience init(url: NSURL) {
+        self.init(targetType: kAEBTargetURL, targetData: url)
+    }
+    convenience init(bundleIdentifier: NSString) {
+        self.init(targetType: kAEBTargetBundleID, targetData: bundleIdentifier)
+    }
+    convenience init(processIdentifier: Int) {
+        self.init(targetType: kAEBTargetProcessID, targetData: processIdentifier)
+    }
+    convenience init(descriptor: NSAppleEventDescriptor) {
+        self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
+    }
+    class func currentApplication() -> TETApplication {
+        return self.init(targetType: kAEBTargetCurrent, targetData: nil)
+    }
+    
+    // Construct a TETSpecifier using a raw AEMQuery or other custom object
+    // (e.g. if app's terminology is broken or when dealing with especially cranky old apps)
+    
+    func customRoot(object: AnyObject!) -> TETSpecifier {
+        if object is TETSpecifier {
+            return TETSpecifier(appData: aebAppData, aemQuery: (object as! TETSpecifier).aemQuery)
+        } else if object is AppleEventBridge.AEMQuery {
+            return TETSpecifier(appData: aebAppData, aemQuery: object as! AppleEventBridge.AEMQuery)
+        } else if object == nil {
+            return TETSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.app())
+        } else {
+            return TETSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.customRoot(object))
+        }
+    }
+}
+
+
+// test clause constructors, e.g. TET.its.name != "foo"
+// note: the == operator will return a TETSpecifier when used in elements[...] specifier; however, when
+// binding its result to a variable, it must be explicitly typed as (e.g.) AnyObject or Swift will infer Bool
+
+func == (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.equals(right))
+}
+func != (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
+}
+func < (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessThan(right))
+}
+func > (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterThan(right))
+}
+func <= (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessOrEquals(right))
+}
+func >= (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMObjectSpecifier
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterOrEquals(right))
+}
+func && (left: TETSpecifier!, right: TETSpecifier!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMTestClause
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.AND(right))
+}
+func || (left: TETSpecifier!, right: TETSpecifier!) -> TETSpecifier! {
+    let baseQuery = left.aemQuery as! AEMTestClause
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.OR(right))
+}
+prefix func ! (input: TETSpecifier!) -> TETSpecifier! {
+    let baseQuery = input.aemQuery as! AEMTestClause
+    return TETSpecifier(appData: input.aebAppData, aemQuery: baseQuery.NOT())
+}
+
+
+/******************************************************************************/
+// SYMBOLS
+
+
 class TETSymbol: SwiftAESymbol {
-    
-    override var description: String {return "kTET.\(self.aebName)"}
-    
+
+    override var description: String {return "TET.\(self.aebName)"}
+
+    // Generic specifier roots. These can be used to construct TETSpecifiers for use in other
+    // TETSpecifiers and TETCommands, though only real specifiers constructed from a
+    // TETApplication can be used to send commands to the target application.
+
+    static let app = TETSpecifier(appData: nil, aemQuery: AEMQuery.app())
+    static let con = TETSpecifier(appData: nil, aemQuery: AEMQuery.con())
+    static let its = TETSpecifier(appData: nil, aemQuery: AEMQuery.its())
+
     override class func symbol(code: OSType) -> AEBSymbol {
         switch (code) {
         case 0x61707220: return self.April
@@ -437,7 +814,7 @@ class TETSymbol: SwiftAESymbol {
     static var yards: TETSymbol {return TETSymbol(name: "yards", type: 0x74797065, code: 0x79617264)}
     static var zoomable: TETSymbol {return TETSymbol(name: "zoomable", type: 0x74797065, code: 0x69737a6d)}
     static var zoomed: TETSymbol {return TETSymbol(name: "zoomed", type: 0x74797065, code: 0x707a756d)}
-    
+
     // Enumerators    // TO DO: add 'override' if var is already defined in AEBSymbol
     static var applicationResponses: TETSymbol {return TETSymbol(name: "applicationResponses", type: 0x656e756d, code: 0x726d7465)}
     static var ask: TETSymbol {return TETSymbol(name: "ask", type: 0x656e756d, code: 0x61736b20)}
@@ -455,387 +832,12 @@ class TETSymbol: SwiftAESymbol {
 }
 
 
-class TETSpecifier: SwiftAESpecifier {
-        
-    override var description: String { return TETFormatter.formatObject(aemQuery, appData: aebAppData) }
-    
-    // Element(s) selectors
-    // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
+/******************************************************************************/
+// TOP-LEVEL CONSTANTS
 
-    subscript(index: AnyObject!) -> TETSpecifier! { // by-index, by-name, by-test
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        switch (index) {
-        case is String:
-            return TETSpecifier(appData: aebAppData, aemQuery:  baseQuery.byName(index))
-        case is TETSpecifier:
-            let testClause = (index is AEBSpecifier ? (index as! AEBSpecifier).aemQuery : aemQuery) as! AEMTestClause
-            return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.byTest(testClause))
-        default:
-            return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.byIndex(index))
-        }
-    }
-    func ID(uid: AnyObject) -> TETSpecifier { // by-id
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
-    }
-    subscript(from: AnyObject!, to: AnyObject!) -> TETSpecifier! { // by-range
-        let newQuery = (self.aemQuery as! AEMMultipleElementsSpecifier).byRange(from, to: to)
-        return TETSpecifier(appData: aebAppData, aemQuery: newQuery)
-    }
-    
-    func previous(class_: AEBSymbol) -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.previous(class_.aebCode))
-    }
-    func next(class_: AEBSymbol) -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.next(class_.aebCode))
-    }
-    
-    var first:  TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).first())}
-    var middle: TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).middle())}
-    var last:   TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
-    var any:    TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
-    
-    func beginning() -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
-    }
-    func end() -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.end())
-    }
-    func before() -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.before())
-    }
-    func after() -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.after())
-    }
-    
-    // Property and element specifiers
-    
-    func propertyByCode(code: OSType) -> TETSpecifier {
-        return TETSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).property(code))
-    }
-    func elementsByCode(code: OSType) -> TETSpecifier {
-        return TETSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).elements(code))
-    }
-    func propertyByFourCharCode(code: String) -> TETSpecifier {
-        return self.propertyByCode(AEM4CC(code))
-    }
-    func elementsByFourCharCode(code: String) -> TETSpecifier {
-        return self.elementsByCode(AEM4CC(code))
-    }
+// Namespace for generic specifiers and symbols, e.g. TET.app.name, TET.unicodeText
+let TET = TETSymbol.self
 
-    // Test clause constructors
-    
-    func beginsWith(input: AnyObject!) -> TETSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.beginsWith(input))
-    }
-    
-    func endsWith(input: AnyObject!) -> TETSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.endsWith(input))
-    }
-    
-    func contains(input: AnyObject!) -> TETSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.contains(input))
-    }
-    
-    func isIn(input: AnyObject!) -> TETSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.isIn(input))
-    }
-    
-    // Properties
-    
-    var bounds: TETSpecifier {return self.propertyByCode(0x70626e64)}
-    var class_: TETSpecifier {return self.propertyByCode(0x70636c73)}
-    var closeable: TETSpecifier {return self.propertyByCode(0x68636c62)}
-    var collating: TETSpecifier {return self.propertyByCode(0x6c77636c)}
-    var color: TETSpecifier {return self.propertyByCode(0x636f6c72)}
-    var copies: TETSpecifier {return self.propertyByCode(0x6c776370)}
-    var document: TETSpecifier {return self.propertyByCode(0x646f6375)}
-    var endingPage: TETSpecifier {return self.propertyByCode(0x6c776c70)}
-    var errorHandling: TETSpecifier {return self.propertyByCode(0x6c776568)}
-    var faxNumber: TETSpecifier {return self.propertyByCode(0x6661786e)}
-    var fileName: TETSpecifier {return self.propertyByCode(0x6174666e)}
-    var floating: TETSpecifier {return self.propertyByCode(0x6973666c)}
-    var font: TETSpecifier {return self.propertyByCode(0x666f6e74)}
-    var frontmost: TETSpecifier {return self.propertyByCode(0x70697366)}
-    var id: TETSpecifier {return self.propertyByCode(0x49442020)}
-    var index: TETSpecifier {return self.propertyByCode(0x70696478)}
-    var miniaturizable: TETSpecifier {return self.propertyByCode(0x69736d6e)}
-    var miniaturized: TETSpecifier {return self.propertyByCode(0x706d6e64)}
-    var modal: TETSpecifier {return self.propertyByCode(0x706d6f64)}
-    var modified: TETSpecifier {return self.propertyByCode(0x696d6f64)}
-    var name: TETSpecifier {return self.propertyByCode(0x706e616d)}
-    var pagesAcross: TETSpecifier {return self.propertyByCode(0x6c776c61)}
-    var pagesDown: TETSpecifier {return self.propertyByCode(0x6c776c64)}
-    var path: TETSpecifier {return self.propertyByCode(0x70707468)}
-    var properties: TETSpecifier {return self.propertyByCode(0x70414c4c)}
-    var requestedPrintTime: TETSpecifier {return self.propertyByCode(0x6c777174)}
-    var resizable: TETSpecifier {return self.propertyByCode(0x7072737a)}
-    var size: TETSpecifier {return self.propertyByCode(0x7074737a)}
-    var startingPage: TETSpecifier {return self.propertyByCode(0x6c776670)}
-    var targetPrinter: TETSpecifier {return self.propertyByCode(0x74727072)}
-    var titled: TETSpecifier {return self.propertyByCode(0x70746974)}
-    var version_: TETSpecifier {return self.propertyByCode(0x76657273)}
-    var visible: TETSpecifier {return self.propertyByCode(0x70766973)}
-    var zoomable: TETSpecifier {return self.propertyByCode(0x69737a6d)}
-    var zoomed: TETSpecifier {return self.propertyByCode(0x707a756d)}
-    
-    // Elements
-    
-    var applications: TETSpecifier {return self.elementsByCode(0x63617070)}
-    var attachment: TETSpecifier {return self.elementsByCode(0x61747473)}
-    var attributeRuns: TETSpecifier {return self.elementsByCode(0x63617472)}
-    var characters: TETSpecifier {return self.elementsByCode(0x63686120)}
-    var colors: TETSpecifier {return self.elementsByCode(0x636f6c72)}
-    var documents: TETSpecifier {return self.elementsByCode(0x646f6375)}
-    var items: TETSpecifier {return self.elementsByCode(0x636f626a)}
-    var paragraphs: TETSpecifier {return self.elementsByCode(0x63706172)}
-    var printSettings: TETSpecifier {return self.elementsByCode(0x70736574)}
-    var text: TETSpecifier {return self.elementsByCode(0x63747874)}
-    var windows: TETSpecifier {return self.elementsByCode(0x6377696e)}
-    var words: TETSpecifier {return self.elementsByCode(0x63776f72)}
-    
-    // Commands
-    
-    func activate(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x6d697363, eventID: 0x61637476, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func close(directParameter: AnyObject = kAEBNoParameter,
-            savingIn: AnyObject = kAEBNoParameter,
-            saving: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x636c6f73, parameters: [
-            SwiftAEParameter(name: "savingIn", code: 0x6b66696c, value: savingIn),
-            SwiftAEParameter(name: "saving", code: 0x7361766f, value: saving),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func count(directParameter: AnyObject = kAEBNoParameter,
-            each: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x636e7465, parameters: [
-            SwiftAEParameter(name: "each", code: 0x6b6f636c, value: each),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func delete(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x64656c6f, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func duplicate(directParameter: AnyObject = kAEBNoParameter,
-            to: AnyObject = kAEBNoParameter,
-            withProperties: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x636c6f6e, parameters: [
-            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
-            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func exists(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x646f6578, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func get(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x67657464, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func launch(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61736372, eventID: 0x6e6f6f70, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func make(directParameter: AnyObject = kAEBNoParameter,
-            withData: AnyObject = kAEBNoParameter,
-            at: AnyObject = kAEBNoParameter,
-            new: AnyObject = kAEBNoParameter,
-            withProperties: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x6372656c, parameters: [
-            SwiftAEParameter(name: "withData", code: 0x64617461, value: withData),
-            SwiftAEParameter(name: "at", code: 0x696e7368, value: at),
-            SwiftAEParameter(name: "new", code: 0x6b6f636c, value: new),
-            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func move(directParameter: AnyObject = kAEBNoParameter,
-            to: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x6d6f7665, parameters: [
-            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func open(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61657674, eventID: 0x6f646f63, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func openLocation(directParameter: AnyObject = kAEBNoParameter,
-            window: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x4755524c, eventID: 0x4755524c, parameters: [
-            SwiftAEParameter(name: "window", code: 0x57494e44, value: window),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func print(directParameter: AnyObject = kAEBNoParameter,
-            printDialog: AnyObject = kAEBNoParameter,
-            withProperties: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61657674, eventID: 0x70646f63, parameters: [
-            SwiftAEParameter(name: "printDialog", code: 0x70646c67, value: printDialog),
-            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func quit(directParameter: AnyObject = kAEBNoParameter,
-            saving: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61657674, eventID: 0x71756974, parameters: [
-            SwiftAEParameter(name: "saving", code: 0x7361766f, value: saving),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func reopen(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61657674, eventID: 0x72617070, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func run(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x61657674, eventID: 0x6f617070, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func save(directParameter: AnyObject = kAEBNoParameter,
-            as_: AnyObject = kAEBNoParameter,
-            in_: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x73617665, parameters: [
-            SwiftAEParameter(name: "as_", code: 0x666c7470, value: as_),
-            SwiftAEParameter(name: "in_", code: 0x6b66696c, value: in_),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-    func set(directParameter: AnyObject = kAEBNoParameter,
-            to: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
-        return try self.sendAppleEvent(0x636f7265, eventID: 0x73657464, parameters: [
-            SwiftAEParameter(name: "to", code: 0x64617461, value: to),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-    }
-}
-
-
-class TETApplication: TETSpecifier {
-    private init(targetType: AEBTargetType, targetData: AnyObject?) {
-        let data = AppleEventBridge.AEBStaticAppData(applicationClass: AEMApplication.self,
-                                                          symbolClass: TETSymbol.self,
-                                                       specifierClass: TETSpecifier.self,
-                                                           targetType: targetType,
-                                                           targetData: targetData)
-        super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
-    }
-    override convenience init() { // TO DO: delete/raise error if bundle id not given
-        self.init(bundleIdentifier: "com.apple.TextEdit")
-    }
-    convenience init(name: NSString) {
-        self.init(targetType: kAEBTargetName, targetData: name)
-    }
-    convenience init(url: NSURL) {
-        self.init(targetType: kAEBTargetURL, targetData: url)
-    }
-    convenience init(bundleIdentifier: NSString) {
-        self.init(targetType: kAEBTargetBundleID, targetData: bundleIdentifier)
-    }
-    convenience init(processIdentifier: Int) {
-        self.init(targetType: kAEBTargetProcessID, targetData: processIdentifier)
-    }
-    convenience init(descriptor: NSAppleEventDescriptor) {
-        self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
-    }
-    class func currentApplication() -> TETApplication {
-        return self.init(targetType: kAEBTargetCurrent, targetData: nil)
-    }
-    
-    // Construct a TETSpecifier using a raw AEMQuery or other custom object
-    // (e.g. if app's terminology is broken or when dealing with especially cranky old apps)
-    
-    func customRoot(object: AnyObject!) -> TETSpecifier {
-        if object is TETSpecifier {
-            return TETSpecifier(appData: aebAppData, aemQuery: (object as! TETSpecifier).aemQuery)
-        } else if object is AppleEventBridge.AEMQuery {
-            return TETSpecifier(appData: aebAppData, aemQuery: object as! AppleEventBridge.AEMQuery)
-        } else if object == nil {
-            return TETSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.app())
-        } else {
-            return TETSpecifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.customRoot(object))
-        }
-    }
-}
-
-
-// construct TETIts... test clauses
-
-// note: the == operator will return a TETSpecifier when used in elements[...] specifier; however, when
-// binding its result to a variable, it must be explicitly typed as AnyObject or Swift will infer Bool
-
-func == (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.equals(right))
-}
-func != (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
-}
-func < (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessThan(right))
-}
-func > (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterThan(right))
-}
-func <= (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessOrEquals(right))
-}
-func >= (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterOrEquals(right))
-}
-func && (left: TETSpecifier!, right: TETSpecifier!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMTestClause
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.AND(right))
-}
-func || (left: TETSpecifier!, right: TETSpecifier!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMTestClause
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.OR(right))
-}
-prefix func ! (input: TETSpecifier!) -> TETSpecifier! {
-    let baseQuery = input.aemQuery as! AEMTestClause
-    return TETSpecifier(appData: input.aebAppData, aemQuery: baseQuery.NOT())
-}
-
-
-// Generic specifier roots. These can be used to construct TETSpecifiers for use in other TETSpecifiers and TETCommands,
-// though only real specifiers constructed from a TETApplication can be used to send commands to the target application.
-
-let TETApp = TETSpecifier(appData: nil, aemQuery: AEMQuery.app())
-let TETCon = TETSpecifier(appData: nil, aemQuery: AEMQuery.con())
-let TETIts = TETSpecifier(appData: nil, aemQuery: AEMQuery.its())
-
-// Symbol namespace
-
-let kTET = TETSymbol.self // TO DO: rename TET; put app, con, its on it
-
-// Convenience constructor for application objects.
-
+// Convenience constructor for application objects, e.g. TextEdit.activate()
 var TextEdit: TETApplication {return TETApplication()}
 

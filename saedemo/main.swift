@@ -20,11 +20,11 @@ if x {
     let objSpec = TextEdit.documents[1].name
     print(objSpec) // TETApplication(name: @"/Applications/TextEdit.app").documents[1].name
 
-    print(TETApp.documents[1].name) // 'generic' refs can be used as parameters to commands
+    print(TET.app.documents[1].name) // 'generic' refs can be used as parameters to commands
 
     do {
         // tell application "TextEdit" to make new document with properties {text:"Hello World!"}
-        print(try TextEdit.make(new: kTET.document, withProperties: [kTET.text:"Hello World!"]))
+        print(try TextEdit.make(new: TET.document, withProperties: [TET.text:"Hello World!"]))
         
         // tell application "TextEdit" to get text of every document
         print(try TextEdit.documents.text.get())
@@ -48,15 +48,16 @@ print(try iTunes.playlists["Top 25 Most Played"].tracks.name.get())
 
 
 // tell application "iTunes" to get {name, rating} of (every track whose artist = "Sigur Ros" and (name begins with "G" or rating ≥ 60))
-let q = iTunes.tracks[ITUIts.artist == "Sigur Ros" && (ITUIts.name.beginsWith("G") || ITUIts.rating >= 60)]
+let q = iTunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)]
 print(Array(zip(try q.name.get() as! Array<String>, try q.rating.get() as! Array<Int>)))
 // [("Gobbledigook", 80), ("Góðan Daginn", 40), ("Við Spilum Endalaust", 60), ...]
 
-//iTunes.make(new: kITU.playlist, withProperties: [kITU.name]
+//iTunes.make(new: ITU.playlist, withProperties: [ITU.name]
 
 
 
-
+print(iTunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)].rating)
+//ITUApplication(name: @"/Applications/iTunes.app").tracks[(ITU.its.artist == @"Sigur Ros" && (ITU.its.name.beginsWith(@"G") || ITU.its.rating >= @60))].rating
 
 
 

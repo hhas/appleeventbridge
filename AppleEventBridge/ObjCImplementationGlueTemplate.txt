@@ -98,7 +98,7 @@
 }
 «-ELEMENTS_SPECIFIER»
 // Commands
-«+COMMAND2»
+«+COMMAND»
 - («PREFIX»«CAP_NAME»Command *)«COMMAND_NAME» {
     return [«PREFIX»«CAP_NAME»Command commandWithAppData: self.aebAppData
                        eventClass: «EVENT_CLASS»
@@ -113,7 +113,7 @@
                   directParameter: directParameter
                       parentQuery: self.aemQuery];
 }
-«-COMMAND2»
+«-COMMAND»
 @end
 
 

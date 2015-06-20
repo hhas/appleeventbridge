@@ -39,7 +39,7 @@ one problem: overloading 'get(...)throws->AnyObject' with 'get(...)->AnyObject?'
 
 - currently built-in terms aren't predefined in GlueSupport base classes, but are included in glue each time; not sure if this is best approach (though is prob. simplest as it avoids glue gen having to detect overridden terms and explicitly mark them `override`)
 
-- if user constructs a malformed SwiftAESpecifier - e.g. te.documents[1][2] - it should still be usable in commands (i.e. swift specifier constructors should never return nil or throw errors themselves); the only difference is that it'll contain an AEMQueryError instead of an AEMQuery, and the command will throw that along with any other errors that occur during packing (e.g. if user passes an unsupported type as a command param or a specifier selector)
+- if user constructs a malformed SwiftAESpecifier - e.g. te.documents[1][2] - it should still be usable in commands (i.e. swift specifier constructors should never return nil or throw errors/exceptions themselves); the only difference is that the SwiftAESpecifier will contain an AEMQueryError instead of an AEMQuery, and the sendAppleEvent() method will throw that as it would any other errors that occur during packing (e.g. if user passes an unsupported type as a command param or a specifier selector)
 
 - move SwiftAEGlueSupport to framework and import here
 
