@@ -783,7 +783,8 @@ class TETApplication: TETSpecifier {
 
 // construct TETIts... test clauses
 
-// note: == will return specifier when used in correct context
+// note: the == operator will return a TETSpecifier when used in elements[...] specifier; however, when
+// binding its result to a variable, it must be explicitly typed as AnyObject or Swift will infer Bool
 
 func == (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
     let baseQuery = left.aemQuery as! AEMObjectSpecifier
@@ -832,7 +833,7 @@ let TETIts = TETSpecifier(appData: nil, aemQuery: AEMQuery.its())
 
 // Symbol namespace
 
-let kTET = TETSymbol.self
+let kTET = TETSymbol.self // TO DO: rename TET; put app, con, its on it
 
 // Convenience constructor for application objects.
 

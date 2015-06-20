@@ -67,7 +67,7 @@
 		4F70FBD71A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F70FBD51A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m */; };
 		4F9B7FC91B30292200BE621C /* AEBStaticSpecifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9B7FC71B30292200BE621C /* AEBStaticSpecifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F9B7FCA1B30292200BE621C /* AEBStaticSpecifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FC81B30292200BE621C /* AEBStaticSpecifier.m */; };
-		4F9B7FCC1B30416500BE621C /* SwiftAEGlueSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FCB1B30416500BE621C /* SwiftAEGlueSupport.swift */; };
+		4F9B7FCC1B30416500BE621C /* AEBSwiftGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FCB1B30416500BE621C /* AEBSwiftGlue.swift */; };
 		4F9B7FCF1B30A4B900BE621C /* AEBStaticSymbol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9B7FCD1B30A4B900BE621C /* AEBStaticSymbol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F9B7FD01B30A4B900BE621C /* AEBStaticSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FCE1B30A4B900BE621C /* AEBStaticSymbol.m */; };
 		4FA7A88D1A02412600F0E578 /* AEMURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA7A88B1A02412600F0E578 /* AEMURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -257,7 +257,7 @@
 		4F70FBD51A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAppleEventDescriptor+AEDescMoreExtensions.m"; sourceTree = "<group>"; };
 		4F9B7FC71B30292200BE621C /* AEBStaticSpecifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBStaticSpecifier.h; sourceTree = "<group>"; };
 		4F9B7FC81B30292200BE621C /* AEBStaticSpecifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBStaticSpecifier.m; sourceTree = "<group>"; };
-		4F9B7FCB1B30416500BE621C /* SwiftAEGlueSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAEGlueSupport.swift; sourceTree = "<group>"; };
+		4F9B7FCB1B30416500BE621C /* AEBSwiftGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEBSwiftGlue.swift; sourceTree = "<group>"; };
 		4F9B7FCD1B30A4B900BE621C /* AEBStaticSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBStaticSymbol.h; sourceTree = "<group>"; };
 		4F9B7FCE1B30A4B900BE621C /* AEBStaticSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBStaticSymbol.m; sourceTree = "<group>"; };
 		4FA7A88B1A02412600F0E578 /* AEMURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMURL.h; sourceTree = "<group>"; };
@@ -515,7 +515,7 @@
 			children = (
 				4FD8E4A51B337015004B5CD5 /* bin */,
 				4F5EE3D41B2D7F1F007C58B5 /* main.swift */,
-				4F9B7FCB1B30416500BE621C /* SwiftAEGlueSupport.swift */,
+				4F9B7FCB1B30416500BE621C /* AEBSwiftGlue.swift */,
 				4F0D52961B344E8B0081A1B3 /* TETGlue.swift */,
 				4FD8E4A61B342A97004B5CD5 /* ITUGlue.swift */,
 				4F0D52981B3450BB0081A1B3 /* TODO.txt */,
@@ -915,7 +915,7 @@
 				4F5EE3D51B2D7F1F007C58B5 /* main.swift in Sources */,
 				4FD8E4A71B342A97004B5CD5 /* ITUGlue.swift in Sources */,
 				4F0D52971B344E8B0081A1B3 /* TETGlue.swift in Sources */,
-				4F9B7FCC1B30416500BE621C /* SwiftAEGlueSupport.swift in Sources */,
+				4F9B7FCC1B30416500BE621C /* AEBSwiftGlue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1045,7 +1045,7 @@
 				INFOPLIST_FILE = "AppleEventBridge/AppleEventBridge-Info.plist";
 				INSTALL_PATH = /Library/Frameworks;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.bitbucket.hhas.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
@@ -1067,7 +1067,7 @@
 				INFOPLIST_FILE = "AppleEventBridge/AppleEventBridge-Info.plist";
 				INSTALL_PATH = /Library/Frameworks;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.bitbucket.hhas.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
