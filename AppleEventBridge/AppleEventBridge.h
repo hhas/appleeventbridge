@@ -51,6 +51,7 @@ FOUNDATION_EXPORT const unsigned char AppleEventBridgeVersionString[];
 #if __MAC_OS_X_VERSION_MIN_REQUIRED < 101100
 #import "NSAppleEventDescriptor+AEDescExtensions.h"
 #import "NSAppleEventDescriptor+AEDescMoreExtensions.h"
-#import "AEMCopyScriptingDefinitionFromURL.h"
 #endif
+
+#import "AEMCopyScriptingDefinitionFromURL.h"
 

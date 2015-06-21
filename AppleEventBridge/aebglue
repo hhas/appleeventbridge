@@ -21,7 +21,7 @@
 
 # TO DO: obtain reserved NSObject, AEB method names dynamically
 
-import getopt, os, re, shutil, string, sys, time
+import getopt, os, re, shutil, string, sys
 import xml.etree.ElementTree as ET
 
 import objc # (this script uses system Python, which includes PyObjC as standard)
@@ -35,13 +35,13 @@ from Foundation import NSObject, NSBundle, NSURL
 # TO DO: how best to locate AppleEventBridge.framework? (used to obtain app terminology)
 
 kFrameworkName = 'AppleEventBridge'
-#mpath = re.match('(.+/%s.framework)' % kFrameworkName, os.path.abspath(os.path.expanduser(__file__))) # TO DO: uncomment
-#if not mpath:
-#    print >> sys.stderr, 'aebglue executable must be inside %s.framework bundle.' % kFrameworkName
-#    sys.exit(1)
-#kAEBBundle = objc.loadBundle(kFrameworkName, globals(), bundle_path=mpath.group(1))
 
-kAEBBundle = objc.loadBundle(kFrameworkName, globals(), bundle_path='/Users/has/Library/Frameworks/AppleEventBridge.framework') # TO DO: TEST; remove when done
+# find framework relative to self (this requires aebglue script to be inside AppleEventBridge.framework)
+mpath = re.match('(.+/%s.framework)' % kFrameworkName, os.path.abspath(os.path.expanduser(__file__)))
+if not mpath:
+    print >> sys.stderr, 'aebglue executable must be inside %s.framework bundle.' % kFrameworkName
+    sys.exit(1)
+kAEBBundle = objc.loadBundle(kFrameworkName, globals(), bundle_path=mpath.group(1))
 
 kFrameworkVersion =  kAEBBundle.infoDictionary()['CFBundleShortVersionString']
 
@@ -60,7 +60,7 @@ def readfile(path):
             return f.read().decode('utf-8')
 
 def readtemplate(name):
-    path = kAEBBundle.pathForResource_ofType_inDirectory_(name, 'txt', None)
+    path = kAEBBundle.pathForResource_ofType_inDirectory_(name, 'txt', u'templates')
     if not path:
         raise ValueError("Can't find template: %s" % name)
     return readfile(path)
@@ -520,9 +520,6 @@ def makeprefix(name, minlen=3): # TO DO: need to test this with various typical 
 
 # TO DO: make sure app terms that conflict with builtins are escaped correctly
 
-def _convertnode(keywordconverter, node, attrname, suffix='', prefix=''):
-    attr = node.get(attrname)
-    if attr: node.set(attrname, prefix+keywordconverter.convertSpecifierName_(attr)+suffix)
 
 
 def exportsdef(appurl, outpath, keywordconverter, prefix, commandnamesuffix):
@@ -530,6 +527,9 @@ def exportsdef(appurl, outpath, keywordconverter, prefix, commandnamesuffix):
     
         outpath : str -- glue path with .sdef prefix
     """
+    def convertnode(node, attrname, suffix='', prefix=''):
+        attr = node.get(attrname)
+        if attr: node.set(attrname, prefix+keywordconverter.convertSpecifierName_(attr)+suffix)
     sdef = AEBDynamicSDEFParser.copyScriptingDefinitionAtURL_error_(appurl, None)
     if not sdef:
         raise ValueError("Can't export SDEF for %r: %s" % (appurl,  "can't get terminology."))
@@ -538,14 +538,13 @@ def exportsdef(appurl, outpath, keywordconverter, prefix, commandnamesuffix):
     for suite in root.findall('./suite'):
         for key in ['command', 'event']:
             for command in suite.findall(key):
-                _convertnode(keywordconverter, command, 'name', 
-                        suffix='' if command.find('direct-parameter') is None else commandnamesuffix)
+                convertnode(command, 'name', '' if command.find('direct-parameter') is None else commandnamesuffix)
                 for param in command.findall('parameter'):
                     attr = param.get('name')
                     if attr: param.set('name', keywordconverter.convertSpecifierName_(attr)+':')
         for key in ['class', 'class-extension', 'record-type']:
             for klass in suite.findall(key):
-                _convertnode(keywordconverter, klass, 'name')
+                convertnode(klass, 'name')
                 # optional plural names require extra fiddling
                 pluralname = klass.get('plural')
                 if not pluralname:
@@ -555,20 +554,20 @@ def exportsdef(appurl, outpath, keywordconverter, prefix, commandnamesuffix):
                 if pluralname:
                     klass.set('plural', pluralname)
                 for elem in klass.findall('element'):
-                    _convertnode(keywordconverter, elem, 'type')
+                    convertnode(elem, 'type')
                 for prop in klass.findall('property'):
-                    _convertnode(keywordconverter, prop, 'name')
+                    convertnode(prop, 'name')
                 cont = klass.find('contents')
                 if cont is not None and cont.get('name'):
-                    _convertnode(keywordconverter, cont, 'name')
+                    convertnode(cont, 'name')
                 for resp in klass.findall('responds-to'):
-                    _convertnode(keywordconverter, resp, 'name')
-                    _convertnode(keywordconverter, resp, 'command')
+                    convertnode(resp, 'name')
+                    convertnode(resp, 'command')
         for enumeration in suite.findall('enumeration'):
             for enum in enumeration.findall('enumerator'):
-                _convertnode(keywordconverter, enum, 'name', prefix=symbolnamespace)
+                convertnode(enum, 'name', prefix=symbolnamespace)
         for value in suite.findall('value-type'):
-            _convertnode(keywordconverter, value, 'name')
+            convertnode(value, 'name')
     ET.ElementTree(root).write(outpath, encoding="utf-8", xml_declaration=True)
 
 
@@ -613,18 +612,18 @@ kCommand = 4
 kType = 0x74797065
 kEnum = 0x656e756d
 
-def renderglue(tpl, gluedir, gluefilename, appinfo, appvar, terms):
+def renderglue(tpl, gluedir, gluesourcefilename, appinfo, appvar, terms):
     """
         tpl : str -- template
         gluedir : str -- path to directory into which this file will be written
-        gluefilename : str -- the name of the file to be written
+        gluesourcefilename : str -- the name of the file to be written
         appinfo : AppInfo -- general information, if any, on application
         appvar : str | None -- Swift/ObjC-style identifier; used as convenience constructor for Application object
         terms : AEBDynamicTerminology
     """
     # insert general info
     tpl = insert(tpl, 'PREFIX', appinfo.prefix)
-    tpl = insert(tpl, 'GLUE_NAME', gluefilename)
+    tpl = insert(tpl, 'GLUE_NAME', gluesourcefilename)
     tpl = insert(tpl, 'FRAMEWORK_NAME', kFrameworkName+'.framework')
     tpl = insert(tpl, 'FRAMEWORK_VERSION', kFrameworkVersion)
     tpl = insert(tpl, 'APP_VAR_NAME', appvar or 'UNKNOWN') # TO DO: delete this var from glue if appvar is None
@@ -652,7 +651,7 @@ def renderglue(tpl, gluedir, gluefilename, appinfo, appvar, terms):
             ('ELEMENTS_SPECIFIER', ((t.code(), t.name()) for name, t in specifierbyname if t.kind() == kElement))]:
         tpl = repeat(tpl, label, contentlist, insertcodeandname)
     tpl = repeat(tpl, 'COMMAND', [t for name, t in specifierbyname if t.kind() == kCommand], insertcommand)
-    writefile(os.path.join(gluedir, gluefilename), tpl)
+    writefile(os.path.join(gluedir, gluesourcefilename), tpl)
 
 
 ######################################################################
@@ -696,13 +695,12 @@ class AppInfo:
 
 
 def makeswiftglue(gluedir, appinfo, usesdef):
-    gluefilename = appinfo.gluename+'.swift'
     keywordconverter = SwiftKeywordConverter.alloc().init()
     terms = appinfo.terminology(keywordconverter, usesdef)
     appvar = appinfo.appvar(keywordconverter)
-    renderglue(readtemplate('SwiftGlueTemplate'), gluedir, gluefilename, appinfo, appvar, terms)
+    renderglue(readtemplate('SwiftGlueTemplate'), gluedir, appinfo.gluename+'.swift', appinfo, appvar, terms)
     if appinfo.appurl:
-        exportsdef(appinfo.appurl, os.path.join(gluedir, gluefilename+'.sdef'), keywordconverter, appinfo.prefix, '')
+        exportsdef(appinfo.appurl, os.path.join(gluedir, appinfo.gluename+'-swift.sdef'), keywordconverter, appinfo.prefix, '')
 
 
 def makeobjcglue(gluedir, appinfo, usesdef):
@@ -712,7 +710,7 @@ def makeobjcglue(gluedir, appinfo, usesdef):
     for templatename, suffix in [('ObjCInterfaceGlueTemplate', '.h'), ('ObjCImplementationGlueTemplate', '.m')]:
         renderglue(readtemplate(templatename), gluedir, appinfo.gluename+suffix, appinfo, appvar, terms)
     if appinfo.appurl:
-        exportsdef(appinfo.appurl, os.path.join(gluedir, appinfo.gluename+'.h.sdef'), keywordconverter, appinfo.prefix, ':')
+        exportsdef(appinfo.appurl, os.path.join(gluedir, appinfo.gluename+'-objc.sdef'), keywordconverter, appinfo.prefix, ':')
 
 
 ######################################################################
@@ -722,11 +720,11 @@ def makeobjcglue(gluedir, appinfo, usesdef):
 
 if __name__ == '__main__':
     try:
-        tt = time.time()
+        import time; tt = time.time() # DEBUG
         opts, args = getopt.getopt(sys.argv[1:], 'dhn:op:rsv') # TO DO: language option (default=swift)
         opts = dict(opts)
         if not args or '-h' in opts:
-            print >> sys.stderr, "Generate Swift and Objective-C application glues for AppleEventBridge"
+            print >> sys.stderr, "Generate Swift/Objective-C application glues for AppleEventBridge."
             print >> sys.stderr
             print >> sys.stderr, "Usage:"
             print >> sys.stderr
@@ -737,6 +735,8 @@ if __name__ == '__main__':
             print >> sys.stderr
             print >> sys.stderr, "OUT-DIR - Path to directory in which the glue directory will be created;"
             print >> sys.stderr, "          if omitted, the current working directory is used."
+            print >> sys.stderr
+            print >> sys.stderr, "On completion, the path to the newly created glue is written to STDOUT."
             print >> sys.stderr
             print >> sys.stderr, "Options:"
             print >> sys.stderr
@@ -752,7 +752,7 @@ if __name__ == '__main__':
             print >> sys.stderr, "                   instead of raising 'path exists' error"
             print >> sys.stderr, "    -s           Use SDEF terminology instead of AETE, e.g. if"
             print >> sys.stderr, "                   application's ascr/gdte handler is broken"
-            print >> sys.stderr, "    -v           Print AEB framework version and exit"
+            print >> sys.stderr, "    -v           Output AppleEventBridge.framework version and exit"
             print >> sys.stderr
             print >> sys.stderr, "Examples:"
             print >> sys.stderr
@@ -764,7 +764,8 @@ if __name__ == '__main__':
             print >> sys.stderr
             sys.exit()
         if '-v' in opts:
-            print kFrameworkVersion
+            print >> sys.stdout, kFrameworkVersion
+            sys.exit()
         if '-d' in opts: # use default terms only
             appurl = None
             if len(args) == 0:
@@ -800,13 +801,10 @@ if __name__ == '__main__':
             else:
                 raise ValueError("Can't create %s as path already exists: %s" % (appinfo.gluename, gluedir))
         os.mkdir(gluedir)
-        # render glue
-        usesdef = '-s' in opts
-        if '-o' in opts:
-            makeobjcglue(gluedir, appinfo, usesdef)
-        else:
-            makeswiftglue(gluedir, appinfo, usesdef)
-        print >> sys.stderr, "Written glue (%ims): %s" % ((time.time()-tt)*1000, gluedir)
+        # generate glue files
+        (makeobjcglue if '-o' in opts else makeswiftglue)(gluedir, appinfo, '-s' in opts)
+        print >> sys.stderr, "Created %s (%ims)" % (appinfo.gluename, (time.time()-tt)*1000) # DEBUG
+        print >> sys.stdout, gluedir
     except Exception, e:
         print >> sys.stderr, "Error:", e
         import traceback; traceback.print_exc() # DEBUG

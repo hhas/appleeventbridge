@@ -7,13 +7,15 @@
 import Foundation
 import AppleEventBridge
 
+// TO DO: decide if generic specifier roots should appear as app/con/its static vars on XXSymbol class, or as XXApp/XXCon/XXIts vars on module
+
 
 class TETFormatter: SwiftAEFormatter { // used internally to generate description strings
     
     override var prefix: String {return "TET"}
     
     override func propertyByCode(code: OSType) -> String? {
-        switch (code) {
+        switch code {
         case 0x70626e64: return "bounds"
         case 0x70636c73: return "class_"
         case 0x68636c62: return "closeable"
@@ -50,7 +52,7 @@ class TETFormatter: SwiftAEFormatter { // used internally to generate descriptio
         case 0x70766973: return "visible"
         case 0x69737a6d: return "zoomable"
         case 0x707a756d: return "zoomed"
-        default: return super.propertyByCode(code) // TO DO: not sure about this; check if formatter throws across to other if not found
+        default: return super.propertyByCode(code)
         }
     }
     override func elementsByCode(code: OSType) -> String? {
@@ -67,7 +69,7 @@ class TETFormatter: SwiftAEFormatter { // used internally to generate descriptio
         case 0x63747874: return "text"
         case 0x6377696e: return "windows"
         case 0x63776f72: return "words"
-        default: return super.elementsByCode(code) // ditto
+        default: return super.elementsByCode(code)
         }
     }
 }
@@ -222,139 +224,175 @@ class TETSpecifier: SwiftAESpecifier {
     // Commands
     
     func activate(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x6d697363, eventID: 0x61637476, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func close(directParameter: AnyObject = kAEBNoParameter,
             savingIn: AnyObject = kAEBNoParameter,
             saving: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x636f7265, eventID: 0x636c6f73, parameters: [
-            SwiftAEParameter(name: "savingIn", code: 0x6b66696c, value: savingIn),
-            SwiftAEParameter(name: "saving", code: 0x7361766f, value: saving),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: "savingIn", code: 0x6b66696c, value: savingIn),
+                SwiftAEParameter(name: "saving", code: 0x7361766f, value: saving),
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func count(directParameter: AnyObject = kAEBNoParameter,
             each: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x636f7265, eventID: 0x636e7465, parameters: [
-            SwiftAEParameter(name: "each", code: 0x6b6f636c, value: each),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: "each", code: 0x6b6f636c, value: each),
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func delete(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x636f7265, eventID: 0x64656c6f, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func duplicate(directParameter: AnyObject = kAEBNoParameter,
             to: AnyObject = kAEBNoParameter,
             withProperties: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x636f7265, eventID: 0x636c6f6e, parameters: [
-            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
-            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
+                SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func exists(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x636f7265, eventID: 0x646f6578, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func get(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x636f7265, eventID: 0x67657464, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func launch(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x61736372, eventID: 0x6e6f6f70, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func make(directParameter: AnyObject = kAEBNoParameter,
             withData: AnyObject = kAEBNoParameter,
             at: AnyObject = kAEBNoParameter,
             new: AnyObject = kAEBNoParameter,
             withProperties: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x636f7265, eventID: 0x6372656c, parameters: [
-            SwiftAEParameter(name: "withData", code: 0x64617461, value: withData),
-            SwiftAEParameter(name: "at", code: 0x696e7368, value: at),
-            SwiftAEParameter(name: "new", code: 0x6b6f636c, value: new),
-            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: "withData", code: 0x64617461, value: withData),
+                SwiftAEParameter(name: "at", code: 0x696e7368, value: at),
+                SwiftAEParameter(name: "new", code: 0x6b6f636c, value: new),
+                SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func move(directParameter: AnyObject = kAEBNoParameter,
             to: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x636f7265, eventID: 0x6d6f7665, parameters: [
-            SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: "to", code: 0x696e7368, value: to),
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func open(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x61657674, eventID: 0x6f646f63, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func openLocation(directParameter: AnyObject = kAEBNoParameter,
             window: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x4755524c, eventID: 0x4755524c, parameters: [
-            SwiftAEParameter(name: "window", code: 0x57494e44, value: window),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: "window", code: 0x57494e44, value: window),
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func print(directParameter: AnyObject = kAEBNoParameter,
             printDialog: AnyObject = kAEBNoParameter,
             withProperties: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x61657674, eventID: 0x70646f63, parameters: [
-            SwiftAEParameter(name: "printDialog", code: 0x70646c67, value: printDialog),
-            SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: "printDialog", code: 0x70646c67, value: printDialog),
+                SwiftAEParameter(name: "withProperties", code: 0x70726474, value: withProperties),
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func quit(directParameter: AnyObject = kAEBNoParameter,
             saving: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x61657674, eventID: 0x71756974, parameters: [
-            SwiftAEParameter(name: "saving", code: 0x7361766f, value: saving),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: "saving", code: 0x7361766f, value: saving),
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func reopen(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x61657674, eventID: 0x72617070, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func run(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x61657674, eventID: 0x6f617070, parameters: [
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func save(directParameter: AnyObject = kAEBNoParameter,
             as_: AnyObject = kAEBNoParameter,
             in_: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x636f7265, eventID: 0x73617665, parameters: [
-            SwiftAEParameter(name: "as_", code: 0x666c7470, value: as_),
-            SwiftAEParameter(name: "in_", code: 0x6b66696c, value: in_),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: "as_", code: 0x666c7470, value: as_),
+                SwiftAEParameter(name: "in_", code: 0x6b66696c, value: in_),
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
     func set(directParameter: AnyObject = kAEBNoParameter,
             to: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(0x636f7265, eventID: 0x73657464, parameters: [
-            SwiftAEParameter(name: "to", code: 0x64617461, value: to),
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: "to", code: 0x64617461, value: to),
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
 }
 
 
 class TETApplication: TETSpecifier {
     private init(targetType: AEBTargetType, targetData: AnyObject?) {
-        let data = AppleEventBridge.AEBStaticAppData(applicationClass: AEMApplication.self,
-                                                          symbolClass: TETSymbol.self,
-                                                       specifierClass: TETSpecifier.self,
-                                                           targetType: targetType,
-                                                           targetData: targetData)
+        let data = SwiftAEAppData(applicationClass: AEMApplication.self,
+                                       symbolClass: TETSymbol.self,
+                                    specifierClass: TETSpecifier.self,
+                                        targetType: targetType,
+                                        targetData: targetData)
         super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
     }
     override convenience init() { // TO DO: delete/raise error if bundle id not given

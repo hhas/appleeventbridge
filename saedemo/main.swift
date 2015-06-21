@@ -8,6 +8,9 @@ import Foundation
 import AppleEventBridge
 
 
+print(try TextEdit.documents.modified.get())
+
+
 let x = true
 if x {
 
@@ -40,28 +43,27 @@ if x {
 }
 
 
+let y = true
+if y {
 
-// All the joys of complex Apple event queries plus a nice juicy stdlib of zip(), sort(), etc. too... bliss!
-
-
-// tell application "iTunes" to get name of every track of playlist "Top 25 Most Played"
-print((try iTunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])
-
-
-// tell application "iTunes" to get {name, rating} of (every track whose artist = "Sigur Ros" and (name begins with "G" or rating ≥ 60))
-let q = iTunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)]
-print(Array(zip(try q.name.get() as! [String], try q.rating.get() as! [Int])))
-// [("Gobbledigook", 80), ("Góðan Daginn", 40), ("Við Spilum Endalaust", 60), ...]
-
-//iTunes.make(new: ITU.playlist, withProperties: [ITU.name]
+    // tell application "iTunes" to get name of every track of playlist "Top 25 Most Played"
+    print((try iTunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])
 
 
+    // tell application "iTunes" to get {name, rating} of (every track whose artist = "Sigur Ros" and (name begins with "G" or rating ≥ 60))
+    let q = iTunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)]
+    print(Array(zip(try q.name.get() as! [String], try q.rating.get() as! [Int])))
+    // [("Gobbledigook", 80), ("Góðan Daginn", 40), ("Við Spilum Endalaust", 60), ...]
 
-print(iTunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)].rating)
-//ITUApplication(name: @"/Applications/iTunes.app").tracks[(ITU.its.artist == @"Sigur Ros" && (ITU.its.name.beginsWith(@"G") || ITU.its.rating >= @60))].rating
+    //iTunes.make(new: ITU.playlist, withProperties: [ITU.name:"TEST PLAYLIST"])
 
 
 
+    print(iTunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)].rating)
+    //ITUApplication(name: @"/Applications/iTunes.app").tracks[(ITU.its.artist == @"Sigur Ros" && (ITU.its.name.beginsWith(@"G") || ITU.its.rating >= @60))].rating
+
+
+}
 
 
 

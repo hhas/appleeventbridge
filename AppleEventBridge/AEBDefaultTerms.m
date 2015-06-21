@@ -214,7 +214,7 @@
                  COMMAND_NAME(@"activate", 'misc', 'actv'),
            PARAM(COMMAND_NAME(@"open location", 'GURL', 'GURL'), @"window", 'WIND'),
                
-                 COMMAND_NAME(@"get", 'core', 'getd'),
+                 COMMAND_NAME(@"get", 'core', 'getd'), // TO DO: include default `as` parameter?
            PARAM(COMMAND_NAME(@"set", 'core', 'setd'), @"to", 'data')];
     return self;
 }

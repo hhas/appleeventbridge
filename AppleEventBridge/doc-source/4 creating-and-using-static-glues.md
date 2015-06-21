@@ -12,21 +12,31 @@ To view the `aebglue` tool's full documentation:
 
     aebglue -h
 
-The following example generates a glue for the TextEdit application, using `TE` as the class name prefix, and saving the generated glue to your home folder as `TEGlue`:
+`aebglue` generates Swift-based glues by default, so to generate an Objective-C glue instead you must include an `-o` flag. 
 
-    aebglue -a TextEdit  -p TE -o ~/TEGlue
+The following example generates a glue for the TextEdit application, using an auto-generated class name prefix (in this case `TET`), creating a new `TETGlue` folder in your current working directory:
+
+    aebglue -o TextEdit
+
+while the following command uses a custom class name prefix, `TE`, and creates the new `TEGlue` folder in your home directory's "Documents" folder:
+
+    aebglue -o -p TE TextEdit ~/Documents
+
+The generated glue folder also contains an `.sdef` file containing the application's dictionary (interface documentation) in the correct format. For example, to view the `TEGlue` terminology in Script Editor: 
+
+    open -a 'Script Editor' ~/Documents/TEGlue/TextEdit.h.sdef
+
+Refer to this documentation when using AppleEventBridge glues in your own code, as it shows element, property, command, etc. names as they appear in the generated glue classes. (Make sure Script Editor's dictionary viewer is set to "AppleScript" language; other formats are for use with OS X's Scripting Bridge/JavaScript for Automation bridges only.)
+
+If an identically named folder already exists at the same location, `aebglue` will normally fail with a "path already exists" error. If you wish to force it to overwrite the existing folder without warning, add an `-r` option:
+
+    aebglue -o -r TextEdit
 
 For compatibility, `aebglue` normally sends the application an `ascr/gdte` event to retrieve its terminology in AETE format. However, some Carbon-based applications (e.g. Finder in 10.9 and 10.10) may have buggy `ascr/gdte` event handlers that return Cocoa Scripting's default terminology instead of the application's own. To work around this, add an `-s` option to retrieve the terminology in SDEF format instead:
 
-    aebglue -a Finder  -p FN -o ~/FNGlue -s
+    aebglue -o -s Finder
 
 (Be aware that OS X's AETE-to-SDEF converter is not 100% reliable; for example, some four-char codes may fail to translate, in which case `aebglue` will warn of their omission. You'll have to correct the glue files manually should you need to use the affected features, or use the lower-level `AEM` APIs instead.)
-
-The generated glue includes an `.sdef` file containing the application's dictionary documentation in AEB format. For example, to view the `TEGlue` terminology in Script Editor: 
-
-    open -a 'Script Editor' ~/TEGlue/TextEdit.sdef
-
-Refer to this documentation when using AppleEventBridge glues in your own code, as it shows element, property, command, etc. names as they appear in the generated glue classes. (Make sure Script Editor's dictionary viewer is set to "AppleScript" language mode; the "Objective-C" mode formats terminology for OS X's Scripting Bridge.)
 
 
 ## Using a glue
@@ -56,6 +66,8 @@ Each glue contains the following classes:
 
 Each glue also provides three macros - `<var>XX</var>App`, `<var>XX</var>Con` and `<var>XX</var>Its` - for use in constructing object specifiers.
 
+
+[TO DO: update all prefixes used in docs to match auto-generated defaults: TET, FIN, etc]
 
 <p class="hilitebox">Note that the code examples in this manual assume the presence of suitable glues; e.g. TextEdit-based examples assume a TextEdit glue with the prefix `TE`, Finder-based examples assume a Finder glue with the prefix `FN`, etc.</p>
 

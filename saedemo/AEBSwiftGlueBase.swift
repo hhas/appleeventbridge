@@ -12,9 +12,12 @@ import Foundation
 import AppleEventBridge
 
 
+/******************************************************************************/
+// Formatter base class
+
 // format numbers, strings, arrays, specifiers, etc. using literal Swift syntax
 func SwiftAEFormatObject(object: AnyObject!) -> String {
-    switch (object) {
+    switch object {
     case let obj as [AnyObject]:
         var tmp = "["
         var useSep = false // TO DO: use map+join
@@ -86,7 +89,8 @@ class SwiftAEFormatter: AEMQueryVisitor {
         return object is AEMQuery ? self.dynamicType.formatObject(object, appData: aebAppData) : SwiftAEFormatObject(object)
     }
     
-    // stubs; application-specific subclasses should override to provide class name prefix and code->name translations
+    // stubs; application-specific subclasses should override and extend to provide class name prefix and code->name translations,
+    // returning nil if no translation found
     
     var prefix: String {return "AEB"}
     
@@ -315,6 +319,34 @@ class SwiftAEFormatter: AEMQueryVisitor {
 }
 
 
+/******************************************************************************/
+// AppData class
+
+
+class SwiftAEAppData: AEBStaticAppData {
+    
+    
+    override func pack(anObject: AnyObject!) throws -> NSAppleEventDescriptor {
+        if anObject is Bool {
+            return NSAppleEventDescriptor(boolean: (anObject as! Bool ? 1 : 0))
+        }
+        return try super.pack(anObject)
+    }
+    
+    
+    override func unpack(desc: NSAppleEventDescriptor!) throws -> AnyObject {
+        switch desc.descriptorType {
+        case 0x74727565: return true // TO DO: unpacking arrays turns Swift true/false to NSCFBooleans
+        case 0x66616c73: return false
+        case 0x626f6f6c: return desc.booleanValue != 0
+        default: return try super.unpack(desc)
+        }
+    }
+}
+
+
+/******************************************************************************/
+// Symbol base class
 
 // base class for all standard and application-specific named symbols
 // (note: while an enum would be idiomatic Swift, the need to map reliably between human-readable names and AE codes, and/or represent such mappings even when one or other is unavailable, may make this tricky or impractical; need to research further)
@@ -328,7 +360,7 @@ class SwiftAESymbol: AEBSymbol {
     /* begin generated section */
     
     class func symbol(code: OSType) -> AEBSymbol { // used by codecs to unpack AEDescs of typeType/typeEnumerated as named symbols (note: if a four-char code doesn't have a corresponding name, an AEBSymbol instance containing the raw code only is returned)
-        switch (code) {
+        switch code {
         //case AEM4CC("pnam"): return self.name
         // ... TO DO: standard codes
         default: return AEBSymbol(code: code)
@@ -358,18 +390,30 @@ struct SwiftAEParameter {
     var value: AnyObject!
 }
 
-class AEBNoParameter {}
-let kAEBNoParameter = AEBNoParameter() // TO DO: what's easiest way to create unique symbol?
 
+class AEBNoParameter {}
+let kAEBNoParameter = AEBNoParameter() // TO DO: what's easiest way to create unique symbol? (i.e. don't want to use nil to indicate omission of directParameter in commands, as that can't be distinguished from nil values returned by Cocoa APIs [e.g.] to signal a runtime error)
+
+// command attributes
+
+// timeout constants
+let AEBNoTimeout: NSTimeInterval = -2
+let AEBDefaultTimeout: NSTimeInterval = -1
+
+typealias AEBReturnType = AnyObject // TO DO: more specific returnType
+typealias AEBConsiderIgnoreType = Set<AEBSymbol>
 
 
 class SwiftAESpecifier: AEBSpecifier {
     
+    // TO DO: support optional completionHandler closure for async sends? (not sure how best to implement this; might be simpler to take kAEQueueReply flag and immediately return  sent event's returnID as result, leaving user to collect reply event themselves)
+    
     // note: clients may call the following method directly as workaround if app's terminology is missing or incorrect
     // TO DO: add convenience raw send method that takes four-char code strings (c.f. elementsByFourCharCode)
     
-    // TO DO: attributes support
-    func sendAppleEvent(eventClass: OSType, eventID: OSType, parameters: Array<SwiftAEParameter>) throws -> AnyObject! {
+    func sendAppleEvent(eventClass: OSType, eventID: OSType, parameters: Array<SwiftAEParameter>,
+            returnType: AEBReturnType?, waitReply: Bool?, withTimeout: NSTimeInterval?,
+            considering: AEBConsiderIgnoreType?, ignoring: AEBConsiderIgnoreType?) throws -> AnyObject! {
         let command = AEBCommand(appData: aebAppData, eventClass: eventClass, eventID: eventID, parentQuery: aemQuery)
         for param in parameters {
             if !(param.value is AEBNoParameter) {
@@ -377,6 +421,38 @@ class SwiftAESpecifier: AEBSpecifier {
             }
         }
         // TO DO: attributes
+
+        if let type = returnType {
+            if type is [AEBSymbol] {
+                command.returnListOfType(type.code())
+            } else if type is AEBSymbol {
+                command.returnType(type.code())
+            } else {
+                print("TO DO: map common Swift types to corresponding AE types, and apply those as coercions while unpacking (note: this will require enhancements to AEBCommand)")
+            }
+        }
+        if let reply = waitReply {
+            if reply {
+                command.waitForReply()
+            } else {
+                command.ignoreReply()
+            }
+        }
+        if let timeout = withTimeout {
+            if timeout == AEBDefaultTimeout {
+                command.defaultTimeout()
+            } else if timeout == AEBNoTimeout {
+                command.noTimeout()
+            } else {
+                command.timeout(timeout as NSTimeInterval)
+            }
+        }
+        if let consider = considering {
+            print("TO DO: considering: \(consider)")
+        }
+        if let ignore = ignoring {
+            print("TO DO: ignoring: \(ignore)")
+        }
         return try command.sendWithError() // TO DO: trap and rethrow with better error message
     }
     

@@ -1,6 +1,12 @@
 #!/usr/bin/python
 
-""" Generate HTML user guide (doc-html) from Markdown files (doc-source). """
+""" Generate HTML user guide (doc-html) from Markdown files (doc-source). 
+    
+    Requires Markdown2:
+    
+        sudo easy_install markdown2
+
+"""
 
 import os, os.path, shutil, sys
 from markdown2 import markdown

@@ -15,11 +15,11 @@ class «PREFIX»Formatter: SwiftAEFormatter { // used internally to generate des
     override var prefix: String {return "«PREFIX»"}
     
     override func propertyByCode(code: OSType) -> String? {
-        switch (code) {
+        switch code {
 «+PROPERTY_FORMATTER»
         case «CODE»: return "«NAME»"
 «-PROPERTY_FORMATTER»
-        default: return super.propertyByCode(code) // TO DO: not sure about this; check if formatter throws across to other if not found
+        default: return super.propertyByCode(code)
         }
     }
     override func elementsByCode(code: OSType) -> String? {
@@ -27,7 +27,7 @@ class «PREFIX»Formatter: SwiftAEFormatter { // used internally to generate des
 «+ELEMENTS_FORMATTER»
         case «CODE»: return "«NAME»"
 «-ELEMENTS_FORMATTER»
-        default: return super.elementsByCode(code) // ditto
+        default: return super.elementsByCode(code)
         }
     }
 }
@@ -145,12 +145,14 @@ class «PREFIX»Specifier: SwiftAESpecifier {
 «+PARAMETER»
             «NAME»: AnyObject = kAEBNoParameter,
 «-PARAMETER»
-            eventAttributes: AnyObject? = nil) throws -> AnyObject {
+            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
         return try self.sendAppleEvent(«EVENT_CLASS», eventID: «EVENT_ID», parameters: [
 «+PARAMETER»
-            SwiftAEParameter(name: "«NAME»", code: «CODE», value: «NAME»),
+                SwiftAEParameter(name: "«NAME»", code: «CODE», value: «NAME»),
 «-PARAMETER»
-            SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
+                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
+            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
 «-COMMAND»
 }
@@ -158,11 +160,11 @@ class «PREFIX»Specifier: SwiftAESpecifier {
 
 class «PREFIX»Application: «PREFIX»Specifier {
     private init(targetType: AEBTargetType, targetData: AnyObject?) {
-        let data = AppleEventBridge.AEBStaticAppData(applicationClass: AEMApplication.self,
-                                                          symbolClass: «PREFIX»Symbol.self,
-                                                       specifierClass: «PREFIX»Specifier.self,
-                                                           targetType: targetType,
-                                                           targetData: targetData)
+        let data = SwiftAEAppData(applicationClass: AEMApplication.self,
+                                       symbolClass: «PREFIX»Symbol.self,
+                                    specifierClass: «PREFIX»Specifier.self,
+                                        targetType: targetType,
+                                        targetData: targetData)
         super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
     }
     override convenience init() { // TO DO: delete/raise error if bundle id not given
