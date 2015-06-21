@@ -4,217 +4,312 @@
 
 // TO DO: move into AppleEventBridge.framework
 
+// note: AEBAppData uses AEMCodecs to unpack basic AE types (text, list, etc) as NSObjects; TO DO: would it be better to unpack them as native Swift types (and would Swift objects cause any issues with other NSObject-based APIs such as AEMQuery)?
+
 import Foundation
 import AppleEventBridge
 
 
-class SwiftAEFormatter: AEBStaticFormatter { // TO DO: need to implement whole new formatter specifically for Swift syntax that subclasses AEBQueryVisitor; for now, string representation currently returned by formatter is a mix of Swift and ObjC syntax, which is sufficient for testing
+// format numbers, strings, arrays, specifiers, etc. using literal Swift syntax
+func SwiftAEFormatObject(object: AnyObject!) -> String {
+    switch (object) {
+    case let obj as [AnyObject]:
+        var tmp = "["
+        var useSep = false // TO DO: use map+join
+        for item in obj {
+            if useSep {
+                tmp += ", "
+            }
+            tmp += SwiftAEFormatObject(item)
+            useSep = true
+        }
+        return "[\(tmp)]"
+    case let obj as NSDictionary: // TO DO: what about Swift dictionaries? (i.e. how to declare, as [protocol<Hashable>:AnyObject] doesn't work)
+        var tmp = ""
+        var useSep = false // TO DO: use map+join
+        for (key, value) in obj {
+            if (useSep) {
+                tmp += ", "
+            }
+            tmp += "\(SwiftAEFormatObject(key)): \(SwiftAEFormatObject(value))"
+            useSep = true
+        }
+        return "[\(tmp)]"
+    case let obj as String:
+        let tmp = NSMutableString(string: obj)
+        tmp.replaceOccurrencesOfString("\\", withString: "\\\\", options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
+        tmp.replaceOccurrencesOfString("\"", withString: "\\\"", options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
+        tmp.replaceOccurrencesOfString("\r", withString: "\\r", options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
+        tmp.replaceOccurrencesOfString("\n", withString: "\\n", options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
+        tmp.replaceOccurrencesOfString("\t", withString: "\\t", options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
+        return "\"\(tmp)\""
+    case let obj as NSDate:
+        return "NSDate(string: \(SwiftAEFormatObject(obj.description))"
+    case let obj as NSURL:
+        return "NSURL(string: \(SwiftAEFormatObject(obj.description))"
+    default:
+        return "\(object)" // note: specifiers, symbols, etc. automatically format themselves
+    }
+}
+
+
+// used by AEBSpecifier.description to generate literal representation of itself
+class SwiftAEFormatter: AEMQueryVisitor {
  
+    var aebAppData: AEBAppData?
+    var mutableResult: NSMutableString?
+    
+    // takes an AEMQuery plus AEBStaticAppData instance, and returns the query's literal ObjC representation
+    class func formatObject(object: AnyObject!, appData: AEBAppData?) -> String {
+        if object is AEMQuery {
+            let renderer = self(appData: appData)
+            object.resolveWithObject(renderer)
+            if let result = renderer.mutableResult {
+                return result.copy() as! String
+            } else {
+                return "\(renderer.app).specifierWithObject(\(object))"
+            }
+        } else {
+            return SwiftAEFormatObject(object)
+        }
+    }
+
+    // clients should avoid calling this constructor directly; use +formatObject:appData: instead
+    required init(appData: AEBAppData?) {
+        mutableResult = NSMutableString()
+        aebAppData = appData;
+    }
+    
+    func format(object: AnyObject) -> String {
+        return object is AEMQuery ? self.dynamicType.formatObject(object, appData: aebAppData) : SwiftAEFormatObject(object)
+    }
+    
+    // stubs; application-specific subclasses should override to provide class name prefix and code->name translations
+    
+    var prefix: String {return "AEB"}
+    
+    func propertyByCode(code: OSType) -> String? {
+        return nil
+    }
+    func elementsByCode(code: OSType) -> String? {
+        return nil
+    }
+    
+    // the following methods are called as formatter walks AEMQuery's visitor API
+    
     // property and elements specifiers; if no terminology found for given 'want' code, uses raw constructor syntax instead
     
-    override func property(code: OSType) -> SwiftAEFormatter! {
+    override func property(code: OSType) -> Self {
         if let name = self.propertyByCode(code) ?? self.elementsByCode(code) {
-            mutableResult.appendFormat(".%@", name)
+            mutableResult?.appendFormat(".%@", name)
         } else { // no code->name translation available
-            mutableResult.appendFormat(".propertyWithFourCharCode(\"%@\")", AEMFormatOSType(code)) // TO DO: check this formats correctly for Swift
+            mutableResult?.appendFormat(".propertyWithFourCharCode(\"%@\")", AEMFormatOSType(code)) // TO DO: check this formats correctly for Swift
         }
         return self;
     }
-    override func elements(code: OSType) -> SwiftAEFormatter! {
+    override func elements(code: OSType) -> Self {
         if let name = self.elementsByCode(code) ?? self.propertyByCode(code) {
-            mutableResult.appendFormat(".%@", name)
+            mutableResult?.appendFormat(".%@", name)
         } else { // no code->name translation available
-            mutableResult.appendFormat(".elementsWithFourCharCode(\"%@\")", AEMFormatOSType(code)) // TO DO: check this formats correctly for Swift
+            mutableResult?.appendFormat(".elementsWithFourCharCode(\"%@\")", AEMFormatOSType(code)) // TO DO: check this formats correctly for Swift
         }
         return self;
     }
     
     // by-ordinal selectors
     
-    override func first() -> SwiftAEFormatter! {
-        self.mutableResult.appendString("first")
+    override func first() -> Self {
+        self.mutableResult?.appendString("first")
         return self
     }
-    override func middle() -> SwiftAEFormatter! {
-        self.mutableResult.appendString("middle")
+    override func middle() -> Self {
+        self.mutableResult?.appendString("middle")
         return self
     }
-    override func last() -> SwiftAEFormatter! {
-        self.mutableResult.appendString("last")
+    override func last() -> Self {
+        self.mutableResult?.appendString("last")
         return self
     }
-    override func any() -> SwiftAEFormatter! {
-        self.mutableResult.appendString("any")
+    override func any() -> Self {
+        self.mutableResult?.appendString("any")
         return self
     }
     
     // by-index, by-name, by-id, by-range, by-test selectors
     
-    override func byIndex(index: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat("[%@]", self.format(index))
+    override func byIndex(index: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat("[%@]", self.format(index))
         return self
     }
-    override func byName(name: AnyObject!) -> SwiftAEFormatter! { // TO DO
-        self.mutableResult.appendFormat("[%@]", self.format(name))
+    override func byName(name: AnyObject!) -> Self { // TO DO
+        self.mutableResult?.appendFormat("[%@]", self.format(name))
         return self
     }
-    override func byID(uid: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(".ID(%@)", self.format(uid))
+    override func byID(uid: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(".ID(%@)", self.format(uid))
         return self
     }
-    override func byRange(fromObject: AnyObject!, to: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat("[%@, %@]", self.format(fromObject), self.format(to))
+    override func byRange(fromObject: AnyObject!, to: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat("[%@, %@]", self.format(fromObject), self.format(to))
         return self;
     }
-    override func byTest(testSpecifier: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat("[%@]", self.format(testSpecifier))
+    override func byTest(testSpecifier: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat("[%@]", self.format(testSpecifier))
         return self;
     }
     
     // by-relative-position selectors
     
-    override func previous(class_: OSType) -> SwiftAEFormatter! {
-        let symbol = try! appData.unpack(NSAppleEventDescriptor(typeCode: class_))
-        self.mutableResult.appendFormat(".previous(%@)", self.format(symbol))
+    override func previous(class_: OSType) -> Self {
+        
+        let symbol = "TO DO" // TO DO: if aebAppData==nil, need to ask glue to convert OSType to XXSymbol; also needs fixed in ObjC glue (Q. is there any situation where aebAppData would be from a different glue? if not, simplest is just to use XXSymbol directly and not bother with pack/unpack)
+        
+ //       let symbol = try! aebAppData.unpack(NSAppleEventDescriptor(typeCode: class_))
+        self.mutableResult?.appendFormat(".previous(%@)", self.format(symbol))
         return self;
     }
-    override func next(class_: OSType) -> SwiftAEFormatter! {
-        let symbol = try! appData.unpack(NSAppleEventDescriptor(typeCode: class_))
-        self.mutableResult.appendFormat(".next(%@)", self.format(symbol))
+    override func next(class_: OSType) -> Self {
+        
+        let symbol = "TO DO" // DITTO
+
+  //      let symbol = try! aebAppData.unpack(NSAppleEventDescriptor(typeCode: class_))
+        self.mutableResult?.appendFormat(".next(%@)", self.format(symbol))
         return self;
     }
     
     // insertion location selectors
     
-    override func beginning() -> SwiftAEFormatter! {
-        self.mutableResult.appendString(".beginning")
+    override func beginning() -> Self {
+        self.mutableResult?.appendString(".beginning")
         return self;
     }
-    override func end() -> SwiftAEFormatter! {
-        self.mutableResult.appendString(".end")
+    override func end() -> Self {
+        self.mutableResult?.appendString(".end")
         return self;
     }
-    override func before() -> SwiftAEFormatter! {
-        self.mutableResult.appendString(".before")
+    override func before() -> Self {
+        self.mutableResult?.appendString(".before")
         return self;
     }
-    override func after() -> SwiftAEFormatter! {
-        self.mutableResult.appendString(".after")
+    override func after() -> Self {
+        self.mutableResult?.appendString(".after")
         return self;
     }
 
     // test clause renderers
 
-    override func greaterThan(object: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(" > %@", self.format(object))
+    override func greaterThan(object: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(" > %@", self.format(object))
         return self;
     }
-    override func greaterOrEquals(object: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(" >= %@", self.format(object))
+    override func greaterOrEquals(object: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(" >= %@", self.format(object))
         return self;
     }
-    override func equals(object: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(" == %@", self.format(object))
+    override func equals(object: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(" == %@", self.format(object))
         return self;
     }
-    override func notEquals(object: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(" != %@", self.format(object))
+    override func notEquals(object: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(" != %@", self.format(object))
         return self;
     }
-    override func lessThan(object: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(" < %@", self.format(object))
+    override func lessThan(object: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(" < %@", self.format(object))
         return self;
     }
-    override func lessOrEquals(object: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(" <= %@", self.format(object))
+    override func lessOrEquals(object: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(" <= %@", self.format(object))
         return self;
     }
-    override func beginsWith(object: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(".beginsWith(%@)", self.format(object))
+    override func beginsWith(object: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(".beginsWith(%@)", self.format(object))
         return self;
     }
-    override func endsWith(object: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(".endsWith(%@)", self.format(object))
+    override func endsWith(object: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(".endsWith(%@)", self.format(object))
         return self;
     }
-    override func contains(object: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(".contains(%@)", self.format(object))
+    override func contains(object: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(".contains(%@)", self.format(object))
         return self;
     }
-    override func isIn(object: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat(".isIn(%@)", self.format(object))
+    override func isIn(object: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat(".isIn(%@)", self.format(object))
         return self;
     }
-   override func AND(remainingOperands: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.insertString("(", atIndex: 0)
+   override func AND(remainingOperands: AnyObject!) -> Self {
+        self.mutableResult?.insertString("(", atIndex: 0)
         if remainingOperands is [AnyObject] {
             for operand in remainingOperands as! [AnyObject] {
-                self.mutableResult.appendFormat(" && %@", self.format(operand))
+                self.mutableResult?.appendFormat(" && %@", self.format(operand))
             }
         } else {
-            self.mutableResult.appendFormat(" && %@", self.format(remainingOperands))
+            self.mutableResult?.appendFormat(" && %@", self.format(remainingOperands))
         }
-        self.mutableResult.appendString(")")
+        self.mutableResult?.appendString(")")
         return self;
     }
-    override func OR(remainingOperands: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.insertString("(", atIndex: 0)
+    override func OR(remainingOperands: AnyObject!) -> Self {
+        self.mutableResult?.insertString("(", atIndex: 0)
         if remainingOperands is [AnyObject] {
             for operand in remainingOperands as! [AnyObject] {
-                self.mutableResult.appendFormat(" || %@", self.format(operand))
+                self.mutableResult?.appendFormat(" || %@", self.format(operand))
             }
         } else {
-            self.mutableResult.appendFormat(" || %@", self.format(remainingOperands))
+            self.mutableResult?.appendFormat(" || %@", self.format(remainingOperands))
         }
-        self.mutableResult.appendString(")")
+        self.mutableResult?.appendString(")")
         return self;
     }
-    override func NOT() -> SwiftAEFormatter! {
-        self.mutableResult.insertString("!(", atIndex: 0)
-        self.mutableResult.appendString(")")
+    override func NOT() -> Self {
+        self.mutableResult?.insertString("!(", atIndex: 0)
+        self.mutableResult?.appendString(")")
         return self;
     }
 
     
     
-    override func app() -> SwiftAEFormatter! { // TO DO: can these return types be replaced with a protocol that returns Self? or must they always be declared explicitly in method definitions?
-        if appData == nil { // generic specifier
-            self.mutableResult.appendFormat("%@.app", self.prefix)
+    override func app() -> Self {
+        if aebAppData == nil { // generic specifier
+            self.mutableResult?.appendFormat("%@.app", self.prefix)
         } else { // concrete specifier
-            self.mutableResult.appendFormat("%@Application", self.prefix)
+            self.mutableResult?.appendFormat("%@Application", self.prefix)
             do {
-                let target = try appData.targetWithError()
+                let target = try aebAppData!.targetWithError()
                 let targetData = target.targetData()
                 let targetType = target.targetType()
                 if targetType == kAEMTargetCurrent {
-                    self.mutableResult.appendString(".currentApplication()")
+                    self.mutableResult?.appendString(".currentApplication()")
                 } else if targetType == kAEMTargetFileURL {
-                    self.mutableResult.appendFormat("(name: %@)", self.format(targetData.path))
+                    self.mutableResult?.appendFormat("(name: %@)", self.format((targetData as! NSURL).path!)) // TO DO: check this
                 } else if targetType == kAEMTargetEppcURL {
-                    self.mutableResult.appendFormat("(url: %@)", self.format(targetData))
+                    self.mutableResult?.appendFormat("(url: %@)", self.format(targetData))
                 } else if targetType == kAEMTargetProcessID {
-                    self.mutableResult.appendFormat("(processIdentifier: %@)", self.format(targetData))
+                    self.mutableResult?.appendFormat("(processIdentifier: %@)", self.format(targetData))
                 } else { // if targetType == kAEMTargetDescriptor {
-                    self.mutableResult.appendFormat("(descriptor: %@)", self.format(targetData))
+                    self.mutableResult?.appendFormat("(descriptor: %@)", self.format(targetData))
                 }
             } catch {
-                self.mutableResult.appendString("(<invalid target (error=\(error))>)")
+                self.mutableResult?.appendString("(<invalid target (error=\(error))>)")
             }
         }
         return self;
     }
-    override func con() -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat("%@.con", self.prefix)
+    override func con() -> Self {
+        self.mutableResult?.appendFormat("%@.con", self.prefix)
         return self
     }
-    override func its() -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat("%@.its", self.prefix)
+    override func its() -> Self {
+        self.mutableResult?.appendFormat("%@.its", self.prefix)
         return self
     }
-    override func customRoot(rootObject: AnyObject!) -> SwiftAEFormatter! {
-        self.mutableResult.appendFormat("%@Application.customRoot(%@)", self.prefix, self.format(rootObject))
+    override func customRoot(rootObject: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat("%@Application.customRoot(%@)", self.prefix, self.format(rootObject))
         return self
     }
+    
+    // Swift types
 }
 
 
@@ -269,8 +364,9 @@ let kAEBNoParameter = AEBNoParameter() // TO DO: what's easiest way to create un
 class SwiftAESpecifier: AEBSpecifier {
     
     // note: clients may call the following method directly as workaround if app's terminology is missing or incorrect
-    // TO DO: add convenience send method that takes varargs and four-char code strings, c.f. elementsByFourCharCode?
+    // TO DO: add convenience raw send method that takes four-char code strings (c.f. elementsByFourCharCode)
     
+    // TO DO: attributes support
     func sendAppleEvent(eventClass: OSType, eventID: OSType, parameters: Array<SwiftAEParameter>) throws -> AnyObject! {
         let command = AEBCommand(appData: aebAppData, eventClass: eventClass, eventID: eventID, parentQuery: aemQuery)
         for param in parameters {

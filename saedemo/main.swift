@@ -28,6 +28,7 @@ if x {
         
         // tell application "TextEdit" to get text of every document
         print(try TextEdit.documents.text.get())
+        // note: AEB unpacks AEDescs as NSObjects rather than Swift objects, so the returned NSArray will print as ObjC notation unless explicitly cast to Array<> first
         
         // tell application "AppleScript" to set q to a reference to name of document 1
         let q = TextEdit.documents[1].name
@@ -44,12 +45,12 @@ if x {
 
 
 // tell application "iTunes" to get name of every track of playlist "Top 25 Most Played"
-print(try iTunes.playlists["Top 25 Most Played"].tracks.name.get())
+print((try iTunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])
 
 
 // tell application "iTunes" to get {name, rating} of (every track whose artist = "Sigur Ros" and (name begins with "G" or rating ≥ 60))
 let q = iTunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)]
-print(Array(zip(try q.name.get() as! Array<String>, try q.rating.get() as! Array<Int>)))
+print(Array(zip(try q.name.get() as! [String], try q.rating.get() as! [Int])))
 // [("Gobbledigook", 80), ("Góðan Daginn", 40), ("Við Spilum Endalaust", 60), ...]
 
 //iTunes.make(new: ITU.playlist, withProperties: [ITU.name]
