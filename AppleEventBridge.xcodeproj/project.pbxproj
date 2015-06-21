@@ -367,8 +367,8 @@
 			children = (
 				4FFA2D851A129BEC00AF09E4 /* README */,
 				4F1A9FF619F92A9F00FBD23E /* AppleEventBridge */,
-				4FA7A8B71A0A607400F0E578 /* aebdemo */,
-				4F5EE3D31B2D7F1F007C58B5 /* saedemo */,
+				4FA7A8B71A0A607400F0E578 /* Objective-C demo */,
+				4F5EE3D31B2D7F1F007C58B5 /* Swift demo */,
 				4F1AA01419F92D2F00FBD23E /* Frameworks */,
 				4F1AA00319F92A9F00FBD23E /* AppleEventBridgeTests */,
 				4F1A9FF519F92A9F00FBD23E /* Products */,
@@ -534,7 +534,7 @@
 			path = TETGlue;
 			sourceTree = "<group>";
 		};
-		4F5EE3D31B2D7F1F007C58B5 /* saedemo */ = {
+		4F5EE3D31B2D7F1F007C58B5 /* Swift demo */ = {
 			isa = PBXGroup;
 			children = (
 				4F5EE3D41B2D7F1F007C58B5 /* main.swift */,
@@ -545,6 +545,7 @@
 				4F0D52981B3450BB0081A1B3 /* TODO.txt */,
 				4F4ADE821B35C49E0017EE65 /* AEBSwiftGlueBase.swift */,
 			);
+			name = "Swift demo";
 			path = saedemo;
 			sourceTree = "<group>";
 		};
@@ -599,13 +600,14 @@
 			name = Types;
 			sourceTree = "<group>";
 		};
-		4FA7A8B71A0A607400F0E578 /* aebdemo */ = {
+		4FA7A8B71A0A607400F0E578 /* Objective-C demo */ = {
 			isa = PBXGroup;
 			children = (
 				4FA7A8B81A0A607400F0E578 /* main.m */,
 				4F4ADEC61B35DB270017EE65 /* ITUGlue */,
 				4F4ADECA1B35DB270017EE65 /* TETGlue */,
 			);
+			name = "Objective-C demo";
 			path = aebdemo;
 			sourceTree = "<group>";
 		};

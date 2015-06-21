@@ -4,6 +4,8 @@
 
 // TO DO: move into AppleEventBridge.framework
 
+// TO DO: how best to support Apple event to Swift code translation? easiest might be to provide a universal translation function that takes an NSAppleEventDescriptor of any type, including typeAppleEvent, and unpacks and formats it appropriately (see JAB code for an existing AE-to-JavaScript implementation that could probably be generalized to accept any formatter class)
+
 // note: AEBAppData uses AEMCodecs to unpack basic AE types (text, list, etc) as NSObjects; TO DO: would it be better to unpack them as native Swift types (and would Swift objects cause any issues with other NSObject-based APIs such as AEMQuery)?
 
 import Foundation
@@ -61,7 +63,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
     
     // takes an AEMQuery plus AEBStaticAppData instance, and returns the query's literal ObjC representation
     class func formatObject(object: AnyObject!, appData: AEBAppData?) -> String {
-        if object is AEMQuery {
+        if object is AEMQuery { // instantiate a new formatter instance and pass it to AEMQuery's visitor method
             let renderer = self(appData: appData)
             object.resolveWithObject(renderer)
             if let result = renderer.mutableResult {
@@ -74,7 +76,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
         }
     }
 
-    // clients should avoid calling this constructor directly; use +formatObject:appData: instead
+    // clients should avoid calling this constructor directly; use above formatObject(object:appData:) method instead
     required init(appData: AEBAppData?) {
         mutableResult = NSMutableString()
         aebAppData = appData;
