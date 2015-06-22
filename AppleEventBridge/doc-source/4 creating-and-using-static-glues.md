@@ -41,6 +41,8 @@ For compatibility, `aebglue` normally sends the application an `ascr/gdte` event
 
 ## Using a glue
 
+[TO DO: this covers ObjC; update for Swift once glue structure, etc. finalzied]
+
 To include the generated glue files in your project:
 
 1. Right-click on the Classes group in the left-hand Groups &amp; Files pane of the Xcode project window, and select Add &gt; Existing Files... from the contextual menu.
@@ -55,21 +57,19 @@ You can now import the main `<var>XX</var>Glue/<var>XX</var>Glue.h` header file 
 
 Each glue contains the following classes:
 
-* `<var>XX</var>Symbol` -- represents Apple event type, enumerator, and property names, e.g. `TESymbol`
+* `<var>XX</var>Symbol` -- represents Apple event type, enumerator, and property names, e.g. `TETSymbol`
 
-* `<var>XX</var>Specifier` -- represents Apple Event Object Model queries (a.k.a. object specifiers), e.g. `TESpecifier`
+* `<var>XX</var>Specifier` -- represents Apple Event Object Model queries (a.k.a. object specifiers), e.g. `TETSpecifier`
 
-* `<var>XXNAME</var>Command` -- represents an application command (one class for each application command), e.g. `TEMakeCommand`, `TEMoveCommand`, etc.
+* `<var>XXNAME</var>Command` -- represents an application command (one class for each application command), e.g. `TETMakeCommand`, `TETMoveCommand`, etc. [TO DO: only in ObjC glues]
 
-* `<var>XX</var>Application` -- represents an application, e.g. `TEApplication`
-
-
-Each glue also provides three macros - `<var>XX</var>App`, `<var>XX</var>Con` and `<var>XX</var>Its` - for use in constructing object specifiers.
+* `<var>XX</var>Application` -- represents an application, e.g. `TETApplication` [TO DO: in Swift glues, this class's name is derived from the application's own name, or the `-n` option if given; ObjC glues may be revised in future to adopt same naming scheme]
 
 
-[TO DO: update all prefixes used in docs to match auto-generated defaults: TET, FIN, etc]
+Each glue also provides three macros - `<var>XX</var>App`, `<var>XX</var>Con` and `<var>XX</var>Its` - for use in constructing object specifiers. [TO DO: only in ObjC glues; in Swift glues, the XXSymbol class provides three class vars, `app`, `con`, `its`, although this is not finalized and may change in future]
 
-<p class="hilitebox">Note that the code examples in this manual assume the presence of suitable glues; e.g. TextEdit-based examples assume a TextEdit glue with the prefix `TE`, Finder-based examples assume a Finder glue with the prefix `FN`, etc.</p>
+
+<p class="hilitebox">Note that the code examples in this manual assume the presence of suitable glues; e.g. TextEdit-based examples assume a TextEdit glue with the prefix `TET`, Finder-based examples assume a Finder glue with the prefix `FIN`, etc.</p>
 
 
 

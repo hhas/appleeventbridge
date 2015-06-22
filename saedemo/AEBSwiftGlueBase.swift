@@ -93,6 +93,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
     // returning nil if no translation found
     
     var prefix: String {return "AEB"}
+    var appclassname: String {return "AEBApplication"}
     
     func propertyByCode(code: OSType) -> String? {
         return nil
@@ -280,7 +281,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
         if aebAppData == nil { // generic specifier
             self.mutableResult?.appendFormat("%@.app", self.prefix)
         } else { // concrete specifier
-            self.mutableResult?.appendFormat("%@Application", self.prefix)
+            self.mutableResult?.appendString(self.appclassname)
             do {
                 let target = try aebAppData!.targetWithError()
                 let targetData = target.targetData()
@@ -288,13 +289,13 @@ class SwiftAEFormatter: AEMQueryVisitor {
                 if targetType == kAEMTargetCurrent {
                     self.mutableResult?.appendString(".currentApplication()")
                 } else if targetType == kAEMTargetFileURL {
-                    self.mutableResult?.appendFormat("(name: %@)", self.format((targetData as! NSURL).path!)) // TO DO: check this
+                    self.mutableResult?.appendFormat("(name:%@)", self.format((targetData as! NSURL).path!)) // TO DO: check this
                 } else if targetType == kAEMTargetEppcURL {
-                    self.mutableResult?.appendFormat("(url: %@)", self.format(targetData))
+                    self.mutableResult?.appendFormat("(url:%@)", self.format(targetData))
                 } else if targetType == kAEMTargetProcessID {
-                    self.mutableResult?.appendFormat("(processIdentifier: %@)", self.format(targetData))
+                    self.mutableResult?.appendFormat("(processIdentifier:%@)", self.format(targetData))
                 } else { // if targetType == kAEMTargetDescriptor {
-                    self.mutableResult?.appendFormat("(descriptor: %@)", self.format(targetData))
+                    self.mutableResult?.appendFormat("(descriptor:%@)", self.format(targetData))
                 }
             } catch {
                 self.mutableResult?.appendString("(<invalid target (error=\(error))>)")

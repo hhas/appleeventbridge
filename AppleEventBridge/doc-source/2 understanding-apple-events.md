@@ -30,11 +30,11 @@ For example, when the user drag-n-drops a file onto TextEdit.app in the Finder, 
 
 ![Sending Apple event from Finder to TextEdit](finder_to_textedit_event.gif)
 
-With suitable bindings, programming languages can also create and send Apple events. For example, when the code `[[[ITSApplication application] play] send]` is executed by a client application, a `hook/Play` event is sent from the client application to iTunes, instructing it to start playing:
+With suitable bindings, programming languages can also create and send Apple events. For example, when the code `iTunes().play()` is executed by a client application, a `hook/Play` event is sent from the client application to iTunes, instructing it to start playing:
 
 ![Sending Apple event from client application to iTunes](client_app_to_itunes_event.gif)
 
-Applications may respond to an incoming Apple event by sending a reply event back to the client application. The reply event may contain either a return value, if there is one, or an error description if it was unable to handle the event as requested. For example, executing the command `[[[[TEApplication application] name] get] send]` in a client appliation sends TextEdit a `core/getd` event containing an object specifier identifying the `name` property of its root `application` object. TextEdit processes this event, then sends a reply event containing the string '<tt>TextEdit</tt>' back to the client application, where it is returned as the command's result. This exchange is usually performed synchronously, appearing to the user as a simple remote procedure call. Asynchronous messaging is also supported, though is not normally used in application scripting.
+Applications may respond to an incoming Apple event by sending a reply event back to the client application. The reply event may contain either a return value, if there is one, or an error description if it was unable to handle the event as requested. For example, executing the command `TextEdit().name.get()` in a client appliation sends TextEdit a `core/getd` event containing an object specifier identifying the `name` property of its root `application` object. TextEdit processes this event, then sends a reply event containing the string '<tt>TextEdit</tt>' back to the client application, where it is returned as the command's result. This exchange is usually performed synchronously, appearing to the user as a simple remote procedure call. Asynchronous messaging is also supported, though is not normally used in application scripting.
 
 
 ## What is a scriptable application?
@@ -79,69 +79,65 @@ The Apple Event Object Model (AEOM) is a View-Controller layer that provides an 
 
 The AEOM is a tree structure made up of objects. These objects may have attributes (descriptive values such as class, name, id, size, bounds; usually primitive AE types but occasionally other application objects), e.g.:
 
-    finder.name
-    finder.version
-    finder.FinderPreferences
+    Finder().name
+    Finder().version
+    Finder().FinderPreferences
 
 and may 'contain' other objects, e.g.:
 
-    finder.FinderWindows
-    textedit.documents
+    Finder().FinderWindows
+    TextEdit().documents
 
 However, unlike other object models such as DOM, objects within the AEOM are associated with one another by _relationships_ rather than simple physical containment. Think of AEOM as combining aspects of procedural RPC, object-oriented object model and relational database mechanics.
 
 Relationships between objects may be one-to-one, e.g.:
 
-    finder.home
-    iTunes.currentTrack
+    Finder().home
+    iTunes().currentTrack
 
 or one-to-many, e.g.:
 
-    finder.folders
+    Finder().folders
 
 While relationships often follow the containment structure of the underlying data structures, e.g.
 
-    textedit.documents
+    TextEdit().documents
 
 this is not always the case. For example:
 
-    finder.files
+    Finder().files
 
-    finder.desktop.files
+    Finder().desktop.files
 
-    [[[[finder.disks byName: @"MacHD"]
-              .folders byName: @"Users"]
-              .folders byName: @"jsmith"]
-              .folders byName: @"Desktop"]
-              .files
+    Finder().disks["MacHD"].folders["Users"].folders["jsmith"].folders["Desktop"].files
 
 would all identify the same objects (files on the user's desktop), though only one of these specifiers describes their position according to physical containment.
 
 Some specifiers may identify different objects at different times, according to changes in the application's state, e.g.:
 
-    iTunes.currentTrack
+    iTunes().currentTrack
 
 Specifiers may identify objects that do not actually exist as discreet entities within the application's underlying data structures, but are interpreted on the fly as proxies to the relevant portions of implementation-level data structures, e.g.:
 
-    [textedit.documents at: 1].text.characters
+    TextEdit().documents[1].text.characters
 
-    [textedit.documents at: 1].text.words
+    TextEdit().documents[1].text.words
 
-    [textedit.documents at: 1].text.paragraphs
+    TextEdit().documents[1].text.paragraphs
 
 all refer to sections of data that's actually stored in a single `NSTextStorage` object within TextEdit's Model layer. This decoupling of the AEOM from the Model layer's structure allows applications to present data in a way that is convenient to the user, i.e. easy and intuitive to understand and use.
 
 Finally, one-to-many relationships may be selective in identifying a subset of related elements according to their individual class or shared superclasses. For example:
 
-    finder.items
+    Finder().items
 
 identifies all objects that are a subclass of class 'item' (i.e. disks, folders, document files, alias files, etc.).
 
-    finder.files
+    Finder().files
 
 identifies all objects that are a subclass of class 'file' (i.e. document files, alias files, etc.).
 
-    finder.documentFiles
+    Finder().documentFiles
 
 identifies all objects of class 'document file' only.
 
@@ -155,6 +151,66 @@ The program has an application object as its root, which in turn has one-to-many
 Each document object has one-to-many relationships to the characters, words and paragraphs of the text it contains, each of which in turn has one-to-many relationships to the characters, words and paragraphs of the text it contains, and so on to infinity.
 
 Finally, each window object has a one-to-one relationship to the document object whose content it displays.
+
+
+
+## How AppleEventBridge works
+
+AppleEventBridge is a high-level Objective-C wrapper for Mac OS X's low-level Apple Event Manager APIs. 
+
+
+AppleEventBridge builds upon `NSAppleEventDescriptor` and other Foundation APIs to provide:
+
+* a high-level RPC mechanism for sending commands to applications via Apple events
+* a mechanism for converting data between common Foundation classes and Apple event types
+* a simple query building API for specifying one or more objects in an application's object model
+* a static glue code generator for writing Apple events and object specifiers in human-readable form
+* a collection of base classes for implementing dynamic Apple event bridges.
+
+
+The AppleEventBridge architecture consists of two layers, identified by the following class name prefixes:
+
+* `AEM` – a mid-level wrapper around `NSAppleEventDescriptor`, providing an object-oriented API for building relational AEOM queries and dispatching events.
+
+* `AEB` – a high-level wrapper around `AEM...` classes, providing automatic translation between human-readable application terminology and corresponding four-letter codes, and representing relational AEOM queries in an OO-like syntax for ease of use.
+
+
+The AEM API is largely intended for use by higher-level libraries, though may also be used by developers in cases where an application lacks terminology, or bugs within its terminology prevent its use by AEB.
+
+The AEB layer consists of several `AEBStatic...` base classes and a code generator, `aebglue`, which creates static glue classes for individual applications. (A number of `AEBDynamic...` base classes are also provided for use by `aebglue`, and may also be used as the foundation for high-level Apple event bridges to dynamic scripting languages.)
+
+
+For example, the following AppleScript sets the size of the first character of every non-empty paragraph in every document of TextEdit to 24 pt:
+
+    tell application id "com.apple.TextEdit"
+       set size of character 1 of (every paragraph where it ≠ "\n") of every document to 24
+    end tell
+
+Here is the equivalent Swift code using `AEM` classes:
+
+    let textedit = AEMApplication(bundleID: "com.apple.TextEdit")
+
+    let query = AEMQuery.app().elements(AEM4CC("docu"))
+                              .property(AEM4CC("ctxt"))
+                              .elements(AEM4CC("cpar")).byTest(AEMQuery.its().notEquals("\n"))
+                              .elements(AEM4CC("cha ")).at(1)
+                              .property(AEM4CC("ptsz'))
+
+    let evt = textedit.eventWithEventClass(AEM4CC("core"), eventID: AEM4CC("getd"))
+    evt.setParameter(query,  forKeyword: AEM4CC("----"))
+    evt.setParameter(24, forKeyword: AEM4CC("data"))
+
+    try evt.send()
+
+
+and using `AEB` glue classes:
+
+    let textedit = TextEdit()
+
+    let query = textedit.documents.text.paragraphs[TEIts != "\n").characters[1].size
+
+    try query.set(to: 24)
+
 
 -------
 

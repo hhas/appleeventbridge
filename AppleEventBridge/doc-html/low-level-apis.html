@@ -10,7 +10,9 @@
 			<div id="main">
 				<h1>Low-level APIs</h1>
 				<div class="navbar"><a href="optimizing-performance.html">back</a> | <a href="index.html">index</a> | <a href="notes.html">next</a></div>
-				<h2>Introduction</h2>
+				<p>// TO DO: leave this as ObjC for now; can always translate to Swift later if needed</p>
+
+<h2>Introduction</h2>
 
 <p>AppleEventBridge's lower-level <code>AEM</code> classes provides a object-oriented wrapper around the low-level Apple Event Manager and NSAppleEventDescriptor APIs. It provides the following services:</p>
 
@@ -262,7 +264,7 @@
   - (AEMNOTTest *)NOT;
 </code></pre>
 
-<p>(The <code>-AND:</code> and <code>-OR:</code> methods' <code>remainingOperands</code> argument may be either a single AEMTestClause instance or an NSArray of AEMTestClause instances.)</p>
+<p>(The <code>-AND:</code> and <code>-OR:</code> methods' <code>remainingOperands</code> argument may be either a single <code>AEMTestClause</code> instance or an <code>NSArray</code> of <code>AEMTest</code> instances.)</p>
 
 <h2>Creating application objects</h2>
 
@@ -358,9 +360,9 @@
 </ul></li>
 <li><p>The following <code>AEMEvent</code> method is used to dispatch the Apple event:</p>
 
-<pre><code>    - (id)sendWithOptions:(AESendMode)sendMode
-                  timeout:(NSTimeInterval)timeoutInSeconds
-                    error:(NSError **)error;
+<pre><code>    - (id)sendWithMode:(AESendMode)sendMode 
+               timeout:(long)timeoutInTicks
+                 error:(NSError **)error;
 </code></pre>
 
 <p>The <code>sendMode</code> argument should be composed via bitwise-OR of zero or more of the following flags (see the Apple Event Manager documentation for details):</p>
@@ -376,7 +378,7 @@
     kAECanSwitchLayer
 </code></pre>
 
-<p>The <code>timeoutInSeconds</code> argument is the number of seconds that the Apple Event Manager should wait for the target process to reply. If the process doesn't reply within that time, a timeout error is returned instead. The following constants may also be used: <code>kDefaultTimeout</code> or <code>kNoTimeOut</code>.</p>
+<p>The <code>timeoutInTicks</code> argument is the number of ticks (1 tick = 1/60 sec) that the Apple Event Manager should wait for the target process to reply. If the process doesn't reply within that time, a timeout error is returned instead. The following constants may also be used: <code>kDefaultTimeout</code> or <code>kNoTimeOut</code>.</p>
 
 <p>On success, the reply event's return value is returned, or an <code>NSNull</code> or empty <code>NSArray</code> (depending on the unpack format specified) if no return value was given. If the event fails due to an Apple Event Manager error or an application error, <code>nil</code> is returned; if the <code>error</code> argument is not <code>nil</code> then an <code>NSError</code> object containing the <code>OSStatus</code> code and any other error details is also returned.</p>
 
@@ -386,7 +388,7 @@
     - (id)send;
 </code></pre>
 
-<p>(Tip: Should you need to send an event without processing the reply event, extract the underlying <code>NSAppleEventDescriptor</code> from <code>AEMEvent.descriptor</code> and invoke its <code>-sendEventWithOptions:timeout:error:</code> method directly. The result is an <code>NSAppleEventDescriptor</code> instance containing the full reply event (or <code>nil</code> if an Apple Event Manager error occurred). This can be useful with applications such as Final Cut Pro that use non-standard parameter keys in their reply events.)</p>
+<p>(Tip: Should you need to send an event without processing the reply event, extract the underlying <code>NSAppleEventDescriptor</code> from <code>AEMEvent.descriptor</code> and invoke its <code>-sendAppleEventWithMode:timeout:error:</code> method directly. The result is an <code>NSAppleEventDescriptor</code> instance containing the full reply event (or <code>nil</code> if an Apple Event Manager error occurred). This can be useful with applications such as Final Cut Pro that use non-standard parameter keys in their reply events.)</p>
 
 <p>Note that <code>-send...</code> methods are intended to be invoked once per <code>AEMEvent</code> instance. (The Apple Event Manager documentation doesn't specify behavior where multiple identical Apple events are received by a process; at miminum, each event should have a unique return ID to ensure reply events are correctly returned.)</p></li>
 </ol>

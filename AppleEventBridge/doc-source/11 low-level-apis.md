@@ -1,5 +1,7 @@
 # Low-level APIs
 
+// TO DO: leave this as ObjC for now; can always translate to Swift later if needed
+
 ## Introduction
 
 AppleEventBridge's lower-level `AEM` classes provides a object-oriented wrapper around the low-level Apple Event Manager and NSAppleEventDescriptor APIs. It provides the following services:
@@ -255,7 +257,7 @@ The abstract `AEMTestClause` class implements Boolean logic tests applicable to 
     - (AEMORTest  *)OR:(id)remainingOperands;
     - (AEMNOTTest *)NOT;
 
-(The `-AND:` and `-OR:` methods' `remainingOperands` argument may be either a single AEMTestClause instance or an NSArray of AEMTestClause instances.)
+(The `-AND:` and `-OR:` methods' `remainingOperands` argument may be either a single `AEMTestClause` instance or an `NSArray` of `AEMTest` instances.)
 
 
 ## Creating application objects
@@ -347,9 +349,9 @@ The `AEM` APIs streamline this process as follows:
 
 3. The following `AEMEvent` method is used to dispatch the Apple event:
 
-        - (id)sendWithOptions:(AESendMode)sendMode 
-                      timeout:(NSTimeInterval)timeoutInSeconds
-                        error:(NSError **)error;
+        - (id)sendWithMode:(AESendMode)sendMode 
+                   timeout:(long)timeoutInTicks
+                     error:(NSError **)error;
 
    The `sendMode` argument should be composed via bitwise-OR of zero or more of the following flags (see the Apple Event Manager documentation for details):
 
@@ -363,7 +365,7 @@ The `AEM` APIs streamline this process as follows:
         kAEAlwaysInteract
         kAECanSwitchLayer
    
-   The `timeoutInSeconds` argument is the number of seconds that the Apple Event Manager should wait for the target process to reply. If the process doesn't reply within that time, a timeout error is returned instead. The following constants may also be used: `kDefaultTimeout` or `kNoTimeOut`.
+   The `timeoutInTicks` argument is the number of ticks (1 tick = 1/60 sec) that the Apple Event Manager should wait for the target process to reply. If the process doesn't reply within that time, a timeout error is returned instead. The following constants may also be used: `kDefaultTimeout` or `kNoTimeOut`.
     
    On success, the reply event's return value is returned, or an `NSNull` or empty `NSArray` (depending on the unpack format specified) if no return value was given. If the event fails due to an Apple Event Manager error or an application error, `nil` is returned; if the `error` argument is not `nil` then an `NSError` object containing the `OSStatus` code and any other error details is also returned.
 
@@ -372,7 +374,7 @@ The `AEM` APIs streamline this process as follows:
         - (id)sendWithError:(NSError **)error;
         - (id)send;
 
-   (Tip: Should you need to send an event without processing the reply event, extract the underlying `NSAppleEventDescriptor` from `AEMEvent.descriptor` and invoke its `-sendEventWithOptions:timeout:error:` method directly. The result is an `NSAppleEventDescriptor` instance containing the full reply event (or `nil` if an Apple Event Manager error occurred). This can be useful with applications such as Final Cut Pro that use non-standard parameter keys in their reply events.)
+   (Tip: Should you need to send an event without processing the reply event, extract the underlying `NSAppleEventDescriptor` from `AEMEvent.descriptor` and invoke its `-sendAppleEventWithMode:timeout:error:` method directly. The result is an `NSAppleEventDescriptor` instance containing the full reply event (or `nil` if an Apple Event Manager error occurred). This can be useful with applications such as Final Cut Pro that use non-standard parameter keys in their reply events.)
    
    Note that `-send...` methods are intended to be invoked once per `AEMEvent` instance. (The Apple Event Manager documentation doesn't specify behavior where multiple identical Apple events are received by a process; at miminum, each event should have a unique return ID to ensure reply events are correctly returned.)
 

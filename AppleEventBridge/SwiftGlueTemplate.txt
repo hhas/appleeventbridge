@@ -11,8 +11,9 @@ import AppleEventBridge
 
 
 class «PREFIX»Formatter: SwiftAEFormatter { // used internally to generate description strings
-    
+
     override var prefix: String {return "«PREFIX»"}
+    override var appclassname: String {return "«APP_CLASS_NAME»"}
     
     override func propertyByCode(code: OSType) -> String? {
         switch code {
@@ -158,7 +159,7 @@ class «PREFIX»Specifier: SwiftAESpecifier {
 }
 
 
-class «PREFIX»Application: «PREFIX»Specifier {
+class «APP_CLASS_NAME»: «PREFIX»Specifier {
     private init(targetType: AEBTargetType, targetData: AnyObject?) {
         let data = SwiftAEAppData(applicationClass: AEMApplication.self,
                                        symbolClass: «PREFIX»Symbol.self,
@@ -185,7 +186,7 @@ class «PREFIX»Application: «PREFIX»Specifier {
     convenience init(descriptor: NSAppleEventDescriptor) {
         self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
     }
-    class func currentApplication() -> «PREFIX»Application {
+    class func currentApplication() -> «APP_CLASS_NAME» {
         return self.init(targetType: kAEBTargetCurrent, targetData: nil)
     }
     
@@ -258,7 +259,9 @@ class «PREFIX»Symbol: SwiftAESymbol {
 
     // Generic specifier roots. These can be used to construct «PREFIX»Specifiers for use in other
     // «PREFIX»Specifiers and «PREFIX»Commands, though only real specifiers constructed from a
-    // «PREFIX»Application can be used to send commands to the target application.
+    // «APP_CLASS_NAME» application instance can be used to send commands to the target application.
+
+    // TO DO: where best to put these root vars?
 
     static let app = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.app())
     static let con = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.con())
@@ -291,6 +294,4 @@ class «PREFIX»Symbol: SwiftAESymbol {
 // Namespace for generic specifiers and symbols, e.g. «PREFIX».app.name, «PREFIX».unicodeText
 let «PREFIX» = «PREFIX»Symbol.self
 
-// Convenience constructor for application objects, e.g. «APP_VAR_NAME».activate()
-var «APP_VAR_NAME»: «PREFIX»Application {return «PREFIX»Application()}
 

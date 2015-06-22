@@ -12,17 +12,15 @@
 				<div class="navbar"><a href="index.html">index</a> | <a href="understanding-apple-events.html">next</a></div>
 				<h2>What is AppleEventBridge?</h2>
 
-<p>AppleEventBridge allows you to control Apple event-aware ("AppleScriptable") Mac OS X applications from Objective-C programs.</p>
+<p>AppleEventBridge allows you to control Apple event-aware ("AppleScriptable") Mac OS X applications from Swift programs.</p>
 
 <p>For example, to get the value of the first paragraph of the topmost document in TextEdit:</p>
 
-<pre><code>  #import "TEGlue/TEGlue.h"
+<pre><code>  let textedit = TextEdit()
 
-  TEApplication *textedit = [TEApplication application];
+  let query = textedit.documents[1].paragraphs[1]
 
-  TESpecifier *ref = [[textedit.documents at: 1].paragraphs at: 1];
-
-  NSString *result = [[ref get] send];
+  let result = query.get() as! String
 </code></pre>
 
 <p>This is equivalent to the AppleScript statement:</p>
@@ -34,22 +32,11 @@
 
 <h2>"Hello World!" example</h2>
 
-<p>The following program uses AppleEventBridge to create a new "Hello World!" document in TextEdit:</p>
+<p>The following example uses AppleEventBridge to create a new "Hello World!" document in TextEdit:</p>
 
-<pre><code>  #import "TEGlue/TEGlue.h"
+<pre><code>  let textedit = TextEdit()
 
-  int main(int argc, char *argv[]) {
-    @autoreleasepool {
-
-      TEApplication *textedit = [TEApplication application];
-
-      TEMakeCommand *cmd = [[[textedit make] new_: TESymbol.document]
-                                   withProperties: @{TESymbol.text: @"Hello World!"}];
-
-      [cmd send];
-    }
-    return 0;
-  }
+  let query = textedit.make(new: TET.document, withProperties: [TET.text: "Hello World!"])
 </code></pre>
 
 			</div>

@@ -4,8 +4,6 @@
 //  Mid-level object-oriented wrapper for Carbon Apple Event Manager APIs, plus base classes
 //  for high-level static-generated ObjC glues and dynamic bridges.
 //
-//  TO DO: remove `k` prefix from all AEM/AEB enums (c.f. Cocoa enums)?
-//
 
 #import <Foundation/Foundation.h>
 

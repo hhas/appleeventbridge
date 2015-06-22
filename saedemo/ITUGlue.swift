@@ -11,8 +11,9 @@ import AppleEventBridge
 
 
 class ITUFormatter: SwiftAEFormatter { // used internally to generate description strings
-    
+
     override var prefix: String {return "ITU"}
+    override var appclassname: String {return "iTunes"}
     
     override func propertyByCode(code: OSType) -> String? {
         switch code {
@@ -746,7 +747,7 @@ class ITUSpecifier: SwiftAESpecifier {
 }
 
 
-class ITUApplication: ITUSpecifier {
+class iTunes: ITUSpecifier {
     private init(targetType: AEBTargetType, targetData: AnyObject?) {
         let data = SwiftAEAppData(applicationClass: AEMApplication.self,
                                        symbolClass: ITUSymbol.self,
@@ -773,7 +774,7 @@ class ITUApplication: ITUSpecifier {
     convenience init(descriptor: NSAppleEventDescriptor) {
         self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
     }
-    class func currentApplication() -> ITUApplication {
+    class func currentApplication() -> iTunes {
         return self.init(targetType: kAEBTargetCurrent, targetData: nil)
     }
     
@@ -846,7 +847,9 @@ class ITUSymbol: SwiftAESymbol {
 
     // Generic specifier roots. These can be used to construct ITUSpecifiers for use in other
     // ITUSpecifiers and ITUCommands, though only real specifiers constructed from a
-    // ITUApplication can be used to send commands to the target application.
+    // iTunes application instance can be used to send commands to the target application.
+
+    // TO DO: where best to put these root vars?
 
     static let app = ITUSpecifier(appData: nil, aemQuery: AEMQuery.app())
     static let con = ITUSpecifier(appData: nil, aemQuery: AEMQuery.con())
@@ -1552,6 +1555,4 @@ class ITUSymbol: SwiftAESymbol {
 // Namespace for generic specifiers and symbols, e.g. ITU.app.name, ITU.unicodeText
 let ITU = ITUSymbol.self
 
-// Convenience constructor for application objects, e.g. iTunes.activate()
-var iTunes: ITUApplication {return ITUApplication()}
 

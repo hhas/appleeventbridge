@@ -65,6 +65,7 @@
 		4F4ADED71B370B8A0017EE65 /* SwiftGlueTemplate.txt in Copy Files (templates) */ = {isa = PBXBuildFile; fileRef = 4F4ADE7B1B35C3700017EE65 /* SwiftGlueTemplate.txt */; };
 		4F4ADED81B370B8A0017EE65 /* ObjCInterfaceGlueTemplate.txt in Copy Files (templates) */ = {isa = PBXBuildFile; fileRef = 4F4ADE781B35C3600017EE65 /* ObjCInterfaceGlueTemplate.txt */; };
 		4F4ADED91B370B8A0017EE65 /* ObjCImplementationGlueTemplate.txt in Copy Files (templates) */ = {isa = PBXBuildFile; fileRef = 4F4ADE771B35C3600017EE65 /* ObjCImplementationGlueTemplate.txt */; };
+		4F4ADEDC1B3824E30017EE65 /* FINGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADEDB1B3824E30017EE65 /* FINGlue.swift */; };
 		4F5EE3D51B2D7F1F007C58B5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5EE3D41B2D7F1F007C58B5 /* main.swift */; };
 		4F5EE3DD1B2D9BD4007C58B5 /* AEMQueryVisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F5EE3DB1B2D9BD4007C58B5 /* AEMQueryVisitor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F5EE3DE1B2D9BD4007C58B5 /* AEMQueryVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5EE3DC1B2D9BD4007C58B5 /* AEMQueryVisitor.m */; };
@@ -206,7 +207,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4F0D52981B3450BB0081A1B3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
+		4F0D52981B3450BB0081A1B3 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = saedemo/TODO.txt; sourceTree = "<group>"; };
 		4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppleEventBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1A9FF919F92A9F00FBD23E /* AppleEventBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppleEventBridge.h; sourceTree = "<group>"; };
 		4F1A9FFF19F92A9F00FBD23E /* AppleEventBridgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppleEventBridgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -258,6 +259,7 @@
 		4F1AA03F19F92D6000FBD23E /* AEMTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AEMTypes.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4F1AA04219F92D6000FBD23E /* AEMUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMUtils.h; sourceTree = "<group>"; };
 		4F1AA04319F92D6000FBD23E /* AEMUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEMUtils.m; sourceTree = "<group>"; };
+		4F1D2EF11B383BBC00B5A39D /* 3 a-quick-tutorial.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "3 a-quick-tutorial.md"; sourceTree = "<group>"; };
 		4F4ADE741B35C2E50017EE65 /* aebglue */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = aebglue; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.python; };
 		4F4ADE771B35C3600017EE65 /* ObjCImplementationGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ObjCImplementationGlueTemplate.txt; sourceTree = "<group>"; };
 		4F4ADE781B35C3600017EE65 /* ObjCInterfaceGlueTemplate.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ObjCInterfaceGlueTemplate.txt; sourceTree = "<group>"; };
@@ -273,6 +275,8 @@
 		4F4ADED11B35DC2B0017EE65 /* ITUGlue-swift.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "ITUGlue-swift.sdef"; sourceTree = "<group>"; };
 		4F4ADED31B35DC330017EE65 /* TETGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TETGlue.swift; sourceTree = "<group>"; };
 		4F4ADED41B35DC330017EE65 /* TETGlue-swift.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "TETGlue-swift.sdef"; sourceTree = "<group>"; };
+		4F4ADEDA1B3824E30017EE65 /* FINGlue-swift.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "FINGlue-swift.sdef"; sourceTree = "<group>"; };
+		4F4ADEDB1B3824E30017EE65 /* FINGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FINGlue.swift; sourceTree = "<group>"; };
 		4F5EE3D21B2D7F1F007C58B5 /* saedemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = saedemo; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F5EE3D41B2D7F1F007C58B5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		4F5EE3DB1B2D9BD4007C58B5 /* AEMQueryVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMQueryVisitor.h; sourceTree = "<group>"; };
@@ -299,7 +303,6 @@
 		4FFA2D391A129AAE00AF09E4 /* 11 low-level-apis.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "11 low-level-apis.md"; sourceTree = "<group>"; };
 		4FFA2D3A1A129AAE00AF09E4 /* 12 notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "12 notes.md"; sourceTree = "<group>"; };
 		4FFA2D3B1A129AAE00AF09E4 /* 2 understanding-apple-events.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "2 understanding-apple-events.md"; sourceTree = "<group>"; };
-		4FFA2D3C1A129AAE00AF09E4 /* 3 how-appleeventbridge-works.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "3 how-appleeventbridge-works.md"; sourceTree = "<group>"; };
 		4FFA2D3D1A129AAE00AF09E4 /* 4 creating-and-using-static-glues.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "4 creating-and-using-static-glues.md"; sourceTree = "<group>"; };
 		4FFA2D3E1A129AAE00AF09E4 /* 5 objc-ae-type-mappings.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "5 objc-ae-type-mappings.md"; sourceTree = "<group>"; };
 		4FFA2D3F1A129AAE00AF09E4 /* 6 application-objects.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "6 application-objects.md"; sourceTree = "<group>"; };
@@ -379,6 +382,7 @@
 			isa = PBXGroup;
 			children = (
 				4FFA2D851A129BEC00AF09E4 /* README */,
+				4F0D52981B3450BB0081A1B3 /* TODO.txt */,
 				4F1A9FF619F92A9F00FBD23E /* AppleEventBridge */,
 				4FA7A8B71A0A607400F0E578 /* Objective-C demo */,
 				4F5EE3D31B2D7F1F007C58B5 /* Swift demo */,
@@ -551,11 +555,12 @@
 			isa = PBXGroup;
 			children = (
 				4F5EE3D41B2D7F1F007C58B5 /* main.swift */,
+				4F4ADEDB1B3824E30017EE65 /* FINGlue.swift */,
+				4F4ADEDA1B3824E30017EE65 /* FINGlue-swift.sdef */,
 				4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */,
 				4F4ADED11B35DC2B0017EE65 /* ITUGlue-swift.sdef */,
 				4F4ADED31B35DC330017EE65 /* TETGlue.swift */,
 				4F4ADED41B35DC330017EE65 /* TETGlue-swift.sdef */,
-				4F0D52981B3450BB0081A1B3 /* TODO.txt */,
 				4F4ADE821B35C49E0017EE65 /* AEBSwiftGlueBase.swift */,
 			);
 			name = "Swift demo";
@@ -642,7 +647,7 @@
 			children = (
 				4FFA2D371A129AAE00AF09E4 /* 1 introduction.md */,
 				4FFA2D3B1A129AAE00AF09E4 /* 2 understanding-apple-events.md */,
-				4FFA2D3C1A129AAE00AF09E4 /* 3 how-appleeventbridge-works.md */,
+				4F1D2EF11B383BBC00B5A39D /* 3 a-quick-tutorial.md */,
 				4FFA2D3D1A129AAE00AF09E4 /* 4 creating-and-using-static-glues.md */,
 				4FFA2D3E1A129AAE00AF09E4 /* 5 objc-ae-type-mappings.md */,
 				4FFA2D3F1A129AAE00AF09E4 /* 6 application-objects.md */,
@@ -940,6 +945,7 @@
 				4F4ADE831B35C49E0017EE65 /* AEBSwiftGlueBase.swift in Sources */,
 				4F4ADED51B35DC330017EE65 /* TETGlue.swift in Sources */,
 				4F5EE3D51B2D7F1F007C58B5 /* main.swift in Sources */,
+				4F4ADEDC1B3824E30017EE65 /* FINGlue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

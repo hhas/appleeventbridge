@@ -2,17 +2,15 @@
 
 ## What is AppleEventBridge?
 
-AppleEventBridge allows you to control Apple event-aware ("AppleScriptable") Mac OS X applications from Objective-C programs.
+AppleEventBridge allows you to control Apple event-aware ("AppleScriptable") Mac OS X applications from Swift programs.
 
 For example, to get the value of the first paragraph of the topmost document in TextEdit:
-
-    #import "TEGlue/TEGlue.h"
     
-    TEApplication *textedit = [TEApplication application];
-                            
-    TESpecifier *ref = [[textedit.documents at: 1].paragraphs at: 1];
+    let textedit = TextEdit()
 
-    NSString *result = [[ref get] send];
+    let query = textedit.documents[1].paragraphs[1]
+
+    let result = query.get() as! String
 
 This is equivalent to the AppleScript statement:
 
@@ -23,20 +21,8 @@ This is equivalent to the AppleScript statement:
 
 ## "Hello World!" example
 
-The following program uses AppleEventBridge to create a new "Hello World!" document in TextEdit:
+The following example uses AppleEventBridge to create a new "Hello World!" document in TextEdit:
 
-    #import "TEGlue/TEGlue.h"
+    let textedit = TextEdit()
 
-    int main(int argc, char *argv[]) {
-      @autoreleasepool {
-        
-        TEApplication *textedit = [TEApplication application];
-    
-        TEMakeCommand *cmd = [[[textedit make] new_: TESymbol.document]
-                                     withProperties: @{TESymbol.text: @"Hello World!"}];
-    
-        [cmd send];
-      }
-      return 0;
-    }
-
+    let query = textedit.make(new: TET.document, withProperties: [TET.text: "Hello World!"])

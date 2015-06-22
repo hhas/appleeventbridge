@@ -8,7 +8,8 @@ import Foundation
 import AppleEventBridge
 
 
-print(try TextEdit.documents.modified.get())
+let textedit = TextEdit()
+let itunes = iTunes()
 
 
 let x = true
@@ -20,21 +21,21 @@ if x {
     //         a reference to name of document 1
     //     end
     //
-    let objSpec = TextEdit.documents[1].name
+    let objSpec = textedit.documents[1].name
     print(objSpec) // TETApplication(name: @"/Applications/TextEdit.app").documents[1].name
 
     print(TET.app.documents[1].name) // 'generic' refs can be used as parameters to commands
 
     do {
         // tell application "TextEdit" to make new document with properties {text:"Hello World!"}
-        print(try TextEdit.make(new: TET.document, withProperties: [TET.text:"Hello World!"]))
+        print(try textedit.make(new: TET.document, withProperties: [TET.text:"Hello World!"]))
         
         // tell application "TextEdit" to get text of every document
-        print(try TextEdit.documents.text.get())
+        print(try textedit.documents.text.get())
         // note: AEB unpacks AEDescs as NSObjects rather than Swift objects, so the returned NSArray will print as ObjC notation unless explicitly cast to Array<> first
         
         // tell application "AppleScript" to set q to a reference to name of document 1
-        let q = TextEdit.documents[1].name
+        let q = textedit.documents[1].name
         print(q) // q
         print(try q.get()) // get contents of q
     } catch {
@@ -47,25 +48,23 @@ let y = true
 if y {
 
     // tell application "iTunes" to get name of every track of playlist "Top 25 Most Played"
-    print((try iTunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])
+    print((try itunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])
 
 
     // tell application "iTunes" to get {name, rating} of (every track whose artist = "Sigur Ros" and (name begins with "G" or rating ≥ 60))
-    let q = iTunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)]
+    let q = itunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)]
     print(Array(zip(try q.name.get() as! [String], try q.rating.get() as! [Int])))
     // [("Gobbledigook", 80), ("Góðan Daginn", 40), ("Við Spilum Endalaust", 60), ...]
 
-    //iTunes.make(new: ITU.playlist, withProperties: [ITU.name:"TEST PLAYLIST"])
+    //itunes.make(new: ITU.playlist, withProperties: [ITU.name:"TEST PLAYLIST"])
 
 
 
-    print(iTunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)].rating)
+    print(itunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)].rating)
     //ITUApplication(name: @"/Applications/iTunes.app").tracks[(ITU.its.artist == @"Sigur Ros" && (ITU.its.name.beginsWith(@"G") || ITU.its.rating >= @60))].rating
 
 
 }
-
-
 
 
 /*
@@ -74,7 +73,7 @@ print("EQ: \(t)") // 0  // !!!
 let t1: TETSpecifier = TETIts.documents.name == "test.rtf" // ...unless result is explicitly typed ensure is correct type
 print("EQ: \(t1)") // [TETIts.documents.name equals: @"test.rtf"]
 
-print(TextEdit.documents[TETIts.name == "test.rtf"]) // this appears to produce correct result, but can it always be guaranteed to do so?
+print(textedit.documents[TETIts.name == "test.rtf"]) // this appears to produce correct result, but can it always be guaranteed to do so?
 
 
 let t2: AnyObject = TETIts.documents.name != "test.rtf"

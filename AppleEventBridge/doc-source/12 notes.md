@@ -1,5 +1,7 @@
 # Notes
 
+// TO DO: update
+
 ## Security issues
 
 If including user names and/or passwords in remote application URLs, please note that <code><var>XX</var>Application</code> and <code><var>XX</var>Specifier</code> objects will retain those URL strings over their entire lifetime. Security here is the developer's responsibility, as it's their code that creates and retains these objects.

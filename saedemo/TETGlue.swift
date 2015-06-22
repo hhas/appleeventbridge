@@ -11,8 +11,9 @@ import AppleEventBridge
 
 
 class TETFormatter: SwiftAEFormatter { // used internally to generate description strings
-    
+
     override var prefix: String {return "TET"}
+    override var appclassname: String {return "TextEdit"}
     
     override func propertyByCode(code: OSType) -> String? {
         switch code {
@@ -386,7 +387,7 @@ class TETSpecifier: SwiftAESpecifier {
 }
 
 
-class TETApplication: TETSpecifier {
+class TextEdit: TETSpecifier {
     private init(targetType: AEBTargetType, targetData: AnyObject?) {
         let data = SwiftAEAppData(applicationClass: AEMApplication.self,
                                        symbolClass: TETSymbol.self,
@@ -413,7 +414,7 @@ class TETApplication: TETSpecifier {
     convenience init(descriptor: NSAppleEventDescriptor) {
         self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
     }
-    class func currentApplication() -> TETApplication {
+    class func currentApplication() -> TextEdit {
         return self.init(targetType: kAEBTargetCurrent, targetData: nil)
     }
     
@@ -486,7 +487,9 @@ class TETSymbol: SwiftAESymbol {
 
     // Generic specifier roots. These can be used to construct TETSpecifiers for use in other
     // TETSpecifiers and TETCommands, though only real specifiers constructed from a
-    // TETApplication can be used to send commands to the target application.
+    // TextEdit application instance can be used to send commands to the target application.
+
+    // TO DO: where best to put these root vars?
 
     static let app = TETSpecifier(appData: nil, aemQuery: AEMQuery.app())
     static let con = TETSpecifier(appData: nil, aemQuery: AEMQuery.con())
@@ -876,6 +879,4 @@ class TETSymbol: SwiftAESymbol {
 // Namespace for generic specifiers and symbols, e.g. TET.app.name, TET.unicodeText
 let TET = TETSymbol.self
 
-// Convenience constructor for application objects, e.g. TextEdit.activate()
-var TextEdit: TETApplication {return TETApplication()}
 

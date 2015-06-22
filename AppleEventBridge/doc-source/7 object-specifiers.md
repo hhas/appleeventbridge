@@ -6,35 +6,17 @@ A property contains either a simple value describing an object attribute (`name`
 
 Elements represent a one-to-many relationship between objects (`documents`, `folders`, `fileTracks`, etc). 
 
+TO DO: note both appear as properties on XXSpecifier; users don't instantiate XXSpecifier directly but instead construct via chained property/method calls from XXApplication or generic specifier root (XX.app, XX.con, XX.its)
+
 characters/words/paragraphs of documents by index/relative-position/range/filter
  
 [TO DO: finish]
 
 ## Reference forms
 
-[TO DO: finish]
-
-[TO DO: table for reference forms + methods]
-    -byIndex:
-    -at:
-    -byName:
-    -byID:
-    -first
-    -middle
-    -last
-    -any
-    -previous:
-    -next:
-    -byRange:to:
-    -at:to:
-    -byTest:
-    -beginning
-    -end
-    -before
-    -after
-
-
 ### Property
+
+    var PROPERTY: XXSpecifier!
 
 Syntax:
 
@@ -43,10 +25,12 @@ Syntax:
 Examples:
 
 <pre><code>textedit.<strong>name</strong>
-[textedit.documents at: 1].<strong>text</strong>
+textedit.documents[1].<strong>text</strong>
 finder.<strong>home</strong>.files.<strong>name</strong></code></pre>
 
 ### All elements
+
+    var ELEMENTS: XXSpecifier!
 
 Syntax:
 
@@ -59,55 +43,63 @@ textedit.<strong>documents</strong>
 textedit.<strong>documents</strong>.<strong>paragraphs</strong>.<strong>words</strong></code></pre>
 
 ### Element by index
+
+    subscript(index: AnyObject!) -> XXSpecifier!
     
 Syntax:
 
-<pre><code>[elements <strong>byIndex:</strong> <var>selector</var>]
-    <var>selector</var> : NSNumber | any -- the object's index (1-indexed), or other identifying value [1]
+<pre><code>elements<strong>[</strong><var>selector</var><strong>]</strong>
+    <var>selector</var> : Int! | AnyObject! -- the object's index (1-indexed), or other identifying value [1]</code></pre>
 
-[elements <strong>at:</strong> <var>selector</var>]
-    selector : int -- the object's index (1-indexed)</code></pre>
-
-[1] While element indexes are normally integers, some applications may also accept other types (e.g. Finder's file/folder/disk specifiers also accept alias values).
+[1] While element indexes are normally integers, some applications may also accept other types (e.g. Finder's file/folder/disk specifiers also accept alias values). The only exceptions are `String` and `XXSpecifier`, which are used to construct by-name and by-test specifiers respectively.
 
 Examples:
 
-    [words byIndex: @3]
-    [items at: -1]
+    words[3]
+    items[-1]
 
-<p class="hilitebox">Be aware that index-based object specifiers always use _one-indexing_ (i.e. the first item is 1, the second is 2, etc.), not zero-indexing as in Objective-C (where the first item is 0, the second is 1, etc.).</p>
-
-[TO DO: should -at: and -at:to: methods use zero-indexing for convenience?]
+<p class="hilitebox">Be aware that index-based object specifiers always use _one-indexing_ (i.e. the first item is 1, the second is 2, etc.), not zero-indexing as in Swift (where the first item is 0, the second is 1, etc.).</p>
 
 
 ### Element by name
-    
+
+    subscript(index: String!) -> XXSpecifier!
+
+Specifies the first element with the given name.
+
 Syntax:
 
-<pre><code>[elements <strong>byName:</strong> <var>selector</var>]
-        <var>selector</var> : NSString -- the object's name (as defined in its 'name' property)</code></pre>
+<pre><code>elements<strong>[</strong><var>selector</var><strong>]</strong>
+        <var>selector</var> : String -- the object's name (as defined in its 'name' property)</code></pre>
         
 Examples:
 
-    [disks byName: @"Macintosh HD"]
-    [files byName: @"index.html"]
+    disks["Macintosh HD"]
+    files["index.html"]
 
 <p class="hilitebox">Applications usually treat object names as case-insensitive. Where multiple element have the same name, a by-name specifier only identifies the first element found with that name. (Tip: to identify _all_ elements with a particular name, use a by-test specifier instead.)</p>
 
 
 ### Element by ID
 
+    func ID(uid:AnyObject!) -> XXSpecifier! // by-ID
+
 Syntax:
 
-<pre><code>[elements <strong>byID:</strong> <var>selector</var>]
-        <var>selector</var> : anything -- the object's id (as defined in its 'id' property)</code></pre>
+<pre><code>elements.<strong>ID</strong>(uid: <var>selector</var>)
+        <var>selector</var> : AnyObject! -- the object's id (as defined in its 'id' property)</code></pre>
 
 Examples:
 
-    [windows byID: 4321]
+    windows.ID(4321)
 
 
 ### Element by absolute position
+
+    var first: XXSpecifier!
+    var middle: XXSpecifier!
+    var last: XXSpecifier!
+    var any: XXSpecifier!
 
 Syntax:
 
@@ -125,51 +117,53 @@ Examples:
 
 ### Element by relative position
 
+    func previous(class_: AEBSymbol!) -> XXSpecifier!
+    func next(class_: AEBSymbol!) -> XXSpecifier!
+
 Syntax:
 
 <pre><code>
 // nearest element of a given class to appear before the specified element:
-[element <strong>previous:</strong> <var>typeName</var>]
+element.<strong>previous</strong>(class_: <var>typeName</var>)
 // nearest element of a given class to appear after the specified element
-[element <strong>next:</strong> <var>typeName</var>]
+element <strong>next:</strong> <var>typeName</var>]
         <var>typeName</var> : AEBSymbol -- the name of the previous/next element's class</code></pre>
 
 Examples:
 
-    [[words at: 3] next: TESymbol.word] // gets word 4
-    [[paragraphs at: -1] previous: TESymbol.character] // gets last character before last paragraph
+    words[3].next(TET.word) // gets word 4
+    paragraphs[-1].previous(TET.character) // gets last character before last paragraph
 
 
 ### Elements by range
 
-Range references select all elements between and including two references indicating the start and end of the range. The start and end references are normally declared relative to the container of the elements being selected. 
+    subscript(from: AnyObject!, to: AnyObject!) -> XXSpecifier! // by-range
 
-These references are constructed using a glue-defined 'Con' macro, e.g. `TECon`, as their root. For example, to indicate the third paragraph relative to the currrent container object:
+Range references select all elements between and including two object specifiers indicating the start and end of the range. The start and end specifiers are normally declared relative to the container of the elements being selected. 
 
-    [TECon.paragraphs at: 3]
+// TO DO: unsure about ABC.con vs ABCCon; overloaded meaning may confuse
 
-For convenience, the `-byRange:to:` method also allows start and end references to be written in shorthand form where their element class is the same as the elements being selected; thus:
+These sub-specifiers are constructed using the `XXSymbol.con` statc var, e.g. `TET.con`, as their root. For example, to indicate the third paragraph relative to the currrent container object:
 
-    [ref.paragraphs byRange: [TECon.paragraphs at: 3] to: [TECon.paragraphs at: -1]]
+    TET.con.paragraphs[3]
 
-can be written more concisely as:
+Thus, to specify all paragraphs from paragraph 3 to paragraph -1:
+    
+    ref.paragraphs[TET.con.paragraphs[3], TET.con.paragraphs[-1]]
 
-    [ref.paragraphs byRange: @3 to: @-1]
+For convenience, sub-specifiers can be written in shorthand form where their element class is the same as the elements being selected; thus the above can be written more concisely as:
 
-Where start and end points are both indexes (the most common form), this can be shortened even further by using the `-at:to:` convenience method:
-
-    [ref.paragraphs at: 3 to: -1]
+    ref.paragraphs[3, -1]
 
 Some applications can handle more complex range references. For example, the following will work in Tex-Edit Plus:
 
-<pre><code>[ref.words byRange: [TEPCon.characters at: 5]
-                           to: [TEPCon.paragraphs at: -2]]</code></pre>
+<pre><code>ref.words[TEP.con.characters[5], TEP.con.paragraphs[-2]]</code></pre>
 
 Syntax:
 
-<pre><code>[elements <strong>byRange:</strong> <var>start</var> to:</strong> <var>end</var>]
+<pre><code>elements<strong>[</strong> <var>start</var> to:</strong> <var>end</var>]
         <var>start</var> : NSNumber | NSString | AEBSpecifier -- start of range
-        <var>end</var> : NSNumber | NSString | AEBSpecifier -- end of range
+        <var>end</var> : Int | NSString | AEBSpecifier -- end of range
 
 [elements <strong>at:</strong> <var>start</var> <strong>to:</strong> <var>end</var>]
         <var>start</var> : int -- start of range
@@ -184,70 +178,71 @@ Examples:
 
 ### Elements by test
 
+    subscript(index: XXSpecifier!) -> XXSpecifier!
+
 A specifier to each element that satisfies one or more conditions specified by a test specifier:
 
-<pre><code>[elements <strong>byTest:</strong> <var>test</var>]
-        <var>test</bar> : AEBSpecifier -- test specifier</code></pre>
+<pre><code>elements<strong>[</strong><var>selector</var><strong>]</strong>
+        <var>selector</bar> : XXSpecifier -- test specifier</code></pre>
 
 Test expressions consist of the following:
 
-* A test specifier relative to each element being tested. This specifier must be constructed using the glue's 'Its' macro as its root, e.g. `TEIts`. Its-based references support all valid reference forms, allowing you to construct references to its properties and elements. For example:
+* A test specifier relative to each element being tested. This specifier must be constructed using the glue's 'XX.its' root, e.g. `TET.its`. Its-based references support all valid reference forms, allowing you to construct references to its properties and elements. For example:
     
-        TEIts
-        TEIts.size
-        TEIts.words.first
+        TET.its
+        TET.its.size
+        TET.its.words.first
 
-* One or more conditional tests, implemented as methods on the specifier being tested. Each method takes a test specifier or a value as its sole argument.
+* One or more conditional tests, implemented as operators/methods on the specifier being tested. Each operator takes a test specifier as its first operand and any value as its second. Each method takes any value as its sole argument.
 
   Syntax:
 
-  <pre><code>[specifier <strong>lessThan:</strong> <var>value</var>]
-[specifier <strong>lessOrEquals:</strong> <var>value</var>]
-[specifier <strong>equals:</strong> <var>value</var>]
-[specifier <strong>notEquals:</strong> <var>value</var>]
-[specifier <strong>greaterThan:</strong> <var>value</var>]
-[specifier <strong>greaterOrEquals:</strong> <var>value</var>]
-[specifier <strong>beginsWith:</strong> <var>value</var>]
-[specifier <strong>endsWith:</strong> <var>value</var>]
-[specifier <strong>contains:</strong> <var>value</var>]
-[specifier <strong>isIn:</strong> <var>value</var>]
-[specifier <strong>doesNotBeginWith:</strong> <var>value</var>]
-[specifier <strong>doesNotEndWith:</strong> <var>value</var>]
-[specifier <strong>doesNotContain:</strong> <var>value</var>]
-[specifier <strong>isNotIn:</strong> <var>value</var>]
-        <var>value</var> : AEBSpecifier -- the test specifier</code></pre>
+  <pre><code>specifier <strong>&lt;</strong> <var>value</var>
+specifier <strong>&lt;=</strong> <var>value</var>
+specifier <strong>==</strong> <var>value</var>
+specifier <strong>!=</strong> <var>value</var>
+specifier <strong>&gt;</strong> <var>value</var>
+specifier <strong>&gt;=</strong> <var>value</var>
+specifier <strong>beginsWith</strong>(<var>value</var>)
+specifier <strong>endsWith</strong>(<var>value</var>)
+specifier <strong>contains</strong>(<var>value</var>)
+specifier <strong>isIn</strong>(<var>value</var>)
+        <var>value</var> : XXSpecifier -- the test specifier</code></pre>
 
   Examples:
 
-    [TEIts equals: @""]
-    [FNIts.size greaterThan: @1024]
-    [TEIts.words.first beginsWith: @"A"]
-    [TEIts.characters.first equals: TEIts.characters last]
-
-    Note that Boolean comparison tests can be written as either `[specifier equals: AEMTrue]` or just `specifier`, e.g. `[folderRef.files byTest: FNIts.locked]`
+    TET.its == ""
+    FNR.its.size > 1024
+    TET.its.words.first.beginsWith("A")
+    TET.its.characters.first == TET.its.characters.last
+    
+ // TO DO: note about `==` -> Bool vs Specifier
 
 * Zero or more logical tests, implemented as properties/methods on conditional tests. The `-AND:` and `-OR:` methods take conditional and/or logic test specifiers as arguments.
 
   Syntax:
 
-  <pre><code>[<var>test</var> <strong>AND:</strong> <var>test</var>]
-[<var>test</var> <strong>OR:</strong> <var>test</var>]
-[<var>test</var> <strong>NOT</strong>]</code></pre>
+  <pre><code><var>test</var> <strong>&amp;&amp;</strong> <var>test</var>
+<var>test</var> <strong>||</strong> <var>test</var>]
+<strong>!</strong><var>test</var></code></pre>
 
   Examples:
 
-    [[TEIts equals: @""] NOT]
+    !TET.its.contains("?")
 
-    [[FNIts.size greaterThan: @1024] AND: [FNIts.size lessThan: @10240]]
+    FNR.its.size > 1024 && FNR.its.size < 10240
 
-    [[[TEIts.words at: 1] beginsWith: @"A"]
-     OR: @[[[TEIts.words at: 1] contains: @"ce"],
-           [[TEIts.words at: 2] equals: @"foo"]]]
+    TET.its.words[1].beginsWith("A") || TET.its.words[1].contains("ce") || TET.its.words[2] == "foo"
 
 
 ### Element insertion location
 
 Insertion locations can be specified at the beginning or end of all elements, or before or after a specified element or element range.
+
+    var beginning: XXSpecifier!
+    var end: XXSpecifier!
+    var before: XXSpecifier!
+    var after: XXSpecifier!
 
 Syntax:
 

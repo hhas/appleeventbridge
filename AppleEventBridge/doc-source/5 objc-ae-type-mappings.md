@@ -2,35 +2,39 @@
 
 ## Overview
 
+[TO DO: finish updating this chapter]
+
 Standard Apple event descriptor types are mapped to and from Foundation/AppleEventBridge classes as follows:
 
 <table width="100%" summary="AE-Foundation type mappings">
 <thead>
-<tr><th>AppleScript type</th><th>Descriptor type</th><th>`AEBSymbol` name</th><th>Objective-C class</th></tr>
+<tr><th>AppleScript type</th><th>Descriptor type</th><th>`AEBSymbol` name</th><th>Objective-C (or Swift) class</th></tr>
 </thead>
 <tbody>
 <tr><td>(no data)</td><td><code>typeNull</code></td><td><code>null</code></td><td><code>NSNull</code></td></tr>
-<tr><td><code>boolean</code></td><td><code>typeBoolean</code></td><td><code>boolean</code></td><td><code>AEMBoolean</code></td></tr>
+<tr><td><code>boolean</code></td><td><code>typeBoolean</code></td><td><code>boolean</code></td><td><code>AEMBoolean</code> (<code>Boolean</code>)</td></tr>
 <tr><td><code>integer</code></td><td><code>typeSInt32</code></td><td><code>integer</code></td><td><code>NSNumber</code></td></tr>
 <tr><td><code>real</code></td><td><code>typeIEEE64BitFloatingPoint</code></td><td><code>float</code></td><td><code>NSNumber</code></td></tr>
 <tr><td><code>text</code> [1]</td><td><code>typeUnicodeText</code></td><td><code>unicodeText</code></td><td><code>NSString</code></td></tr>
 <tr><td><code>list</code></td><td><code>typeAEList</code></td><td><code>list</code></td><td><code>NSArray</code></td></tr>
 <tr><td><code>record</code></td><td><code>typeAERecord</code></td><td><code>record</code></td><td><code>NSDictionary</code></td></tr>
 <tr><td><code>date</code></td><td><code>typeLongDateTime</code></td><td><code>date</code></td><td><code>NSDate</code></td></tr>
-<tr><td><code>«class bmrk»</code></td><td><code>typeBookmarkData</code></td><td><code>bookmarkData</code></td><td><code>AEMURL</code></td></tr>
-<tr><td><code>alias</code></td><td><code>typeAlias</code></td><td><code>alias</code></td><td><code>AEMURL</code></td></tr>
-<tr><td><code>«class furl»</code></td><td><code>typeFileURL</code></td><td><code>fileURL</code></td><td><code>AEMURL</code></td></tr>
-<tr><td><code>reference</code></td><td><code>typeObjectSpecifier</code></td><td><code>reference</code></td><td><code>AEMSpecifier</code> / <code>AEBSpecifier</code> [2]</td></tr>
-<tr><td><code>location reference</code></td><td><code>typeInsertionLoc</code></td><td><code>locationReference</code></td><td><code>AEMSpecifier</code> / <code>AEBSpecifier</code> [2]</td></tr>
-<tr><td><code>class</code></td><td><code>typeType</code></td><td><code>typeClass</code></td><td><code>AEMType</code> / <code>AEBSymbol</code> [2]</td></tr>
-<tr><td><code>constant</code></td><td><code>typeEnumerated</code></td><td><code>enumerator</code></td><td><code>AEMEnum</code> / <code>AEBSymbol</code> [2]</td></tr>
-<tr><td><code>property</code></td><td><code>typeProperty</code></td><td><code>property</code></td><td><code>AEMProp</code> / <code>AEBSymbol</code> [2]</td></tr>
+<tr><td><code>«class bmrk»</code></td><td><code>typeBookmarkData</code></td><td><code>bookmarkData</code></td><td><code>NSURL</code> [2]</td></tr>
+<tr><td><code>alias</code></td><td><code>typeAlias</code></td><td><code>alias</code></td><td><code>NSURL</code> [2]</td></tr>
+<tr><td><code>«class furl»</code></td><td><code>typeFileURL</code></td><td><code>fileURL</code></td><td><code>NSURL</code> [2]</td></tr>
+<tr><td><code>reference</code></td><td><code>typeObjectSpecifier</code></td><td><code>reference</code></td><td><code>AEMSpecifier</code> / <code>AEBSpecifier</code> [3]</td></tr>
+<tr><td><code>location reference</code></td><td><code>typeInsertionLoc</code></td><td><code>locationReference</code></td><td><code>AEMSpecifier</code> / <code>AEBSpecifier</code> [3]</td></tr>
+<tr><td><code>class</code></td><td><code>typeType</code></td><td><code>typeClass</code></td><td><code>AEMType</code> / <code>AEBSymbol</code> [3]</td></tr>
+<tr><td><code>constant</code></td><td><code>typeEnumerated</code></td><td><code>enumerator</code></td><td><code>AEMEnum</code> / <code>AEBSymbol</code> [3]</td></tr>
+<tr><td><code>property</code></td><td><code>typeProperty</code></td><td><code>property</code></td><td><code>AEMProp</code> / <code>AEBSymbol</code> [3]</td></tr>
 </tbody>
 </table>
 
 [1] AppleScript treats `string`, `text`, and `Unicode text` keywords as synonyms for `typeUnicodeText`. When specifying a command's return type, always use `AEB.unicodeText`/`typeUnicodeText`.
 
-[2] Static glues define their own `AEBSpecifier` and `AEBSymbol` subclasses.
+[2] Bookmark, alias, and file URL descriptors are actually unpacked as `AEMURL`, which extends the standard `NSURL` class to provide better round-tripping of data.
+
+[3] Static glues define their own `AEBSpecifier` and `AEBSymbol` subclasses.
 
 
 ## Mapping notes
@@ -40,7 +44,9 @@ While AE-ObjC type conversions generally work quite seamlessly, it is sometimes 
 
 ### Boolean
 
-AppleEventBridge currently maps `typeBoolean` descriptors to its own `AEMBoolean` class. `AEMTrue` and `AEMFalse` macros are also provided for convenience. [TO DO: this may change in future, if/when a robust mapping to `NSNumber` or an `NSNumber` subclass is implemented.]
+When used with Swift glues, AppleEventBridge maps `typeBoolean` descriptors to Swift's native Boolean type.
+
+Otherwise, AppleEventBridge currently maps `typeBoolean` descriptors to its own `AEMBoolean` class, and provides shorthand C macros, `AEMTrue` and `AEMFalse`, for convenience. [TO DO: this may change in future, if/when a robust mapping to `NSNumber` or an `NSNumber` subclass is implemented.]
 
 (AppleEventBridge can also unpack descriptors of `typeTrue` and `typeFalse`, though these are not normally used by applications.)
 

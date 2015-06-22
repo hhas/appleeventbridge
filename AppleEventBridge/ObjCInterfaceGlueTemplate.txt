@@ -20,9 +20,7 @@
 // Symbol namespace // TO DO: is macro appropriate?
 #define «PREFIX» «PREFIX»Symbol
 
-// Convenience constructor for application objects.
-// TO DO: once created, Application instance should be cached and reused, and only recreated if app is no longer running
-#define «APP_VAR_NAME» ([«PREFIX»Application application])
+// TO DO: rename/alias Application class, c.f. Swift glue
 
 
 // Classes
