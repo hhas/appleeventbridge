@@ -245,19 +245,19 @@ class ITUSpecifier: SwiftAESpecifier {
     var last:   ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
     var any:    ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
     
-    func beginning() -> ITUSpecifier {
+    var beginning: ITUSpecifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
     }
-    func end() -> ITUSpecifier {
+    var end: ITUSpecifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.end())
     }
-    func before() -> ITUSpecifier {
+    var before: ITUSpecifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.before())
     }
-    func after() -> ITUSpecifier {
+    var after: ITUSpecifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.after())
     }

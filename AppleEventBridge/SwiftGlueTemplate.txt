@@ -91,19 +91,19 @@ class «PREFIX»Specifier: SwiftAESpecifier {
     var last:   «PREFIX»Specifier {return «PREFIX»Specifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
     var any:    «PREFIX»Specifier {return «PREFIX»Specifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
     
-    func beginning() -> «PREFIX»Specifier {
+    var beginning: «PREFIX»Specifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
         return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.beginning())
     }
-    func end() -> «PREFIX»Specifier {
+    var end: «PREFIX»Specifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
         return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.end())
     }
-    func before() -> «PREFIX»Specifier {
+    var before: «PREFIX»Specifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
         return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.before())
     }
-    func after() -> «PREFIX»Specifier {
+    var after: «PREFIX»Specifier {
         let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
         return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery.after())
     }
