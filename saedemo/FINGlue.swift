@@ -118,19 +118,19 @@ class FINSpecifier: SwiftAESpecifier {
         return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.any(), queryError: queryError)
     }
 
-    func beginning() -> FINSpecifier {
+    var beginning: FINSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select beginning")
         return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.beginning(), queryError: queryError)
     }
-    func end() -> FINSpecifier {
+    var end: FINSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select end")
         return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.end(), queryError: queryError)
     }
-    func before() -> FINSpecifier {
+    var before: FINSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select before")
         return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.before(), queryError: queryError)
     }
-    func after() -> FINSpecifier {
+    var after: FINSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select after")
         return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.after(), queryError: queryError)
     }

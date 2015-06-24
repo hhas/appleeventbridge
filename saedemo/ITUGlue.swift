@@ -265,19 +265,19 @@ class ITUSpecifier: SwiftAESpecifier {
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.any(), queryError: queryError)
     }
 
-    func beginning() -> ITUSpecifier {
+    var beginning: ITUSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select beginning")
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.beginning(), queryError: queryError)
     }
-    func end() -> ITUSpecifier {
+    var end: ITUSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select end")
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.end(), queryError: queryError)
     }
-    func before() -> ITUSpecifier {
+    var before: ITUSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select before")
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.before(), queryError: queryError)
     }
-    func after() -> ITUSpecifier {
+    var after: ITUSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select after")
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.after(), queryError: queryError)
     }

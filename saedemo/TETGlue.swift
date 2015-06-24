@@ -107,7 +107,7 @@ class TETSpecifier: SwiftAESpecifier {
         case is String:
             (baseQuery, queryError) = self.aemElementsSpecifer("select element named \(index)")
             newQuery = baseQuery?.byName(index)
-        case is AEMQueryProtocol: // TO DO: use AEMTestClauseProtocol
+        case is AEMQueryProtocol:
             (baseQuery, queryError) = self.aemElementsSpecifer("select elements where \(index)")
             if let testClause = (index as! AEMQueryProtocol).aemQuery as? AEMTestClause {
                 newQuery = baseQuery?.byTest(testClause)
@@ -153,19 +153,19 @@ class TETSpecifier: SwiftAESpecifier {
         return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.any(), queryError: queryError)
     }
 
-    func beginning() -> TETSpecifier {
+    var beginning: TETSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select beginning")
         return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.beginning(), queryError: queryError)
     }
-    func end() -> TETSpecifier {
+    var end: TETSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select end")
         return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.end(), queryError: queryError)
     }
-    func before() -> TETSpecifier {
+    var before: TETSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select before")
         return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.before(), queryError: queryError)
     }
-    func after() -> TETSpecifier {
+    var after: TETSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select after")
         return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.after(), queryError: queryError)
     }
