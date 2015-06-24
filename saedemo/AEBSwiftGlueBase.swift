@@ -64,7 +64,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
     var mutableResult: NSMutableString?
     
     // takes an AEMQuery plus AEBStaticAppData instance, and returns the query's literal ObjC representation
-    class func formatObject(object: AnyObject!, appData: AEBAppData?) -> String {
+    class func formatObject(object: AnyObject!, appData: AEBAppData?) -> String { // TO DO: move this into SwiftAEFormatObject function above, with optional appData arg?
         if object is AEMQuery { // instantiate a new formatter instance and pass it to AEMQuery's visitor method
             let renderer = self.init(appData: appData)
             object.resolveWithObject(renderer)
@@ -74,7 +74,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
                 return "\(renderer.app).specifierWithObject(\(object))"
             }
         } else {
-            return SwiftAEFormatObject(object)
+            return object == nil ? "<MALFORMED SPECIFIER>" : SwiftAEFormatObject(object) // TO DO: what we really want here is the AEBSpecifier, as that should contain error info
         }
     }
 
@@ -85,7 +85,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
     }
     
     func format(object: AnyObject) -> String {
-        return object is AEMQuery ? self.dynamicType.formatObject(object, appData: aebAppData) : SwiftAEFormatObject(object)
+        return object is AEMQuery ? self.dynamicType.formatObject(object, appData: aebAppData) : SwiftAEFormatObject(object) // see above
     }
     
     // stubs; application-specific subclasses should override and extend to provide class name prefix and code->name translations,
@@ -155,12 +155,12 @@ class SwiftAEFormatter: AEMQueryVisitor {
         self.mutableResult?.appendFormat(".ID(%@)", self.format(uid))
         return self
     }
-    override func byRange(fromObject: AnyObject!, to: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat("[%@, %@]", self.format(fromObject), self.format(to))
+    override func byRange(from: AnyObject!, to: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat("[%@, %@]", self.format(from), self.format(to))
         return self;
     }
-    override func byTest(testSpecifier: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat("[%@]", self.format(testSpecifier))
+    override func byTest(clause: AnyObject!) -> Self {
+        self.mutableResult?.appendFormat("[%@]", self.format(clause))
         return self;
     }
     
@@ -168,7 +168,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
     
     override func previous(class_: OSType) -> Self {
         
-        let symbol = "TO DO" // TO DO: if aebAppData==nil, need to ask glue to convert OSType to XXSymbol; also needs fixed in ObjC glue (Q. is there any situation where aebAppData would be from a different glue? if not, simplest is just to use XXSymbol directly and not bother with pack/unpack)
+        let symbol = "TO DO" // TO DO: if aebAppData==nil, need to ask glue to convert OSType to XXSymbol; also needs fixed in ObjC glue (Q. is there any situation where aebAppData would be from a different glue? if not, simplest is just to use XXSymbol directly and not bother with pack/unpack; i.e. glue subclasses should override this method so that they can refer directly to their XXSymbol class, or else should have a symbolForCode method that instantiates the XXSymbol class; also what about raw AEMTypes and/or AEMQuerys? will they convert to XXSymbols automatically, or is that something else that should be done in SwiftAEFormatObject function above?)
         
  //       let symbol = try! aebAppData.unpack(NSAppleEventDescriptor(typeCode: class_))
         self.mutableResult?.appendFormat(".previous(%@)", self.format(symbol))
@@ -319,6 +319,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
 
 /******************************************************************************/
 // AppData class
+// each APPNAME application class creates its own XXAppData instance, which it then shares with all XXSpecifiers derived from it
 
 
 class SwiftAEAppData: AEBStaticAppData {
@@ -354,6 +355,10 @@ class SwiftAEAppData: AEBStaticAppData {
 class SwiftAESymbol: AEBSymbol {
     
     override var description: String {return "AEB.\(self.aebName)"}
+    
+    class func symbolWithFourCharCode(code: String!) -> AEBSymbol { // convenience constructor; TO DO: how best to implement this? e.g. would it be better on glue, where exact type can be given?
+        return self.symbol(AEM4CC(code))
+    }
     
     /* begin generated section */
     

@@ -36,8 +36,62 @@ one problem: overloading 'get(...)throws->AnyObject' with 'get(...)->AnyObject?'
     }
 
 
+- TO DO: figure out why the following generic function fails to instantiate the correct class (Swift bug?):
 
-- native boolean packing/unpacking (Q. how does Swift<->ObjC bridge true/false? check if automatically bridges to __NSCFBoolean)
+
+    func != <T: SwiftAESpecifier>(left: T!, right: AnyObject!) -> T! {
+        let baseQuery = left.aemQuery as! AEMObjectSpecifier
+        let newObj: T = T(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
+
+        // DEBUG
+        print("T=\(T.self)")                 // T=saedemo.ITUSpecifier
+        print("l=\(left.className)")         // l=saedemo.ITUSpecifier
+        print("ldt=\(left.dynamicType)")     // ldt=Swift.ImplicitlyUnwrappedOptional<saedemo.ITUSpecifier>
+        print("n=\(newObj.className)")       // n=saedemo.SwiftAESpecifier // uh-oh; should be ITUSpecifier subclass
+        let ndt = newObj.dynamicType
+        print("ndt=\(ndt)")                  // runtime crash
+
+        return newObj
+    }
+
+Also, how to make instance methods generic so they can be defined once on SwiftAESpecifier instead of duplicated across every glue?
+
+    class TETSpecifier: SwiftAESpecifier {
+        ...
+        func beginning() -> TETSpecifier {
+            let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+            return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
+        }
+        ...
+    }
+
+
+- any way to ensure `func == (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier!` always gets priority over Swift's default `==(...)->Bool`? Currently, in the absence of an explicit return type, the type inferencer likes to pick the latter rather than the former, causing `==` test clause specifier to return boolean result instead of another specifier, e.g.:
+
+    let q = TET.it == ""
+    print(q) // q=false, but should be TETSpecifier; other operators do not seem to have this problem
+
+
+
+- how best can commands provide generic behavior where a Swift type passed as returnType: argument can determine function/method's return type? e.g.:
+
+
+        func get<T>(..., asType: T.Type) throws -> T! {
+            // introspect T.dynamicType here and use that info to specify outgoing event's requested type and coerce return value to appropriate desc type[s] as it's being unpacked (note: this'll require overriding/modifying unpack: so that coercion info can be passed in as an argument of type id; individual glues can then coerce desc to required type before passing it to AEBAppData, along with - if it's a list/record - the coercion info describing how to unpack its items)
+            return result
+        }
+
+    would be called as:
+
+        objSpec.get(1, asType: [String].self)
+
+        finder.items.get(asType:[NSURL].self)
+
+    thus avoiding need for trailing `as! [String]` as well as providing coercion to desired type where practical. (This may need to be implemented as an overloaded method, or is it possible to declare asType: as optional arg?)
+
+    (BTW, NSAppleEventDescriptor.self should also be allowed as a return type, in which case reply desc would be returned as-is without any unpacking.)
+
+
 
 - currently built-in terms aren't predefined in GlueSupport base classes, but are included in glue each time; not sure if this is best approach (though is prob. simplest as it avoids glue gen having to detect overridden terms and explicitly mark them `override`)
 
@@ -46,7 +100,7 @@ one problem: overloading 'get(...)throws->AnyObject' with 'get(...)->AnyObject?'
 - move SwiftAEGlueSupport to framework
 
 
-- how best to support event attributes? either an optional tuple of optional key-values that is passed to a standard attributes: arg, or else define separate args for each (though that'll make method signatures even longer than they already are)
+- finish event attributes support
 
 
 - how best to specify how reply descs should be unpacked? (TO DO: is it possible/practical to specify return type as a Swift type, e.g. Array<String>, and introspect that to determine what coercions to apply when unpacking descs?)
