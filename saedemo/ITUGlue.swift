@@ -13,7 +13,7 @@ import AppleEventBridge
 class ITUFormatter: SwiftAEFormatter { // used internally to generate description strings
 
     override var prefix: String {return "ITU"}
-    override var appclassname: String {return "iTunes"}
+    override var appClassName: String {return "iTunes"}
     
     override func propertyByCode(code: OSType) -> String? {
         switch code {
@@ -195,10 +195,12 @@ class ITUSpecifier: SwiftAESpecifier {
     // Raw property and element specifiers, e.g. TextEdit.elementsByFourCharCode("docu") => TextEdit.documents
     
     func propertyByCode(code: OSType) -> ITUSpecifier {
-        return ITUSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).property(code))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("specify a property")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.property(code), queryError: queryError)
     }
     func elementsByCode(code: OSType) -> ITUSpecifier {
-        return ITUSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).elements(code))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("specify elements")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.elements(code), queryError: queryError)
     }
     func propertyByFourCharCode(code: String) -> ITUSpecifier {
         return self.propertyByCode(AEM4CC(code))
@@ -211,74 +213,92 @@ class ITUSpecifier: SwiftAESpecifier {
     // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
 
     subscript(index: AnyObject!) -> ITUSpecifier! { // by-index, by-name, by-test
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+
+        var baseQuery: AEMMultipleElementsSpecifier?, newQuery: AEMQuery?, queryError: NSError?
         switch (index) {
         case is String:
-            return ITUSpecifier(appData: aebAppData, aemQuery:  baseQuery.byName(index))
-        case is ITUSpecifier:
-            let testClause = (index is AEBSpecifier ? (index as! AEBSpecifier).aemQuery : aemQuery) as! AEMTestClause
-            return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byTest(testClause))
+            (baseQuery, queryError) = self.aemElementsSpecifer("select element named \(index)")
+            newQuery = baseQuery?.byName(index)
+        case is AEMQueryProtocol:
+            (baseQuery, queryError) = self.aemElementsSpecifer("select elements where \(index)")
+            if let testClause = (index as! AEMQueryProtocol).aemQuery as? AEMTestClause {
+                newQuery = baseQuery?.byTest(testClause)
+            }
         default:
-            return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byIndex(index))
+            (baseQuery, queryError) = self.aemElementsSpecifer("select element \(index)")
+            newQuery = baseQuery?.byIndex(index)
         }
+        return ITUSpecifier(appData: aebAppData, aemQuery: newQuery, queryError: queryError)
     }
     func ID(uid: AnyObject) -> ITUSpecifier { // by-id
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select element with id \(uid)")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.byID(uid), queryError: queryError)
     }
     subscript(from: AnyObject!, to: AnyObject!) -> ITUSpecifier! { // by-range
-        let newQuery = (self.aemQuery as! AEMMultipleElementsSpecifier).byRange(from, to: to)
-        return ITUSpecifier(appData: aebAppData, aemQuery: newQuery)
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select elements \(from) thru \(to)")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.byRange(from, to: to), queryError: queryError)
     }
-    
+
     func previous(class_: AEBSymbol) -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.previous(class_.aebCode))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select previous element")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.previous(class_.aebCode), queryError: queryError)
     }
     func next(class_: AEBSymbol) -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.next(class_.aebCode))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select next element")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.next(class_.aebCode), queryError: queryError)
     }
     
-    var first:  ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).first())}
-    var middle: ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).middle())}
-    var last:   ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
-    var any:    ITUSpecifier {return ITUSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
-    
+    var first: ITUSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select first element")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.first(), queryError: queryError)
+    }
+    var middle: ITUSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select middle element")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.middle(), queryError: queryError)
+    }
+    var last: ITUSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select last element")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.last(), queryError: queryError)
+    }
+    var any: ITUSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select any element")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.any(), queryError: queryError)
+    }
+
     func beginning() -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select beginning")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.beginning(), queryError: queryError)
     }
     func end() -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.end())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select end")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.end(), queryError: queryError)
     }
     func before() -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.before())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select before")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.before(), queryError: queryError)
     }
     func after() -> ITUSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.after())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select after")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.after(), queryError: queryError)
     }
 
     // Test clause constructors, e.g. ITU.its.name.beginsWith("foo")
     
     func beginsWith(input: AnyObject!) -> ITUSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.beginsWith(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.beginsWith(input), queryError: queryError)
     }
     func endsWith(input: AnyObject!) -> ITUSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.endsWith(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.endsWith(input), queryError: queryError)
     }
     func contains(input: AnyObject!) -> ITUSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.contains(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.contains(input), queryError: queryError)
     }
     func isIn(input: AnyObject!) -> ITUSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery.isIn(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.isIn(input), queryError: queryError)
     }
     
     // Properties
@@ -775,7 +795,7 @@ class iTunes: ITUSpecifier {
         self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
     }
     class func currentApplication() -> iTunes {
-        return self.init(targetType: kAEBTargetCurrent, targetData: nil)
+        return iTunes(targetType: kAEBTargetCurrent, targetData: nil)
     }
     
     // Construct a ITUSpecifier using a raw AEMQuery or other custom object
@@ -800,40 +820,40 @@ class iTunes: ITUSpecifier {
 // binding its result to a variable, it must be explicitly typed as (e.g.) AnyObject or Swift will infer Bool
 
 func == (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.equals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.equals(right), queryError: queryError)
 }
 func != (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.notEquals(right), queryError: queryError)
 }
 func < (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessThan(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.lessThan(right), queryError: queryError)
 }
 func > (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterThan(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.greaterThan(right), queryError: queryError)
 }
 func <= (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessOrEquals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.lessOrEquals(right), queryError: queryError)
 }
 func >= (left: ITUSpecifier!, right: AnyObject!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterOrEquals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.greaterOrEquals(right), queryError: queryError)
 }
 func && (left: ITUSpecifier!, right: ITUSpecifier!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMTestClause
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.AND(right))
+    let (baseQuery, queryError) = left.aemTestClause("test")
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.AND(right), queryError: queryError)
 }
 func || (left: ITUSpecifier!, right: ITUSpecifier!) -> ITUSpecifier! {
-    let baseQuery = left.aemQuery as! AEMTestClause
-    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery.OR(right))
+    let (baseQuery, queryError) = left.aemTestClause("test")
+    return ITUSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.OR(right), queryError: queryError)
 }
 prefix func ! (input: ITUSpecifier!) -> ITUSpecifier! {
-    let baseQuery = input.aemQuery as! AEMTestClause
-    return ITUSpecifier(appData: input.aebAppData, aemQuery: baseQuery.NOT())
+    let (baseQuery, queryError) = input.aemTestClause("test")
+    return ITUSpecifier(appData: input.aebAppData, aemQuery: baseQuery?.NOT(), queryError: queryError)
 }
 
 

@@ -42,7 +42,7 @@
 
 //
 
-- (NSAppleEventDescriptor *)aebPackSelf:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return [aemQuery packWithCodecs: codecs error: error];
 }
 

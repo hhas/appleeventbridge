@@ -1,6 +1,6 @@
 //
 // FINGlue.swift
-// Finder.app 10.11
+// Finder.app 10.10.4
 // AppleEventBridge.framework 0.7.0
 //
 
@@ -13,7 +13,7 @@ import AppleEventBridge
 class FINFormatter: SwiftAEFormatter { // used internally to generate description strings
 
     override var prefix: String {return "FIN"}
-    override var appclassname: String {return "Finder"}
+    override var appClassName: String {return "Finder"}
     
     override func propertyByCode(code: OSType) -> String? {
         switch code {
@@ -48,10 +48,12 @@ class FINSpecifier: SwiftAESpecifier {
     // Raw property and element specifiers, e.g. TextEdit.elementsByFourCharCode("docu") => TextEdit.documents
     
     func propertyByCode(code: OSType) -> FINSpecifier {
-        return FINSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).property(code))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("specify a property")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.property(code), queryError: queryError)
     }
     func elementsByCode(code: OSType) -> FINSpecifier {
-        return FINSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).elements(code))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("specify elements")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.elements(code), queryError: queryError)
     }
     func propertyByFourCharCode(code: String) -> FINSpecifier {
         return self.propertyByCode(AEM4CC(code))
@@ -64,74 +66,92 @@ class FINSpecifier: SwiftAESpecifier {
     // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
 
     subscript(index: AnyObject!) -> FINSpecifier! { // by-index, by-name, by-test
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+
+        var baseQuery: AEMMultipleElementsSpecifier?, newQuery: AEMQuery?, queryError: NSError?
         switch (index) {
         case is String:
-            return FINSpecifier(appData: aebAppData, aemQuery:  baseQuery.byName(index))
-        case is FINSpecifier:
-            let testClause = (index is AEBSpecifier ? (index as! AEBSpecifier).aemQuery : aemQuery) as! AEMTestClause
-            return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.byTest(testClause))
+            (baseQuery, queryError) = self.aemElementsSpecifer("select element named \(index)")
+            newQuery = baseQuery?.byName(index)
+        case is AEMQueryProtocol:
+            (baseQuery, queryError) = self.aemElementsSpecifer("select elements where \(index)")
+            if let testClause = (index as! AEMQueryProtocol).aemQuery as? AEMTestClause {
+                newQuery = baseQuery?.byTest(testClause)
+            }
         default:
-            return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.byIndex(index))
+            (baseQuery, queryError) = self.aemElementsSpecifer("select element \(index)")
+            newQuery = baseQuery?.byIndex(index)
         }
+        return FINSpecifier(appData: aebAppData, aemQuery: newQuery, queryError: queryError)
     }
     func ID(uid: AnyObject) -> FINSpecifier { // by-id
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select element with id \(uid)")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.byID(uid), queryError: queryError)
     }
     subscript(from: AnyObject!, to: AnyObject!) -> FINSpecifier! { // by-range
-        let newQuery = (self.aemQuery as! AEMMultipleElementsSpecifier).byRange(from, to: to)
-        return FINSpecifier(appData: aebAppData, aemQuery: newQuery)
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select elements \(from) thru \(to)")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.byRange(from, to: to), queryError: queryError)
     }
-    
+
     func previous(class_: AEBSymbol) -> FINSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.previous(class_.aebCode))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select previous element")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.previous(class_.aebCode), queryError: queryError)
     }
     func next(class_: AEBSymbol) -> FINSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.next(class_.aebCode))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select next element")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.next(class_.aebCode), queryError: queryError)
     }
     
-    var first:  FINSpecifier {return FINSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).first())}
-    var middle: FINSpecifier {return FINSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).middle())}
-    var last:   FINSpecifier {return FINSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
-    var any:    FINSpecifier {return FINSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
-    
+    var first: FINSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select first element")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.first(), queryError: queryError)
+    }
+    var middle: FINSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select middle element")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.middle(), queryError: queryError)
+    }
+    var last: FINSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select last element")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.last(), queryError: queryError)
+    }
+    var any: FINSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select any element")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.any(), queryError: queryError)
+    }
+
     func beginning() -> FINSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select beginning")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.beginning(), queryError: queryError)
     }
     func end() -> FINSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.end())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select end")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.end(), queryError: queryError)
     }
     func before() -> FINSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.before())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select before")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.before(), queryError: queryError)
     }
     func after() -> FINSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.after())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select after")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.after(), queryError: queryError)
     }
 
     // Test clause constructors, e.g. FIN.its.name.beginsWith("foo")
     
     func beginsWith(input: AnyObject!) -> FINSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.beginsWith(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.beginsWith(input), queryError: queryError)
     }
     func endsWith(input: AnyObject!) -> FINSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.endsWith(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.endsWith(input), queryError: queryError)
     }
     func contains(input: AnyObject!) -> FINSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.contains(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.contains(input), queryError: queryError)
     }
     func isIn(input: AnyObject!) -> FINSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery.isIn(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.isIn(input), queryError: queryError)
     }
     
     // Properties
@@ -262,7 +282,7 @@ class Finder: FINSpecifier {
         self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
     }
     class func currentApplication() -> Finder {
-        return self.init(targetType: kAEBTargetCurrent, targetData: nil)
+        return Finder(targetType: kAEBTargetCurrent, targetData: nil)
     }
     
     // Construct a FINSpecifier using a raw AEMQuery or other custom object
@@ -287,40 +307,40 @@ class Finder: FINSpecifier {
 // binding its result to a variable, it must be explicitly typed as (e.g.) AnyObject or Swift will infer Bool
 
 func == (left: FINSpecifier!, right: AnyObject!) -> FINSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery.equals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.equals(right), queryError: queryError)
 }
 func != (left: FINSpecifier!, right: AnyObject!) -> FINSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.notEquals(right), queryError: queryError)
 }
 func < (left: FINSpecifier!, right: AnyObject!) -> FINSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessThan(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.lessThan(right), queryError: queryError)
 }
 func > (left: FINSpecifier!, right: AnyObject!) -> FINSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterThan(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.greaterThan(right), queryError: queryError)
 }
 func <= (left: FINSpecifier!, right: AnyObject!) -> FINSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessOrEquals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.lessOrEquals(right), queryError: queryError)
 }
 func >= (left: FINSpecifier!, right: AnyObject!) -> FINSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterOrEquals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.greaterOrEquals(right), queryError: queryError)
 }
 func && (left: FINSpecifier!, right: FINSpecifier!) -> FINSpecifier! {
-    let baseQuery = left.aemQuery as! AEMTestClause
-    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery.AND(right))
+    let (baseQuery, queryError) = left.aemTestClause("test")
+    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.AND(right), queryError: queryError)
 }
 func || (left: FINSpecifier!, right: FINSpecifier!) -> FINSpecifier! {
-    let baseQuery = left.aemQuery as! AEMTestClause
-    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery.OR(right))
+    let (baseQuery, queryError) = left.aemTestClause("test")
+    return FINSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.OR(right), queryError: queryError)
 }
 prefix func ! (input: FINSpecifier!) -> FINSpecifier! {
-    let baseQuery = input.aemQuery as! AEMTestClause
-    return FINSpecifier(appData: input.aebAppData, aemQuery: baseQuery.NOT())
+    let (baseQuery, queryError) = input.aemTestClause("test")
+    return FINSpecifier(appData: input.aebAppData, aemQuery: baseQuery?.NOT(), queryError: queryError)
 }
 
 

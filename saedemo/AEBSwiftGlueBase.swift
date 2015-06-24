@@ -42,11 +42,10 @@ func SwiftAEFormatObject(object: AnyObject!) -> String {
         return "[\(tmp)]"
     case let obj as String:
         let tmp = NSMutableString(string: obj)
-        tmp.replaceOccurrencesOfString("\\", withString: "\\\\", options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
-        tmp.replaceOccurrencesOfString("\"", withString: "\\\"", options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
-        tmp.replaceOccurrencesOfString("\r", withString: "\\r", options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
-        tmp.replaceOccurrencesOfString("\n", withString: "\\n", options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
-        tmp.replaceOccurrencesOfString("\t", withString: "\\t", options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
+        for (from, to) in [("\\", "\\\\"), ("\"", "\\\""), ("\r", "\\r"), ("\n", "\\n"), ("\t", "\\t")] {
+            tmp.replaceOccurrencesOfString(from, withString: to,
+                                           options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
+        }
         return "\"\(tmp)\""
     case let obj as NSDate:
         return "NSDate(string: \(SwiftAEFormatObject(obj.description))"
@@ -67,7 +66,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
     // takes an AEMQuery plus AEBStaticAppData instance, and returns the query's literal ObjC representation
     class func formatObject(object: AnyObject!, appData: AEBAppData?) -> String {
         if object is AEMQuery { // instantiate a new formatter instance and pass it to AEMQuery's visitor method
-            let renderer = self(appData: appData)
+            let renderer = self.init(appData: appData)
             object.resolveWithObject(renderer)
             if let result = renderer.mutableResult {
                 return result.copy() as! String
@@ -93,7 +92,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
     // returning nil if no translation found
     
     var prefix: String {return "AEB"}
-    var appclassname: String {return "AEBApplication"}
+    var appClassName: String {return "AEBApplication"}
     
     func propertyByCode(code: OSType) -> String? {
         return nil
@@ -275,13 +274,13 @@ class SwiftAEFormatter: AEMQueryVisitor {
         return self;
     }
 
-    
+    // specifier roots
     
     override func app() -> Self {
         if aebAppData == nil { // generic specifier
             self.mutableResult?.appendFormat("%@.app", self.prefix)
         } else { // concrete specifier
-            self.mutableResult?.appendString(self.appclassname)
+            self.mutableResult?.appendString(self.appClassName)
             do {
                 let target = try aebAppData!.targetWithError()
                 let targetData = target.targetData()
@@ -315,8 +314,6 @@ class SwiftAEFormatter: AEMQueryVisitor {
         self.mutableResult?.appendFormat("%@Application.customRoot(%@)", self.prefix, self.format(rootObject))
         return self
     }
-    
-    // Swift types
 }
 
 
@@ -407,6 +404,64 @@ typealias AEBConsiderIgnoreType = Set<AEBSymbol>
 
 class SwiftAESpecifier: AEBSpecifier {
     
+    var aemQueryError: NSError? = nil
+    
+    // TO DO: make this `required`
+    convenience init(appData appData_: AEBAppData!, aemQuery aemQuery_: AEMQuery?, queryError queryError_: NSError?) {
+        self.init(appData: appData_, aemQuery: aemQuery_)
+        aemQueryError = queryError_
+    }
+    
+    // TO DO: a better approach would be to pass a closure, e.g. {$0?[index]} which can be used to generate either new query or (using formatter) representation of malformed query
+    
+    // TO DO: sort out error messages; also make sure errors can't recurse, e.g. when displayed or packed into an AE (since `self` is the cause of the problem and cannot pack or display correctly); push error message creation into shared method
+    
+    // another issue is how to generate representation of malformed specifier for use in description? may be easiest if error description continues to construct representation, and if aemQuery==nil then description/formatter should just return that instead of building new one
+
+    func aemObjectSpecifer(what: String) -> (AEMObjectSpecifier?, NSError?) {
+        if aemQuery is AEMObjectSpecifier {
+            return ((self.aemQuery as! AEMObjectSpecifier), nil)
+        } else if aemQueryError == nil { // invalid specifier, e.g. app.documents[1].first
+            return (nil, NSError(domain: kAEMErrorDomain, code: -1728, userInfo: [
+                    NSLocalizedDescriptionKey: "Can't \(what) of the following specifier (not an object specifier): \(self)",
+                    kAEMErrorOffendingObjectKey: self]))
+        } else {
+            return (nil, aemQueryError)
+        }
+    }
+    func aemElementsSpecifer(what: String) -> (AEMMultipleElementsSpecifier?, NSError?) {
+        if aemQuery is AEMMultipleElementsSpecifier {
+            return ((self.aemQuery as! AEMMultipleElementsSpecifier), nil)
+        } else if aemQueryError == nil { // invalid specifier, e.g. app.documents[1].first
+            return (nil, NSError(domain: kAEMErrorDomain, code: -1728, userInfo: [
+                    NSLocalizedDescriptionKey: "Can't \(what) of the following specifier (not a multiple elements specifier): \(self)",
+                    kAEMErrorOffendingObjectKey: self]))
+        } else {
+            return (nil, aemQueryError)
+        }
+    }
+    func aemTestClause(what: String) -> (AEMTestClause?, NSError?) {
+        if aemQuery is AEMTestClause {
+            return ((self.aemQuery as! AEMTestClause), nil)
+        } else if aemQueryError == nil { // invalid specifier, e.g. app.documents[1].first
+            return (nil, NSError(domain: kAEMErrorDomain, code: -1728, userInfo: [
+                    NSLocalizedDescriptionKey: "Can't \(what) of the following specifier (not an object specifier): \(self)",
+                    kAEMErrorOffendingObjectKey: self]))
+        } else {
+            return (nil, aemQueryError)
+        }
+    }
+    
+    override func packWithCodecs(codecs: AEMCodecsProtocol) throws -> NSAppleEventDescriptor {
+        if (self.aemQuery != nil) {
+            return try aemQuery.packWithCodecs(codecs)
+        } else {
+            throw aemQueryError ?? NSError(domain: kAEMErrorDomain, code: -1728, userInfo: [
+                    NSLocalizedDescriptionKey: "Can't pack the following (not a valid specifier): \(self)",
+                    kAEMErrorOffendingObjectKey: self])
+        }
+    }
+    
     // TO DO: support optional completionHandler closure for async sends? (not sure how best to implement this; might be simpler to take kAEQueueReply flag and immediately return  sent event's returnID as result, leaving user to collect reply event themselves)
     
     // note: clients may call the following method directly as workaround if app's terminology is missing or incorrect
@@ -415,6 +470,15 @@ class SwiftAESpecifier: AEBSpecifier {
     func sendAppleEvent(eventClass: OSType, eventID: OSType, parameters: Array<SwiftAEParameter>,
             returnType: AEBReturnType?, waitReply: Bool?, withTimeout: NSTimeInterval?,
             considering: AEBConsiderIgnoreType?, ignoring: AEBConsiderIgnoreType?) throws -> AnyObject! {
+        // TO DO: need to check aemQuery/aemQueryError
+        if aemQuery == nil {
+            if aemQueryError == nil { // catch-all in case error hasn't been set for some reason
+                throw NSError(domain: kAEMErrorDomain, code: -1728, userInfo: [
+                    NSLocalizedDescriptionKey:"Can't call command on the following (not a valid specifier): \(self)",
+                    kAEMErrorOffendingObjectKey: self])
+            }
+            throw aemQueryError!
+        }
         let command = AEBCommand(appData: aebAppData, eventClass: eventClass, eventID: eventID, parentQuery: aemQuery)
         for param in parameters {
             if !(param.value is AEBNoParameter) {
@@ -454,7 +518,7 @@ class SwiftAESpecifier: AEBSpecifier {
         if let ignore = ignoring {
             print("TO DO: ignoring: \(ignore)")
         }
-        return try command.sendWithError() // TO DO: trap and rethrow with better error message
+        return try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript
     }
     
 }

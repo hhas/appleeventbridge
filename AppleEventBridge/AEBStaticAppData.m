@@ -25,14 +25,6 @@
 
 // override pack, various unpack methods
 
-- (NSAppleEventDescriptor *)pack:(id)object error:(NSError * __autoreleasing *)error {
-	if ([object isKindOfClass: AEBSpecifier.class] || [object isKindOfClass: AEBSymbol.class]) { // TO DO: use self-packing protocol
-		return [object aebPackSelf: self error: error];
-	} else {
-		return [super pack: object error: error];
-    }
-}
-
 - (id)unpackAERecordKey:(AEKeyword)key error:(NSError * __autoreleasing *)error {
 	return [symbolClass symbolWithCode: key];
 }

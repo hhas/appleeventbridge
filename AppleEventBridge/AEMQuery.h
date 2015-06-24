@@ -26,7 +26,7 @@
 // Base class for all AEM queries (object and test specifiers)
 
 
-@interface AEMQuery : NSObject <AEMSelfPackingProtocol> {
+@interface AEMQuery : NSObject <AEMSelfPackingProtocol, AEMQueryProtocol> {
 	NSAppleEventDescriptor *cachedDesc;
 }
 

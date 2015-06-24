@@ -14,10 +14,6 @@
 
 - (instancetype)initFileURLWithDescriptor:(NSAppleEventDescriptor *)desc_ path:(NSString *)path;
 
-
-- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error;
-
-
 // compatibility methods
 
 // some Carbon-based applications may still use HFS paths as parameters/results

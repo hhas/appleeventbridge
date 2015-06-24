@@ -28,7 +28,7 @@
 /**********************************************************************/
 
 
-@interface AEBDynamicAETEParser : NSObject<AEBDynamicRawTermsProtocol> {
+@interface AEBDynamicAETEParser : NSObject <AEBDynamicRawTermsProtocol> {
     AEBKeywordConverter *keywordConverter;
 	char *aeteData;
 	unsigned long aeteSize, cursor;

@@ -62,7 +62,7 @@ OSType AEM4CC(NSString * codeStr);
 
 
 /**********************************************************************/
-// supported by all self-packing objects
+// supported by all self-packing objects; called by -[AEMCodecs pack:error:]
 
 @protocol AEMSelfPackingProtocol <NSObject>
 
@@ -70,6 +70,20 @@ OSType AEM4CC(NSString * codeStr);
 
 @end
 
+/**********************************************************************/
+// supported by all objects that wrap (or are) AEMQuery objects
+
+@class AEMQuery;
+
+
+@protocol AEMQueryProtocol <NSObject>
+
+@property (readonly) AEMQuery *aemQuery;
+
+@end
+
+
+// TO DO: AEMTestClauseProtocol?
 
 /**********************************************************************/
 

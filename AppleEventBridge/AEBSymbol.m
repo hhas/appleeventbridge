@@ -51,7 +51,7 @@
 	return [desc typeCodeValue];
 }
 
-- (NSAppleEventDescriptor *)aebPackSelf:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return desc;
 }
 

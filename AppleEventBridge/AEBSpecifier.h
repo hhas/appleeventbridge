@@ -21,17 +21,18 @@
 // Specifier base
 
 
-@interface AEBSpecifier : NSObject
+@interface AEBSpecifier : NSObject <AEMSelfPackingProtocol, AEMQueryProtocol>
 
 + (instancetype)specifierWithAppData:(AEBAppData *)appData_ aemQuery:(AEMQuery *)aemQuery_;
 
 - (instancetype)initWithAppData:(AEBAppData *)appData_ aemQuery:(AEMQuery *)aemQuery_;
 
-- (NSAppleEventDescriptor *)aebPackSelf:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error;
 
 // internal objects may be accessed for special use
 @property (readonly) AEBAppData *aebAppData;
 @property (readonly) AEMQuery *aemQuery;
+
+// TO DO: most/all of the following should only be public on application objects; move to category for use by glues?
 
 // should application be automatically relaunched when sending command if no longer running?
 @property AEBRelaunchMode relaunchMode;

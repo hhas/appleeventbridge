@@ -52,6 +52,11 @@
 }
 
 
+- (instancetype)aemQuery {
+    return self;
+}
+
+
 - (void)setCachedDesc:(NSAppleEventDescriptor *)desc {
     cachedDesc = desc;
 }

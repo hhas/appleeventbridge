@@ -12,8 +12,15 @@ let textedit = TextEdit()
 let itunes = iTunes()
 
 
-let x = true
-if x {
+do {
+    print(try textedit.get(TET.app.documents[1][1].text))
+//    print(try textedit.documents[1][1].text.get())
+} catch {
+print(error)
+}
+
+let t = true; let f = false
+if f {
 
     // build an object specifier (note: formatter is unfinished so some types still appear ObjC style):
     //
@@ -43,9 +50,7 @@ if x {
     }
 }
 
-
-let y = true
-if y {
+if f {
 
     // tell application "iTunes" to get name of every track of playlist "Top 25 Most Played"
     print((try itunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])

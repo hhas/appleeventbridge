@@ -1,6 +1,6 @@
 //
 // TETGlue.swift
-// TextEdit.app 1.11
+// TextEdit.app 1.10
 // AppleEventBridge.framework 0.7.0
 //
 
@@ -13,7 +13,7 @@ import AppleEventBridge
 class TETFormatter: SwiftAEFormatter { // used internally to generate description strings
 
     override var prefix: String {return "TET"}
-    override var appclassname: String {return "TextEdit"}
+    override var appClassName: String {return "TextEdit"}
     
     override func propertyByCode(code: OSType) -> String? {
         switch code {
@@ -83,10 +83,12 @@ class TETSpecifier: SwiftAESpecifier {
     // Raw property and element specifiers, e.g. TextEdit.elementsByFourCharCode("docu") => TextEdit.documents
     
     func propertyByCode(code: OSType) -> TETSpecifier {
-        return TETSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).property(code))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("specify a property")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.property(code), queryError: queryError)
     }
     func elementsByCode(code: OSType) -> TETSpecifier {
-        return TETSpecifier(appData: aebAppData, aemQuery: (aemQuery as! AEMObjectSpecifier).elements(code))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("specify elements")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.elements(code), queryError: queryError)
     }
     func propertyByFourCharCode(code: String) -> TETSpecifier {
         return self.propertyByCode(AEM4CC(code))
@@ -99,74 +101,92 @@ class TETSpecifier: SwiftAESpecifier {
     // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
 
     subscript(index: AnyObject!) -> TETSpecifier! { // by-index, by-name, by-test
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
+
+        var baseQuery: AEMMultipleElementsSpecifier?, newQuery: AEMQuery?, queryError: NSError?
         switch (index) {
         case is String:
-            return TETSpecifier(appData: aebAppData, aemQuery:  baseQuery.byName(index))
-        case is TETSpecifier:
-            let testClause = (index is AEBSpecifier ? (index as! AEBSpecifier).aemQuery : aemQuery) as! AEMTestClause
-            return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.byTest(testClause))
+            (baseQuery, queryError) = self.aemElementsSpecifer("select element named \(index)")
+            newQuery = baseQuery?.byName(index)
+        case is AEMQueryProtocol: // TO DO: use AEMTestClauseProtocol
+            (baseQuery, queryError) = self.aemElementsSpecifer("select elements where \(index)")
+            if let testClause = (index as! AEMQueryProtocol).aemQuery as? AEMTestClause {
+                newQuery = baseQuery?.byTest(testClause)
+            }
         default:
-            return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.byIndex(index))
+            (baseQuery, queryError) = self.aemElementsSpecifer("select element \(index)")
+            newQuery = baseQuery?.byIndex(index)
         }
+        return TETSpecifier(appData: aebAppData, aemQuery: newQuery, queryError: queryError)
     }
     func ID(uid: AnyObject) -> TETSpecifier { // by-id
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.byID(uid))
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select element with id \(uid)")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.byID(uid), queryError: queryError)
     }
     subscript(from: AnyObject!, to: AnyObject!) -> TETSpecifier! { // by-range
-        let newQuery = (self.aemQuery as! AEMMultipleElementsSpecifier).byRange(from, to: to)
-        return TETSpecifier(appData: aebAppData, aemQuery: newQuery)
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select elements \(from) thru \(to)")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.byRange(from, to: to), queryError: queryError)
     }
-    
+
     func previous(class_: AEBSymbol) -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.previous(class_.aebCode))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select previous element")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.previous(class_.aebCode), queryError: queryError)
     }
     func next(class_: AEBSymbol) -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.next(class_.aebCode))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select next element")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.next(class_.aebCode), queryError: queryError)
     }
     
-    var first:  TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).first())}
-    var middle: TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).middle())}
-    var last:   TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).last())}
-    var any:    TETSpecifier {return TETSpecifier(appData: aebAppData, aemQuery: (self.aemQuery as! AEMMultipleElementsSpecifier).any())}
-    
+    var first: TETSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select first element")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.first(), queryError: queryError)
+    }
+    var middle: TETSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select middle element")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.middle(), queryError: queryError)
+    }
+    var last: TETSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select last element")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.last(), queryError: queryError)
+    }
+    var any: TETSpecifier {
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select any element")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.any(), queryError: queryError)
+    }
+
     func beginning() -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select beginning")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.beginning(), queryError: queryError)
     }
     func end() -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.end())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select end")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.end(), queryError: queryError)
     }
     func before() -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.before())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select before")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.before(), queryError: queryError)
     }
     func after() -> TETSpecifier {
-        let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.after())
+        let (baseQuery, queryError) = self.aemObjectSpecifer("select after")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.after(), queryError: queryError)
     }
 
     // Test clause constructors, e.g. TET.its.name.beginsWith("foo")
     
     func beginsWith(input: AnyObject!) -> TETSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.beginsWith(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.beginsWith(input), queryError: queryError)
     }
     func endsWith(input: AnyObject!) -> TETSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.endsWith(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.endsWith(input), queryError: queryError)
     }
     func contains(input: AnyObject!) -> TETSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.contains(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.contains(input), queryError: queryError)
     }
     func isIn(input: AnyObject!) -> TETSpecifier! {
-        let baseQuery = self.aemQuery as! AEMObjectSpecifier
-        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.isIn(input))
+        let (baseQuery, queryError) = self.aemObjectSpecifer("test")
+        return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.isIn(input), queryError: queryError)
     }
     
     // Properties
@@ -415,7 +435,7 @@ class TextEdit: TETSpecifier {
         self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
     }
     class func currentApplication() -> TextEdit {
-        return self.init(targetType: kAEBTargetCurrent, targetData: nil)
+        return TextEdit(targetType: kAEBTargetCurrent, targetData: nil)
     }
     
     // Construct a TETSpecifier using a raw AEMQuery or other custom object
@@ -440,40 +460,40 @@ class TextEdit: TETSpecifier {
 // binding its result to a variable, it must be explicitly typed as (e.g.) AnyObject or Swift will infer Bool
 
 func == (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.equals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.equals(right), queryError: queryError)
 }
 func != (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.notEquals(right), queryError: queryError)
 }
 func < (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessThan(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.lessThan(right), queryError: queryError)
 }
 func > (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterThan(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.greaterThan(right), queryError: queryError)
 }
 func <= (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.lessOrEquals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.lessOrEquals(right), queryError: queryError)
 }
 func >= (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMObjectSpecifier
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.greaterOrEquals(right))
+    let (baseQuery, queryError) = left.aemObjectSpecifer("test")
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.greaterOrEquals(right), queryError: queryError)
 }
 func && (left: TETSpecifier!, right: TETSpecifier!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMTestClause
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.AND(right))
+    let (baseQuery, queryError) = left.aemTestClause("test")
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.AND(right), queryError: queryError)
 }
 func || (left: TETSpecifier!, right: TETSpecifier!) -> TETSpecifier! {
-    let baseQuery = left.aemQuery as! AEMTestClause
-    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery.OR(right))
+    let (baseQuery, queryError) = left.aemTestClause("test")
+    return TETSpecifier(appData: left.aebAppData, aemQuery: baseQuery?.OR(right), queryError: queryError)
 }
 prefix func ! (input: TETSpecifier!) -> TETSpecifier! {
-    let baseQuery = input.aemQuery as! AEMTestClause
-    return TETSpecifier(appData: input.aebAppData, aemQuery: baseQuery.NOT())
+    let (baseQuery, queryError) = input.aemTestClause("test")
+    return TETSpecifier(appData: input.aebAppData, aemQuery: baseQuery?.NOT(), queryError: queryError)
 }
 
 

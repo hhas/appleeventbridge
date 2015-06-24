@@ -145,8 +145,8 @@
 
 /* by-test selector */
 
-- (instancetype)byTest:(id)testQuery { // TO DO: use <id>AEMTestQueryProtocol
-    if ([testQuery isKindOfClass: self.class]) testQuery = [testQuery aemQuery]; // TO DO: also implement AEMTestQueryProtocol? this'd simplify AEM's byTest: method, since it could be typed as id<AEMTestQueryProtocol>, avoiding the need for extra fiddling
+- (instancetype)byTest:(id)testQuery { // TO DO: use <id>AEMTestClauseProtocol
+    if ([testQuery isKindOfClass: self.class]) testQuery = [testQuery aemQuery]; // TO DO: also implement AEMTestClauseProtocol? this'd simplify AEM's byTest: method, since it could be typed as id<AEMTestClauseProtocol>, avoiding the need for extra fiddling
     if (![testQuery isKindOfClass: AEMTestClause.class]) return nil;
     return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery byTest: testQuery]); // TO DO: check unwrapping logic here and in byRange
 }

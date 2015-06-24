@@ -17,7 +17,7 @@
 /**********************************************************************/
 // base class for all standard and application-defined symbols
 
-@interface AEBSymbol : NSObject<NSCopying> {
+@interface AEBSymbol : NSObject <NSCopying, AEMSelfPackingProtocol> {
 	NSString *name;
 	NSAppleEventDescriptor *desc;
 }
@@ -38,8 +38,6 @@
 
 @property (readonly) NSString *aebName;
 @property (readonly) OSType aebCode;
-
-- (NSAppleEventDescriptor *)aebPackSelf:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error; // TO DO: use lowercase prefixes throughout (makes Swift code in particular easier to read)
 
 @end
 

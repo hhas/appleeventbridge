@@ -11,7 +11,7 @@
 #import "AEBKeywordConverter.h"
 
 
-@interface AEBDefaultTerms : NSObject<AEBDynamicRawTermsProtocol>
+@interface AEBDefaultTerms : NSObject <AEBDynamicRawTermsProtocol>
 
 // TO DO: need class method that returns a single instance for a given keyword converter (note: keyword converters should be uniquely identifiable by class name or 'name' property)
 
