@@ -2,6 +2,7 @@
 // «GLUE_NAME»
 // «APP_NAME» «APP_VERSION»
 // «FRAMEWORK_NAME» «FRAMEWORK_VERSION»
+// «AEBGLUE_COMMAND»
 //
 
 import Foundation

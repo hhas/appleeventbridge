@@ -2,6 +2,7 @@
 // ITUGlue.swift
 // iTunes.app 12.1.2
 // AppleEventBridge.framework 0.7.0
+// aebglue -r iTunes
 //
 
 import Foundation
@@ -219,7 +220,7 @@ class ITUSpecifier: SwiftAESpecifier {
         case is String:
             (baseQuery, queryError) = self.aemElementsSpecifer("select element named \(index)")
             newQuery = baseQuery?.byName(index)
-        case is AEMQueryProtocol:
+        case is AEMQueryProtocol: // TO DO: use AEMTestClauseProtocol
             (baseQuery, queryError) = self.aemElementsSpecifer("select elements where \(index)")
             if let testClause = (index as! AEMQueryProtocol).aemQuery as? AEMTestClause {
                 newQuery = baseQuery?.byTest(testClause)
