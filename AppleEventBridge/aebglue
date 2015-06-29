@@ -3,9 +3,9 @@
 
 """ aebglue -- Generate Swift and Objective-C application glues for AppleEventBridge """
 
-# TO DO: finalize naming of Application classes;
+# TO DO: finalize naming of Application classes
 
-# TO DO: how best to package and name Swift glues? modules should probably use long name, e.g. TextEditGlue rather than TETGlue
+# TO DO: how best to package and name glues? add option to export as frameworks/modules (these should probably use long names, e.g. TextEditGlue rather than TETGlue)
 
 # TO DO: what, if any, standard Swift method/var names need reserved?
 
@@ -23,7 +23,7 @@
 
 # TO DO: AppInfo should manage keywordconverters
 
-import getopt, os, re, shutil, string, sys
+import getopt, os, re, string, sys
 import xml.etree.ElementTree as ET
 
 import objc # (this script uses system Python, which includes PyObjC as standard)
@@ -51,6 +51,10 @@ kFrameworkVersion =  kAEBBundle.infoDictionary()['CFBundleShortVersionString']
 ######################################################################
 # UTILITIES
 ######################################################################
+
+
+def shquote(s):
+    return s if re.match('^[a-zA-Z0-9_.-]+$', s) else "'" + s.replace("'", "'\\''") + "'"
 
 
 def writefile(path, s):
@@ -121,7 +125,11 @@ def exportsdef(appurl, outpath, keywordconverter, prefix, commandnamesuffix):
                 convertnode(enum, 'name', prefix=symbolnamespace)
         for value in suite.findall('value-type'):
             convertnode(value, 'name')
-    ET.ElementTree(root).write(outpath, encoding="utf-8", xml_declaration=True)
+    if not os.path.exists(outpath) or allowoverwrite:
+        ET.ElementTree(root).write(outpath, encoding="utf-8", xml_declaration=True)
+        print >> sys.stdout, outpath
+    else:
+        print >> sys.stderr, "Couldn't write file to path as it already exists:", outpath
 
 
 ######################################################################
@@ -168,7 +176,7 @@ kEnum = 0x656e756d
 def renderglue(tpl, gluedir, gluesourcefilename, appinfo, terms):
     """
         tpl : str -- template
-        gluedir : str -- path to directory into which this file will be written
+        outdir : str -- path to directory into which this file will be written
         gluesourcefilename : str -- the name of the file to be written
         appinfo : AppInfo -- general information, if any, on application
         terms : AEBDynamicTerminology
@@ -203,7 +211,14 @@ def renderglue(tpl, gluedir, gluesourcefilename, appinfo, terms):
             ('ELEMENTS_SPECIFIER', ((t.code(), t.name()) for name, t in specifierbyname if t.kind() == kElement))]:
         tpl = repeat(tpl, label, contentlist, insertcodeandname)
     tpl = repeat(tpl, 'COMMAND', [t for name, t in specifierbyname if t.kind() == kCommand], insertcommand)
-    writefile(os.path.join(gluedir, gluesourcefilename), tpl)
+    outpath = os.path.join(outdir, gluesourcefilename)
+    if not os.path.exists(outpath) or allowoverwrite:
+        writefile(outpath, tpl)
+        print >> sys.stdout, outpath
+    else:
+        print >> sys.stderr, "Couldn't write file to path as it already exists:", outpath
+
+    
 
 
 ######################################################################
@@ -266,22 +281,24 @@ def makeobjcglue(gluedir, appinfo, usesdef):
 if __name__ == '__main__':
     try:
         import time; tt = time.time() # DEBUG
-        opts, args = getopt.getopt(sys.argv[1:], 'dhn:op:rsv') # TO DO: language option (default=swift)
+        kOpts = 'dhn:op:rsv'
+        opts, args = getopt.getopt(sys.argv[1:], kOpts) # TO DO: language option (default=swift)
         opts = dict(opts)
         if not args or '-h' in opts:
             print >> sys.stderr, "Generate Swift/Objective-C application glues for AppleEventBridge."
             print >> sys.stderr
             print >> sys.stderr, "Usage:"
             print >> sys.stderr
-            print >> sys.stderr, "    aebglue [-h] [-n CLASS-NAME] [-o] [-p PREFIX] [-r] [-s] APP-NAME [OUT-DIR]"
+            print >> sys.stderr, "    aebglue [-n CLASS-NAME] [-o] [-p PREFIX] [-r] [-s] APP-NAME [OUT-DIR]"
             print >> sys.stderr, "    aebglue -d [OUT-DIR]"
+            print >> sys.stderr, "    aebglue [-h] [-v]"
             print >> sys.stderr
             print >> sys.stderr, "APP-PATH - Name or path to application."
             print >> sys.stderr
-            print >> sys.stderr, "OUT-DIR - Path to directory in which the glue directory will be created;"
+            print >> sys.stderr, "OUT-DIR - Path to directory in which the glue files will be created;"
             print >> sys.stderr, "          if omitted, the current working directory is used."
             print >> sys.stderr
-            print >> sys.stderr, "On completion, the path to the newly created glue is written to STDOUT."
+            print >> sys.stderr, "On completion, the generated files' paths are written to STDOUT."
             print >> sys.stderr
             print >> sys.stderr, "Options:"
             print >> sys.stderr
@@ -293,17 +310,18 @@ if __name__ == '__main__':
             print >> sys.stderr, "                     to generate an Objective-C glue instead"
             print >> sys.stderr, "    -p PREFIX      Class names prefix; if omitted, a default "
             print >> sys.stderr, "                     3-character prefix is auto-generated"
-            print >> sys.stderr, "    -r             If glue directory already exists, replace it"
-            print >> sys.stderr, "                     instead of raising 'path exists' error"
+            print >> sys.stderr, "    -r             If a file already exists, replace it"
             print >> sys.stderr, "    -s             Use SDEF terminology instead of AETE, e.g. if"
             print >> sys.stderr, "                     application's ascr/gdte handler is broken"
-            print >> sys.stderr, "    -v             Output AppleEventBridge.framework version and exit"
+            print >> sys.stderr, "    -v             Output AppleEventBridge framework's version and exit"
             print >> sys.stderr
             print >> sys.stderr, "Examples:"
             print >> sys.stderr
             print >> sys.stderr, "    aebglue TextEdit"
             print >> sys.stderr
             print >> sys.stderr, "    aebglue -o iTunes"
+            print >> sys.stderr
+            print >> sys.stderr, "    aebglue -s Finder"
             print >> sys.stderr
             print >> sys.stderr, "    aebglue -p TE TextEdit ~/Documents"
             print >> sys.stderr
@@ -338,19 +356,19 @@ if __name__ == '__main__':
             print >> sys.stderr, "Warning: default constructor won't work as bundle identifier not found."
         # create new XXGlue directory
         outdir = os.path.abspath(os.path.expanduser(outdir))
-        if not os.path.isdir(outdir):
+        if not os.path.exists(outdir):
+            parentdir = os.path.dirname(outdir)
+            if not os.path.isdir(parentdir):
+                raise ValueError("Not a valid output directory: %s" % outdir)
+            os.mkdir(outdir)
+            print >> sys.stderr, "Created output directory:", outdir
+        elif not os.path.isdir(outdir):
             raise ValueError("Not a valid output directory: %s" % outdir)
-        gluedir = os.path.join(outdir, appinfo.gluename)
-        if os.path.exists(gluedir):
-            if '-r' in opts and os.path.isdir(gluedir):
-                shutil.rmtree(gluedir)
-            else:
-                raise ValueError("Can't create %s as path already exists: %s" % (appinfo.gluename, gluedir))
-        os.mkdir(gluedir)
         # generate glue files
-        (makeobjcglue if '-o' in opts else makeswiftglue)(gluedir, appinfo, '-s' in opts)
+        shellcmd = 'aebglue %s' % (' '.join([('%s %s' % (k, shquote(v) if k[1]+':' in kOpts else '')).strip() for k, v in opts.items()]
+                                            + [shquote(os.path.basename(arg)) for arg in args]))
+        (makeobjcglue if '-o' in opts else makeswiftglue)(outdir, appinfo, '-s' in opts, '-r' in opts, shellcmd)
         print >> sys.stderr, "Created %s (%ims)" % (appinfo.gluename, (time.time()-tt)*1000) # DEBUG
-        print >> sys.stdout, gluedir
     except Exception, e:
         print >> sys.stderr, "Error:", e
         import traceback; traceback.print_exc() # DEBUG

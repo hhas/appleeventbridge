@@ -2,6 +2,7 @@
 // ITUGlue.swift
 // iTunes.app 12.1.2
 // AppleEventBridge.framework 0.7.0
+// aebglue -r iTunes
 //
 
 import Foundation
