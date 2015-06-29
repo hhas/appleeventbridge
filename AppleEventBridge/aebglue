@@ -69,469 +69,10 @@ def readtemplate(name):
 
 
 ######################################################################
-# KEYWORD CONVERTER
-######################################################################
-#
-# Important: the following must be reserved so that terminology-defined properties and methods don't conflict
-# with existing superclass properties and methods:
-#
-# - names of language keywords
-# - names of NSObject class and instance methods
-# - names of methods used in AEBStaticSymbol, AEBStaticSpecifier classes
-# - names of additional methods used in Application classes
-# - names of built-in keyword arguments in AEBStaticCommand
-#
-# Notes:
-#
-# - Method names that take more than one argument (e.g. -at:to:) do not need to be reserved as they cannot conflict.
-#
-# - The following tokens are reserved as punctuation in Swift and can’t be used as custom operators: 
-#         (, ), {, }, [, ], ., ,, :, ;, =, @, #, & (as a prefix operator), ->, `, ?, and ! (as a postfix operator).
-#
-
-kSwiftKeywords = { # Swift 2.0
-    # Keywords used in declarations: 
-    "class", "deinit", "enum", "extension", "func", "import", "init", "internal", "let", "operator", 
-    "private", "protocol", "public", "static", "struct", "subscript", "typealias", "var",
-    # Keywords used in statements: 
-    "break", "case", "continue", "default", "do", "else", "fallthrough", "for", "if", "in", "return", 
-    "switch", "where", "while",
-    # Keywords used in expressions and types: 
-    "as", "dynamicType", "false", "is", "nil", "self", "Self", "super", "true", 
-    "__COLUMN__", "__FILE__", "__FUNCTION__", "__LINE__",
-    # Keywords reserved in particular contexts: 
-    "associativity", "convenience", "dynamic", "didSet", "final", "infix", "inout", "lazy", "left", 
-    "mutating", "none", "nonmutating", 
-    "optional", "override", "postfix", "precedence", "prefix", "Protocol", "required", "right", 
-    "Type", "unowned", "weak", "willSet",
-    # "get", "set",  # only used in defining getters/setters so shouldn't conflict with apps' get(), set() commands
-}
-
-kObjectiveCKeywords = {
-    "const",
-    "extern",
-    "auto",
-    "register",
-    "static",
-    "unsigned",
-    "signed",
-    "volatile",
-    "char",
-    "double",
-    "float",
-    "int",
-    "long",
-    "short",
-    "void",
-    "typedef",
-    "struct",
-    "union",
-    "enum",
-    "id",
-    "Class",
-    "SEL",
-    "IMP",
-    "BOOL",
-    "return",
-    "goto",
-    "if",
-    "else",
-    "case",
-    "default",
-    "switch",
-    "break",
-    "continue",
-    "while",
-    "do",
-    "for",
-    "in",
-    "sizeof",
-    "self",
-    "super",
-    "nil",
-    "NIL",
-    "YES",
-    "NO",
-    "true",
-    "false",
-    "inline",
-}
-
-# NSObject base class
-
-kNSObjectMethods = { # TO DO: introspect NSObject for these, if practical
-    "initialize",
-    "load",
-    "new",
-    "alloc",
-    "allocWithZone",
-    "init",
-    "copy",
-    "copyWithZone",
-    "mutableCopy",
-    "mutableCopyWithZone",
-    "dealloc",
-    "finalize",
-    "class",
-    "superclass",
-    "isSubclassOfClass",
-    "instancesRespondToSelector",
-    "conformsToProtocol",
-    "methodForSelector",
-    "instanceMethodForSelector",
-    "instanceMethodSignatureForSelector",
-    "methodSignatureForSelector",
-    "description",
-    "poseAsClass",
-    "cancelPreviousPerformRequestsWithTarget",
-    "forwardInvocation",
-    "doesNotRecognizeSelector",
-    "awakeAfterUsingCoder",
-    "classForArchiver",
-    "classForCoder",
-    "classForKeyedArchiver",
-    "classFallbacksForKeyedArchiver",
-    "classForKeyedUnarchiver",
-    "classForPortCoder",
-    "replacementObjectForArchiver",
-    "replacementObjectForCoder",
-    "replacementObjectForKeyedArchiver",
-    "replacementObjectForPortCoder",
-    "setVersion",
-    "version",
-    "attributeKeys",
-    "classDescription",
-    "inverseForRelationshipKey",
-    "toManyRelationshipKeys",
-    "toOneRelationshipKeys",
-    "classCode",
-    "className",
-    "scriptingProperties",
-    "setScriptingProperties",
-}
-
-
-kAEBSpecifierMethods = { # names reserved on both Swift and ObjC glues
-    "app",
-    "con",
-    "its",
-    # miscellaneous
-    "isRunning",
-    "relaunchMode",
-    "seRelaunchMode",
-    "launchApplication",
-    "launchApplicationWithError",
-    "reconnectApplication",
-    "reconnectApplicationWithError",
-    "beginTransaction",
-    "beginTransactionWithError",
-    "beginTransactionWithSession",
-    "abortTransaction",
-    "abortTransactionWithError",
-    "endTransaction",
-    "endTransactionWithError",
-}
-
-# Swift glue methods
-
-kAEBSwiftSpecifierMethods = {
-    # custom property/element specifiers
-    "propertyByCode",
-    "elementsByCode",
-    "customRoot",
-    # sendAppleEvent(eventClass:eventID:...
-    # element(s) selectors
-    "ID",
-    "beginning",
-    "end",
-    "before",
-    "after",
-    "previous",
-    "next",
-    "first",
-    "middle",
-    "last",
-    "any",
-    # test clause constructors
-    "beginsWith",
-    "endsWith",
-    "contains",
-    "isIn",
-    # used by AEBSymbol
-    "symbolWithName",
-    "symbolWithCode",
-    # currently unused
-    "help", # TO DO: uppercase?
-}
-
-kAEBSwiftParameterNames = {
-    # standard parameter+attribute names used in SwiftGlueTemplate
-    "directParameter",
-    "returnType",
-    "waitReply",
-    "withTimeout",
-    "considering",
-    "ignoring",
-}
-
-# ObjC glue methods
-
-kAEBObjectiveCMethods = {
-    # custom property/element specifiers
-    "propertyByCode",
-    "elementsByCode",
-    "customRoot",
-    # element(s) selectors
-    "at",
-    "byIndex",
-    "byName",
-    "byID",
-    "byTest",
-    "beginning",
-    "end",
-    "before",
-    "after",
-    "previous",
-    "next",
-    "first",
-    "middle",
-    "last",
-    "any",
-    # test clause constructors
-    "greaterThan",
-    "greaterOrEquals",
-    "equals",
-    "notEquals",
-    "lessThan",
-    "lessOrEquals",
-    "beginsWith",
-    "endsWith",
-    "contains",
-    "isIn",
-    "doesNotBeginWith",
-    "doesNotEndWith",
-    "doesNotContain",
-    "isNotIn",
-    "AND",
-    "NOT",
-    "OR",
-    # shortcuts
-    "setItem",
-    "getItem",
-    "getItemWithError",
-    "getList",
-    "getListWithError",
-    "getItemOfType",
-    "getListOfType",
-    "getIntWithError",
-    "getLongWithError",
-    "getDoubleWithError",
-    # used by aebglue-generated XXApplication classes
-    "initWithName",
-    "initWithBundleID",
-    "initWithSignature",
-    "initWithPath",
-    "initWithURL",
-    "initWithProcessID",
-    "initWithDescriptor",
-    # used by AEBStaticSymbol
-    "symbolWithName",
-    "symbolWithCode",
-    # used by AEBStaticCommand
-    "considering",
-    "sendMode",
-    "waitForReply",
-    "ignoreReply",
-    "queueReply",
-    "timeout",
-    "requestedClass",
-    "requestedType",
-    "returnClass",
-    "returnType",
-    "returnList",
-    "returnListOfClass",
-    "returnListOfType",
-    "returnDescriptor",
-    "sendWithError",
-    "send",
-    # currently unused
-    "ignoring",
-    "returnID",
-    "help",
-}
-
-
-#######
-
-
-class SwiftKeywordConverter(AEBKeywordConverter):
-    
-    _legalchars = string.ascii_letters + '_' # TO DO: extend this as per Swift identifier rules? or do users prefer sticking to C-style? (e.g. for ObjC interop)
-    _alphanum = _legalchars + string.digits
-    _reservedspecifierwords = kSwiftKeywords | kAEBSwiftSpecifierMethods | kAEBSpecifierMethods | kNSObjectMethods
-    _reservedparameterwords = kSwiftKeywords | kAEBSwiftParameterNames
-    
-    def init(self):
-        self = super(AEBKeywordConverter, self).init()
-        if self:
-            self._cache = {}
-        return self
-    
-    def convertName_reservedKeywords_(self, s, reservedwords):
-        """Convert string to identifier.
-            s : str
-            Result : str
-        """
-        if s not in self._cache:
-            s = s.strip()
-            if s.startswith('init '): # if "init" is first word in name, escape it separately
-                s = 'init_ ' + s[5:]
-            legal = self._legalchars
-            res = ''
-            uppercasenext = False
-            for c in s:
-                if c in legal:
-                    if uppercasenext:
-                        c = c.upper()
-                        uppercasenext = False
-                    res += c
-                elif c in ' -/':
-                    uppercasenext = True
-                elif c == '&':
-                    res += 'And'
-                else:
-                    if res == '':
-                        res = '_' # avoid creating an invalid identifier
-                    res += '0x%2.2X' % ord(c) # TO DO: revise this; use Swift identifier quoting rather than character replacement where possible
-                legal = self._alphanum
-            if (res in reservedwords or res.startswith('_') or res[:3] in {'AEM', 'aem', 'AEB', 'aeb'} or not res): # TO DO: backtick reserved swift keywords? or will that cause more confusion than it solves?
-                res = self.escapeName_(res)
-            self._cache[s] = str(res)
-        return self._cache[s]
-            
-    def convertSpecifierName_(self, s):
-        return self.convertName_reservedKeywords_(s, self._reservedspecifierwords)
-
-    def convertParameterName_(self, s):
-        return self.convertName_reservedKeywords_(s, self._reservedparameterwords)
-
-    def escapeName_(self, s):
-        return s + '_'
-
-
-#######
-
-
-class ObjCKeywordConverter(AEBKeywordConverter):
-    
-    _legalchars = string.ascii_letters + '_'
-    _alphanum = _legalchars + string.digits
-    _reservedwords = kObjectiveCKeywords | kAEBObjectiveCMethods | kAEBSpecifierMethods | kNSObjectMethods
-    
-    def init(self):
-        self = super(AEBKeywordConverter, self).init()
-        if self:
-            self._cache = {}
-        return self
-    
-    def convertSpecifierName_(self, s):
-        """Convert string to identifier.
-            s : str
-            Result : str
-        """
-        if s not in self._cache:
-            legal = self._legalchars
-            res = ''
-            uppercasenext = False
-            for c in s.strip():
-                if c in legal:
-                    if uppercasenext:
-                        c = c.upper()
-                        uppercasenext = False
-                    res += c
-                elif c in ' -/':
-                    uppercasenext = True
-                elif c == '&':
-                    res += 'And'
-                else:
-                    if res == '':
-                        res = '_' # avoid creating an invalid identifier
-                    res += '0x%2.2X' % ord(c)
-                legal = self._alphanum
-            if (res in self._reservedwords or res.startswith('_') or res[:3] in {'AEM', 'aem', 'AEB', 'aeb'} or not res):
-                res = self.escapeName_(res)
-            self._cache[s] = str(res)
-        return self._cache[s]
-
-    convertParameterName_ = convertSpecifierName_
-    
-    def escapeName_(self, s):
-        return s + '_'
-
-
-######################################################################
-# DEFAULT PREFIX GENERATOR
-######################################################################
-
-
-kReservedPrefixes = {'NS', 'AEM', 'AEB', 'APP', 'CON', 'ITS'} # glues cannot use these prefixes
-
-
-def makeprefix(name, minlen=3): # TO DO: need to test this with various typical app names
-    """ Auto-generate a reasonable default classname prefix from an application name.
-        
-        Notes:
-        
-        - Only A-Z/a-z characters are used, so is most effective when app's name is mostly composed of those characters.
-        
-        - Raises ValueError if name doesn't contain enough suitable characters to construct minimum-length prefix.
-        """
-    words = u''.join(re.findall(u'([A-Za-z ])', name)).split()
-    if len(words) >= minlen: # use first letter of each word
-        acronym = u''.join(word[0].upper() for word in words)
-        if acronym not in kReservedPrefixes:
-            return acronym
-    words = [word[0].upper()+word[1:] for word in words]
-    caps = re.sub(u'[^A-Z]', '', u''.join(words)) # include any other uppercase letters
-    if len(caps) >= minlen and caps not in kReservedPrefixes:
-        return caps
-    phoneticwords = re.sub(u'([A-Z]|[a-z]\\b|[b-df-hj-np-tv-z ])', '\\1', ''.join(words)).split() # eliminate lowercase vowels, except at end of word
-    i = len(phoneticwords)
-    short = minlen - len(caps) # how many more characters are needed?
-    while i and short: # start uppercasing last character of each word, working backwards
-        i -= 1
-        word = phoneticwords[i]
-        if re.search(u'[a-z]$', word):
-            phoneticwords[i] = word[:-1]+word[-1].upper()
-            short -= 1
-    if not short:
-        phonetic = re.sub(u'[a-z]', '', u''.join(phoneticwords))
-        if phonetic not in kReservedPrefixes:
-            return phonetic
-    all = u''.join(words).upper().replace(' ', '') # starting to run short of options, so reinclude lowercase vowels
-    if len(all) == minlen:
-        if all in kReservedPrefixes:
-            raise ValueError('Auto-generated prefix conflicts with reserved prefix: %r' % all)
-        return all
-    elif len(all) > minlen:
-        prefixlen = 2
-        for _ in range(minlen):
-            for i in range(len(words)):
-                word = words[i]
-                words[i] = word[:prefixlen].upper() + word[prefixlen:]
-                caps = re.sub(u'[^A-Z]', '', u''.join(words)) # use first letter of each word plus other uppercase letters (acronym-like)
-                if len(caps) >= minlen and caps not in kReservedPrefixes:
-                    return caps
-            prefixlen += 1
-    raise ValueError('Not enough characters to construct a %i-character prefix.' % minlen)
-
-
-######################################################################
 # SDEF EXPORTER
 ######################################################################
 
 # TO DO: make sure app terms that conflict with builtins are escaped correctly
-
 
 
 def exportsdef(appurl, outpath, keywordconverter, prefix, commandnamesuffix):
@@ -624,7 +165,7 @@ kCommand = 4
 kType = 0x74797065
 kEnum = 0x656e756d
 
-def renderglue(tpl, gluedir, gluesourcefilename, appinfo, appclassname, terms):
+def renderglue(tpl, gluedir, gluesourcefilename, appinfo, terms):
     """
         tpl : str -- template
         gluedir : str -- path to directory into which this file will be written
@@ -637,7 +178,7 @@ def renderglue(tpl, gluedir, gluesourcefilename, appinfo, appclassname, terms):
     tpl = insert(tpl, 'GLUE_NAME', gluesourcefilename)
     tpl = insert(tpl, 'FRAMEWORK_NAME', kFrameworkName+'.framework')
     tpl = insert(tpl, 'FRAMEWORK_VERSION', kFrameworkVersion)
-    tpl = insert(tpl, 'APP_CLASS_NAME', appclassname)
+    tpl = insert(tpl, 'APP_CLASS_NAME', appinfo.appclassname)
     # include application info, if relevant
     tpl = insert(tpl, 'APP_NAME', appinfo.filename or 'UNKNOWN')
     tpl = insert(tpl, 'APP_VERSION', appinfo.version or 'UNKNOWN')
@@ -670,11 +211,11 @@ def renderglue(tpl, gluedir, gluesourcefilename, appinfo, appclassname, terms):
 ######################################################################
 
 # TO DO: also need to generate constants file[s] (Q. what about AEBSwiftSymbol? should that also be autogenerated each time? if so, need to check how best to get and process AS's terminology)
-
+# TO DO: messy; restructure: AppInfo should contain app info only; language-specific info/APIs should be in separate (wrapper) classes
 
 class AppInfo:
-    def __init__(self, appurl=None, prefix=None, appclass=None):
-        self.appurl, self._appclass = appurl, appclass
+    def __init__(self, keywordconverter, appurl=None, prefix=None, appclassname=None):
+        self.keywordconverter, self.appurl = keywordconverter, appurl
         if appurl:
             appbundle = NSBundle.bundleWithURL_(appurl)
             if not appbundle:
@@ -684,21 +225,18 @@ class AppInfo:
             self.name = appinfo.get('CFBundleName')
             self.version = appinfo.get('CFBundleShortVersionString')
             self.bundleid = appinfo.get('CFBundleIdentifier')
-            self.prefix = prefix or makeprefix(self.name or 'UNKNOWN')
+            self.prefix = prefix or keywordconverter.prefixForAppName_(self.name or 'UNKNOWN')
         else:
             self.filename = 'N/A'
             self.name, self.version, self.bundleid, self.prefix = 'Default', 'N/A', 'UNKNOWN', prefix or 'AEB'
         self.gluename = self.prefix + 'Glue'
-    
-    def appclassname(self, keywordconverter):
-        name = keywordconverter.convertSpecifierName_(self._appclass or self.name or self.prefix+'Application')
-        if name == self.prefix:
+        self.appclassname = self.keywordconverter.identifierForAppName_(appclassname or self.name or self.prefix+'Application')
+        if self.appclassname == self.prefix:
             raise ValueError("-n IDENTIFIER and -p PREFIX options cannot be the same: %s" % name)
-        return name
-    
-    def terminology(self, keywordconverter, usesdef=False):
+
+    def terminology(self, usesdef=False):
         appdata = AEBDynamicAppData.alloc().initWithApplicationURL_useSDEF_keywordConverter_(
-            self.appurl, usesdef, keywordconverter)
+            self.appurl, usesdef, self.keywordconverter)
         terms = appdata.terminologyWithError_(None)
         if not terms:
             raise ValueError("Can't get terminology for: %s" % appurl)
@@ -706,22 +244,18 @@ class AppInfo:
 
 
 def makeswiftglue(gluedir, appinfo, usesdef):
-    keywordconverter = SwiftKeywordConverter.alloc().init()
-    terms = appinfo.terminology(keywordconverter, usesdef)
-    appclassname = appinfo.appclassname(keywordconverter)
-    renderglue(readtemplate('SwiftGlueTemplate'), gluedir, appinfo.gluename+'.swift', appinfo, appclassname, terms)
+    terms = appinfo.terminology(usesdef)
+    renderglue(readtemplate('SwiftGlueTemplate'), gluedir, appinfo.gluename+'.swift', appinfo, terms)
     if appinfo.appurl:
-        exportsdef(appinfo.appurl, os.path.join(gluedir, appinfo.gluename+'-swift.sdef'), keywordconverter, appinfo.prefix, '')
+        exportsdef(appinfo.appurl, os.path.join(gluedir, appinfo.gluename+'-swift.sdef'), appinfo.keywordconverter, appinfo.prefix, '')
 
 
 def makeobjcglue(gluedir, appinfo, usesdef):
-    keywordconverter = ObjCKeywordConverter.alloc().init()
-    terms = appinfo.terminology(keywordconverter, usesdef)
-    appclassname = appinfo.appclassname(keywordconverter)
+    terms = appinfo.terminology(usesdef)
     for templatename, suffix in [('ObjCInterfaceGlueTemplate', '.h'), ('ObjCImplementationGlueTemplate', '.m')]:
-        renderglue(readtemplate(templatename), gluedir, appinfo.gluename+suffix, appinfo, appclassname, terms)
+        renderglue(readtemplate(templatename), gluedir, appinfo.gluename+suffix, appinfo, terms)
     if appinfo.appurl:
-        exportsdef(appinfo.appurl, os.path.join(gluedir, appinfo.gluename+'-objc.sdef'), keywordconverter, appinfo.prefix, ':')
+        exportsdef(appinfo.appurl, os.path.join(gluedir, appinfo.gluename+'-objc.sdef'), appinfo.keywordconverter, appinfo.prefix, ':')
 
 
 ######################################################################
@@ -798,7 +332,8 @@ if __name__ == '__main__':
             appurl = AEMApplication.fileURLForApplicationWithName_(appname)
             if not appurl:
                 raise ValueError("Can't find application: %s" % appname)
-        appinfo = AppInfo() if '-d' in opts else AppInfo(appurl, opts.get('-p'), opts.get('-n'))
+        keywordconverter = (AEBObjCKeywordConverter if '-o' in opts else AEBSwiftKeywordConverter).sharedKeywordConverter()
+        appinfo = AppInfo(keywordconverter) if '-d' in opts else AppInfo(keywordconverter, appurl, opts.get('-p'), opts.get('-n'))
         if not appinfo.bundleid:
             print >> sys.stderr, "Warning: default constructor won't work as bundle identifier not found."
         # create new XXGlue directory

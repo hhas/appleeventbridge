@@ -219,7 +219,7 @@ class ITUSpecifier: SwiftAESpecifier {
         case is String:
             (baseQuery, queryError) = self.aemElementsSpecifer("select element named \(index)")
             newQuery = baseQuery?.byName(index)
-        case is AEMQueryProtocol:
+        case is AEMQueryProtocol: // TO DO: use AEMTestClauseProtocol
             (baseQuery, queryError) = self.aemElementsSpecifer("select elements where \(index)")
             if let testClause = (index as! AEMQueryProtocol).aemQuery as? AEMTestClause {
                 newQuery = baseQuery?.byTest(testClause)
@@ -1575,4 +1575,8 @@ class ITUSymbol: SwiftAESymbol {
 // Namespace for generic specifiers and symbols, e.g. ITU.app.name, ITU.unicodeText
 let ITU = ITUSymbol.self
 
+// Root objects for constructing generic specifiers
+let ITUApp = ITUSpecifier(appData: nil, aemQuery: AEMQuery.app())
+let ITUCon = ITUSpecifier(appData: nil, aemQuery: AEMQuery.con())
+let ITUIts = ITUSpecifier(appData: nil, aemQuery: AEMQuery.its())
 

@@ -37,6 +37,7 @@ FOUNDATION_EXPORT const unsigned char AppleEventBridgeVersionString[];
 #import "AEBStaticCommand.h"
 #import "AEBStaticFormatter.h"
 #import "AEBStaticSymbol.h"
+#import "AEBStaticKeywordConverter.h"
 
 #import "AEBDynamicAppData.h"
 #import "AEBDynamicAETEParser.h"

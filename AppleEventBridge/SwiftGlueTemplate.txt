@@ -314,4 +314,8 @@ class «PREFIX»Symbol: SwiftAESymbol {
 // Namespace for generic specifiers and symbols, e.g. «PREFIX».app.name, «PREFIX».unicodeText
 let «PREFIX» = «PREFIX»Symbol.self
 
+// Root objects for constructing generic specifiers
+let «PREFIX»App = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.app())
+let «PREFIX»Con = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.con())
+let «PREFIX»Its = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.its())
 
