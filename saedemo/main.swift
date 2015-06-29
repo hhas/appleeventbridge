@@ -9,7 +9,7 @@ import AppleEventBridge
 
 
 let textedit = TextEdit()
-let itunes = iTunes()
+let itunes = ITunes()
 
 
 do {
@@ -20,7 +20,7 @@ print(error)
 }
 
 let t = true; let f = false
-if f {
+if t {
 
     // build an object specifier (note: formatter is unfinished so some types still appear ObjC style):
     //
@@ -50,7 +50,7 @@ if f {
     }
 }
 
-if f {
+if t {
 
     // tell application "iTunes" to get name of every track of playlist "Top 25 Most Played"
     print((try itunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])

@@ -1,8 +1,8 @@
 //
 // TETGlue.swift
-// TextEdit.app 1.11
+// TextEdit.app 1.10
 // AppleEventBridge.framework 0.7.0
-// aebglue -r TextEdit
+// aebglue -p TET -r TextEdit
 //
 
 import Foundation

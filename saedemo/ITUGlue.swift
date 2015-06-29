@@ -14,7 +14,7 @@ import AppleEventBridge
 class ITUFormatter: SwiftAEFormatter { // used internally to generate description strings
 
     override var prefix: String {return "ITU"}
-    override var appClassName: String {return "iTunes"}
+    override var appClassName: String {return "ITunes"}
     
     override func propertyByCode(code: OSType) -> String? {
         switch code {
@@ -768,7 +768,7 @@ class ITUSpecifier: SwiftAESpecifier {
 }
 
 
-class iTunes: ITUSpecifier {
+class ITunes: ITUSpecifier {
     private init(targetType: AEBTargetType, targetData: AnyObject?) {
         let data = SwiftAEAppData(applicationClass: AEMApplication.self,
                                        symbolClass: ITUSymbol.self,
@@ -795,8 +795,8 @@ class iTunes: ITUSpecifier {
     convenience init(descriptor: NSAppleEventDescriptor) {
         self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
     }
-    class func currentApplication() -> iTunes {
-        return iTunes(targetType: kAEBTargetCurrent, targetData: nil)
+    class func currentApplication() -> ITunes {
+        return ITunes(targetType: kAEBTargetCurrent, targetData: nil)
     }
     
     // Construct a ITUSpecifier using a raw AEMQuery or other custom object
@@ -868,7 +868,7 @@ class ITUSymbol: SwiftAESymbol {
 
     // Generic specifier roots. These can be used to construct ITUSpecifiers for use in other
     // ITUSpecifiers and ITUCommands, though only real specifiers constructed from a
-    // iTunes application instance can be used to send commands to the target application.
+    // ITunes application instance can be used to send commands to the target application.
 
     // TO DO: where best to put these root vars?
 

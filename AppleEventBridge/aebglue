@@ -79,7 +79,7 @@ def readtemplate(name):
 # TO DO: make sure app terms that conflict with builtins are escaped correctly
 
 
-def exportsdef(appurl, outpath, keywordconverter, prefix, commandnamesuffix):
+def exportsdef(appurl, outpath, keywordconverter, prefix, commandnamesuffix, allowoverwrite):
     """ Export application's .sdef file as user documentation. Keywords are reformatted as appropriate. 
     
         outpath : str -- glue path with .sdef prefix
@@ -173,7 +173,7 @@ kCommand = 4
 kType = 0x74797065
 kEnum = 0x656e756d
 
-def renderglue(tpl, gluedir, gluesourcefilename, appinfo, terms):
+def renderglue(tpl, outdir, gluesourcefilename, appinfo, terms, allowoverwrite, shellcmd):
     """
         tpl : str -- template
         outdir : str -- path to directory into which this file will be written
@@ -187,6 +187,7 @@ def renderglue(tpl, gluedir, gluesourcefilename, appinfo, terms):
     tpl = insert(tpl, 'FRAMEWORK_NAME', kFrameworkName+'.framework')
     tpl = insert(tpl, 'FRAMEWORK_VERSION', kFrameworkVersion)
     tpl = insert(tpl, 'APP_CLASS_NAME', appinfo.appclassname)
+    tpl = insert(tpl, 'AEBGLUE_COMMAND', shellcmd)
     # include application info, if relevant
     tpl = insert(tpl, 'APP_NAME', appinfo.filename or 'UNKNOWN')
     tpl = insert(tpl, 'APP_VERSION', appinfo.version or 'UNKNOWN')
@@ -258,19 +259,20 @@ class AppInfo:
         return terms
 
 
-def makeswiftglue(gluedir, appinfo, usesdef):
+def makeswiftglue(outdir, appinfo, usesdef, allowoverwrite, shellcmd):
     terms = appinfo.terminology(usesdef)
-    renderglue(readtemplate('SwiftGlueTemplate'), gluedir, appinfo.gluename+'.swift', appinfo, terms)
+    renderglue(readtemplate('SwiftGlueTemplate'), outdir, appinfo.gluename+'.swift', appinfo, terms, allowoverwrite, shellcmd)
     if appinfo.appurl:
-        exportsdef(appinfo.appurl, os.path.join(gluedir, appinfo.gluename+'-swift.sdef'), appinfo.keywordconverter, appinfo.prefix, '')
+        exportsdef(appinfo.appurl, os.path.join(outdir, appinfo.gluename+'-swift.sdef'), appinfo.keywordconverter, appinfo.prefix, '', allowoverwrite)
 
 
-def makeobjcglue(gluedir, appinfo, usesdef):
+def makeobjcglue(outdir, appinfo, usesdef, allowoverwrite, shellcmd):
     terms = appinfo.terminology(usesdef)
+    appclassname = appinfo.appclassname(keywordconverter)
     for templatename, suffix in [('ObjCInterfaceGlueTemplate', '.h'), ('ObjCImplementationGlueTemplate', '.m')]:
-        renderglue(readtemplate(templatename), gluedir, appinfo.gluename+suffix, appinfo, terms)
+        renderglue(readtemplate(templatename), outdir, appinfo.gluename+suffix, appinfo, terms, allowoverwrite, shellcmd)
     if appinfo.appurl:
-        exportsdef(appinfo.appurl, os.path.join(gluedir, appinfo.gluename+'-objc.sdef'), appinfo.keywordconverter, appinfo.prefix, ':')
+        exportsdef(appinfo.appurl, os.path.join(outdir, appinfo.gluename+'-objc.sdef'), appinfo.keywordconverter, appinfo.prefix, ':', allowoverwrite)
 
 
 ######################################################################

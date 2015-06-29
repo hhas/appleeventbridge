@@ -98,8 +98,8 @@
         if (!((name = eNAME).length && [self getOSTypeForCode: eCODE code: &code])) goto malformedElement;
         [types addObject: [[AEBDynamicKeywordTerm alloc] initWithName: KEYWORD(name) code: code kind: kAEBTermType]];
         if (isClass) {
-            if (!(plural = ePLURAL).length) plural = KEYWORD(([NSString stringWithFormat: @"%@s", name]));
-            [elements addObject: [[AEBDynamicKeywordTerm alloc] initWithName: plural code: code kind: kAEBTermType]];
+            if (!(plural = ePLURAL).length) plural = [NSString stringWithFormat: @"%@s", name];
+            [elements addObject: [[AEBDynamicKeywordTerm alloc] initWithName: KEYWORD(plural) code: code kind: kAEBTermType]];
         }
         
     } else if ([elementName isEqualToString: @"property"]) {

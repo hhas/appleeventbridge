@@ -1,6 +1,6 @@
 //
 // FINGlue.swift
-// Finder.app 10.11
+// Finder.app 10.10.4
 // AppleEventBridge.framework 0.7.0
 // aebglue -s -r Finder
 //
@@ -155,29 +155,29 @@ class FINFormatter: SwiftAEFormatter { // used internally to generate descriptio
     }
     override func elementsByCode(code: OSType) -> String? {
         switch (code) {
-        case 0x62726f77: return "Finder windows"
-        case 0x616c6961: return "alias files"
+        case 0x62726f77: return "FinderWindows"
+        case 0x616c6961: return "aliasFiles"
         case 0x616c7374: return "aliasLists"
-        case 0x61707066: return "application files"
-        case 0x70636170: return "application processes"
+        case 0x61707066: return "applicationFiles"
+        case 0x70636170: return "applicationProcesses"
         case 0x63617070: return "applications"
-        case 0x6c776e64: return "clipping windows"
+        case 0x6c776e64: return "clippingWindows"
         case 0x636c7066: return "clippings"
         case 0x63766f70: return "columnViewOptionss"
         case 0x6c76636c: return "columns"
         case 0x63636d70: return "computerObjects"
         case 0x63746e72: return "containers"
-        case 0x70636461: return "desk accessory processes"
+        case 0x70636461: return "deskAccessoryProcesses"
         case 0x6364736b: return "desktopObjects"
         case 0x646b7477: return "desktopWindows"
         case 0x63646973: return "disks"
-        case 0x646f6366: return "document files"
+        case 0x646f6366: return "documentFiles"
         case 0x66696c65: return "files"
         case 0x63666f6c: return "folders"
         case 0x6966616d: return "iconFamilys"
         case 0x69636f70: return "iconViewOptionss"
         case 0x69776e64: return "informationWindows"
-        case 0x696e6c66: return "internet location files"
+        case 0x696e6c66: return "internetLocationFiles"
         case 0x636f626a: return "items"
         case 0x636c626c: return "labels"
         case 0x6c766f70: return "listViewOptionss"
@@ -446,29 +446,29 @@ class FINSpecifier: SwiftAESpecifier {
     
     // Elements
     
-    var Finder windows: FINSpecifier {return self.elementsByCode(0x62726f77)}
-    var alias files: FINSpecifier {return self.elementsByCode(0x616c6961)}
+    var FinderWindows: FINSpecifier {return self.elementsByCode(0x62726f77)}
+    var aliasFiles: FINSpecifier {return self.elementsByCode(0x616c6961)}
     var aliasLists: FINSpecifier {return self.elementsByCode(0x616c7374)}
-    var application files: FINSpecifier {return self.elementsByCode(0x61707066)}
-    var application processes: FINSpecifier {return self.elementsByCode(0x70636170)}
+    var applicationFiles: FINSpecifier {return self.elementsByCode(0x61707066)}
+    var applicationProcesses: FINSpecifier {return self.elementsByCode(0x70636170)}
     var applications: FINSpecifier {return self.elementsByCode(0x63617070)}
-    var clipping windows: FINSpecifier {return self.elementsByCode(0x6c776e64)}
+    var clippingWindows: FINSpecifier {return self.elementsByCode(0x6c776e64)}
     var clippings: FINSpecifier {return self.elementsByCode(0x636c7066)}
     var columnViewOptionss: FINSpecifier {return self.elementsByCode(0x63766f70)}
     var columns: FINSpecifier {return self.elementsByCode(0x6c76636c)}
     var computerObjects: FINSpecifier {return self.elementsByCode(0x63636d70)}
     var containers: FINSpecifier {return self.elementsByCode(0x63746e72)}
-    var desk accessory processes: FINSpecifier {return self.elementsByCode(0x70636461)}
+    var deskAccessoryProcesses: FINSpecifier {return self.elementsByCode(0x70636461)}
     var desktopObjects: FINSpecifier {return self.elementsByCode(0x6364736b)}
     var desktopWindows: FINSpecifier {return self.elementsByCode(0x646b7477)}
     var disks: FINSpecifier {return self.elementsByCode(0x63646973)}
-    var document files: FINSpecifier {return self.elementsByCode(0x646f6366)}
+    var documentFiles: FINSpecifier {return self.elementsByCode(0x646f6366)}
     var files: FINSpecifier {return self.elementsByCode(0x66696c65)}
     var folders: FINSpecifier {return self.elementsByCode(0x63666f6c)}
     var iconFamilys: FINSpecifier {return self.elementsByCode(0x6966616d)}
     var iconViewOptionss: FINSpecifier {return self.elementsByCode(0x69636f70)}
     var informationWindows: FINSpecifier {return self.elementsByCode(0x69776e64)}
-    var internet location files: FINSpecifier {return self.elementsByCode(0x696e6c66)}
+    var internetLocationFiles: FINSpecifier {return self.elementsByCode(0x696e6c66)}
     var items: FINSpecifier {return self.elementsByCode(0x636f626a)}
     var labels: FINSpecifier {return self.elementsByCode(0x636c626c)}
     var listViewOptionss: FINSpecifier {return self.elementsByCode(0x6c766f70)}
@@ -1587,4 +1587,8 @@ class FINSymbol: SwiftAESymbol {
 // Namespace for generic specifiers and symbols, e.g. FIN.app.name, FIN.unicodeText
 let FIN = FINSymbol.self
 
+// Root objects for constructing generic specifiers
+let FINApp = FINSpecifier(appData: nil, aemQuery: AEMQuery.app())
+let FINCon = FINSpecifier(appData: nil, aemQuery: AEMQuery.con())
+let FINIts = FINSpecifier(appData: nil, aemQuery: AEMQuery.its())
 
