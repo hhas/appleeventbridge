@@ -62,9 +62,9 @@ private func appDataForProcess(var addressDesc: NSAppleEventDescriptor!, useSDEF
         defaultTerms: kAEBUseDefaultTerminology,
         keywordConverter: AEBSwiftKeywordConverter.sharedKeywordConverter())
     let appTerms = try dynamicAppData.terminologyWithError()
-    return SwiftAETranslationAppData(applicationClass: SwiftAETranslationSpecifier.self, symbolClass: SwiftAESymbol.self,
+    return SwiftAETranslationAppData(applicationClass: SwiftAETranslationSpecifier.self, symbolClass: SwiftAETranslationSymbol.self,
         specifierClass: SwiftAETranslationSpecifier.self, targetType: targetType, targetData: targetData,
-        terms: appTerms, appClassName: appClassName, prefix: prefix)
+        terms: appTerms, appClassName: appClassName, prefix: prefix) // note: symbolClass arg is ignored as it's hardcoded into unpack
 }
 //
 
@@ -175,7 +175,7 @@ class SwiftAETranslationAppData: SwiftAEAppData { // extends static app data (wh
         
     private func unpackAEBSymbol(desc: NSAppleEventDescriptor!) throws -> AnyObject {
         let name = (self.typesByCodeTable[NSNumber(unsignedInt: desc.typeCodeValue)])
-        return SwiftAESymbol(name: name, descriptor: desc)
+        return SwiftAETranslationSymbol(prefix: self.prefix, name: name, descriptor: desc)
     }
     override func unpackType(desc: NSAppleEventDescriptor!) throws -> AnyObject {
         return try self.unpackAEBSymbol(desc)
@@ -234,4 +234,18 @@ class SwiftAETranslationFormatter: SwiftAEFormatter {
 class SwiftAETranslationSpecifier: SwiftAESpecifier {
     override var description: String { return SwiftAETranslationFormatter.formatObject(aemQuery, appData: aebAppData) }
 }
+
+
+class SwiftAETranslationSymbol: SwiftAESymbol {
+    
+    var prefix: String
+    override var aebPrefix: String {return self.prefix}
+    
+    init(prefix: String, name: String?, descriptor: NSAppleEventDescriptor?) {
+        self.prefix = prefix
+        super.init(name: name, descriptor: descriptor)
+    }
+
+}
+
 
