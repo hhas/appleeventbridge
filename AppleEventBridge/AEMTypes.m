@@ -82,7 +82,7 @@
 }
 
 - (instancetype)initWithDescriptor:(NSAppleEventDescriptor *)desc {
-    return [self initWithDescriptorType: '\000\000\000\000'
+    return [self initWithDescriptorType: '\000\000\000\000' // TO DO: is there any appreciable benefit to lazy unpacking (see -code), or would it be simpler just to get desc's descriptorType and typeCodeValue here?
                                    code: '\000\000\000\000'
                                    desc: desc];
 }

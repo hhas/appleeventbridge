@@ -378,7 +378,7 @@
     NSInteger length = [desc numberOfItems];
     for (NSInteger i=1; i<=length; i++) {
         id item = [self unpack: [desc descriptorAtIndex: i] error: error];
-        if (!item) return nil; // TO DO: better error message
+        if (!item) return nil; // TO DO: better error message if not already given
         [result addObject: item];
     }
     return result;
@@ -392,7 +392,7 @@
         NSAppleEventDescriptor *valueDesc = [desc descriptorAtIndex: i];
         if (!valueDesc) return nil; // don't think this will ever happen
         id value = [self unpack: valueDesc error: error];
-        if (!value) return nil;
+        if (!value) return nil; // TO DO: better error message if not already given
         if (key == keyASUserRecordFields) {
             NSInteger length2 = [value count];
             for (NSInteger j = 0; j < length2; j += 2) {
@@ -400,7 +400,7 @@
             }
         } else {
             id keyObj = [self unpackAERecordKey: key error: error];
-            if (!keyObj) return nil;
+            if (!keyObj) return nil; // TO DO: better error message if not already given
             result[keyObj] = value;
         }
     }

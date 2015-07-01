@@ -54,7 +54,7 @@
 
 
 - (NSString *)description {
-    return [NSString stringWithFormat: @"<AEBCommand %@>", aemEvent];
+    return [NSString stringWithFormat: @"<AEBCommand %@>", aemEvent]; // TO DO: this is somewhat misleading/unhelpful as AEMEvent instance is not fully packed until sent, so some values (e.g. parent query and direct parameter) won't be shown (cheapest solution would be to make a throwaway copy of the AEMEvent, finish packing that, and display that; this would require splitting sendWithError into two methods)
 }
 
 

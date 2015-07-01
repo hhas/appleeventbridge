@@ -34,12 +34,12 @@
 
 
 @implementation «PREFIX»Symbol
-+ (instancetype)symbolWithCode:(OSType)code_ {
++ (instancetype)aebSymbolForCode:(OSType)code_ {
     switch (code_) {
 «+SYMBOL_SWITCH»
         case «CODE»: return self.«NAME»;
 «-SYMBOL_SWITCH»
-        default: return [super symbolWithCode: code_];
+        default: return [super aebSymbolForCode: code_];
     }
 }
 // Types/properties 

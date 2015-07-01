@@ -129,7 +129,7 @@ class «PREFIX»Specifier: SwiftAESpecifier {
         return «PREFIX»Specifier(appData: aebAppData, aemQuery: baseQuery?.after(), queryError: queryError)
     }
 
-    // Test clause constructors, e.g. «PREFIX».its.name.beginsWith("foo")
+    // Test clause constructors, e.g. «PREFIX»its.name.beginsWith("foo")
     
     func beginsWith(input: AnyObject!) -> «PREFIX»Specifier! {
         let (baseQuery, queryError) = self.aemObjectSpecifer("test")
@@ -228,7 +228,7 @@ class «APP_CLASS_NAME»: «PREFIX»Specifier {
 }
 
 
-// test clause constructors, e.g. «PREFIX».its.name != "foo"
+// test clause constructors, e.g. «PREFIX»its.name != "foo"
 // note: the == operator will return a «PREFIX»Specifier when used in elements[...] specifier; however, when
 // binding its result to a variable, it must be explicitly typed as (e.g.) AnyObject or Swift will infer Bool
 
@@ -276,24 +276,14 @@ prefix func ! (input: «PREFIX»Specifier!) -> «PREFIX»Specifier! {
 
 class «PREFIX»Symbol: SwiftAESymbol {
 
-    override var description: String {return "«PREFIX».\(self.aebName)"}
+    override var aebPrefix: String {return "«PREFIX»"}
 
-    // Generic specifier roots. These can be used to construct «PREFIX»Specifiers for use in other
-    // «PREFIX»Specifiers and «PREFIX»Commands, though only real specifiers constructed from a
-    // «APP_CLASS_NAME» application instance can be used to send commands to the target application.
-
-    // TO DO: where best to put these root vars?
-
-    static let app = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.app())
-    static let con = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.con())
-    static let its = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.its())
-
-    override class func symbol(code: OSType) -> AEBSymbol {
-        switch (code) {
+    override class func aebSymbolForCode(code_: OSType) -> AEBSymbol {
+        switch (code_) {
 «+SYMBOL_SWITCH»
         case «CODE»: return self.«NAME»
 «-SYMBOL_SWITCH»
-        default: return super.symbol(code)
+        default: return super.aebSymbolForCode(code_)
         }
     }
 
@@ -312,11 +302,14 @@ class «PREFIX»Symbol: SwiftAESymbol {
 /******************************************************************************/
 // TOP-LEVEL CONSTANTS
 
-// Namespace for generic specifiers and symbols, e.g. «PREFIX».app.name, «PREFIX».unicodeText
+// Namespace for built-in and application-defined symbols, e.g. «PREFIX».documentFile, «PREFIX».unicodeText
 let «PREFIX» = «PREFIX»Symbol.self
 
-// Root objects for constructing generic specifiers
-let «PREFIX»App = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.app())
-let «PREFIX»Con = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.con())
-let «PREFIX»Its = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.its())
+
+// Generic specifier roots. These can be used to construct «PREFIX»Specifiers for use in other
+// «PREFIX»Specifiers and «PREFIX»Commands, though only real specifiers constructed from a
+// «APP_CLASS_NAME» application instance can be used to send commands to the target application.
+let «PREFIX»app = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.app())
+let «PREFIX»con = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.con())
+let «PREFIX»its = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.its())
 

@@ -187,7 +187,7 @@
 
 
 @implementation ITUSymbol
-+ (instancetype)symbolWithCode:(OSType)code_ {
++ (instancetype)aebSymbolForCode:(OSType)code_ {
     switch (code_) {
         case 0x61707220: return self.April;
         case 0x61756720: return self.August;
@@ -530,7 +530,7 @@
         case 0x79657320: return self.yes;
         case 0x69737a6d: return self.zoomable;
         case 0x707a756d: return self.zoomed;
-        default: return [super symbolWithCode: code_];
+        default: return [super aebSymbolForCode: code_];
     }
 }
 // Types/properties 

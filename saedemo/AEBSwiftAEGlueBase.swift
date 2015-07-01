@@ -9,11 +9,15 @@
 // note: AEBAppData uses AEMCodecs to unpack basic AE types (text, list, etc) as NSObjects; TO DO: would it be better to unpack them as native Swift types (and would Swift objects cause any issues with other NSObject-based APIs such as AEMQuery)?
 
 import Foundation
+import AppKit
 import AppleEventBridge
 
 
+// TO DO: should XXApplication.currentApplication() be init(currentApplication:())? c.f. init(listDescriptor: ()) in NSAEDesc
+
 /******************************************************************************/
 // Formatter base class
+
 
 // format numbers, strings, arrays, specifiers, etc. using literal Swift syntax
 func SwiftAEFormatObject(object: AnyObject!) -> String {
@@ -278,7 +282,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
     
     override func app() -> Self {
         if aebAppData == nil { // generic specifier
-            self.mutableResult?.appendFormat("%@.app", self.prefix)
+            self.mutableResult?.appendFormat("%@app", self.prefix)
         } else { // concrete specifier
             self.mutableResult?.appendString(self.appClassName)
             do {
@@ -303,15 +307,15 @@ class SwiftAEFormatter: AEMQueryVisitor {
         return self;
     }
     override func con() -> Self {
-        self.mutableResult?.appendFormat("%@.con", self.prefix)
+        self.mutableResult?.appendFormat("%@con", self.prefix)
         return self
     }
     override func its() -> Self {
-        self.mutableResult?.appendFormat("%@.its", self.prefix)
+        self.mutableResult?.appendFormat("%@its", self.prefix)
         return self
     }
     override func customRoot(rootObject: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat("%@Application.customRoot(%@)", self.prefix, self.format(rootObject))
+        self.mutableResult?.appendFormat("%@.customRoot(%@)", self.appClassName, self.format(rootObject))
         return self
     }
 }
@@ -324,14 +328,12 @@ class SwiftAEFormatter: AEMQueryVisitor {
 
 class SwiftAEAppData: AEBStaticAppData {
     
-    
     override func pack(anObject: AnyObject!) throws -> NSAppleEventDescriptor {
         if anObject is Bool {
             return NSAppleEventDescriptor(boolean: (anObject as! Bool ? 1 : 0))
         }
         return try super.pack(anObject)
     }
-    
     
     override func unpack(desc: NSAppleEventDescriptor!) throws -> AnyObject {
         switch desc.descriptorType {
@@ -343,7 +345,6 @@ class SwiftAEAppData: AEBStaticAppData {
     }
 }
 
-
 /******************************************************************************/
 // Symbol base class
 
@@ -354,19 +355,28 @@ class SwiftAEAppData: AEBStaticAppData {
 
 class SwiftAESymbol: AEBSymbol {
     
-    override var description: String {return "AEB.\(self.aebName)"}
+    var aebPrefix: String {return "AEB"}
     
-    class func symbolWithFourCharCode(code: String!) -> AEBSymbol { // convenience constructor; TO DO: how best to implement this? e.g. would it be better on glue, where exact type can be given?
-        return self.symbol(AEM4CC(code))
+    override var description: String {
+        if (self.aebName != nil) {
+            return "\(self.aebPrefix).\(self.aebName)"
+        } else {
+            return "\(self.aebPrefix).symbolWithFourCharCode(\"\(AEMFormatOSType(self.aebCode))\")"
+        }
+    }
+    
+    // TO DO: construction is kinda messy
+        class func symbolWithFourCharCode(code: String!) -> AEBSymbol { // convenience constructor; TO DO: how best to implement this? as convenience init? e.g. would it be better on glue, where exact type can be given?
+        return self.aebSymbolForCode(AEM4CC(code))
     }
     
     /* begin generated section */
     
-    class func symbol(code: OSType) -> AEBSymbol { // used by codecs to unpack AEDescs of typeType/typeEnumerated as named symbols (note: if a four-char code doesn't have a corresponding name, an AEBSymbol instance containing the raw code only is returned)
-        switch code {
+    override class func aebSymbolForCode(code_: OSType) -> AEBSymbol { // used by codecs to unpack AEDescs of typeType/typeEnumerated as named symbols (note: if a four-char code doesn't have a corresponding name, an AEBSymbol instance containing the raw code only is returned)
+        switch code_ {
         //case AEM4CC("pnam"): return self.name
         // ... TO DO: standard codes
-        default: return AEBSymbol(code: code)
+        default: return super.aebSymbolForCode(code_)
         }
     }
     
@@ -404,7 +414,7 @@ let AEBNoTimeout: NSTimeInterval = -2
 let AEBDefaultTimeout: NSTimeInterval = -1
 
 typealias AEBReturnType = AnyObject // TO DO: more specific returnType
-typealias AEBConsiderIgnoreType = Set<AEBSymbol>
+typealias AEBConsiderIgnoreType = [AEBSymbol]
 
 
 class SwiftAESpecifier: AEBSpecifier {
@@ -467,7 +477,7 @@ class SwiftAESpecifier: AEBSpecifier {
         }
     }
     
-    // TO DO: support optional completionHandler closure for async sends? (not sure how best to implement this; might be simpler to take kAEQueueReply flag and immediately return  sent event's returnID as result, leaving user to collect reply event themselves)
+    // TO DO: support optional completionHandler closure for async sends? (not sure how best to implement this; might be simpler to take optional `queueReply:true` arg that calls command.queueReply() to set AESendMode's kAEQueueReply flag and, on successful dispatch of the event, immediately return the event's returnID as result, leaving user to collect reply event themselves)
     
     // note: clients may call the following method directly as workaround if app's terminology is missing or incorrect
     // TO DO: add convenience raw send method that takes four-char code strings (c.f. elementsByFourCharCode)
@@ -523,10 +533,14 @@ class SwiftAESpecifier: AEBSpecifier {
         if let ignore = ignoring {
             print("TO DO: ignoring: \(ignore)")
         }
-        return try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript
+                
+                
+        let res = try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript; Q. implement SwiftAEError as enum (at least for common standard error codes)? e.g. SwiftAEError.UnsupportedCoercion, .MissingParameter, .SpecifierNotFound, .ProcessNotFound, .ProcessTerminated, etc. prob. easiest for writing do...catch...catch...catch blocks
+    
+  //      print(try SwiftAEFormatAppleEvent(command.aemEvent.descriptor)) // TEST; TO DO: delete
+        return res
     }
     
 }
-
 
 

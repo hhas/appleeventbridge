@@ -283,7 +283,7 @@ class ITUSpecifier: SwiftAESpecifier {
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.after(), queryError: queryError)
     }
 
-    // Test clause constructors, e.g. ITU.its.name.beginsWith("foo")
+    // Test clause constructors, e.g. ITUits.name.beginsWith("foo")
     
     func beginsWith(input: AnyObject!) -> ITUSpecifier! {
         let (baseQuery, queryError) = self.aemObjectSpecifer("test")
@@ -816,7 +816,7 @@ class ITunes: ITUSpecifier {
 }
 
 
-// test clause constructors, e.g. ITU.its.name != "foo"
+// test clause constructors, e.g. ITUits.name != "foo"
 // note: the == operator will return a ITUSpecifier when used in elements[...] specifier; however, when
 // binding its result to a variable, it must be explicitly typed as (e.g.) AnyObject or Swift will infer Bool
 
@@ -864,20 +864,10 @@ prefix func ! (input: ITUSpecifier!) -> ITUSpecifier! {
 
 class ITUSymbol: SwiftAESymbol {
 
-    override var description: String {return "ITU.\(self.aebName)"}
+    override var aebPrefix: String {return "ITU"}
 
-    // Generic specifier roots. These can be used to construct ITUSpecifiers for use in other
-    // ITUSpecifiers and ITUCommands, though only real specifiers constructed from a
-    // ITunes application instance can be used to send commands to the target application.
-
-    // TO DO: where best to put these root vars?
-
-    static let app = ITUSpecifier(appData: nil, aemQuery: AEMQuery.app())
-    static let con = ITUSpecifier(appData: nil, aemQuery: AEMQuery.con())
-    static let its = ITUSpecifier(appData: nil, aemQuery: AEMQuery.its())
-
-    override class func symbol(code: OSType) -> AEBSymbol {
-        switch (code) {
+    override class func aebSymbolForCode(code_: OSType) -> AEBSymbol {
+        switch (code_) {
         case 0x61707220: return self.April
         case 0x61756720: return self.August
         case 0x6b537041: return self.Books
@@ -1219,7 +1209,7 @@ class ITUSymbol: SwiftAESymbol {
         case 0x79657320: return self.yes
         case 0x69737a6d: return self.zoomable
         case 0x707a756d: return self.zoomed
-        default: return super.symbol(code)
+        default: return super.aebSymbolForCode(code_)
         }
     }
 
@@ -1573,11 +1563,14 @@ class ITUSymbol: SwiftAESymbol {
 /******************************************************************************/
 // TOP-LEVEL CONSTANTS
 
-// Namespace for generic specifiers and symbols, e.g. ITU.app.name, ITU.unicodeText
+// Namespace for built-in and application-defined symbols, e.g. ITU.documentFile, ITU.unicodeText
 let ITU = ITUSymbol.self
 
-// Root objects for constructing generic specifiers
-let ITUApp = ITUSpecifier(appData: nil, aemQuery: AEMQuery.app())
-let ITUCon = ITUSpecifier(appData: nil, aemQuery: AEMQuery.con())
-let ITUIts = ITUSpecifier(appData: nil, aemQuery: AEMQuery.its())
+
+// Generic specifier roots. These can be used to construct ITUSpecifiers for use in other
+// ITUSpecifiers and ITUCommands, though only real specifiers constructed from a
+// ITunes application instance can be used to send commands to the target application.
+let ITUapp = ITUSpecifier(appData: nil, aemQuery: AEMQuery.app())
+let ITUcon = ITUSpecifier(appData: nil, aemQuery: AEMQuery.con())
+let ITUits = ITUSpecifier(appData: nil, aemQuery: AEMQuery.its())
 

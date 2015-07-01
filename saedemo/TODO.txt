@@ -72,46 +72,51 @@ Also, how to make instance methods generic so they can be defined once on SwiftA
     print(q) // q=false, but should be TETSpecifier; other operators do not seem to have this problem
 
 
+- how best to specify how reply descs should be unpacked? (TO DO: is it possible/practical to specify return type as a Swift type, e.g. Array<String>, and introspect that to determine what coercions to apply when unpacking descs?)
 
-- how best can commands provide generic behavior where a Swift type passed as returnType: argument can determine function/method's return type? e.g.:
+    - what about overriding return type for String, Int, Array<String>, etc? (this could generate a lot of methods; will need to stress-test glues on InDesign, etc.; also likely to be ambiguous, and therefore more nuisance than help)
+
+    - how best can commands provide generic behavior where a Swift type passed as returnType: argument can determine function/method's return type? e.g.:
 
 
-        func get<T>(..., asType: T.Type) throws -> T! {
-            // introspect T.dynamicType here and use that info to specify outgoing event's requested type and coerce return value to appropriate desc type[s] as it's being unpacked (note: this'll require overriding/modifying unpack: so that coercion info can be passed in as an argument of type id; individual glues can then coerce desc to required type before passing it to AEBAppData, along with - if it's a list/record - the coercion info describing how to unpack its items)
-            return result
-        }
+            func get<T>(..., asType: T.Type) throws -> T! {
+                // introspect T.dynamicType here and use that info to specify outgoing event's requested type and coerce return value to appropriate desc type[s] as it's being unpacked (note: this'll require overriding/modifying unpack: so that coercion info can be passed in as an argument of type id; individual glues can then coerce desc to required type before passing it to AEBAppData, along with - if it's a list/record - the coercion info describing how to unpack its items)
+                return result
+            }
 
-    would be called as:
+        would be called as:
 
-        objSpec.get(1, asType: [String].self)
+            objSpec.get(1, asType: [String].self)
 
-        finder.items.get(asType:[NSURL].self)
+            finder.items.get(asType:[NSURL].self)
 
-    thus avoiding need for trailing `as! [String]` as well as providing coercion to desired type where practical. (This may need to be implemented as an overloaded method, or is it possible to declare asType: as optional arg?)
+        thus avoiding need for trailing `as! [String]` as well as providing coercion to desired type where practical. (This may need to be implemented as an overloaded method, or is it possible to declare asType: as optional arg?)
 
-    (BTW, NSAppleEventDescriptor.self should also be allowed as a return type, in which case reply desc would be returned as-is without any unpacking.)
+        (BTW, NSAppleEventDescriptor.self should also be allowed as a return type, in which case reply desc would be returned as-is without any unpacking.)
 
+
+- in Swift XXXSymbol classes, would a dictionary of closures be faster/slower than large switch blocks for unpacking? (or a combination of switch for initial lookup combined with static dictionary-based cache for subsequent retrievals? prob. best to profile first)
 
 
 - currently built-in terms aren't predefined in GlueSupport base classes, but are included in glue each time; not sure if this is best approach (though is prob. simplest as it avoids glue gen having to detect overridden terms and explicitly mark them `override`)
 
-- if user constructs a malformed SwiftAESpecifier - e.g. te.documents[1][2] - it should still be usable in commands (i.e. swift specifier constructors should never return nil or throw errors/exceptions themselves); the only difference is that the SwiftAESpecifier will contain an AEMQueryError instead of an AEMQuery, and the sendAppleEvent() method will throw that as it would any other errors that occur during packing (e.g. if user passes an unsupported type as a command param or a specifier selector)
 
-- move SwiftAEGlueSupport to framework
+- move AEBSwiftAEGlueBase, AEBSwiftAETranslate to AppleEventBridge.framework (note: need to check how mixed-code framework APIs are exposed to Swift vs ObjC)
+
+
+- How should application-defined symbols be represented in Swift? Currently subclasses of AEBConstant, but definitions and typing are a bit shlonky, and built-in and app-defined terms are all mixed up in glues (it would be cleaner if built-in terms were defined once in framework as they already are for ObjC glues). Defining 'XXX' namespaces as Swift enums would be more idiomatic from Swift's POV; however, these don't allow for buggy terminology and other corner cases where code->name mappings aren't found (it's arguably SwiftAppData's job to return AEMType/AEMEnum instead of XXSymbol when this happens, but this in turn makes static typing tricker for users). And since ensuring AppleScript-level application compatibility is more important that 'nativeness', it may be that enums are impractical and the current XXSymbol class-based approach is the best (least problematic) of the available solutions.
 
 
 - finish event attributes support
-
-
-- how best to specify how reply descs should be unpacked? (TO DO: is it possible/practical to specify return type as a Swift type, e.g. Array<String>, and introspect that to determine what coercions to apply when unpacking descs?)
-
-- what about overriding return type for String, Int, Array<String>, etc? (this could generate a lot of methods; will need to stress-test glues on InDesign, etc.)
 
 
 - is `defer` any use for auto-closing transactions? (not that many, if any, apps use those these days)
 
 
 - remove `k` prefix from all AEM/AEB enums (c.f. Cocoa enums)?
+
+
+- make a final decision on whether Swift glues should define generic specifier roots as XXX.app/XXX.con/XXX.its, XXXApp/XXXCon/XXXIts, or XXXapp/XXXcon/XXXits
 
 
 - how to structure documentation to cover both Swift and ObjC?

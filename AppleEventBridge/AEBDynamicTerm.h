@@ -68,15 +68,16 @@ typedef enum {
 
 @interface AEBDynamicCommandTerm : AEBDynamicTerm {
 	NSMutableDictionary *parametersByName, *parametersByCode;
+    NSMutableArray *orderedParameters;
 }
 
 @property (readonly) OSType eventClass, eventID;
-@property (readonly) NSSet *parameters; // set of AEBDynamicKeywordTerm
+@property (readonly) NSArray *parameters; // array of AEBDynamicKeywordTerm, in order of definition
 
 - (instancetype)initWithName:(NSString*)name_ eventClass:(OSType)eventClass_ eventID:(OSType)eventID_;
 
 
-- (AEBDynamicCommandTerm *)addParameterWithName:(NSString *)name_ code:(OSType)code_; // returns self
+- (instancetype)addParameterWithName:(NSString *)name_ code:(OSType)code_; // returns self
 
 - (AEBDynamicKeywordTerm *)parameterForName:(NSString *)name_;
 

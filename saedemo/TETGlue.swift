@@ -171,7 +171,7 @@ class TETSpecifier: SwiftAESpecifier {
         return TETSpecifier(appData: aebAppData, aemQuery: baseQuery?.after(), queryError: queryError)
     }
 
-    // Test clause constructors, e.g. TET.its.name.beginsWith("foo")
+    // Test clause constructors, e.g. TETits.name.beginsWith("foo")
     
     func beginsWith(input: AnyObject!) -> TETSpecifier! {
         let (baseQuery, queryError) = self.aemObjectSpecifer("test")
@@ -456,7 +456,7 @@ class TextEdit: TETSpecifier {
 }
 
 
-// test clause constructors, e.g. TET.its.name != "foo"
+// test clause constructors, e.g. TETits.name != "foo"
 // note: the == operator will return a TETSpecifier when used in elements[...] specifier; however, when
 // binding its result to a variable, it must be explicitly typed as (e.g.) AnyObject or Swift will infer Bool
 
@@ -504,20 +504,10 @@ prefix func ! (input: TETSpecifier!) -> TETSpecifier! {
 
 class TETSymbol: SwiftAESymbol {
 
-    override var description: String {return "TET.\(self.aebName)"}
+    override var aebPrefix: String {return "TET"}
 
-    // Generic specifier roots. These can be used to construct TETSpecifiers for use in other
-    // TETSpecifiers and TETCommands, though only real specifiers constructed from a
-    // TextEdit application instance can be used to send commands to the target application.
-
-    // TO DO: where best to put these root vars?
-
-    static let app = TETSpecifier(appData: nil, aemQuery: AEMQuery.app())
-    static let con = TETSpecifier(appData: nil, aemQuery: AEMQuery.con())
-    static let its = TETSpecifier(appData: nil, aemQuery: AEMQuery.its())
-
-    override class func symbol(code: OSType) -> AEBSymbol {
-        switch (code) {
+    override class func aebSymbolForCode(code_: OSType) -> AEBSymbol {
+        switch (code_) {
         case 0x61707220: return self.April
         case 0x61756720: return self.August
         case 0x63737472: return self.CString
@@ -701,7 +691,7 @@ class TETSymbol: SwiftAESymbol {
         case 0x79657320: return self.yes
         case 0x69737a6d: return self.zoomable
         case 0x707a756d: return self.zoomed
-        default: return super.symbol(code)
+        default: return super.aebSymbolForCode(code_)
         }
     }
 
@@ -897,11 +887,14 @@ class TETSymbol: SwiftAESymbol {
 /******************************************************************************/
 // TOP-LEVEL CONSTANTS
 
-// Namespace for generic specifiers and symbols, e.g. TET.app.name, TET.unicodeText
+// Namespace for built-in and application-defined symbols, e.g. TET.documentFile, TET.unicodeText
 let TET = TETSymbol.self
 
-// Root objects for constructing generic specifiers
-let TETApp = TETSpecifier(appData: nil, aemQuery: AEMQuery.app())
-let TETCon = TETSpecifier(appData: nil, aemQuery: AEMQuery.con())
-let TETIts = TETSpecifier(appData: nil, aemQuery: AEMQuery.its())
+
+// Generic specifier roots. These can be used to construct TETSpecifiers for use in other
+// TETSpecifiers and TETCommands, though only real specifiers constructed from a
+// TextEdit application instance can be used to send commands to the target application.
+let TETapp = TETSpecifier(appData: nil, aemQuery: AEMQuery.app())
+let TETcon = TETSpecifier(appData: nil, aemQuery: AEMQuery.con())
+let TETits = TETSpecifier(appData: nil, aemQuery: AEMQuery.its())
 

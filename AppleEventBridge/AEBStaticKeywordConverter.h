@@ -5,7 +5,7 @@
 #import "AEBKeywordConverter.h"
 
 
-@interface AEBStaticKeywordConverter : NSObject {
+@interface AEBStaticKeywordConverter : AEBKeywordConverter {
  
     NSMutableDictionary *cache;
     
@@ -29,6 +29,8 @@
 @property (readonly) NSSet *kSwiftKeywords, *kAEBSwiftSpecifierMethods, *kAEBSwiftParameterNames,
                            *kReservedSpecifierWords, *kReservedParameterWords, *kReservedPrefixes;
 
++ (instancetype)sharedKeywordConverter;
+
 - (NSString *)convertSpecifierName:(NSString *)name;
 - (NSString *)convertParameterName:(NSString *)name;
 - (NSString *)identifierForAppName:(NSString *)name;
@@ -41,6 +43,8 @@
 @interface AEBObjCKeywordConverter : AEBStaticKeywordConverter
 
 @property (readonly) NSSet *kObjectiveCKeywords, *kAEBObjectiveCMethods, *kReservedWords, *kReservedPrefixes;
+
++ (instancetype)sharedKeywordConverter;
 
 - (NSString *)convertSpecifierName:(NSString *)name;
 - (NSString *)convertParameterName:(NSString *)name;

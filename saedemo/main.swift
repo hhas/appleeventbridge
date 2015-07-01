@@ -12,14 +12,27 @@ let textedit = TextEdit()
 let itunes = ITunes()
 
 
-do {
-    print(try textedit.get(TET.app.documents[1][1].text))
-//    print(try textedit.documents[1][1].text.get())
-} catch {
-print(error)
+let t = true; let f = false
+
+
+if f {
+    do {
+        print(try textedit.get(TETapp.documents[1][1].text)) // check invalid specifiers are reported as errors upon use
+    //    print(try textedit.documents[1][1].text.get())
+    } catch {
+    print(error)
+    }
 }
 
-let t = true; let f = false
+
+print((try itunes.playerState.get()))
+
+//print("")
+//print((try itunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])
+//print("")
+//print((try itunes.playlists["Top 25 Most Played"].tracks.name.get(waitReply: false)))
+
+
 if t {
 
     // build an object specifier (note: formatter is unfinished so some types still appear ObjC style):
@@ -29,9 +42,9 @@ if t {
     //     end
     //
     let objSpec = textedit.documents[1].name
-    print(objSpec) // TETApplication(name: @"/Applications/TextEdit.app").documents[1].name
+    print(objSpec) // TextEdit(name: @"/Applications/TextEdit.app").documents[1].name
 
-    print(TET.app.documents[1].name) // 'generic' refs can be used as parameters to commands
+    print(TETapp.documents[1].name) // 'generic' refs can be used as parameters to commands
 
     do {
         // tell application "TextEdit" to make new document with properties {text:"Hello World!"}
@@ -57,7 +70,7 @@ if t {
 
 
     // tell application "iTunes" to get {name, rating} of (every track whose artist = "Sigur Ros" and (name begins with "G" or rating ≥ 60))
-    let q = itunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)]
+    let q = itunes.tracks[ITUits.artist == "Sigur Ros" && (ITUits.name.beginsWith("G") || ITUits.rating >= 60)]
     print(Array(zip(try q.name.get() as! [String], try q.rating.get() as! [Int])))
     // [("Gobbledigook", 80), ("Góðan Daginn", 40), ("Við Spilum Endalaust", 60), ...]
 
@@ -65,8 +78,8 @@ if t {
 
 
 
-    print(itunes.tracks[ITU.its.artist == "Sigur Ros" && (ITU.its.name.beginsWith("G") || ITU.its.rating >= 60)].rating)
-    //ITUApplication(name: @"/Applications/iTunes.app").tracks[(ITU.its.artist == @"Sigur Ros" && (ITU.its.name.beginsWith(@"G") || ITU.its.rating >= @60))].rating
+    print(itunes.tracks[ITUits.artist == "Sigur Ros" && (ITUits.name.beginsWith("G") || ITUits.rating >= 60)].rating)
+    //ITUApplication(name: @"/Applications/iTunes.app").tracks[(ITUits.artist == @"Sigur Ros" && (ITUits.name.beginsWith(@"G") || ITUits.rating >= @60))].rating
 
 
 }

@@ -46,6 +46,12 @@
  * Caution: subclasses should avoid directly accessing AEMEvent instance directly,
  * unless they really know what they're doing. Intead, use methods provided by AEBCommand
  * itself, as these know how to emulate the various quirks that AppleScript has.
+ *
+ * Also be aware that the AEMEvent instance is not fully packed until -sendWithError:
+ * is invoked. e.g. The packing of command's direct parameter and/or parent query is
+ * deferred until dispatch as they are packed differently depending on whether one,
+ * other, or both are given. Currently the only way to obtain a full description of
+ * the AEMEvent is to send the AEBCommand first, *then* get its aemEvent property.
  */
 @property (readonly) AEMEvent *aemEvent;
 

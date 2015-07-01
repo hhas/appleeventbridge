@@ -3,6 +3,7 @@
 //
 
 #import "AEBSymbol.h"
+#import "AEMFormatter.h"
 
 
 /**********************************************************************/
@@ -18,8 +19,10 @@
     return [[self alloc] initWithName: name_ descriptor: desc_];
 }
 
-+ (instancetype)symbolWithCode:(OSType)code_ {
-    return nil;
+// TO DO: +symbolWithDescriptor:
+
++ (AEBSymbol *)aebSymbolForCode:(OSType)code_ {
+    return [self symbolWithName: nil type: typeType code: code_];
 }
 
 - (instancetype)initWithName:(NSString *)name_ descriptor:(NSAppleEventDescriptor *)desc_ {
@@ -32,7 +35,7 @@
 
 
 - (NSString *)description {
-	return [NSString stringWithFormat: @"[%@ %@]", self.class, name];
+    return [NSString stringWithFormat: @"[%@ %@]", self.class, name ?: [NSString stringWithFormat: @"aebSymbolForCode: '%@'", AEMFormatOSType(desc.typeCodeValue)]];
 }
 
 - (id)copyWithZone:(NSZone *)zone {

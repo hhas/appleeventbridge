@@ -25,14 +25,15 @@
 + (instancetype)symbolWithName:(NSString *)name_ type:(DescType)type_ code:(OSType)code_ NS_RETURNS_RETAINED;
 
 //
-// note: +symbolWithCode: is automatically called by AEBAppData when unpacking AEDescs of typeType/TypeEnumerated
+// note: +aebSymbolForCode: is automatically called by AEBAppData when unpacking AEDescs of typeType/TypeEnumerated
 //
+// TO DO: update following comment
 // by default, this returns nil to indicate that no named symbol was found for the given code; subclasses should extend
 // as needed to return named symbols for all AE codes that they recognize; e.g. AEBStaticSymbol recognizes standard AEM/AS
 // types such as typeUnicodeText and typeList, so construct corresponding AEMStaticSymbol.unicodeText, AEMStaticSymbol.list
-// instances; in turn, glue-defined subclasses construct names for
+// instances; in turn, glue-defined subclasses construct names for type, enum, and property names defined by app's dictionary
 //
-+ (instancetype)symbolWithCode:(OSType)code_;
++ (AEBSymbol *)aebSymbolForCode:(OSType)code_;
 
 - (instancetype)initWithName: (NSString *)name_ descriptor:(NSAppleEventDescriptor *)desc_;
 

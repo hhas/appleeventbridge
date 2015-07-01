@@ -38,7 +38,7 @@
                                targetType: type
                                targetData: data
                              relaunchMode: kAEBRelaunchLimited
-                              launchOptions: kAEMDefaultLaunchOptions];
+                            launchOptions: kAEMDefaultLaunchOptions];
 }
 
 // create target AEMApplication instance (this will launch local process if not already running)

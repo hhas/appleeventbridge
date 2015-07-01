@@ -264,8 +264,8 @@
                                      @"contains",
                                      @"isIn",
                                      // used by AEBSymbol
-                                     @"symbolWithName",
-                                     @"symbolWithCode",
+                                     @"aebSymbolForCode",
+                                     @"symbolWithDescriptor",
                                      // currently unused
                                      @"help", // TO DO: uppercase?
                                      nil];
@@ -434,7 +434,7 @@
                                  @"initWithDescriptor",
                                  // used by AEBStaticSymbol
                                  @"symbolWithName",
-                                 @"symbolWithCode",
+                                 @"aebSymbolForCode",
                                  // used by AEBStaticCommand
                                  @"considering",
                                  @"sendMode",

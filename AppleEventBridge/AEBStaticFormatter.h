@@ -34,13 +34,12 @@
 
 /*******/
 // public
-// application-specific subclasses should override this method to provide their own prefix codes
 
-+ (NSString *)formatObject:(id)object appData:(id)appData_;
++ (NSString *)formatObject:(id)object appData:(id)appData_; // get literal representation of a Cocoa/AEB object
 
-/*******/
 // method stubs; application-specific subclasses will override to provide code->name translations
 
+// application-specific subclasses should override this method to provide their own prefix codes
 @property (readonly) NSString *prefix; // TO DO: update aebglue
 
 // override the following to return the property/element specifier syntax

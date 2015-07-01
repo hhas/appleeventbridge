@@ -12,7 +12,7 @@
 
 // used by AEBAppData unpack AEDescs representing standard types and enumerators defined by Apple Event Manager/AppleScript
 
-+ (AEBSymbol *)symbolWithCode:(OSType)code_ {
++ (AEBSymbol *)aebSymbolForCode:(OSType)code_ {
     switch (code_) {
         case 'rmte': return self.applicationResponses;
         case 'ask ': return self.ask;
@@ -150,7 +150,7 @@
         case 'vers': return self.version;
         case 'psct': return self.writingCode;
         case 'yard': return self.yards;
-        default: return [super symbolWithCode: code_];
+        default: return [super aebSymbolForCode: code_];
     }
 }
 

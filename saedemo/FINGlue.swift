@@ -287,7 +287,7 @@ class FINSpecifier: SwiftAESpecifier {
         return FINSpecifier(appData: aebAppData, aemQuery: baseQuery?.after(), queryError: queryError)
     }
 
-    // Test clause constructors, e.g. FIN.its.name.beginsWith("foo")
+    // Test clause constructors, e.g. FINits.name.beginsWith("foo")
     
     func beginsWith(input: AnyObject!) -> FINSpecifier! {
         let (baseQuery, queryError) = self.aemObjectSpecifer("test")
@@ -790,7 +790,7 @@ class Finder: FINSpecifier {
 }
 
 
-// test clause constructors, e.g. FIN.its.name != "foo"
+// test clause constructors, e.g. FINits.name != "foo"
 // note: the == operator will return a FINSpecifier when used in elements[...] specifier; however, when
 // binding its result to a variable, it must be explicitly typed as (e.g.) AnyObject or Swift will infer Bool
 
@@ -838,20 +838,10 @@ prefix func ! (input: FINSpecifier!) -> FINSpecifier! {
 
 class FINSymbol: SwiftAESymbol {
 
-    override var description: String {return "FIN.\(self.aebName)"}
+    override var aebPrefix: String {return "FIN"}
 
-    // Generic specifier roots. These can be used to construct FINSpecifiers for use in other
-    // FINSpecifiers and FINCommands, though only real specifiers constructed from a
-    // Finder application instance can be used to send commands to the target application.
-
-    // TO DO: where best to put these root vars?
-
-    static let app = FINSpecifier(appData: nil, aemQuery: AEMQuery.app())
-    static let con = FINSpecifier(appData: nil, aemQuery: AEMQuery.con())
-    static let its = FINSpecifier(appData: nil, aemQuery: AEMQuery.its())
-
-    override class func symbol(code: OSType) -> AEBSymbol {
-        switch (code) {
+    override class func aebSymbolForCode(code_: OSType) -> AEBSymbol {
+        switch (code_) {
         case 0x70616476: return self.AdvancedPreferencesPanel
         case 0x64667068: return self.ApplePhotoFormat
         case 0x64666173: return self.AppleShareFormat
@@ -1209,7 +1199,7 @@ class FINSymbol: SwiftAESymbol {
         case 0x79657320: return self.yes
         case 0x69737a6d: return self.zoomable
         case 0x707a756d: return self.zoomed
-        default: return super.symbol(code)
+        default: return super.aebSymbolForCode(code_)
         }
     }
 
@@ -1584,11 +1574,14 @@ class FINSymbol: SwiftAESymbol {
 /******************************************************************************/
 // TOP-LEVEL CONSTANTS
 
-// Namespace for generic specifiers and symbols, e.g. FIN.app.name, FIN.unicodeText
+// Namespace for built-in and application-defined symbols, e.g. FIN.documentFile, FIN.unicodeText
 let FIN = FINSymbol.self
 
-// Root objects for constructing generic specifiers
-let FINApp = FINSpecifier(appData: nil, aemQuery: AEMQuery.app())
-let FINCon = FINSpecifier(appData: nil, aemQuery: AEMQuery.con())
-let FINIts = FINSpecifier(appData: nil, aemQuery: AEMQuery.its())
+
+// Generic specifier roots. These can be used to construct FINSpecifiers for use in other
+// FINSpecifiers and FINCommands, though only real specifiers constructed from a
+// Finder application instance can be used to send commands to the target application.
+let FINapp = FINSpecifier(appData: nil, aemQuery: AEMQuery.app())
+let FINcon = FINSpecifier(appData: nil, aemQuery: AEMQuery.con())
+let FINits = FINSpecifier(appData: nil, aemQuery: AEMQuery.its())
 
