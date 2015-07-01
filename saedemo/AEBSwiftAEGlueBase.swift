@@ -4,321 +4,13 @@
 
 // TO DO: move into AppleEventBridge.framework
 
-// TO DO: how best to support Apple event to Swift code translation? easiest might be to provide a universal translation function that takes an NSAppleEventDescriptor of any type, including typeAppleEvent, and unpacks and formats it appropriately (see JAB code for an existing AE-to-JavaScript implementation that could probably be generalized to accept any formatter class)
+// TO DO: should XXApplication.currentApplication() be init(currentApplication:())? c.f. init(listDescriptor: ()) in NSAEDesc
 
 // note: AEBAppData uses AEMCodecs to unpack basic AE types (text, list, etc) as NSObjects; TO DO: would it be better to unpack them as native Swift types (and would Swift objects cause any issues with other NSObject-based APIs such as AEMQuery)?
 
 import Foundation
 import AppKit
 import AppleEventBridge
-
-
-// TO DO: should XXApplication.currentApplication() be init(currentApplication:())? c.f. init(listDescriptor: ()) in NSAEDesc
-
-/******************************************************************************/
-// Formatter base class
-
-
-// format numbers, strings, arrays, specifiers, etc. using literal Swift syntax
-func SwiftAEFormatObject(object: AnyObject!) -> String {
-    switch object {
-    case let obj as [AnyObject]:
-        var tmp = "["
-        var useSep = false // TO DO: use map+join
-        for item in obj {
-            if useSep {
-                tmp += ", "
-            }
-            tmp += SwiftAEFormatObject(item)
-            useSep = true
-        }
-        return "[\(tmp)]"
-    case let obj as NSDictionary: // TO DO: what about Swift dictionaries? (i.e. how to declare, as [protocol<Hashable>:AnyObject] doesn't work)
-        var tmp = ""
-        var useSep = false // TO DO: use map+join
-        for (key, value) in obj {
-            if (useSep) {
-                tmp += ", "
-            }
-            tmp += "\(SwiftAEFormatObject(key)): \(SwiftAEFormatObject(value))"
-            useSep = true
-        }
-        return "[\(tmp)]"
-    case let obj as String:
-        let tmp = NSMutableString(string: obj)
-        for (from, to) in [("\\", "\\\\"), ("\"", "\\\""), ("\r", "\\r"), ("\n", "\\n"), ("\t", "\\t")] {
-            tmp.replaceOccurrencesOfString(from, withString: to,
-                                           options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
-        }
-        return "\"\(tmp)\""
-    case let obj as NSDate:
-        return "NSDate(string: \(SwiftAEFormatObject(obj.description))"
-    case let obj as NSURL:
-        return "NSURL(string: \(SwiftAEFormatObject(obj.description))"
-    default:
-        return "\(object)" // note: specifiers, symbols, etc. automatically format themselves
-    }
-}
-
-
-// used by AEBSpecifier.description to generate literal representation of itself
-class SwiftAEFormatter: AEMQueryVisitor {
- 
-    var aebAppData: AEBAppData?
-    var mutableResult: NSMutableString?
-    
-    // takes an AEMQuery plus AEBStaticAppData instance, and returns the query's literal ObjC representation
-    class func formatObject(object: AnyObject!, appData: AEBAppData?) -> String { // TO DO: move this into SwiftAEFormatObject function above, with optional appData arg?
-        if object is AEMQuery { // instantiate a new formatter instance and pass it to AEMQuery's visitor method
-            let renderer = self.init(appData: appData)
-            object.resolveWithObject(renderer)
-            if let result = renderer.mutableResult {
-                return result.copy() as! String
-            } else {
-                return "\(renderer.app).specifierWithObject(\(object))"
-            }
-        } else {
-            return object == nil ? "<MALFORMED SPECIFIER>" : SwiftAEFormatObject(object) // TO DO: what we really want here is the AEBSpecifier, as that should contain error info
-        }
-    }
-
-    // clients should avoid calling this constructor directly; use above formatObject(object:appData:) method instead
-    required init(appData: AEBAppData?) {
-        mutableResult = NSMutableString()
-        aebAppData = appData;
-    }
-    
-    func format(object: AnyObject) -> String {
-        return object is AEMQuery ? self.dynamicType.formatObject(object, appData: aebAppData) : SwiftAEFormatObject(object) // see above
-    }
-    
-    // stubs; application-specific subclasses should override and extend to provide class name prefix and code->name translations,
-    // returning nil if no translation found
-    
-    var prefix: String {return "AEB"}
-    var appClassName: String {return "AEBApplication"}
-    
-    func propertyByCode(code: OSType) -> String? {
-        return nil
-    }
-    func elementsByCode(code: OSType) -> String? {
-        return nil
-    }
-    
-    // the following methods are called as formatter walks AEMQuery's visitor API
-    
-    // property and elements specifiers; if no terminology found for given 'want' code, uses raw constructor syntax instead
-    
-    override func property(code: OSType) -> Self {
-        if let name = self.propertyByCode(code) ?? self.elementsByCode(code) {
-            mutableResult?.appendFormat(".%@", name)
-        } else { // no code->name translation available
-            mutableResult?.appendFormat(".propertyWithFourCharCode(\"%@\")", AEMFormatOSType(code)) // TO DO: check this formats correctly for Swift
-        }
-        return self;
-    }
-    override func elements(code: OSType) -> Self {
-        if let name = self.elementsByCode(code) ?? self.propertyByCode(code) {
-            mutableResult?.appendFormat(".%@", name)
-        } else { // no code->name translation available
-            mutableResult?.appendFormat(".elementsWithFourCharCode(\"%@\")", AEMFormatOSType(code)) // TO DO: check this formats correctly for Swift
-        }
-        return self;
-    }
-    
-    // by-ordinal selectors
-    
-    override func first() -> Self {
-        self.mutableResult?.appendString("first")
-        return self
-    }
-    override func middle() -> Self {
-        self.mutableResult?.appendString("middle")
-        return self
-    }
-    override func last() -> Self {
-        self.mutableResult?.appendString("last")
-        return self
-    }
-    override func any() -> Self {
-        self.mutableResult?.appendString("any")
-        return self
-    }
-    
-    // by-index, by-name, by-id, by-range, by-test selectors
-    
-    override func byIndex(index: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat("[%@]", self.format(index))
-        return self
-    }
-    override func byName(name: AnyObject!) -> Self { // TO DO
-        self.mutableResult?.appendFormat("[%@]", self.format(name))
-        return self
-    }
-    override func byID(uid: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(".ID(%@)", self.format(uid))
-        return self
-    }
-    override func byRange(from: AnyObject!, to: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat("[%@, %@]", self.format(from), self.format(to))
-        return self;
-    }
-    override func byTest(clause: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat("[%@]", self.format(clause))
-        return self;
-    }
-    
-    // by-relative-position selectors
-    
-    override func previous(class_: OSType) -> Self {
-        
-        let symbol = "TO DO" // TO DO: if aebAppData==nil, need to ask glue to convert OSType to XXSymbol; also needs fixed in ObjC glue (Q. is there any situation where aebAppData would be from a different glue? if not, simplest is just to use XXSymbol directly and not bother with pack/unpack; i.e. glue subclasses should override this method so that they can refer directly to their XXSymbol class, or else should have a symbolForCode method that instantiates the XXSymbol class; also what about raw AEMTypes and/or AEMQuerys? will they convert to XXSymbols automatically, or is that something else that should be done in SwiftAEFormatObject function above?)
-        
- //       let symbol = try! aebAppData.unpack(NSAppleEventDescriptor(typeCode: class_))
-        self.mutableResult?.appendFormat(".previous(%@)", self.format(symbol))
-        return self;
-    }
-    override func next(class_: OSType) -> Self {
-        
-        let symbol = "TO DO" // DITTO
-
-  //      let symbol = try! aebAppData.unpack(NSAppleEventDescriptor(typeCode: class_))
-        self.mutableResult?.appendFormat(".next(%@)", self.format(symbol))
-        return self;
-    }
-    
-    // insertion location selectors
-    
-    override func beginning() -> Self {
-        self.mutableResult?.appendString(".beginning")
-        return self;
-    }
-    override func end() -> Self {
-        self.mutableResult?.appendString(".end")
-        return self;
-    }
-    override func before() -> Self {
-        self.mutableResult?.appendString(".before")
-        return self;
-    }
-    override func after() -> Self {
-        self.mutableResult?.appendString(".after")
-        return self;
-    }
-
-    // test clause renderers
-
-    override func greaterThan(object: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(" > %@", self.format(object))
-        return self;
-    }
-    override func greaterOrEquals(object: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(" >= %@", self.format(object))
-        return self;
-    }
-    override func equals(object: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(" == %@", self.format(object))
-        return self;
-    }
-    override func notEquals(object: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(" != %@", self.format(object))
-        return self;
-    }
-    override func lessThan(object: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(" < %@", self.format(object))
-        return self;
-    }
-    override func lessOrEquals(object: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(" <= %@", self.format(object))
-        return self;
-    }
-    override func beginsWith(object: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(".beginsWith(%@)", self.format(object))
-        return self;
-    }
-    override func endsWith(object: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(".endsWith(%@)", self.format(object))
-        return self;
-    }
-    override func contains(object: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(".contains(%@)", self.format(object))
-        return self;
-    }
-    override func isIn(object: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat(".isIn(%@)", self.format(object))
-        return self;
-    }
-   override func AND(remainingOperands: AnyObject!) -> Self {
-        self.mutableResult?.insertString("(", atIndex: 0)
-        if remainingOperands is [AnyObject] {
-            for operand in remainingOperands as! [AnyObject] {
-                self.mutableResult?.appendFormat(" && %@", self.format(operand))
-            }
-        } else {
-            self.mutableResult?.appendFormat(" && %@", self.format(remainingOperands))
-        }
-        self.mutableResult?.appendString(")")
-        return self;
-    }
-    override func OR(remainingOperands: AnyObject!) -> Self {
-        self.mutableResult?.insertString("(", atIndex: 0)
-        if remainingOperands is [AnyObject] {
-            for operand in remainingOperands as! [AnyObject] {
-                self.mutableResult?.appendFormat(" || %@", self.format(operand))
-            }
-        } else {
-            self.mutableResult?.appendFormat(" || %@", self.format(remainingOperands))
-        }
-        self.mutableResult?.appendString(")")
-        return self;
-    }
-    override func NOT() -> Self {
-        self.mutableResult?.insertString("!(", atIndex: 0)
-        self.mutableResult?.appendString(")")
-        return self;
-    }
-
-    // specifier roots
-    
-    override func app() -> Self {
-        if aebAppData == nil { // generic specifier
-            self.mutableResult?.appendFormat("%@app", self.prefix)
-        } else { // concrete specifier
-            self.mutableResult?.appendString(self.appClassName)
-            do {
-                let target = try aebAppData!.targetWithError()
-                let targetData = target.targetData()
-                let targetType = target.targetType()
-                if targetType == kAEMTargetCurrent {
-                    self.mutableResult?.appendString(".currentApplication()")
-                } else if targetType == kAEMTargetFileURL {
-                    self.mutableResult?.appendFormat("(name:%@)", self.format((targetData as! NSURL).path!)) // TO DO: check this
-                } else if targetType == kAEMTargetEppcURL {
-                    self.mutableResult?.appendFormat("(url:%@)", self.format(targetData))
-                } else if targetType == kAEMTargetProcessID {
-                    self.mutableResult?.appendFormat("(processIdentifier:%@)", self.format(targetData))
-                } else { // if targetType == kAEMTargetDescriptor {
-                    self.mutableResult?.appendFormat("(descriptor:%@)", self.format(targetData))
-                }
-            } catch {
-                self.mutableResult?.appendString("(<invalid target (error=\(error))>)")
-            }
-        }
-        return self;
-    }
-    override func con() -> Self {
-        self.mutableResult?.appendFormat("%@con", self.prefix)
-        return self
-    }
-    override func its() -> Self {
-        self.mutableResult?.appendFormat("%@its", self.prefix)
-        return self
-    }
-    override func customRoot(rootObject: AnyObject!) -> Self {
-        self.mutableResult?.appendFormat("%@.customRoot(%@)", self.appClassName, self.format(rootObject))
-        return self
-    }
-}
 
 
 /******************************************************************************/
@@ -341,6 +33,59 @@ class SwiftAEAppData: AEBStaticAppData {
         case 0x66616c73: return false
         case 0x626f6f6c: return desc.booleanValue != 0
         default: return try super.unpack(desc)
+        }
+    }
+    
+    override func unpackCompDescriptor(desc: NSAppleEventDescriptor) throws -> AnyObject {
+        let operatorCode = desc.descriptorForKeyword(AEM4CC("relo"))!.enumCodeValue // keyAECompOperator
+        var op1 = try self.unpack(desc.descriptorForKeyword(AEM4CC("obj1"))) // keyAEObject1
+        var op2 = try self.unpack(desc.descriptorForKeyword(AEM4CC("obj2"))) // keyAEObject2
+        // note: unlike ObjC glues, SwiftAESpecifier isn't polymorphic with AEMQuery where test clause methods are concerned (preferring to use overloaded operators instead); one option would be to implement greaterThan, etc. on glue specifiers, allowing existing AEMCodecs.unpackCompDescriptor() to unpack them; for now though, let's just unwrap the underlying AEMQuerys and work on those (there's no real reason to unpack comparison and logic descriptors as SwiftAESpecifiers since they normally only occur inside other specifiers)
+        if op1 is AEMQueryProtocol {
+            op1 = op1.aemQuery
+        }
+        if op2 is AEMQueryProtocol {
+            op2 = op2.aemQuery
+        }
+        // TO DO: it might be best if AEMCodecs split unpackCompDescriptor into separate unpack and apply methods
+        switch operatorCode {
+        case AEM4CC(">   "):
+            // note: these will throw exception if first operand is not an objSpec; TO DO: if op1 is not an AEMQuery but op2 is, should operands and operator be reversed, e.g. op1.greaterThan(op2) -> op2.lessOrEquals(op1); the AEOM spec is no help, of course (one option would be to check how AS packs them)
+            return (op1 as! AEMObjectSpecifier).greaterThan(op2)
+        case AEM4CC(">=  "):
+            return (op1 as! AEMObjectSpecifier).greaterOrEquals(op2)
+        case AEM4CC("=   "):
+            return (op1 as! AEMObjectSpecifier).equals(op2)
+        case AEM4CC("<   "):
+            return (op1 as! AEMObjectSpecifier).lessThan(op2)
+        case AEM4CC("<=  "):
+            return (op1 as! AEMObjectSpecifier).lessOrEquals(op2)
+        case AEM4CC("bgwt"):
+            return (op1 as! AEMObjectSpecifier).beginsWith(op2)
+        case AEM4CC("ends"):
+            return (op1 as! AEMObjectSpecifier).endsWith(op2)
+        case AEM4CC("cont"):
+            return try self.unpackContainsCompDescriptorWithOperand1(op1, operand2: op2)
+        default:
+            throw AEMErrorWithInfo(-1701, "Unknown comparison operator: \(desc)") // TO DO: this isn't working correctly; need to check why (e.g. deliberately break = operator to trigger it)
+        }
+    }
+
+    override func unpackLogicalDescriptor(desc: NSAppleEventDescriptor) throws -> AnyObject {
+        let operatorsDesc = desc.descriptorForKeyword(AEM4CC("term"))!.coerceToDescriptorType(AEM4CC("list"))! // keyAELogicalTerms, typeAEList
+        let operatorCode = desc.descriptorForKeyword(AEM4CC("logc"))!.enumCodeValue // keyAELogicalOperator
+        let op1 = try self.unpack(operatorsDesc.descriptorAtIndex(1)).aemQuery as! AEMTestClause
+        switch operatorCode {
+        case AEM4CC("AND "):
+            operatorsDesc.removeDescriptorAtIndex(1)
+            return op1.AND(try self.unpack(operatorsDesc))
+        case AEM4CC("OR  "):
+            operatorsDesc.removeDescriptorAtIndex(1)
+            return op1.OR(try self.unpack(operatorsDesc))
+        case AEM4CC("NOT "):
+            return op1.NOT()
+        default:
+            throw AEMErrorWithInfo(-1701, "Unknown logical operator: \(desc)")
         }
     }
 }
@@ -537,7 +282,7 @@ class SwiftAESpecifier: AEBSpecifier {
                 
         let res = try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript; Q. implement SwiftAEError as enum (at least for common standard error codes)? e.g. SwiftAEError.UnsupportedCoercion, .MissingParameter, .SpecifierNotFound, .ProcessNotFound, .ProcessTerminated, etc. prob. easiest for writing do...catch...catch...catch blocks
     
-  //      print(try SwiftAEFormatAppleEvent(command.aemEvent.descriptor)) // TEST; TO DO: delete
+        print(try SwiftAEFormatAppleEvent(command.aemEvent.descriptor)) // TEST; TO DO: delete
         return res
     }
     

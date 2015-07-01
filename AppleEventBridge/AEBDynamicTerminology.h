@@ -51,7 +51,7 @@
                                          *propertiesByName,   // {NSString: AEBDynamicKeywordTerm} // e.g. AERecord keys
                                          *elementsByName,     // {NSString: AEBDynamicKeywordTerm}
                                          *commandsByName,     // {NSString: AEBDynamicCommandTerm}
-                                         *typesByCode,        // {NSNumber(UInt32):  NSString}
+                                         *typesByCode,        // {NSNumber(UInt32):  NSString} // type, enum, and property names
                                          *propertiesByCode,   // {NSNumber(UInt32):  NSString}
                                          *elementsByCode,     // {NSNumber(UInt32):  NSString}
                                          *commandsByCode;     // {NSNumber(UInt64): AEBDynamicCommandTerm}

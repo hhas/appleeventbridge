@@ -172,8 +172,10 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 }
 
 
-- (id)realSpecifier { // used internally // TO DO: ought to return error where practical
-	if (!specifier) specifier = [codecs fullyUnpackObjectSpecifier: desc error: nil];
+- (id)realSpecifier { // used internally
+    NSError *error = nil;
+	if (!specifier) specifier = [codecs fullyUnpackObjectSpecifier: desc error: &error];
+    if (!specifier) NSLog(@"-[AEMDeferredSpecifier realSpecifier] failed (e.g. due to bug or a malformed AEDesc):\n%@\n%@", error, desc); // TO DO: while fully unpacking object specifier should not fail in theory, it might be best to return error where practical (for now, any errors are logged for debugging purposes then dropped silently on the floor)
 	return specifier;
 }
 

@@ -127,3 +127,7 @@ Also, how to make instance methods generic so they can be defined once on SwiftA
     print(try textedit.documents.modified.get()) // prints as (0,0,...), not [false,false,...]
 
 
+- implement Playground-friendly help() support
+
+
+

@@ -90,6 +90,7 @@
 		4FD8E4A11B334D63004B5CD5 /* AEBKeywordConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */; };
 		4FE621261B4401E900604DC1 /* AEBSwiftAETranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE621251B4401E900604DC1 /* AEBSwiftAETranslate.swift */; };
+		4FE621281B44923900604DC1 /* AEBSwiftAEFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE621271B44923900604DC1 /* AEBSwiftAEFormatter.swift */; };
 		4FFA2D721A129BCA00AF09E4 /* application-objects.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5E1A129B7E00AF09E4 /* application-objects.html */; };
 		4FFA2D731A129BCA00AF09E4 /* application_architecture.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5F1A129B7E00AF09E4 /* application_architecture.gif */; };
 		4FFA2D741A129BCA00AF09E4 /* application_architecture2.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D601A129B7E00AF09E4 /* application_architecture2.gif */; };
@@ -304,6 +305,7 @@
 		4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBKeywordConverter.h; sourceTree = "<group>"; };
 		4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBKeywordConverter.m; sourceTree = "<group>"; };
 		4FE621251B4401E900604DC1 /* AEBSwiftAETranslate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEBSwiftAETranslate.swift; sourceTree = "<group>"; };
+		4FE621271B44923900604DC1 /* AEBSwiftAEFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEBSwiftAEFormatter.swift; sourceTree = "<group>"; };
 		4FFA2D371A129AAE00AF09E4 /* 1 introduction.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "1 introduction.md"; sourceTree = "<group>"; };
 		4FFA2D381A129AAE00AF09E4 /* 10 optimizing-performance.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "10 optimizing-performance.md"; sourceTree = "<group>"; };
 		4FFA2D391A129AAE00AF09E4 /* 11 low-level-apis.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "11 low-level-apis.md"; sourceTree = "<group>"; };
@@ -570,6 +572,7 @@
 				4F4ADED31B35DC330017EE65 /* TETGlue.swift */,
 				4F4ADED41B35DC330017EE65 /* TETGlue-swift.sdef */,
 				4F4ADE821B35C49E0017EE65 /* AEBSwiftAEGlueBase.swift */,
+				4FE621271B44923900604DC1 /* AEBSwiftAEFormatter.swift */,
 				4FE621251B4401E900604DC1 /* AEBSwiftAETranslate.swift */,
 			);
 			name = "Swift demo";
@@ -956,6 +959,7 @@
 				4F4ADE831B35C49E0017EE65 /* AEBSwiftAEGlueBase.swift in Sources */,
 				4F4ADED51B35DC330017EE65 /* TETGlue.swift in Sources */,
 				4FE621261B4401E900604DC1 /* AEBSwiftAETranslate.swift in Sources */,
+				4FE621281B44923900604DC1 /* AEBSwiftAEFormatter.swift in Sources */,
 				4F5EE3D51B2D7F1F007C58B5 /* main.swift in Sources */,
 				4F4ADEDC1B3824E30017EE65 /* FINGlue.swift in Sources */,
 			);

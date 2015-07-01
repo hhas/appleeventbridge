@@ -16,34 +16,6 @@ import AppleEventBridge
 /******************************************************************************/
 // SwiftAEFormatAppleEvent
 
-/*
-
-0x7472616E // keyTransactionIDAttr
-0x72746964 // keyReturnIDAttr
-0x6576636C // keyEventClassAttr
-0x65766964 // keyEventIDAttr
-0x61646472 // keyAddressAttr
-0x6F70746B // keyOptionalKeywordAttr
-0x74696D6F // keyTimeoutAttr
-0x696E7465 // keyInteractLevelAttr
-0x65737263 // keyEventSourceAttr
-0x6D697373 // keyMissedKeywordAttr
-0x66726F6D // keyOriginalAddressAttr
-0x6163746D // keyAcceptTimeoutAttr
-0x72657071 // keyReplyRequestedAttr
-0x72747970 // keyAERequestedType
-0x7375626A // keySubjectAttr
-0x72657070 // keyReplyPortAttr
-
-0x636F6E73 // enumConsiderations (old style)
-0x63736967 // enumConsidsAndIgnores (new style)
-
-kAENoReply    = 0x00000001, /* sender doesn't want a reply to event */
-kAEQueueReply = 0x00000002, /* sender wants a reply but won't wait */
-kAEWaitReply  = 0x00000003, /* sender wants a reply and will wait */
-
-*/
-
 // constants used in AEBDynamicAppData initializers
 let kAEBUseAETETerminology    = AEMType(code: AEM4CC("AETE"))
 let kAEBUseSDEFTerminology    = AEMType(code: AEM4CC("SDEF"))
@@ -96,6 +68,7 @@ private func appDataForProcess(var addressDesc: NSAppleEventDescriptor!, useSDEF
 }
 //
 
+// note: if sending events to self, processes _must_ useSDEF=true or call this function on a background thread, otherwise SwiftAEFormatAppleEvent will deadlock the main loop when it tries to fetch host app's AETE via ascr/gdte event
 
 func SwiftAEFormatAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = false) throws -> String { // TO DO: on failure, return string or error message?
     if event.descriptorType as UInt32 != AEM4CC("aevt") { // typeAppleEvent // TO DO: Swift auto-converts OSType to Int, making AE consts useless
@@ -179,7 +152,8 @@ func SwiftAEFormatAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = fal
 
 class SwiftAETranslationAppData: SwiftAEAppData { // extends static app data (which provides pack/unpack) to include terms
     
-    var propertyByCodeTable: [NSNumber:String]
+    var typesByCodeTable: [NSNumber:String]
+    var propertiesByCodeTable: [NSNumber:String]
     var elementsByCodeTable: [NSNumber:String]
     var commandsByCodeTable: [NSNumber:AEBDynamicCommandTerm]
     var appClassName: String
@@ -189,7 +163,8 @@ class SwiftAETranslationAppData: SwiftAEAppData { // extends static app data (wh
         specifierClass specifierClass_: AnyClass!, targetType type: AEBTargetType,
         targetData data: AnyObject!, terms: AEBDynamicTerminology,
         appClassName appClassName_: String, prefix prefix_: String) {
-            propertyByCodeTable = terms.propertiesByCode.copy() as! [NSNumber:String]
+            typesByCodeTable = terms.typesByCode.copy() as! [NSNumber:String]
+            propertiesByCodeTable = terms.propertiesByCode.copy() as! [NSNumber:String]
             elementsByCodeTable = terms.elementsByCode.copy() as! [NSNumber:String]
             commandsByCodeTable = terms.commandsByCode.copy() as! [NSNumber:AEBDynamicCommandTerm]
             appClassName = appClassName_
@@ -197,7 +172,31 @@ class SwiftAETranslationAppData: SwiftAEAppData { // extends static app data (wh
             super.init(applicationClass: appClass, symbolClass: symbolClass_, specifierClass: specifierClass_,
                 targetType: type, targetData: data)
     }
+        
+    private func unpackAEBSymbol(desc: NSAppleEventDescriptor!) throws -> AnyObject {
+        let name = (self.typesByCodeTable[NSNumber(unsignedInt: desc.typeCodeValue)])
+        return SwiftAESymbol(name: name, descriptor: desc)
+    }
+    override func unpackType(desc: NSAppleEventDescriptor!) throws -> AnyObject {
+        return try self.unpackAEBSymbol(desc)
+    }
+    override func unpackEnum(desc: NSAppleEventDescriptor!) throws -> AnyObject {
+        return try self.unpackAEBSymbol(desc)
+    }
+    override func unpackProperty(desc: NSAppleEventDescriptor!) throws -> AnyObject {
+        return try self.unpackAEBSymbol(desc)
+    }
+    override func unpackKeyword(desc: NSAppleEventDescriptor!) throws -> AnyObject {
+        return try self.unpackAEBSymbol(desc)
+    }
+    override func unpackAERecordKey(key: AEKeyword) throws -> AnyObject {
+        return try self.unpackAEBSymbol(NSAppleEventDescriptor(typeCode: key))
+    }
+
 }
+
+
+//
 
 
 class SwiftAETranslationFormatter: SwiftAEFormatter {
@@ -206,7 +205,7 @@ class SwiftAETranslationFormatter: SwiftAEFormatter {
     override var appClassName: String {return (aebAppData as! SwiftAETranslationAppData).appClassName}
     
     override func propertyByCode(code: OSType) -> String? {
-        if let result = (aebAppData as! SwiftAETranslationAppData).propertyByCodeTable[NSNumber(unsignedInt: code)] {
+        if let result = (aebAppData as! SwiftAETranslationAppData).propertiesByCodeTable[NSNumber(unsignedInt: code)] {
             return result
         } else {
             return super.propertyByCode(code)
@@ -235,10 +234,4 @@ class SwiftAETranslationFormatter: SwiftAEFormatter {
 class SwiftAETranslationSpecifier: SwiftAESpecifier {
     override var description: String { return SwiftAETranslationFormatter.formatObject(aemQuery, appData: aebAppData) }
 }
-
-// TO DO: SwiftAETranslationSymbol
-
-
-
-
 
