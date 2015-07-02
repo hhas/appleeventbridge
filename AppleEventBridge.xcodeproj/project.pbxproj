@@ -63,7 +63,7 @@
 		4F4ADECE1B35DB270017EE65 /* ITUGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADEC91B35DB270017EE65 /* ITUGlue.m */; };
 		4F4ADECF1B35DB270017EE65 /* TETGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADECD1B35DB270017EE65 /* TETGlue.m */; };
 		4F4ADED21B35DC2B0017EE65 /* ITUGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */; };
-		4F4ADED51B35DC330017EE65 /* TETGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADED31B35DC330017EE65 /* TETGlue.swift */; };
+		4F4ADED51B35DC330017EE65 /* TEDGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADED31B35DC330017EE65 /* TEDGlue.swift */; };
 		4F4ADED71B370B8A0017EE65 /* SwiftGlueTemplate.txt in Copy Files (templates) */ = {isa = PBXBuildFile; fileRef = 4F4ADE7B1B35C3700017EE65 /* SwiftGlueTemplate.txt */; };
 		4F4ADED81B370B8A0017EE65 /* ObjCInterfaceGlueTemplate.txt in Copy Files (templates) */ = {isa = PBXBuildFile; fileRef = 4F4ADE781B35C3600017EE65 /* ObjCInterfaceGlueTemplate.txt */; };
 		4F4ADED91B370B8A0017EE65 /* ObjCImplementationGlueTemplate.txt in Copy Files (templates) */ = {isa = PBXBuildFile; fileRef = 4F4ADE771B35C3600017EE65 /* ObjCImplementationGlueTemplate.txt */; };
@@ -91,6 +91,7 @@
 		4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */; };
 		4FE621261B4401E900604DC1 /* AEBSwiftAETranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE621251B4401E900604DC1 /* AEBSwiftAETranslate.swift */; };
 		4FE621281B44923900604DC1 /* AEBSwiftAEFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE621271B44923900604DC1 /* AEBSwiftAEFormatter.swift */; };
+		4FE6212A1B4568C700604DC1 /* a-quick-tutorial.html in Resources */ = {isa = PBXBuildFile; fileRef = 4FE621291B4568C700604DC1 /* a-quick-tutorial.html */; };
 		4FFA2D721A129BCA00AF09E4 /* application-objects.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5E1A129B7E00AF09E4 /* application-objects.html */; };
 		4FFA2D731A129BCA00AF09E4 /* application_architecture.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5F1A129B7E00AF09E4 /* application_architecture.gif */; };
 		4FFA2D741A129BCA00AF09E4 /* application_architecture2.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D601A129B7E00AF09E4 /* application_architecture2.gif */; };
@@ -279,8 +280,8 @@
 		4F4ADECD1B35DB270017EE65 /* TETGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TETGlue.m; sourceTree = "<group>"; };
 		4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ITUGlue.swift; sourceTree = "<group>"; };
 		4F4ADED11B35DC2B0017EE65 /* ITUGlue-swift.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "ITUGlue-swift.sdef"; sourceTree = "<group>"; };
-		4F4ADED31B35DC330017EE65 /* TETGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TETGlue.swift; sourceTree = "<group>"; };
-		4F4ADED41B35DC330017EE65 /* TETGlue-swift.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "TETGlue-swift.sdef"; sourceTree = "<group>"; };
+		4F4ADED31B35DC330017EE65 /* TEDGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TEDGlue.swift; sourceTree = "<group>"; };
+		4F4ADED41B35DC330017EE65 /* TEDGlue-swift.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "TEDGlue-swift.sdef"; sourceTree = "<group>"; };
 		4F4ADEDA1B3824E30017EE65 /* FINGlue-swift.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "FINGlue-swift.sdef"; sourceTree = "<group>"; };
 		4F4ADEDB1B3824E30017EE65 /* FINGlue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FINGlue.swift; sourceTree = "<group>"; };
 		4F5EE3D21B2D7F1F007C58B5 /* saedemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = saedemo; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -306,6 +307,7 @@
 		4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBKeywordConverter.m; sourceTree = "<group>"; };
 		4FE621251B4401E900604DC1 /* AEBSwiftAETranslate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEBSwiftAETranslate.swift; sourceTree = "<group>"; };
 		4FE621271B44923900604DC1 /* AEBSwiftAEFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEBSwiftAEFormatter.swift; sourceTree = "<group>"; };
+		4FE621291B4568C700604DC1 /* a-quick-tutorial.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "a-quick-tutorial.html"; sourceTree = "<group>"; };
 		4FFA2D371A129AAE00AF09E4 /* 1 introduction.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "1 introduction.md"; sourceTree = "<group>"; };
 		4FFA2D381A129AAE00AF09E4 /* 10 optimizing-performance.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "10 optimizing-performance.md"; sourceTree = "<group>"; };
 		4FFA2D391A129AAE00AF09E4 /* 11 low-level-apis.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "11 low-level-apis.md"; sourceTree = "<group>"; };
@@ -569,8 +571,8 @@
 				4F4ADEDA1B3824E30017EE65 /* FINGlue-swift.sdef */,
 				4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */,
 				4F4ADED11B35DC2B0017EE65 /* ITUGlue-swift.sdef */,
-				4F4ADED31B35DC330017EE65 /* TETGlue.swift */,
-				4F4ADED41B35DC330017EE65 /* TETGlue-swift.sdef */,
+				4F4ADED31B35DC330017EE65 /* TEDGlue.swift */,
+				4F4ADED41B35DC330017EE65 /* TEDGlue-swift.sdef */,
 				4F4ADE821B35C49E0017EE65 /* AEBSwiftAEGlueBase.swift */,
 				4FE621271B44923900604DC1 /* AEBSwiftAEFormatter.swift */,
 				4FE621251B4401E900604DC1 /* AEBSwiftAETranslate.swift */,
@@ -686,6 +688,7 @@
 				4FFA2D691A129B7E00AF09E4 /* introduction.html */,
 				4FFA2D701A129B7E00AF09E4 /* understanding-apple-events.html */,
 				4FFA2D671A129B7E00AF09E4 /* how-appleeventbridge-works.html */,
+				4FE621291B4568C700604DC1 /* a-quick-tutorial.html */,
 				4FFA2D631A129B7E00AF09E4 /* creating-and-using-static-glues.html */,
 				4FFA2D6C1A129B7E00AF09E4 /* objc-ae-type-mappings.html */,
 				4FFA2D5E1A129B7E00AF09E4 /* application-objects.html */,
@@ -875,6 +878,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FE6212A1B4568C700604DC1 /* a-quick-tutorial.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -957,7 +961,7 @@
 			files = (
 				4F4ADED21B35DC2B0017EE65 /* ITUGlue.swift in Sources */,
 				4F4ADE831B35C49E0017EE65 /* AEBSwiftAEGlueBase.swift in Sources */,
-				4F4ADED51B35DC330017EE65 /* TETGlue.swift in Sources */,
+				4F4ADED51B35DC330017EE65 /* TEDGlue.swift in Sources */,
 				4FE621261B4401E900604DC1 /* AEBSwiftAETranslate.swift in Sources */,
 				4FE621281B44923900604DC1 /* AEBSwiftAEFormatter.swift in Sources */,
 				4F5EE3D51B2D7F1F007C58B5 /* main.swift in Sources */,

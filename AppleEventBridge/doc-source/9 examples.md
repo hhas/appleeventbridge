@@ -73,7 +73,7 @@
 ## Relative references
 
     // a reference to paragraph before paragraph 6 of text of document 1 of application "TextEdit"
-    textedit.documents[1].text.paragraphs[6].previous(TET.paragraph)
+    textedit.documents[1].text.paragraphs[6].previous(TED.paragraph)
 
     // a reference to paragraph after character 30 of document 1 of application "Tex-Edit Plus"
     texEditPlus.documents[1].characters[30].next(TEP.paragraph)
@@ -91,21 +91,21 @@
     finder.home.folders["Documents", "Music"]
 
     // a reference to text (word 3) thru (paragraph 7) of document 1 of application "Tex-Edit Plus"
-    texEditPlus.documents[1].text[TEP.con.words[3], TEP.con.paragraphs[7]]
+    texeditplus.documents[1].text[TEPcon.words[3], TEPcon.paragraphs[7]]
 
 
 ## Test references
 
     // a reference to every document of application "TextEdit" whose text is "\n"
-    textedit.documents[TET.its.text == "\n"]
+    textedit.documents[TEDits.text == "\n"]
 
     // a reference to every paragraph of document 1 of application "Tex-Edit Plus" ¬
     //      whose first character is last character
-    texEditPlus.documents[1].paragraphs[TEP.its.characters.first == TEP.its.characters.last]
+    texeditplus.documents[1].paragraphs[TEPits.characters.first == TEPits.characters.last]
 
     // a reference to every file of folder "Documents" of home of application "Finder" ¬
     //      whose name extension is "txt" and size < 10240
-    finder.home.folders["Documents"].files[FIN.its.nameExtension == "txt" && FIN.its.size < 10240]
+    finder.home.folders["Documents"].files[FINits.nameExtension == "txt" && FINits.size < 10240]
 
 
 ## Insertion location references
@@ -122,7 +122,7 @@
 Get the name of every folder in the user's home folder:
 
     // tell application "Finder" to get name of every folder of home
-    finder.get(FIN.app.home.folders.name)
+    finder.get(FINapp.home.folders.name)
 
 Note that if the direct parameter is omitted from the argument list, the reference that the command is invoked on is used instead. For example, the above example would normally be written as:
 
@@ -158,15 +158,15 @@ Create a new TextEdit document:
 
     // tell application "TextEdit" to make new document ¬
     //     with properties {text:"Hello World\n"}
-    textedit.make(new: TET.document, withProperties: [TET.text: "Hello World\n"])
+    textedit.make(new: TED.document, withProperties: [TED.text: "Hello World\n"])
 
 Append text to a TextEdit document:
 
     // tell application "TextEdit" to make new paragraph ¬
     //     at end of text of document 1 ¬
     //     with properties {text:"Yesterday\nToday\nTomorrow\n"}
-    textedit.make(new: TET.paragraph, 
-                   at: TET.app.documents[1].text.end,
+    textedit.make(new: TED.paragraph, 
+                   at: TEDapp.documents[1].text.end,
              withData: "Yesterday\nToday\nTomorrow\n")
 
 
@@ -177,7 +177,7 @@ Duplicate a folder to a disk, replacing an existing item if one exists:
     // tell application "Finder"
     //     duplicate folder "Projects" of home to disk "Work" with replacing
     // end tell
-    finder.home.folders["Projects"].duplicate(to: FIN.app.disks["Backup"],replacing: true)
+    finder.home.folders["Projects"].duplicate(to: FINapp.disks["Backup"],replacing: true)
 
 
 ## `add` command
@@ -187,5 +187,5 @@ Add every person with a known birthday to a group named "Birthdays":
     // tell application "Contacts"
     //     add every person whose birth date is not missing value to group "Birthdays"
     // end tell
-    contacts.people[CTS.its.birthDate != CTS.missingValue].add(to: CTS.app.groups["Birthdays"])
+    contacts.people[CONits.birthDate != CON.missingValue].add(to: CONapp.groups["Birthdays"])
 

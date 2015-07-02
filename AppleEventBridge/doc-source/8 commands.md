@@ -25,7 +25,7 @@ For convenience, AppleEventBridge makes application commands available as method
 
 * `withTimeout:` -- The number of seconds to wait for the application to reply before raising a timeout error. The default timeout (`AEBDefaultTimeout`) is 120 seconds but this can be changed if necessary; use `AEBNoTimeout` to wait indefinitely. For example, a longer timeout may be needed to prevent a timeout error occurring during a particularly long-running application command. Note: due to a quirk in the Apple Event Manager API, timeout errors may be reported as either error -1712 (the Apple event timed out) or -609 (connection invalid, which is also raised when an application unexpectedly quits while handling a command).
 
-* `considering:`/`ignoring:` -- Some applications may allow the client to specify text attributes that should be considered or ignored when performing string comparisons, e.g. when resolving by-test references. When specifying the attributes to ignore, the list should contain zero or more of the following enumerators: `XX.case`, `XX.diacriticals`, `XX.numericStrings`, `XX.hyphens`, `XX.punctuation`, `XX.whitespace` [TO DO: these are standard terms so should eventually be defined on AEBSymbol base class, allowing `AEB.case`, etc to be used across all apps, but for now must use the glue's own prefix code, e.g. `TET.case`]. Note that most applications currently ignore this setting and always use the default behaviour, which is to ignore case but consider everything else.
+* `considering:`/`ignoring:` -- Some applications may allow the client to specify text attributes that should be considered or ignored when performing string comparisons, e.g. when resolving by-test references. When specifying the attributes to ignore, the list should contain zero or more of the following enumerators: `XX.case`, `XX.diacriticals`, `XX.numericStrings`, `XX.hyphens`, `XX.punctuation`, `XX.whitespace` [TO DO: these are standard terms so should eventually be defined on AEBSymbol base class, allowing `AEB.case`, etc to be used across all apps, but for now must use the glue's own prefix code, e.g. `TED.case`]. Note that most applications currently ignore this setting and always use the default behaviour, which is to ignore case but consider everything else.
 
 
 
@@ -44,10 +44,10 @@ For convenience, AppleEventBridge makes application commands available as method
     Finder().home.files["foo.txt"].name.set(to: "bar.txt")
 
     // tell application "TextEdit" to count (text of first document) each paragraph
-    TextEdit().documents.first.text.count(each: TET.paragraph)
+    TextEdit().documents.first.text.count(each: TED.paragraph)
 
     // tell application "TextEdit" to make new document at end of documents
-    TextEdit().documents.end.make(new: TET.document)
+    TextEdit().documents.end.make(new: TED.document)
 
     // tell application "Finder" to get items of home as alias list
     Finder().home.items.get(returnType: FIN.alias)

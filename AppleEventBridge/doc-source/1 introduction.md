@@ -25,4 +25,4 @@ The following example uses AppleEventBridge to create a new "Hello World!" docum
 
     let textedit = TextEdit()
 
-    let query = textedit.make(new: TET.document, withProperties: [TET.text: "Hello World!"])
+    let query = textedit.make(new: TED.document, withProperties: [TED.text: "Hello World!"])

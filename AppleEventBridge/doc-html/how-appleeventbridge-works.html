@@ -9,10 +9,10 @@
 		<div id="wrap">
 			<div id="main">
 				<h1>How AppleEventBridge works</h1>
-				<div class="navbar"><a href="understanding-apple-events.html">back</a> | <a href="index.html">index</a> | <a href="creating-and-using-static-glues.html">next</a></div>
-				<p>AppleEventBridge is a high-level Objective-C wrapper for Mac OS X's low-level Apple Event Manager APIs. </p>
+				<div class="navbar"><a href="a-quick-tutorial.html">back</a> | <a href="index.html">index</a> | <a href="creating-and-using-static-glues.html">next</a></div>
+				<p>AppleEventBridge is a high-level Objective-C wrapper for the Carbon Apple Event Manager APIs. </p>
 
-<p>AppleEventBridge builds upon <code>NSAppleEventDescriptor</code> and other Foundation APIs to provide:</p>
+<p>AppleEventBridge builds upon the Carbon Apple Event Manager and Foundation APIs to provide:</p>
 
 <ul>
 <li>a high-level RPC mechanism for sending commands to applications via Apple events</li>
@@ -25,13 +25,13 @@
 <p>The AppleEventBridge architecture consists of two layers, identified by the following class name prefixes:</p>
 
 <ul>
-<li><p><code>AEM</code> – a mid-level wrapper around <code>NSAppleEventDescriptor</code>, providing an object-oriented API for building relational AEOM queries and dispatching events.</p></li>
-<li><p><code>AEB</code> – a high-level wrapper around <code>AEM...</code> classes, providing automatic translation between human-readable application terminology and corresponding four-letter codes, and representing relational AEOM queries in an OO-like syntax for ease of use.</p></li>
+<li><p><code>AEM</code> – mid-level wrapper around Mac OS X's Apple Event Manager and Foundation APIs, providing an object-oriented API for building relational AEOM queries and dispatching events.</p></li>
+<li><p><code>AEB</code> – high-level wrapper around <code>AEM...</code> classes, providing automatic translation between human-readable application terminology and corresponding four-letter codes, and representing relational AEOM queries in an OO-like syntax for ease of use.</p></li>
 </ul>
 
 <p>The AEM API is largely intended for use by higher-level libraries, though may also be used by developers in cases where an application lacks terminology, or bugs within its terminology prevent its use by AEB.</p>
 
-<p>The AEB layer consists of several <code>AEBStatic...</code> base classes and a code generator, <code>aebglue</code>, which creates static glue classes for individual applications. (A number of <code>AEBDynamic...</code> base classes are also provided for use by <code>aebglue</code>, and may also be used as the foundation for high-level Apple event bridges to dynamic scripting languages.)</p>
+<p>The AEB layer consists of several <code>AEBStatic...</code> base classes and a code generator, <code>aebglue</code>, which creates static glue classes for individual applications. A number of <code>AEBDynamic...</code> base classes are also provided for use in constructing high-level bridges for scripting languages.</p>
 
 <p>For example, the following AppleScript sets the size of the first character of every non-empty paragraph in every document of TextEdit to 24 pt:</p>
 
@@ -40,34 +40,35 @@
   end tell
 </code></pre>
 
-<p>Here is the equivalent Swift code using <code>AEM</code> classes:</p>
+<p>Here is the equivalent Objective-C code using <code>AEM</code> classes:</p>
 
-<pre><code>  let textedit = AEMApplication(bundleID: "com.apple.TextEdit")
+<pre><code>  AEMApplication *te = [[AEMApplication alloc] initWithBundleID: @"com.apple.TextEdit"];
 
-  let query = AEMQuery.app().elements(AEM4CC("docu"))
-                            .property(AEM4CC("ctxt"))
-                            .elements(AEM4CC("cpar")).byTest(AEMQuery.its().notEquals("\n"))
-                            .elements(AEM4CC("cha ")).at(1)
-                            .property(AEM4CC("ptsz'))
+  AEMQuery *ref = [[[[[[[AEMApp elements: 'docu']
+                                property: 'ctxt']
+                                elements: 'cpar'] byTest: [AEMIts notEquals: @"\n"]]
+                                elements: 'cha '] at: 1]
+                                property: 'ptsz'];
 
-  let evt = textedit.eventWithEventClass(AEM4CC("core"), eventID: AEM4CC("getd"))
-  evt.setParameter(query,  forKeyword: AEM4CC("----"))
-  evt.setParameter(24, forKeyword: AEM4CC("data"))
+  AEMEvent *evt = [textedit eventWithEventClass: 'core' eventID: 'getd'];
+  [evt setParameter: ref forKeyword: '----'];
+  [evt setParameter: @24 forKeyword: 'data'];
 
-  try evt.send()
+  [evt send];
 </code></pre>
 
 <p>and using <code>AEB</code> glue classes:</p>
 
-<pre><code>  let textedit = TextEdit()
+<pre><code>  TEApplication *te = [TEApplication application];
 
-  let query = textedit.documents.text.paragraphs[TEIts != "\n").characters[1].size
+  TESpecifier *ref = [[te.documents.text.paragraphs byTest: [TEIts notEquals: @"\n"]]
+                                        .characters at: 1].size;
 
-  try query.set(to: 24)
+  [[[ref set] to: @24] send];
 </code></pre>
 
 			</div>
 		</div>
-		<div id="footer"><div class="navbar"><a href="understanding-apple-events.html">back</a> | <a href="index.html">index</a> | <a href="creating-and-using-static-glues.html">next</a></div></div>
+		<div id="footer"><div class="navbar"><a href="a-quick-tutorial.html">back</a> | <a href="index.html">index</a> | <a href="creating-and-using-static-glues.html">next</a></div></div>
 	</body>
 </html>

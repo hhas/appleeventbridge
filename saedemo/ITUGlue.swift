@@ -15,6 +15,7 @@ class ITUFormatter: SwiftAEFormatter { // used internally to generate descriptio
 
     override var prefix: String {return "ITU"}
     override var appClassName: String {return "ITunes"}
+    override var symbolClass: AEBSymbol.Type {return ITUSymbol.self}
     
     override func propertyByCode(code: OSType) -> String? {
         switch code {

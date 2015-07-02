@@ -5,7 +5,7 @@
 //  Format an AppleEvent descriptor as Swift source code. Enables user tools
 //  to translate application commands from AppleScript to Swift syntax simply
 //  by installing a custom SendProc into an AS component instance to intercept
-//  outgoing AEs, pass them to SwiftAEFormatAppleEvent(), and print the result.
+//  outgoing AEs, pass them to SwiftAETranslateAppleEvent(), and print the result.
 //
 
 import Foundation
@@ -14,7 +14,7 @@ import AppleEventBridge
 
 
 /******************************************************************************/
-// SwiftAEFormatAppleEvent
+// SwiftAETranslateAppleEvent
 
 // constants used in AEBDynamicAppData initializers
 let kAEBUseAETETerminology    = AEMType(code: AEM4CC("AETE"))
@@ -68,9 +68,9 @@ private func appDataForProcess(var addressDesc: NSAppleEventDescriptor!, useSDEF
 }
 //
 
-// note: if sending events to self, processes _must_ useSDEF=true or call this function on a background thread, otherwise SwiftAEFormatAppleEvent will deadlock the main loop when it tries to fetch host app's AETE via ascr/gdte event
+// note: if sending events to self, processes _must_ useSDEF=true or call this function on a background thread, otherwise SwiftAETranslateAppleEvent will deadlock the main loop when it tries to fetch host app's AETE via ascr/gdte event
 
-func SwiftAEFormatAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = false) throws -> String { // TO DO: on failure, return string or error message?
+func SwiftAETranslateAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = false) throws -> String { // TO DO: on failure, return string or error message?
     if event.descriptorType as UInt32 != AEM4CC("aevt") { // typeAppleEvent // TO DO: Swift auto-converts OSType to Int, making AE consts useless
         return "<NOT A VALID APPLE EVENT>" // TO DO: how to handle? throw error?
     }
@@ -173,24 +173,24 @@ class SwiftAETranslationAppData: SwiftAEAppData { // extends static app data (wh
                 targetType: type, targetData: data)
     }
         
-    private func unpackAEBSymbol(desc: NSAppleEventDescriptor!) throws -> AnyObject {
+    private func unpackAEBSymbol(desc: NSAppleEventDescriptor!) -> AnyObject {
         let name = (self.typesByCodeTable[NSNumber(unsignedInt: desc.typeCodeValue)])
         return SwiftAETranslationSymbol(prefix: self.prefix, name: name, descriptor: desc)
     }
     override func unpackType(desc: NSAppleEventDescriptor!) throws -> AnyObject {
-        return try self.unpackAEBSymbol(desc)
+        return self.unpackAEBSymbol(desc)
     }
     override func unpackEnum(desc: NSAppleEventDescriptor!) throws -> AnyObject {
-        return try self.unpackAEBSymbol(desc)
+        return self.unpackAEBSymbol(desc)
     }
     override func unpackProperty(desc: NSAppleEventDescriptor!) throws -> AnyObject {
-        return try self.unpackAEBSymbol(desc)
+        return self.unpackAEBSymbol(desc)
     }
     override func unpackKeyword(desc: NSAppleEventDescriptor!) throws -> AnyObject {
-        return try self.unpackAEBSymbol(desc)
+        return self.unpackAEBSymbol(desc)
     }
     override func unpackAERecordKey(key: AEKeyword) throws -> AnyObject {
-        return try self.unpackAEBSymbol(NSAppleEventDescriptor(typeCode: key))
+        return self.unpackAEBSymbol(NSAppleEventDescriptor(typeCode: key))
     }
 
 }
@@ -219,6 +219,20 @@ class SwiftAETranslationFormatter: SwiftAEFormatter {
         }
     }
     
+    private func relative(name: String, code: OSType) {
+        let symbol = (aebAppData as! SwiftAETranslationAppData).unpackAEBSymbol(NSAppleEventDescriptor(typeCode: code)) as! AEBSymbol
+        self.mutableResult?.appendFormat(".%@(%@)", name, self.format(symbol))
+    }
+    
+    override func previous(class_: OSType) -> Self {
+        self.relative("previous", code: class_)
+        return self;
+    }
+    override func next(class_: OSType) -> Self {
+        self.relative("next", code: class_)
+        return self;
+    }
+
     override func app() -> SwiftAETranslationFormatter {
         if aebAppData == nil { // generic specifier
             self.mutableResult?.appendFormat("%@.app", self.prefix)
@@ -227,7 +241,6 @@ class SwiftAETranslationFormatter: SwiftAEFormatter {
         }
         return self;
     }
-    
 }
 
 

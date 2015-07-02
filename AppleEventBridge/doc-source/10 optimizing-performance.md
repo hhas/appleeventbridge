@@ -19,14 +19,14 @@ Fortunately, it's often possible to minimise performance overheads by using fewe
 
 While iterating over application objects and manipulating each in turn is a common technique, it's also the slowest by far:
 
-    // aebglue -p CTC Contacts
+    // aebglue Contacts
     let contacts = Contacts()
 
     let desiredEmail = "sam.brown@example.com"
     
     var foundNames: [String] = []
-    for person in contacts.people.get() as! CTCSpecifiers {
-        for email in people.emails.get() as! CTCSpecifiers {
+    for person in contacts.people.get() as! CONSpecifiers {
+        for email in people.emails.get() as! CONSpecifiers {
             if email.value.get() == desiredEmail {
                 foundNames += person.name.get()
             }
@@ -50,7 +50,7 @@ In this case, the entire search can be performed using a single complex query se
     
     let desiredEmail = "sam.brown@example.com"
     
-    let foundNames = contacts.people[CTC.its.emails.value.contains(desiredEmail)].name.get() as! [String]
+    let foundNames = contacts.people[CONits.emails.value.contains(desiredEmail)].name.get() as! [String]
 
     print(foundNames)
 

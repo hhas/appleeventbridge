@@ -624,7 +624,7 @@
     return rootValue ? AEMRoot(rootValue) : nil;
 }
 
-- (id)unpackCompDescriptor:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error {
+- (id)unpackCompDescriptor:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error { // TO DO: better error reporting
     DescType operator = [[desc descriptorForKeyword: keyAECompOperator] enumCodeValue];
     id op1 = [self unpack: [desc descriptorForKeyword: keyAEObject1] error: error];
     if (!op1) return nil;
@@ -651,7 +651,7 @@
     return nil;
 }
 
-- (id)unpackLogicalDescriptor:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error {
+- (id)unpackLogicalDescriptor:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error { // TO DO: better error reporting
     NSAppleEventDescriptor *listDesc;
     listDesc = [[desc descriptorForKeyword: keyAELogicalTerms] coerceToDescriptorType: typeAEList];
     DescType operator = [[desc descriptorForKeyword: keyAELogicalOperator] enumCodeValue];

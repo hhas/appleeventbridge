@@ -32,7 +32,7 @@
 <li><p><code>returnType:</code> -- Some applications may allow the return value's type to be specified for certain commands (typically <code>get</code>). For example, the Finder's <code>get</code> command returns filesystem references as alias objects if the resulttype is <code>FIN.alias</code>. [TO DO: this is preliminary and subject to change]</p></li>
 <li><p><code>waitReply:</code> -- If <code>true</code> (the default), the command will block until the application sends a reply or the request times out. If <code>false</code>, it will return as soon as the request is sent, ignoring any return values or application errors.</p></li>
 <li><p><code>withTimeout:</code> -- The number of seconds to wait for the application to reply before raising a timeout error. The default timeout (<code>AEBDefaultTimeout</code>) is 120 seconds but this can be changed if necessary; use <code>AEBNoTimeout</code> to wait indefinitely. For example, a longer timeout may be needed to prevent a timeout error occurring during a particularly long-running application command. Note: due to a quirk in the Apple Event Manager API, timeout errors may be reported as either error -1712 (the Apple event timed out) or -609 (connection invalid, which is also raised when an application unexpectedly quits while handling a command).</p></li>
-<li><p><code>considering:</code>/<code>ignoring:</code> -- Some applications may allow the client to specify text attributes that should be considered or ignored when performing string comparisons, e.g. when resolving by-test references. When specifying the attributes to ignore, the list should contain zero or more of the following enumerators: <code>XX.case</code>, <code>XX.diacriticals</code>, <code>XX.numericStrings</code>, <code>XX.hyphens</code>, <code>XX.punctuation</code>, <code>XX.whitespace</code> [TO DO: these are standard terms so should eventually be defined on AEBSymbol base class, allowing <code>AEB.case</code>, etc to be used across all apps, but for now must use the glue's own prefix code, e.g. <code>TET.case</code>]. Note that most applications currently ignore this setting and always use the default behaviour, which is to ignore case but consider everything else.</p></li>
+<li><p><code>considering:</code>/<code>ignoring:</code> -- Some applications may allow the client to specify text attributes that should be considered or ignored when performing string comparisons, e.g. when resolving by-test references. When specifying the attributes to ignore, the list should contain zero or more of the following enumerators: <code>XX.case</code>, <code>XX.diacriticals</code>, <code>XX.numericStrings</code>, <code>XX.hyphens</code>, <code>XX.punctuation</code>, <code>XX.whitespace</code> [TO DO: these are standard terms so should eventually be defined on AEBSymbol base class, allowing <code>AEB.case</code>, etc to be used across all apps, but for now must use the glue's own prefix code, e.g. <code>TED.case</code>]. Note that most applications currently ignore this setting and always use the default behaviour, which is to ignore case but consider everything else.</p></li>
 </ul>
 
 <h2>Examples</h2>
@@ -50,10 +50,10 @@
   Finder().home.files["foo.txt"].name.set(to: "bar.txt")
 
   // tell application "TextEdit" to count (text of first document) each paragraph
-  TextEdit().documents.first.text.count(each: TET.paragraph)
+  TextEdit().documents.first.text.count(each: TED.paragraph)
 
   // tell application "TextEdit" to make new document at end of documents
-  TextEdit().documents.end.make(new: TET.document)
+  TextEdit().documents.end.make(new: TED.document)
 
   // tell application "Finder" to get items of home as alias list
   Finder().home.items.get(returnType: FIN.alias)

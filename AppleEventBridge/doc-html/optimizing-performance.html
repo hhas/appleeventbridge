@@ -28,14 +28,14 @@
 
 <p>While iterating over application objects and manipulating each in turn is a common technique, it's also the slowest by far:</p>
 
-<pre><code>  // aebglue -p CTC Contacts
+<pre><code>  // aebglue Contacts
   let contacts = Contacts()
 
   let desiredEmail = "sam.brown@example.com"
 
   var foundNames: [String] = []
-  for person in contacts.people.get() as! CTCSpecifiers {
-      for email in people.emails.get() as! CTCSpecifiers {
+  for person in contacts.people.get() as! CONSpecifiers {
+      for email in people.emails.get() as! CONSpecifiers {
           if email.value.get() == desiredEmail {
               foundNames += person.name.get()
           }
@@ -58,7 +58,7 @@
 
   let desiredEmail = "sam.brown@example.com"
 
-  let foundNames = contacts.people[CTC.its.emails.value.contains(desiredEmail)].name.get() as! [String]
+  let foundNames = contacts.people[CONits.emails.value.contains(desiredEmail)].name.get() as! [String]
 
   print(foundNames)
 </code></pre>

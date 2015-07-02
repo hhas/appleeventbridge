@@ -6,7 +6,7 @@ A property contains either a simple value describing an object attribute (`name`
 
 Elements represent a one-to-many relationship between objects (`documents`, `folders`, `fileTracks`, etc). 
 
-TO DO: note both appear as properties on XXSpecifier; users don't instantiate XXSpecifier directly but instead construct via chained property/method calls from XXApplication or generic specifier root (XX.app, XX.con, XX.its)
+TO DO: note both appear as properties on XXSpecifier; users don't instantiate XXSpecifier directly but instead construct via chained property/method calls from XXApplication or generic specifier root (XXapp, XXcon, XXits)
 
 characters/words/paragraphs of documents by index/relative-position/range/filter
  
@@ -131,8 +131,8 @@ element <strong>next:</strong> <var>typeName</var>]
 
 Examples:
 
-    words[3].next(TET.word) // gets word 4
-    paragraphs[-1].previous(TET.character) // gets last character before last paragraph
+    words[3].next(TED.word) // gets word 4
+    paragraphs[-1].previous(TED.character) // gets last character before last paragraph
 
 
 ### Elements by range
@@ -141,15 +141,13 @@ Examples:
 
 Range references select all elements between and including two object specifiers indicating the start and end of the range. The start and end specifiers are normally declared relative to the container of the elements being selected. 
 
-// TO DO: unsure about ABC.con vs ABCCon; overloaded meaning may confuse
+These sub-specifiers are constructed using the glue's' `XXcon` constant, e.g. `TEDcon`, as their root. For example, to indicate the third paragraph relative to the currrent container object:
 
-These sub-specifiers are constructed using the `XXSymbol.con` statc var, e.g. `TET.con`, as their root. For example, to indicate the third paragraph relative to the currrent container object:
-
-    TET.con.paragraphs[3]
+    TEDcon.paragraphs[3]
 
 Thus, to specify all paragraphs from paragraph 3 to paragraph -1:
     
-    ref.paragraphs[TET.con.paragraphs[3], TET.con.paragraphs[-1]]
+    ref.paragraphs[TEDcon.paragraphs[3], TEDcon.paragraphs[-1]]
 
 For convenience, sub-specifiers can be written in shorthand form where their element class is the same as the elements being selected; thus the above can be written more concisely as:
 
@@ -157,7 +155,7 @@ For convenience, sub-specifiers can be written in shorthand form where their ele
 
 Some applications can handle more complex range references. For example, the following will work in Tex-Edit Plus:
 
-<pre><code>ref.words[TEP.con.characters[5], TEP.con.paragraphs[-2]]</code></pre>
+<pre><code>ref.words[TEPcon.characters[5], TEPcon.paragraphs[-2]]</code></pre>
 
 Syntax:
 
@@ -187,11 +185,11 @@ A specifier to each element that satisfies one or more conditions specified by a
 
 Test expressions consist of the following:
 
-* A test specifier relative to each element being tested. This specifier must be constructed using the glue's 'XX.its' root, e.g. `TET.its`. Its-based references support all valid reference forms, allowing you to construct references to its properties and elements. For example:
+* A test specifier relative to each element being tested. This specifier must be constructed using the glue's 'XXits' root, e.g. `TEDits`. Its-based references support all valid reference forms, allowing you to construct references to its properties and elements. For example:
     
-        TET.its
-        TET.its.size
-        TET.its.words.first
+        TEDits
+        TEDits.size
+        TEDits.words.first
 
 * One or more conditional tests, implemented as operators/methods on the specifier being tested. Each operator takes a test specifier as its first operand and any value as its second. Each method takes any value as its sole argument.
 
@@ -211,10 +209,10 @@ specifier <strong>isIn</strong>(<var>value</var>)
 
   Examples:
 
-    TET.its == ""
-    FNR.its.size > 1024
-    TET.its.words.first.beginsWith("A")
-    TET.its.characters.first == TET.its.characters.last
+    TEDits == ""
+    FINits.size > 1024
+    TEDits.words.first.beginsWith("A")
+    TEDits.characters.first == TEDits.characters.last
     
  // TO DO: note about `==` -> Bool vs Specifier
 
@@ -228,11 +226,11 @@ specifier <strong>isIn</strong>(<var>value</var>)
 
   Examples:
 
-    !TET.its.contains("?")
+    TEDits.contains("?")
 
-    FNR.its.size > 1024 && FNR.its.size < 10240
+    FINits.size > 1024 && FINits.size < 10240
 
-    TET.its.words[1].beginsWith("A") || TET.its.words[1].contains("ce") || TET.its.words[2] == "foo"
+    TEDits.words[1].beginsWith("A") || TEDits.words[1].contains("ce") || TEDits.words[2] == "foo"
 
 
 ### Element insertion location

@@ -27,7 +27,7 @@ To begin, launch Terminal.app and type `swift` followed by a newline to launch t
 
 The first step is to import the TextEdit glue module. [TO DO: need to figure out how and where to package and place glues for this to work]
 
-    import TETGlue
+    import TEDGlue
 
 Once the glue module is imported, construct a new instance of the `TextEdit` class, identifying the application to be manipulated, and assign it to a variable or constant, `te`, for easy reuse:
 
@@ -38,16 +38,16 @@ The application may be identified by name, path, bundle ID (the default, if no a
 
 ### Create a new document
 
-First, create a new TextEdit document by making a new `document` object. This is done using the `make` command, passing it a single named parameter, `new: TET.document`, indicating the type of object to create:
+First, create a new TextEdit document by making a new `document` object. This is done using the `make` command, passing it a single named parameter, `new: TED.document`, indicating the type of object to create:
 
-    te.make(new: TET.document)
+    te.make(new: TED.document)
     TextEdit(name:"/Applications/TextEdit.app").documents[1]
 
 Because `document` objects are always elements of the root `application` class, applications such as TextEdit can usually infer the location at which the new `document` object should appear. At other times, you need to supply an `at` parameter that indicates the desired location.
 
 As you can see, the `make` command returns an object specifier identifying the newly-created object. This specifier can be assigned to a variable for easy reuse. Use the `make` command to create another document, this time assigning its result to a variable, `doc`:
 
-    let doc = te.make(new: TET.document)
+    let doc = te.make(new: TED.document)
 
 
 ### Set the document's content
@@ -108,7 +108,7 @@ Depending on what sort of attribute(s) the object specifier identifies, `get()` 
 
 The above exercise uses two commands to create a new TextEdit document containing the text "Hello World". It is also possible to perform both operations using the `make()` command alone by passing the value for the new document's `text` property via the `make()` command's optional `withProperties:` parameter: 
 
-    te.make(new: TET.document, withProperties=[TET.text: "Hello World"])
+    te.make(new: TED.document, withProperties=[TED.text: "Hello World"])
     TextEdit(name:"/Applications/TextEdit.app").documents[1]
 
 [TO DO: TextEdit now returns by-name document specifiers; update this paragraph accordingly] Incidentally, you might note that every time the `make()` command is used, it returns an object specifier to document _1_. TextEdit identifies `document` objects according to the stacking order of their windows, with document 1 being frontmost. When the window stacking order changes, whether as a result of a script command or GUI-based interaction, so does the order of their corresponding `document` objects. This means that a previously created object specifier such as `TextEdit(name:"/Applications/TextEdit.app").documents[1]` may now identify a different `document` object to before! Some applications prefer to return object specifiers that identify objects by name or unique ID rather than index to reduce or eliminate the potential for confusion, but it's an issue you should be aware of, particularly with long-running scripts where there is greater opportunity for unexpected third-party interactions to throw a spanner in the works.
@@ -122,7 +122,7 @@ In addition to getting and setting a document's entire text by applying `get()` 
 
 Or to insert a new paragraph at the end of the document:
 
-    te.make(new: TET.paragraph,
+    te.make(new: TED.paragraph,
             withData: 'Hello Again, World\n',
             at: te.documents[1].text.paragraphs.end)
 

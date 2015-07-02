@@ -9,59 +9,18 @@ import AppleEventBridge
 
 
 /******************************************************************************/
-// Formatter base class
+// Formatter abstract base class
 
+// used by a Specifier's description property to render literal representation of itself;
+// static glues extend this with application-specific code->name translation tables
 
-// format numbers, strings, arrays, specifiers, etc. using literal Swift syntax
-func SwiftAEFormatObject(object: AnyObject!) -> String {
-    switch object {
-    case let obj as [AnyObject]:
-        var tmp = "["
-        var useSep = false // TO DO: use map+join
-        for item in obj {
-            if useSep {
-                tmp += ", "
-            }
-            tmp += SwiftAEFormatObject(item)
-            useSep = true
-        }
-        return "[\(tmp)]"
-    case let obj as NSDictionary: // TO DO: what about Swift dictionaries? (i.e. how to declare, as [protocol<Hashable>:AnyObject] doesn't work)
-        var tmp = ""
-        var useSep = false // TO DO: use map+join
-        for (key, value) in obj {
-            if (useSep) {
-                tmp += ", "
-            }
-            tmp += "\(SwiftAEFormatObject(key)): \(SwiftAEFormatObject(value))"
-            useSep = true
-        }
-        return "[\(tmp)]"
-    case let obj as String:
-        let tmp = NSMutableString(string: obj)
-        for (from, to) in [("\\", "\\\\"), ("\"", "\\\""), ("\r", "\\r"), ("\n", "\\n"), ("\t", "\\t")] {
-            tmp.replaceOccurrencesOfString(from, withString: to,
-                options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
-        }
-        return "\"\(tmp)\""
-    case let obj as NSDate:
-        return "NSDate(string: \(SwiftAEFormatObject(obj.description))"
-    case let obj as NSURL:
-        return "NSURL(string: \(SwiftAEFormatObject(obj.description))"
-    default:
-        return "\(object)" // note: specifiers, symbols, etc. automatically format themselves
-    }
-}
-
-
-// used by AEBSpecifier.description to generate literal representation of itself
 class SwiftAEFormatter: AEMQueryVisitor {
     
     var aebAppData: AEBAppData?
     var mutableResult: NSMutableString?
     
     // takes an AEMQuery plus AEBStaticAppData instance, and returns the query's literal ObjC representation
-    class func formatObject(object: AnyObject!, appData: AEBAppData?) -> String { // TO DO: move this into SwiftAEFormatObject function above, with optional appData arg?
+    class func formatObject(object: AnyObject!, appData: AEBAppData?) -> String {
         if object is AEMQuery { // instantiate a new formatter instance and pass it to AEMQuery's visitor method
             let renderer = self.init(appData: appData)
             object.resolveWithObject(renderer)
@@ -71,7 +30,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
                 return "\(renderer.app).specifierWithObject(\(object))"
             }
         } else {
-            return object == nil ? "<MALFORMED SPECIFIER>" : SwiftAEFormatObject(object) // TO DO: what we really want here is the AEBSpecifier, as that should contain error info
+            return SwiftAEFormatObject(object)
         }
     }
     
@@ -85,17 +44,17 @@ class SwiftAEFormatter: AEMQueryVisitor {
         return object is AEMQuery ? self.dynamicType.formatObject(object, appData: aebAppData) : SwiftAEFormatObject(object) // see above
     }
     
-    // stubs; application-specific subclasses should override and extend to provide class name prefix and code->name translations,
-    // returning nil if no translation found
+    // stubs; application-specific subclasses should override and extend to provide class name prefix and code->name translations.
     
     var prefix: String {return "AEB"}
     var appClassName: String {return "AEBApplication"}
+    var symbolClass: AEBSymbol.Type {return AEBSymbol.self} // workaround: a symbolByCode() method would be more flexible, but triggers a swift bug
     
-    func propertyByCode(code: OSType) -> String? {
-        return nil
+    func propertyByCode(code: OSType) -> String? { // TO DO: rename propertyNameForCode, elementsNameForCode, symbolForCode for consistency?
+        return nil // must return nil if no translation found
     }
     func elementsByCode(code: OSType) -> String? {
-        return nil
+        return nil // must return nil if no translation found
     }
     
     // the following methods are called as formatter walks AEMQuery's visitor API
@@ -164,19 +123,11 @@ class SwiftAEFormatter: AEMQueryVisitor {
     // by-relative-position selectors
     
     override func previous(class_: OSType) -> Self {
-        
-        let symbol = "TO DO" // TO DO: if aebAppData==nil, need to ask glue to convert OSType to XXSymbol; also needs fixed in ObjC glue (Q. is there any situation where aebAppData would be from a different glue? if not, simplest is just to use XXSymbol directly and not bother with pack/unpack; i.e. glue subclasses should override this method so that they can refer directly to their XXSymbol class, or else should have a symbolForCode method that instantiates the XXSymbol class; also what about raw AEMTypes and/or AEMQuerys? will they convert to XXSymbols automatically, or is that something else that should be done in SwiftAEFormatObject function above?)
-        
-        //       let symbol = try! aebAppData.unpack(NSAppleEventDescriptor(typeCode: class_))
-        self.mutableResult?.appendFormat(".previous(%@)", self.format(symbol))
+        self.mutableResult?.appendFormat(".previous(%@)", self.format(self.symbolClass.aebSymbolForCode(class_)))
         return self;
     }
     override func next(class_: OSType) -> Self {
-        
-        let symbol = "TO DO" // DITTO
-        
-        //      let symbol = try! aebAppData.unpack(NSAppleEventDescriptor(typeCode: class_))
-        self.mutableResult?.appendFormat(".next(%@)", self.format(symbol))
+        self.mutableResult?.appendFormat(".next(%@)", self.format(self.symbolClass.aebSymbolForCode(class_)))
         return self;
     }
     
@@ -312,3 +263,50 @@ class SwiftAEFormatter: AEMQueryVisitor {
         return self
     }
 }
+
+// utility function used by SwiftAEFormatter class above; may also be called directly if needed (e.g. by support tools)
+
+// get source code representation for a Swift object (number, string, array, dictionary, etc.)
+// note: only bridged types are directly supported; other types will show their default representation
+
+func SwiftAEFormatObject(object: AnyObject!) -> String {
+    switch object {
+    case let obj as [AnyObject]:
+        var tmp = "["
+        var useSep = false // TO DO: use map+join
+        for item in obj {
+            if useSep {
+                tmp += ", "
+            }
+            tmp += SwiftAEFormatObject(item)
+            useSep = true
+        }
+        return "[\(tmp)]"
+    case let obj as NSDictionary: // TO DO: what about Swift dictionaries? (i.e. how to declare, as [protocol<Hashable>:AnyObject] doesn't work)
+        var tmp = ""
+        var useSep = false // TO DO: use map+join
+        for (key, value) in obj {
+            if (useSep) {
+                tmp += ", "
+            }
+            tmp += "\(SwiftAEFormatObject(key)): \(SwiftAEFormatObject(value))"
+            useSep = true
+        }
+        return "[\(tmp)]"
+    case let obj as String:
+        let tmp = NSMutableString(string: obj)
+        for (from, to) in [("\\", "\\\\"), ("\"", "\\\""), ("\r", "\\r"), ("\n", "\\n"), ("\t", "\\t")] {
+            tmp.replaceOccurrencesOfString(from, withString: to,
+                options: NSStringCompareOptions.LiteralSearch, range: NSMakeRange(0, tmp.length))
+        }
+        return "\"\(tmp)\""
+    case let obj as NSDate:
+        return "NSDate(string: \(SwiftAEFormatObject(obj.description))"
+    case let obj as NSURL:
+        return "NSURL(string: \(SwiftAEFormatObject(obj.description))"
+    default:
+        return "\(object)" // SwiftAE objects (specifiers, symbols) are self-formatting; any other Swift object will use its default description (which may or may not be the same as its literal representation, but that's Swift's problem, not ours)
+    }
+}
+
+

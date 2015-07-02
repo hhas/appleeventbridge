@@ -8,32 +8,46 @@ import Foundation
 import AppleEventBridge
 
 
+// create application objects
 let textedit = TextEdit()
 let itunes = ITunes()
+
 
 
 let t = true; let f = false
 
 
+
 if f {
     do {
-        print(try textedit.get(TETapp.documents[1][1].text)) // check invalid specifiers are reported as errors upon use
+        print(try textedit.get(TEDapp.documents[1][1].text)) // check invalid specifiers are reported as errors upon use
     //    print(try textedit.documents[1][1].text.get())
     } catch {
     print(error)
     }
+    do { print(try TEDapp.documents[1].next(TED.document).get()) } catch { print(error) } // calling a command on a generic specifier throws error as only concrete specifiers (i.e. those created from an Application object) contain application's address info
 }
 
 
-print((try itunes.playerState.get()))
+// print((try itunes.playerState.get())) // e.g. -> ITU.stopped
 
-//print("")
 //print((try itunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])
-//print("")
+
 //print((try itunes.playlists["Top 25 Most Played"].tracks.name.get(waitReply: false)))
 
+// test formatting support for relative specifiers
+//print(TEDapp.documents[1].next(TED.document)) // -> "TEDapp.documents[1].next(TED.document)"
+//print(TextEdit().documents[1].next(TED.document)) // -> "TextEdit(name:\"...TextEdit.app\").documents[1].next(TED.document)"
+//try TextEdit().documents[1].next(TED.document).get() // AE translation: "TextEdit().documents[1].next(TED.document).get()"
 
-if t {
+
+//try itunes.playpause()
+
+print(try textedit.documents.count())
+//print(try textedit.count(each: TED.document))
+
+
+if f {
 
     // build an object specifier (note: formatter is unfinished so some types still appear ObjC style):
     //
@@ -44,11 +58,11 @@ if t {
     let objSpec = textedit.documents[1].name
     print(objSpec) // TextEdit(name: @"/Applications/TextEdit.app").documents[1].name
 
-    print(TETapp.documents[1].name) // 'generic' refs can be used as parameters to commands
+    print(TEDapp.documents[1].name) // 'generic' refs can be used as parameters to commands
 
     do {
         // tell application "TextEdit" to make new document with properties {text:"Hello World!"}
-        print(try textedit.make(new: TET.document, withProperties: [TET.text:"Hello World!"]))
+        print(try textedit.make(new: TED.document, withProperties: [TED.text:"Hello World!"]))
         
         // tell application "TextEdit" to get text of every document
         print(try textedit.documents.text.get())
@@ -63,7 +77,7 @@ if t {
     }
 }
 
-if t {
+if f {
 
     // tell application "iTunes" to get name of every track of playlist "Top 25 Most Played"
     print((try itunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])
@@ -86,17 +100,17 @@ if t {
 
 
 /*
-let t: AnyObject = TETIts.documents.name == "test.rtf" // caution: using == outside of [...] can produce bool result...
+let t: AnyObject = TEDits.documents.name == "test.rtf" // caution: using == outside of [...] can produce bool result...
 print("EQ: \(t)") // 0  // !!!
-let t1: TETSpecifier = TETIts.documents.name == "test.rtf" // ...unless result is explicitly typed ensure is correct type
-print("EQ: \(t1)") // [TETIts.documents.name equals: @"test.rtf"]
+let t1: TEDSpecifier = TEDits.documents.name == "test.rtf" // ...unless result is explicitly typed ensure is correct type
+print("EQ: \(t1)") // [TEDits.documents.name equals: @"test.rtf"]
 
-print(textedit.documents[TETIts.name == "test.rtf"]) // this appears to produce correct result, but can it always be guaranteed to do so?
+print(textedit.documents[TEDits.name == "test.rtf"]) // this appears to produce correct result, but can it always be guaranteed to do so?
 
 
-let t2: AnyObject = TETIts.documents.name != "test.rtf"
+let t2: AnyObject = TEDits.documents.name != "test.rtf"
 print("EQ: \(t2)")
-let t3: TETSpecifier = TETIts.documents.name != "test.rtf"
+let t3: TEDSpecifier = TEDits.documents.name != "test.rtf"
 print("EQ: \(t3)")
 */
 

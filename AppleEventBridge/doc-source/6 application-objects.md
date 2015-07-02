@@ -44,9 +44,9 @@ For example, to target a specific version of InDesign by name:
 
 Or to control an iTunes process on another machine using Remote Apple Events:
 
-    import ITSGlue
+    import ITUGlue
     
-    let itunes = ITSApplication(url: NSURL(string: "eppc://jsmith@media-mac.local/iTunes"))
+    let itunes = ITUApplication(url: NSURL(string: "eppc://jsmith@media-mac.local/iTunes"))
 
 Note that local applications will be launched if not already running when the `XXApplication()`, `XXApplication(name:String)`, `XXApplication(bundleIdentifier:String)` or `XXApplication(url:NSURL)` constructors are invoked, and events will be sent to the running application according to its process ID. If the process is later terminated, that process ID is no longer valid and events sent subsequently using this application object will fail as application objects currently don't provide a 'reconnect' facility.
 

@@ -36,7 +36,7 @@ class SwiftAEAppData: AEBStaticAppData {
         }
     }
     
-    override func unpackCompDescriptor(desc: NSAppleEventDescriptor) throws -> AnyObject {
+    override func unpackCompDescriptor(desc: NSAppleEventDescriptor) throws -> AnyObject { // TO DO: throw error -1726 if invalid operand(s)
         let operatorCode = desc.descriptorForKeyword(AEM4CC("relo"))!.enumCodeValue // keyAECompOperator
         var op1 = try self.unpack(desc.descriptorForKeyword(AEM4CC("obj1"))) // keyAEObject1
         var op2 = try self.unpack(desc.descriptorForKeyword(AEM4CC("obj2"))) // keyAEObject2
@@ -67,11 +67,11 @@ class SwiftAEAppData: AEBStaticAppData {
         case AEM4CC("cont"):
             return try self.unpackContainsCompDescriptorWithOperand1(op1, operand2: op2)
         default:
-            throw AEMErrorWithInfo(-1701, "Unknown comparison operator: \(desc)") // TO DO: this isn't working correctly; need to check why (e.g. deliberately break = operator to trigger it)
+            throw AEMErrorWithInfo(-1726, "Unknown comparison operator: \(desc)")
         }
     }
 
-    override func unpackLogicalDescriptor(desc: NSAppleEventDescriptor) throws -> AnyObject {
+    override func unpackLogicalDescriptor(desc: NSAppleEventDescriptor) throws -> AnyObject { // TO DO: throw error -1726 if invalid operand(s)
         let operatorsDesc = desc.descriptorForKeyword(AEM4CC("term"))!.coerceToDescriptorType(AEM4CC("list"))! // keyAELogicalTerms, typeAEList
         let operatorCode = desc.descriptorForKeyword(AEM4CC("logc"))!.enumCodeValue // keyAELogicalOperator
         let op1 = try self.unpack(operatorsDesc.descriptorAtIndex(1)).aemQuery as! AEMTestClause
@@ -85,7 +85,7 @@ class SwiftAEAppData: AEBStaticAppData {
         case AEM4CC("NOT "):
             return op1.NOT()
         default:
-            throw AEMErrorWithInfo(-1701, "Unknown logical operator: \(desc)")
+            throw AEMErrorWithInfo(-1726, "Unknown logical operator: \(desc)")
         }
     }
 }
@@ -230,8 +230,10 @@ class SwiftAESpecifier: AEBSpecifier {
     func sendAppleEvent(eventClass: OSType, eventID: OSType, parameters: Array<SwiftAEParameter>,
             returnType: AEBReturnType?, waitReply: Bool?, withTimeout: NSTimeInterval?,
             considering: AEBConsiderIgnoreType?, ignoring: AEBConsiderIgnoreType?) throws -> AnyObject! {
-        // TO DO: need to check aemQuery/aemQueryError
-        if aemQuery == nil {
+        if aebAppData == nil { // only concrete specifiers (i.e. created from an application object, not generic roots) can send events
+            throw AEMErrorWithInfo(-1701, "Generic specifiers can't send commands: \(self)")
+        }
+        if aemQuery == nil { // malformed specifier, e.g. TextEdit().documents[1][1], so throw deferred error describing problem
             if aemQueryError == nil { // catch-all in case error hasn't been set for some reason
                 throw NSError(domain: kAEMErrorDomain, code: -1728, userInfo: [
                     NSLocalizedDescriptionKey:"Can't call command on the following (not a valid specifier): \(self)",
@@ -239,14 +241,14 @@ class SwiftAESpecifier: AEBSpecifier {
             }
             throw aemQueryError!
         }
+        // create Apple event and pack its parameters
         let command = AEBCommand(appData: aebAppData, eventClass: eventClass, eventID: eventID, parentQuery: aemQuery)
         for param in parameters {
             if !(param.value is AEBNoParameter) {
                 command.setParameter(param.value, forKeyword: param.code)
             }
         }
-        // TO DO: attributes
-
+        // pack event attributes
         if let type = returnType {
             if type is [AEBSymbol] {
                 command.returnListOfType(type.code())
@@ -278,11 +280,12 @@ class SwiftAESpecifier: AEBSpecifier {
         if let ignore = ignoring {
             print("TO DO: ignoring: \(ignore)")
         }
-                
+        // send the event
                 
         let res = try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript; Q. implement SwiftAEError as enum (at least for common standard error codes)? e.g. SwiftAEError.UnsupportedCoercion, .MissingParameter, .SpecifierNotFound, .ProcessNotFound, .ProcessTerminated, etc. prob. easiest for writing do...catch...catch...catch blocks
     
-        print(try SwiftAEFormatAppleEvent(command.aemEvent.descriptor)) // TEST; TO DO: delete
+     //   print(try SwiftAETranslateAppleEvent(command.aemEvent.descriptor)) // TEST; TO DO: delete
+        
         return res
     }
     

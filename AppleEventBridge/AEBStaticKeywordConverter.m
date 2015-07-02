@@ -113,7 +113,7 @@
                                 @"endTransaction",
                                 @"endTransactionWithError",
                                 nil];
-        kAEBReservedPrefixes = [NSSet setWithObjects: @"NS", @"AEM", @"AEB", @"APP", @"CON", @"ITS", nil];
+        kAEBReservedPrefixes = [NSSet setWithObjects: @"NS", @"AEM", @"AEB", nil];
     }
     return self;
 }
@@ -158,6 +158,7 @@
 
 - (NSString *)identifierForAppName:(NSString *)appName reservedWords:(NSSet *)reservedWords {
     // TO DO: see how well this does in practice
+    // TO DO: decide if first letter should always be capitalized (currently it is, e.g. iTunes->ITunes, which is consistent with standard class naming practices, though less visually appealing)
     NSMutableString *tmp = [NSMutableString stringWithString: [self convertName: appName reservedKeywords: reservedWords]];
     [tmp replaceCharactersInRange: NSMakeRange(0, 1) withString: [tmp substringWithRange: NSMakeRange(0, 1)].uppercaseString];
     NSString *result = [tmp copy];
@@ -167,6 +168,7 @@
 - (NSString *)prefixForAppName:(NSString *)appName reservedWords:(NSSet *)reservedWords {
     // Auto-generate a reasonable default classname prefix from an application name.
     // Only A-Z/a-z characters are used, so is most effective when app's name is mostly composed of those characters.
+    // Split name into 'words' based on existing word separator characters (space, underscore, hyphen) and intercaps, if any
     NSMutableString *tmp = [NSMutableString stringWithString: appName.decomposedStringWithCanonicalMapping];
     [tmp replaceOccurrencesOfString: @"[^A-Za-z _-]" withString: @""
                             options: NSRegularExpressionSearch range: NSMakeRange(0, tmp.length)];
@@ -175,18 +177,19 @@
     [tmp replaceOccurrencesOfString: @"[ _-]+" withString: @" "
                             options: NSRegularExpressionSearch range: NSMakeRange(0, tmp.length)];
     NSArray *words = [[tmp stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]] componentsSeparatedByString: @" "];
+    // assemble 3-character prefix, padding with 'X's if fewer than 3 suitable characters are found
     NSString *result;
-    if (words.count == 1) {
+    if (words.count == 1) { // use first 3 chars of word, e.g. Finder->FIN
         NSString *word = words[0];
         result = [word substringToIndex: fmin(3, word.length)];
     } else if (words.count == 2) {
         NSString *word1 = words[0], *word2 = words[1];
-        if (word1.length == 1) {
-            result = [word1 stringByAppendingString: [word2 substringToIndex: fmin(2, word2.length)]];
-        } else {
-            result = [[word1 substringToIndex: 2] stringByAppendingString: [word2 substringToIndex: 1]];
+        if (word2.length == 1) { // use first 2 chars of first word + only char of second word, e.g. FooB->FOB
+            result = [[word1 substringToIndex: fmin(2, word1.length)] stringByAppendingString: [word2 substringToIndex: 1]];
+        } else { // use first char of first word + first 2 chars of second word, e.g. TextEdit->TED
+            result = [[word1 substringToIndex: 1] stringByAppendingString: [word2 substringToIndex: 2]];
         }
-    } else {
+    } else { // use first char of first 3 words, e.g. Adobe InDesign->AID
         NSString *word1 = words[0], *word2 = words[1], *word3 = words[2];
         result = [[[word1 substringToIndex: 1] stringByAppendingString: [word2 substringToIndex: 1]]
                                                stringByAppendingString: [word3 substringToIndex: 1]];

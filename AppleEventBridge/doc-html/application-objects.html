@@ -58,9 +58,9 @@
 
 <p>Or to control an iTunes process on another machine using Remote Apple Events:</p>
 
-<pre><code>  import ITSGlue
+<pre><code>  import ITUGlue
 
-  let itunes = ITSApplication(url: NSURL(string: "eppc://jsmith@media-mac.local/iTunes"))
+  let itunes = ITUApplication(url: NSURL(string: "eppc://jsmith@media-mac.local/iTunes"))
 </code></pre>
 
 <p>Note that local applications will be launched if not already running when the <code>XXApplication()</code>, <code>XXApplication(name:String)</code>, <code>XXApplication(bundleIdentifier:String)</code> or <code>XXApplication(url:NSURL)</code> constructors are invoked, and events will be sent to the running application according to its process ID. If the process is later terminated, that process ID is no longer valid and events sent subsequently using this application object will fail as application objects currently don't provide a 'reconnect' facility.</p>
