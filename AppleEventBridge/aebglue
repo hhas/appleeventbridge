@@ -3,13 +3,9 @@
 
 """ aebglue -- Generate Swift and Objective-C application glues for AppleEventBridge """
 
-# TO DO: finalize naming of Application classes
-
 # TO DO: how best to package and name glues? add option to export as frameworks/modules (these should probably use long names, e.g. TextEditGlue rather than TETGlue)
 
 # TO DO: what, if any, standard Swift method/var names need reserved?
-
-# TO DO: would it be preferable for AEBSwiftSpecifiers to be pure Swift classes, rather than subclasses of NSObject?
 
 # TO DO: use correct signatures for appdata.terminologyWithError_, AEBDynamicSDEFParser.copyScriptingDefinitionAtURL_error_ so error description is returned; see objc.setSignatureForSelector()
 
@@ -20,6 +16,8 @@
 # TO DO: how to format type attributes in SDEF exporter? (currently both built-in and app-defined type names use AS format) (note that `type` attributes are somewhat ambiguous, since they may be either name or [enumeration-only?] code) 
 
 # TO DO: obtain reserved NSObject, AEB method names dynamically
+
+# TO DO: option to export raw four-char code constants
 
 # TO DO: AppInfo should manage keywordconverters
 

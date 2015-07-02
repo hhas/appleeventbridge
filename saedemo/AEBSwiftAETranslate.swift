@@ -133,10 +133,27 @@ func SwiftAETranslateAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = 
             argStrings.append("withTimeout: \(timeoutInSeconds)")
         }
     }
-    if let considsIgnoresDesc = event.attributeDescriptorForKeyword(0x63736967) { // enumConsidsAndIgnores
-        var considsIgnores: UInt32 = 0
-        considsIgnoresDesc.data.getBytes(&considsIgnores, length: sizeof(UInt32))
-        // TO DO: finish; if not default value, use byte masks to determine specified options and format as array of constants
+    if let considersAndIgnoresDesc = event.attributeDescriptorForKeyword(0x63736967) { // enumConsidsAndIgnores
+        var considersAndIgnores: UInt32 = 0
+        considersAndIgnoresDesc.data.getBytes(&considersAndIgnores, length: sizeof(UInt32))
+        if considersAndIgnores != kAEBDefaultConsidersIgnoresMask {
+            var considering = [AEBSymbol]()
+            var ignoring = [AEBSymbol]()
+            for (code, mask) in AEBConsidersAndIgnoresMasks {
+                if (mask.consider & considersAndIgnores) != 0 {
+                    considering.append(appData.unpackAEBSymbol(NSAppleEventDescriptor(enumCode: code)) as! AEBSymbol)
+                }
+                if (mask.ignore & considersAndIgnores) != 0 {
+                    ignoring.append(appData.unpackAEBSymbol(NSAppleEventDescriptor(enumCode: code)) as! AEBSymbol)
+                }
+            }
+            if considering.count > 0 {
+                argStrings.append("considering: \(considering)")
+            }
+            if ignoring.count > 0 {
+                argStrings.append("ignoring: \(ignoring)")
+            }
+        }
     }
     let argsString = ", ".join(argStrings)
     return "\(baseString).\(commandInfo!.name)(\(argsString))"

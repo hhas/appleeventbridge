@@ -140,7 +140,7 @@ class SwiftAESymbol: AEBSymbol {
 
 
 /******************************************************************************/
-// Specifier base class
+// misc constants used in SwiftAESpecifier
 
 struct SwiftAEParameter {
     var name: String?
@@ -161,6 +161,24 @@ let AEBDefaultTimeout: NSTimeInterval = -1
 typealias AEBReturnType = AnyObject // TO DO: more specific returnType
 typealias AEBConsiderIgnoreType = [AEBSymbol]
 
+
+// TO DO: not certain if using arrays of AEBSymbols to specify considers/ignores values is best choice; would a Swift enum be better?
+// generally, mimicking AppleScript is the best approach; however, the kAE/kAS...Considers/IgnoresMask constants are hardcoded in ASRegistry.h, which are in turn copied in AEBDefaultTerms.m as part of AEB's 'default' terminology (itself modeled after AppleScript's own built-in terminology resource, and with much the same definitions), so it's not as if the user can supply non-standard symbols as command's considering/ignoring attributes, because those symbols need to be mapped to UInt32 bitmasks before they can be packed into an event (TBH, the fault is really with ASRegistry.h for adding a second, inflexible mechanism for specifying considering/ignoring flags, when there was already a simple, robust mechanism that took a single AEList of typeEnum descriptors)
+let AEBConsidersAndIgnoresMasks: [OSType: (consider: UInt32, ignore: UInt32)] = [ // (AEBSymbol.code, ConsiderMask, IgnoreMask)
+    AEM4CC("case"): (0x00000001, 0x00010000), // note: AEB.case, AEB.diacriticals, etc. symbols are defined in AEBDefaultTerms
+    AEM4CC("diac"): (0x00000002, 0x00020000),
+    AEM4CC("whit"): (0x00000004, 0x00040000),
+    AEM4CC("hyph"): (0x00000008, 0x00080000),
+    AEM4CC("expa"): (0x00000010, 0x00100000),
+    AEM4CC("punc"): (0x00000020, 0x00200000),
+    AEM4CC("nume"): (0x00000080, 0x00800000),
+]
+
+let kAEBDefaultConsidersIgnoresMask: UInt32 = 0x00010000 // AppleScript ignores case by default
+
+
+/******************************************************************************/
+// Specifier base class
 
 class SwiftAESpecifier: AEBSpecifier {
     
@@ -274,17 +292,30 @@ class SwiftAESpecifier: AEBSpecifier {
                 command.timeout(timeout as NSTimeInterval)
             }
         }
-        if let consider = considering {
-            print("TO DO: considering: \(consider)")
-        }
-        if let ignore = ignoring {
-            print("TO DO: ignoring: \(ignore)")
+        // (note: most apps completely ignore enumConsidsAndIgnores attribute, and always ignore case and consider everything else)
+        if considering != nil || ignoring != nil {
+            var considersAndIgnores: UInt32 = 0
+            if let considerOptions = considering {
+                for symbol in considerOptions {
+                    if let mask = AEBConsidersAndIgnoresMasks[symbol.aebCode] {
+                        considersAndIgnores |= mask.consider
+                    }
+                }
+            }
+            if let ignoreOptions = ignoring {
+                for symbol in ignoreOptions {
+                    if let mask = AEBConsidersAndIgnoresMasks[symbol.aebCode] {
+                        considersAndIgnores |= mask.ignore
+                    }
+                }
+            }
+            command.considering(considersAndIgnores)
         }
         // send the event
                 
         let res = try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript; Q. implement SwiftAEError as enum (at least for common standard error codes)? e.g. SwiftAEError.UnsupportedCoercion, .MissingParameter, .SpecifierNotFound, .ProcessNotFound, .ProcessTerminated, etc. prob. easiest for writing do...catch...catch...catch blocks
     
-     //   print(try SwiftAETranslateAppleEvent(command.aemEvent.descriptor)) // TEST; TO DO: delete
+   //     print(try SwiftAETranslateAppleEvent(command.aemEvent.descriptor)) // TEST; TO DO: delete
         
         return res
     }

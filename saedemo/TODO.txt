@@ -130,4 +130,8 @@ Also, how to make instance methods generic so they can be defined once on SwiftA
 - implement Playground-friendly help() support
 
 
+- would it be preferable for AEBSwiftSpecifiers to be pure Swift classes, rather than subclasses of NSObject?
+
+
+
 

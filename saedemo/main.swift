@@ -17,6 +17,10 @@ let itunes = ITunes()
 let t = true; let f = false
 
 
+// note that TextEdit pays no attention to considering/ignoring flags in events, so always ignores case and considers everything else
+//print(try textedit.documents[1].words[TEDits == "foo"].get())
+//print(try textedit.documents[1].words[TEDits == "foo"].get(considering: [TED.case_, TED.diacriticals], ignoring: [TED.expansion]))
+
 
 if f {
     do {
@@ -47,7 +51,7 @@ print(try textedit.documents.count())
 //print(try textedit.count(each: TED.document))
 
 
-if f {
+if t {
 
     // build an object specifier (note: formatter is unfinished so some types still appear ObjC style):
     //
