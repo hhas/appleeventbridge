@@ -1,6 +1,10 @@
 TO DO:
 
-- how best to name application classes? e.g. let textedit = TextEdit() is a little close for comfort; worth including prefix as reminder of app's symbol namespace?
+- what, if any, standard Swift method/var names need reserved in AEBStaticKeywordConverter?
+
+
+- how best to specify launch flags? e.g. as optional args to Application object constructor
+
 
 - given all command methods return errors (since no Apple event is guaranteed to succeed), would it be worth overloading command methods to provide an alternative error handling scheme, allowing user to omit 'try' where they aren't concerned with error details, e.g. by passing a closure that returns a default value to be returned if command fails:
 
@@ -17,26 +21,13 @@ user could then use a trailing closure to return a default value in the event an
 
     print (TextEdit.documents[100].text.get(){$0; return "N/A"})
 
-
-Q. any way to allow closure to ignore error argument?, e.g. {$0; return -1} works with above but {-1} complains about mismatched signatures
-
-Q. should ifError: closure be optional? if omitted, what should it return? or would it be simpler just to return AnyObject? on error and leave user to unwrap? or should 'try' always be required? (i.e. 'try' is standard Swift error handling idiom, whereas others are not) note that if nil is returned, `??` operator can be used to supply a default value instead, so ifError: closure is essentially redundant anyway unless user wants to receive error object (however, really need to pick one or the other, as creating three different variants on every method would be excessive)
+(Q. any way to allow closure to ignore error argument?, e.g. {$0; return -1} works with above but {-1} complains about mismatched signatures; e.g. sum type ought to work)
 
 
-one problem: overloading 'get(...)throws->AnyObject' with 'get(...)->AnyObject?' is that compiler complains about ambiguous use; any way around this?
-    
-    func get(directParameter: AnyObject = kAEBNoParameter,
-            eventAttributes: AnyObject? = nil) -> AnyObject? {
-        do {
-            return try self.sendAppleEvent(0x636f7265, eventID: 0x67657464, parameters: [
-                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)])
-        } catch {
-            return nil
-        }
-    }
+- what about asynch event handling? (trailing closures typically used there for completion code)
 
 
-- TO DO: figure out why the following generic function fails to instantiate the correct class (Swift bug?):
+- figure out why the following generic function fails to instantiate the correct class (Swift bug?):
 
 
     func != <T: SwiftAESpecifier>(left: T!, right: AnyObject!) -> T! {
@@ -54,27 +45,14 @@ one problem: overloading 'get(...)throws->AnyObject' with 'get(...)->AnyObject?'
         return newObj
     }
 
-Also, how to make instance methods generic so they can be defined once on SwiftAESpecifier instead of duplicated across every glue?
-
-    class TETSpecifier: SwiftAESpecifier {
-        ...
-        func beginning() -> TETSpecifier {
-            let baseQuery = self.aemQuery as! AEMMultipleElementsSpecifier
-            return TETSpecifier(appData: aebAppData, aemQuery: baseQuery.beginning())
-        }
-        ...
-    }
-
 
 - any way to ensure `func == (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier!` always gets priority over Swift's default `==(...)->Bool`? Currently, in the absence of an explicit return type, the type inferencer likes to pick the latter rather than the former, causing `==` test clause specifier to return boolean result instead of another specifier, e.g.:
 
     let q = TET.it == ""
-    print(q) // q=false, but should be TETSpecifier; other operators do not seem to have this problem
+print(q) // q=false, but should be TETSpecifier; other operators do not seem to have this problem (might be a consequence of Swift's automatic bridging of -[NSObject isEqual:])
 
 
 - how best to specify how reply descs should be unpacked? (TO DO: is it possible/practical to specify return type as a Swift type, e.g. Array<String>, and introspect that to determine what coercions to apply when unpacking descs?)
-
-    - what about overriding return type for String, Int, Array<String>, etc? (this could generate a lot of methods; will need to stress-test glues on InDesign, etc.; also likely to be ambiguous, and therefore more nuisance than help)
 
     - how best can commands provide generic behavior where a Swift type passed as returnType: argument can determine function/method's return type? e.g.:
 
@@ -104,9 +82,6 @@ Also, how to make instance methods generic so they can be defined once on SwiftA
 - move AEBSwiftAEGlueBase, AEBSwiftAETranslate to AppleEventBridge.framework (note: need to check how mixed-code framework APIs are exposed to Swift vs ObjC)
 
 
-- How should application-defined symbols be represented in Swift? Currently subclasses of AEBConstant, but definitions and typing are a bit shlonky, and built-in and app-defined terms are all mixed up in glues (it would be cleaner if built-in terms were defined once in framework as they already are for ObjC glues). Defining 'XXX' namespaces as Swift enums would be more idiomatic from Swift's POV; however, these don't allow for buggy terminology and other corner cases where code->name mappings aren't found (it's arguably SwiftAppData's job to return AEMType/AEMEnum instead of XXSymbol when this happens, but this in turn makes static typing tricker for users). And since ensuring AppleScript-level application compatibility is more important that 'nativeness', it may be that enums are impractical and the current XXSymbol class-based approach is the best (least problematic) of the available solutions.
-
-
 - finish event attributes support
 
 
@@ -114,9 +89,6 @@ Also, how to make instance methods generic so they can be defined once on SwiftA
 
 
 - remove `k` prefix from all AEM/AEB enums (c.f. Cocoa enums)?
-
-
-- make a final decision on whether Swift glues should define generic specifier roots as XXX.app/XXX.con/XXX.its, XXXApp/XXXCon/XXXIts, or XXXapp/XXXcon/XXXits
 
 
 - how to structure documentation to cover both Swift and ObjC?
@@ -127,7 +99,7 @@ Also, how to make instance methods generic so they can be defined once on SwiftA
     print(try textedit.documents.modified.get()) // prints as (0,0,...), not [false,false,...]
 
 
-- implement Playground-friendly help() support
+- implement Playground-friendly help() support? note: need to check how Playgrounds re-evaluates code after changes: if all operations are automatically re-applied then it won't be much use for experimenting/working with AEB (i.e. all commands that modify application data will be accidents/disasters waiting to happen), in which case users will be far better off using interactive swift CLI in Terminal
 
 
 - would it be preferable for AEBSwiftSpecifiers to be pure Swift classes, rather than subclasses of NSObject?

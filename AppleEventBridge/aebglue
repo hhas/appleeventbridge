@@ -5,8 +5,6 @@
 
 # TO DO: how best to package and name glues? add option to export as frameworks/modules (these should probably use long names, e.g. TextEditGlue rather than TETGlue)
 
-# TO DO: what, if any, standard Swift method/var names need reserved?
-
 # TO DO: use correct signatures for appdata.terminologyWithError_, AEBDynamicSDEFParser.copyScriptingDefinitionAtURL_error_ so error description is returned; see objc.setSignatureForSelector()
 
 # TO DO: XXXSymbol classes shouldn't include type and enum symbols already defined by AEBStaticSymbol (also check how partial matches, e.g. where name is same but code is different, are treated)
@@ -19,7 +17,8 @@
 
 # TO DO: option to export raw four-char code constants
 
-# TO DO: AppInfo should manage keywordconverters
+# TO DO: if SwiftAE moves to separate framework, make ObjC glues the default and replace -o with -lLANGUAGE option, then add `bin/saeglue` to SwiftAE
+
 
 import getopt, os, re, string, sys
 import xml.etree.ElementTree as ET
@@ -228,8 +227,9 @@ def renderglue(tpl, outdir, gluesourcefilename, appinfo, terms, allowoverwrite, 
 # TO DO: messy; restructure: AppInfo should contain app info only; language-specific info/APIs should be in separate (wrapper) classes
 
 class AppInfo:
-    def __init__(self, keywordconverter, appurl=None, prefix=None, appclassname=None):
-        self.keywordconverter, self.appurl = keywordconverter, appurl
+    def __init__(self, appurl=None, prefix=None, appclassname=None, isobjc=False, usesdef=False):
+        self.appurl, self.isobjc, self.usesdef = appurl, isobjc, usesdef
+        self.keywordconverter = (AEBObjCKeywordConverter if isobjc else AEBSwiftKeywordConverter).sharedKeywordConverter()
         if appurl:
             appbundle = NSBundle.bundleWithURL_(appurl)
             if not appbundle:
@@ -239,38 +239,36 @@ class AppInfo:
             self.name = appinfo.get('CFBundleName')
             self.version = appinfo.get('CFBundleShortVersionString')
             self.bundleid = appinfo.get('CFBundleIdentifier')
-            self.prefix = prefix or keywordconverter.prefixForAppName_(self.name or 'UNKNOWN')
+            self.prefix = prefix or self.keywordconverter.prefixForAppName_(self.name or 'UNKNOWN')
         else:
             self.filename = 'N/A'
-            self.name, self.version, self.bundleid, self.prefix = 'Default', 'N/A', 'UNKNOWN', prefix or 'AEB'
+            self.name, self.version, self.bundleid, self.prefix = 'AnyApplication', 'N/A', 'UNKNOWN', 'AEBAny'
         self.gluename = self.prefix + 'Glue'
         self.appclassname = self.keywordconverter.identifierForAppName_(appclassname or self.name or self.prefix+'Application')
         if self.appclassname == self.prefix:
             raise ValueError("-n IDENTIFIER and -p PREFIX options cannot be the same: %s" % name)
 
-    def terminology(self, usesdef=False):
+    def terminology(self):
         appdata = AEBDynamicAppData.alloc().initWithApplicationURL_useSDEF_keywordConverter_(
-            self.appurl, usesdef, self.keywordconverter)
+            self.appurl, self.usesdef, self.keywordconverter)
         terms = appdata.terminologyWithError_(None)
         if not terms:
             raise ValueError("Can't get terminology for: %s" % appurl)
         return terms
 
+    def makeglue(self, outdir, allowoverwrite, shellcmd):
+        terms = self.terminology()
+        if self.isobjc:
+            for templatename, suffix in [('ObjCInterfaceGlueTemplate', '.h'), ('ObjCImplementationGlueTemplate', '.m')]:
+                renderglue(readtemplate(templatename), outdir, self.gluename+suffix, self, terms, allowoverwrite, shellcmd)
+            sdeffilenamesuffix, sdefcommandnamesuffix = 'objc.sdef', ':'
+        else:
+            renderglue(readtemplate('SwiftGlueTemplate'), outdir, self.gluename+'.swift', self, terms, allowoverwrite, shellcmd)
+            sdeffilenamesuffix, sdefcommandnamesuffix = 'swift.sdef', ''
+        if self.appurl:
+            exportsdef(self.appurl, os.path.join(outdir, '%s-%s' % (self.gluename, sdeffilenamesuffix)),
+                       self.keywordconverter, self.prefix, sdefcommandnamesuffix, allowoverwrite)
 
-def makeswiftglue(outdir, appinfo, usesdef, allowoverwrite, shellcmd):
-    terms = appinfo.terminology(usesdef)
-    renderglue(readtemplate('SwiftGlueTemplate'), outdir, appinfo.gluename+'.swift', appinfo, terms, allowoverwrite, shellcmd)
-    if appinfo.appurl:
-        exportsdef(appinfo.appurl, os.path.join(outdir, appinfo.gluename+'-swift.sdef'), appinfo.keywordconverter, appinfo.prefix, '', allowoverwrite)
-
-
-def makeobjcglue(outdir, appinfo, usesdef, allowoverwrite, shellcmd):
-    terms = appinfo.terminology(usesdef)
-    appclassname = appinfo.appclassname(keywordconverter)
-    for templatename, suffix in [('ObjCInterfaceGlueTemplate', '.h'), ('ObjCImplementationGlueTemplate', '.m')]:
-        renderglue(readtemplate(templatename), outdir, appinfo.gluename+suffix, appinfo, terms, allowoverwrite, shellcmd)
-    if appinfo.appurl:
-        exportsdef(appinfo.appurl, os.path.join(outdir, appinfo.gluename+'-objc.sdef'), appinfo.keywordconverter, appinfo.prefix, ':', allowoverwrite)
 
 
 ######################################################################
@@ -290,7 +288,7 @@ if __name__ == '__main__':
             print >> sys.stderr, "Usage:"
             print >> sys.stderr
             print >> sys.stderr, "    aebglue [-n CLASS-NAME] [-o] [-p PREFIX] [-r] [-s] APP-NAME [OUT-DIR]"
-            print >> sys.stderr, "    aebglue -d [OUT-DIR]"
+            print >> sys.stderr, "    aebglue -d [-o] [-r] [OUT-DIR]"
             print >> sys.stderr, "    aebglue [-h] [-v]"
             print >> sys.stderr
             print >> sys.stderr, "APP-PATH - Name or path to application."
@@ -326,17 +324,18 @@ if __name__ == '__main__':
             print >> sys.stderr, "    aebglue -p TE TextEdit ~/Documents"
             print >> sys.stderr
             sys.exit()
+        isobjc = '-o' in opts
         if '-v' in opts:
             print >> sys.stdout, kFrameworkVersion
             sys.exit()
         if '-d' in opts: # use default terms only
-            appurl = None
             if len(args) == 0:
                 outdir = os.getcwd()
             elif len(args) == 1:
                 outdir = args[-1]
             else:
                 raise ValueError('Wrong number of arguments.')
+            appinfo = AppInfo(isobjc=isobjc)
         else: # use terms from specified application, plus default terms
             if len(args) == 1:
                 outdir = os.getcwd()
@@ -350,12 +349,12 @@ if __name__ == '__main__':
             appurl = AEMApplication.fileURLForApplicationWithName_(appname)
             if not appurl:
                 raise ValueError("Can't find application: %s" % appname)
-        keywordconverter = (AEBObjCKeywordConverter if '-o' in opts else AEBSwiftKeywordConverter).sharedKeywordConverter()
-        appinfo = AppInfo(keywordconverter) if '-d' in opts else AppInfo(keywordconverter, appurl, opts.get('-p'), opts.get('-n'))
+            appinfo = AppInfo(appurl, opts.get('-p'), opts.get('-n'), isobjc, '-s' in opts)
         if not appinfo.bundleid:
             print >> sys.stderr, "Warning: default constructor won't work as bundle identifier not found."
-        # create new XXGlue directory
         outdir = os.path.abspath(os.path.expanduser(outdir))
+        if isobjc: # ObjC glue files will be created in a new XXGlue directory
+            outdir = os.path.join(outdir, appinfo.prefix+'Glue')
         if not os.path.exists(outdir):
             parentdir = os.path.dirname(outdir)
             if not os.path.isdir(parentdir):
@@ -367,7 +366,7 @@ if __name__ == '__main__':
         # generate glue files
         shellcmd = 'aebglue %s' % (' '.join([('%s %s' % (k, shquote(v) if k[1]+':' in kOpts else '')).strip() for k, v in opts.items()]
                                             + [shquote(os.path.basename(arg)) for arg in args]))
-        (makeobjcglue if '-o' in opts else makeswiftglue)(outdir, appinfo, '-s' in opts, '-r' in opts, shellcmd)
+        appinfo.makeglue(outdir, '-r' in opts, shellcmd)
         print >> sys.stderr, "Created %s (%ims)" % (appinfo.gluename, (time.time()-tt)*1000) # DEBUG
     except Exception, e:
         print >> sys.stderr, "Error:", e

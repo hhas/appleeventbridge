@@ -2,6 +2,7 @@
 // ITUGlue.m
 // iTunes.app 12.1.2
 // AppleEventBridge.framework 0.7.0
+// aebglue -o -r iTunes
 //
 
 #import "ITUGlue.h"
@@ -187,7 +188,7 @@
 
 
 @implementation ITUSymbol
-+ (instancetype)aebSymbolForCode:(OSType)code_ {
++ (AEBSymbol *)aebSymbolForCode:(OSType)code_ {
     switch (code_) {
         case 0x61707220: return self.April;
         case 0x61756720: return self.August;
@@ -534,348 +535,348 @@
     }
 }
 // Types/properties 
-+ (instancetype)April {AEB_RETURN_SYMBOL(@"April", typeType, 0x61707220);}
-+ (instancetype)August {AEB_RETURN_SYMBOL(@"August", typeType, 0x61756720);}
-+ (instancetype)CString {AEB_RETURN_SYMBOL(@"CString", typeType, 0x63737472);}
-+ (instancetype)December {AEB_RETURN_SYMBOL(@"December", typeType, 0x64656320);}
-+ (instancetype)EPSPicture {AEB_RETURN_SYMBOL(@"EPSPicture", typeType, 0x45505320);}
-+ (instancetype)EQ {AEB_RETURN_SYMBOL(@"EQ", typeType, 0x70455170);}
-+ (instancetype)EQEnabled {AEB_RETURN_SYMBOL(@"EQEnabled", typeType, 0x70455120);}
-+ (instancetype)EQPreset {AEB_RETURN_SYMBOL(@"EQPreset", typeType, 0x63455150);}
-+ (instancetype)EQWindow {AEB_RETURN_SYMBOL(@"EQWindow", typeType, 0x63455157);}
-+ (instancetype)February {AEB_RETURN_SYMBOL(@"February", typeType, 0x66656220);}
-+ (instancetype)Friday {AEB_RETURN_SYMBOL(@"Friday", typeType, 0x66726920);}
-+ (instancetype)GIFPicture {AEB_RETURN_SYMBOL(@"GIFPicture", typeType, 0x47494666);}
-+ (instancetype)JPEGPicture {AEB_RETURN_SYMBOL(@"JPEGPicture", typeType, 0x4a504547);}
-+ (instancetype)January {AEB_RETURN_SYMBOL(@"January", typeType, 0x6a616e20);}
-+ (instancetype)July {AEB_RETURN_SYMBOL(@"July", typeType, 0x6a756c20);}
-+ (instancetype)June {AEB_RETURN_SYMBOL(@"June", typeType, 0x6a756e20);}
-+ (instancetype)March {AEB_RETURN_SYMBOL(@"March", typeType, 0x6d617220);}
-+ (instancetype)May {AEB_RETURN_SYMBOL(@"May", typeType, 0x6d617920);}
-+ (instancetype)Monday {AEB_RETURN_SYMBOL(@"Monday", typeType, 0x6d6f6e20);}
-+ (instancetype)November {AEB_RETURN_SYMBOL(@"November", typeType, 0x6e6f7620);}
-+ (instancetype)October {AEB_RETURN_SYMBOL(@"October", typeType, 0x6f637420);}
-+ (instancetype)PICTPicture {AEB_RETURN_SYMBOL(@"PICTPicture", typeType, 0x50494354);}
-+ (instancetype)PascalString {AEB_RETURN_SYMBOL(@"PascalString", typeType, 0x70737472);}
-+ (instancetype)RGB16Color {AEB_RETURN_SYMBOL(@"RGB16Color", typeType, 0x74723136);}
-+ (instancetype)RGB96Color {AEB_RETURN_SYMBOL(@"RGB96Color", typeType, 0x74723936);}
-+ (instancetype)RGBColor {AEB_RETURN_SYMBOL(@"RGBColor", typeType, 0x63524742);}
-+ (instancetype)Saturday {AEB_RETURN_SYMBOL(@"Saturday", typeType, 0x73617420);}
-+ (instancetype)September {AEB_RETURN_SYMBOL(@"September", typeType, 0x73657020);}
-+ (instancetype)Sunday {AEB_RETURN_SYMBOL(@"Sunday", typeType, 0x73756e20);}
-+ (instancetype)TIFFPicture {AEB_RETURN_SYMBOL(@"TIFFPicture", typeType, 0x54494646);}
-+ (instancetype)Thursday {AEB_RETURN_SYMBOL(@"Thursday", typeType, 0x74687520);}
-+ (instancetype)Tuesday {AEB_RETURN_SYMBOL(@"Tuesday", typeType, 0x74756520);}
-+ (instancetype)URLTrack {AEB_RETURN_SYMBOL(@"URLTrack", typeType, 0x63555254);}
-+ (instancetype)UTF16Text {AEB_RETURN_SYMBOL(@"UTF16Text", typeType, 0x75743136);}
-+ (instancetype)UTF8Text {AEB_RETURN_SYMBOL(@"UTF8Text", typeType, 0x75746638);}
-+ (instancetype)UnicodeText {AEB_RETURN_SYMBOL(@"UnicodeText", typeType, 0x75747874);}
-+ (instancetype)Wednesday {AEB_RETURN_SYMBOL(@"Wednesday", typeType, 0x77656420);}
-+ (instancetype)address {AEB_RETURN_SYMBOL(@"address", typeType, 0x7055524c);}
-+ (instancetype)album {AEB_RETURN_SYMBOL(@"album", typeType, 0x70416c62);}
-+ (instancetype)albumArtist {AEB_RETURN_SYMBOL(@"albumArtist", typeType, 0x70416c41);}
-+ (instancetype)albumRating {AEB_RETURN_SYMBOL(@"albumRating", typeType, 0x70416c52);}
-+ (instancetype)albumRatingKind {AEB_RETURN_SYMBOL(@"albumRatingKind", typeType, 0x7041526b);}
-+ (instancetype)alias {AEB_RETURN_SYMBOL(@"alias", typeType, 0x616c6973);}
-+ (instancetype)anything {AEB_RETURN_SYMBOL(@"anything", typeType, 0x2a2a2a2a);}
-+ (instancetype)application {AEB_RETURN_SYMBOL(@"application", typeType, 0x63617070);}
-+ (instancetype)applicationBundleID {AEB_RETURN_SYMBOL(@"applicationBundleID", typeType, 0x62756e64);}
-+ (instancetype)applicationSignature {AEB_RETURN_SYMBOL(@"applicationSignature", typeType, 0x7369676e);}
-+ (instancetype)applicationURL {AEB_RETURN_SYMBOL(@"applicationURL", typeType, 0x6170726c);}
-+ (instancetype)artist {AEB_RETURN_SYMBOL(@"artist", typeType, 0x70417274);}
-+ (instancetype)artwork {AEB_RETURN_SYMBOL(@"artwork", typeType, 0x63417274);}
-+ (instancetype)audioCDPlaylist {AEB_RETURN_SYMBOL(@"audioCDPlaylist", typeType, 0x63434450);}
-+ (instancetype)audioCDTrack {AEB_RETURN_SYMBOL(@"audioCDTrack", typeType, 0x63434454);}
-+ (instancetype)band1 {AEB_RETURN_SYMBOL(@"band1", typeType, 0x70455131);}
-+ (instancetype)band10 {AEB_RETURN_SYMBOL(@"band10", typeType, 0x70455130);}
-+ (instancetype)band2 {AEB_RETURN_SYMBOL(@"band2", typeType, 0x70455132);}
-+ (instancetype)band3 {AEB_RETURN_SYMBOL(@"band3", typeType, 0x70455133);}
-+ (instancetype)band4 {AEB_RETURN_SYMBOL(@"band4", typeType, 0x70455134);}
-+ (instancetype)band5 {AEB_RETURN_SYMBOL(@"band5", typeType, 0x70455135);}
-+ (instancetype)band6 {AEB_RETURN_SYMBOL(@"band6", typeType, 0x70455136);}
-+ (instancetype)band7 {AEB_RETURN_SYMBOL(@"band7", typeType, 0x70455137);}
-+ (instancetype)band8 {AEB_RETURN_SYMBOL(@"band8", typeType, 0x70455138);}
-+ (instancetype)band9 {AEB_RETURN_SYMBOL(@"band9", typeType, 0x70455139);}
-+ (instancetype)best {AEB_RETURN_SYMBOL(@"best", typeType, 0x62657374);}
-+ (instancetype)bitRate {AEB_RETURN_SYMBOL(@"bitRate", typeType, 0x70425274);}
-+ (instancetype)bookmark {AEB_RETURN_SYMBOL(@"bookmark", typeType, 0x70426b74);}
-+ (instancetype)bookmarkable {AEB_RETURN_SYMBOL(@"bookmarkable", typeType, 0x70426b6d);}
-+ (instancetype)boolean {AEB_RETURN_SYMBOL(@"boolean", typeType, 0x626f6f6c);}
-+ (instancetype)boundingRectangle {AEB_RETURN_SYMBOL(@"boundingRectangle", typeType, 0x71647274);}
-+ (instancetype)bounds {AEB_RETURN_SYMBOL(@"bounds", typeType, 0x70626e64);}
-+ (instancetype)bpm {AEB_RETURN_SYMBOL(@"bpm", typeType, 0x7042504d);}
-+ (instancetype)browserWindow {AEB_RETURN_SYMBOL(@"browserWindow", typeType, 0x63427257);}
-+ (instancetype)capacity {AEB_RETURN_SYMBOL(@"capacity", typeType, 0x63617061);}
-+ (instancetype)category {AEB_RETURN_SYMBOL(@"category", typeType, 0x70436174);}
-+ (instancetype)centimeters {AEB_RETURN_SYMBOL(@"centimeters", typeType, 0x636d7472);}
-+ (instancetype)classInfo {AEB_RETURN_SYMBOL(@"classInfo", typeType, 0x67636c69);}
-+ (instancetype)class_ {AEB_RETURN_SYMBOL(@"class_", typeType, 0x70636c73);}
-+ (instancetype)closeable {AEB_RETURN_SYMBOL(@"closeable", typeType, 0x68636c62);}
-+ (instancetype)collapseable {AEB_RETURN_SYMBOL(@"collapseable", typeType, 0x70575368);}
-+ (instancetype)collapsed {AEB_RETURN_SYMBOL(@"collapsed", typeType, 0x77736864);}
-+ (instancetype)collating {AEB_RETURN_SYMBOL(@"collating", typeType, 0x6c77636c);}
-+ (instancetype)colorTable {AEB_RETURN_SYMBOL(@"colorTable", typeType, 0x636c7274);}
-+ (instancetype)comment {AEB_RETURN_SYMBOL(@"comment", typeType, 0x70436d74);}
-+ (instancetype)compilation {AEB_RETURN_SYMBOL(@"compilation", typeType, 0x70416e74);}
-+ (instancetype)composer {AEB_RETURN_SYMBOL(@"composer", typeType, 0x70436d70);}
-+ (instancetype)container {AEB_RETURN_SYMBOL(@"container", typeType, 0x63746e72);}
-+ (instancetype)copies {AEB_RETURN_SYMBOL(@"copies", typeType, 0x6c776370);}
-+ (instancetype)cubicCentimeters {AEB_RETURN_SYMBOL(@"cubicCentimeters", typeType, 0x63636d74);}
-+ (instancetype)cubicFeet {AEB_RETURN_SYMBOL(@"cubicFeet", typeType, 0x63666574);}
-+ (instancetype)cubicInches {AEB_RETURN_SYMBOL(@"cubicInches", typeType, 0x6375696e);}
-+ (instancetype)cubicMeters {AEB_RETURN_SYMBOL(@"cubicMeters", typeType, 0x636d6574);}
-+ (instancetype)cubicYards {AEB_RETURN_SYMBOL(@"cubicYards", typeType, 0x63797264);}
-+ (instancetype)currentEQPreset {AEB_RETURN_SYMBOL(@"currentEQPreset", typeType, 0x70455150);}
-+ (instancetype)currentEncoder {AEB_RETURN_SYMBOL(@"currentEncoder", typeType, 0x70456e63);}
-+ (instancetype)currentPlaylist {AEB_RETURN_SYMBOL(@"currentPlaylist", typeType, 0x70506c61);}
-+ (instancetype)currentStreamTitle {AEB_RETURN_SYMBOL(@"currentStreamTitle", typeType, 0x70537454);}
-+ (instancetype)currentStreamURL {AEB_RETURN_SYMBOL(@"currentStreamURL", typeType, 0x70537455);}
-+ (instancetype)currentTrack {AEB_RETURN_SYMBOL(@"currentTrack", typeType, 0x7054726b);}
-+ (instancetype)currentVisual {AEB_RETURN_SYMBOL(@"currentVisual", typeType, 0x70566973);}
-+ (instancetype)dashStyle {AEB_RETURN_SYMBOL(@"dashStyle", typeType, 0x74646173);}
-+ (instancetype)data {AEB_RETURN_SYMBOL(@"data", typeType, 0x72646174);}
-+ (instancetype)data_ {AEB_RETURN_SYMBOL(@"data_", typeType, 0x70504354);}
-+ (instancetype)databaseID {AEB_RETURN_SYMBOL(@"databaseID", typeType, 0x70444944);}
-+ (instancetype)date {AEB_RETURN_SYMBOL(@"date", typeType, 0x6c647420);}
-+ (instancetype)dateAdded {AEB_RETURN_SYMBOL(@"dateAdded", typeType, 0x70416464);}
-+ (instancetype)decimalStruct {AEB_RETURN_SYMBOL(@"decimalStruct", typeType, 0x6465636d);}
-+ (instancetype)degreesCelsius {AEB_RETURN_SYMBOL(@"degreesCelsius", typeType, 0x64656763);}
-+ (instancetype)degreesFahrenheit {AEB_RETURN_SYMBOL(@"degreesFahrenheit", typeType, 0x64656766);}
-+ (instancetype)degreesKelvin {AEB_RETURN_SYMBOL(@"degreesKelvin", typeType, 0x6465676b);}
-+ (instancetype)description_ {AEB_RETURN_SYMBOL(@"description_", typeType, 0x70446573);}
-+ (instancetype)devicePlaylist {AEB_RETURN_SYMBOL(@"devicePlaylist", typeType, 0x63447650);}
-+ (instancetype)deviceTrack {AEB_RETURN_SYMBOL(@"deviceTrack", typeType, 0x63447654);}
-+ (instancetype)discCount {AEB_RETURN_SYMBOL(@"discCount", typeType, 0x70447343);}
-+ (instancetype)discNumber {AEB_RETURN_SYMBOL(@"discNumber", typeType, 0x7044734e);}
-+ (instancetype)doubleInteger {AEB_RETURN_SYMBOL(@"doubleInteger", typeType, 0x636f6d70);}
-+ (instancetype)downloaded {AEB_RETURN_SYMBOL(@"downloaded", typeType, 0x70446c41);}
-+ (instancetype)duration {AEB_RETURN_SYMBOL(@"duration", typeType, 0x70447572);}
-+ (instancetype)elementInfo {AEB_RETURN_SYMBOL(@"elementInfo", typeType, 0x656c696e);}
-+ (instancetype)enabled {AEB_RETURN_SYMBOL(@"enabled", typeType, 0x656e626c);}
-+ (instancetype)encodedString {AEB_RETURN_SYMBOL(@"encodedString", typeType, 0x656e6373);}
-+ (instancetype)encoder {AEB_RETURN_SYMBOL(@"encoder", typeType, 0x63456e63);}
-+ (instancetype)endingPage {AEB_RETURN_SYMBOL(@"endingPage", typeType, 0x6c776c70);}
-+ (instancetype)enumerator {AEB_RETURN_SYMBOL(@"enumerator", typeType, 0x656e756d);}
-+ (instancetype)episodeID {AEB_RETURN_SYMBOL(@"episodeID", typeType, 0x70457044);}
-+ (instancetype)episodeNumber {AEB_RETURN_SYMBOL(@"episodeNumber", typeType, 0x7045704e);}
-+ (instancetype)errorHandling {AEB_RETURN_SYMBOL(@"errorHandling", typeType, 0x6c776568);}
-+ (instancetype)eventInfo {AEB_RETURN_SYMBOL(@"eventInfo", typeType, 0x6576696e);}
-+ (instancetype)extendedFloat {AEB_RETURN_SYMBOL(@"extendedFloat", typeType, 0x65787465);}
-+ (instancetype)faxNumber {AEB_RETURN_SYMBOL(@"faxNumber", typeType, 0x6661786e);}
-+ (instancetype)feet {AEB_RETURN_SYMBOL(@"feet", typeType, 0x66656574);}
-+ (instancetype)fileRef {AEB_RETURN_SYMBOL(@"fileRef", typeType, 0x66737266);}
-+ (instancetype)fileSpecification {AEB_RETURN_SYMBOL(@"fileSpecification", typeType, 0x66737320);}
-+ (instancetype)fileTrack {AEB_RETURN_SYMBOL(@"fileTrack", typeType, 0x63466c54);}
-+ (instancetype)fileURL {AEB_RETURN_SYMBOL(@"fileURL", typeType, 0x6675726c);}
-+ (instancetype)finish {AEB_RETURN_SYMBOL(@"finish", typeType, 0x70537470);}
-+ (instancetype)fixed {AEB_RETURN_SYMBOL(@"fixed", typeType, 0x66697864);}
-+ (instancetype)fixedIndexing {AEB_RETURN_SYMBOL(@"fixedIndexing", typeType, 0x70466978);}
-+ (instancetype)fixedPoint {AEB_RETURN_SYMBOL(@"fixedPoint", typeType, 0x66706e74);}
-+ (instancetype)fixedRectangle {AEB_RETURN_SYMBOL(@"fixedRectangle", typeType, 0x66726374);}
-+ (instancetype)float128bit {AEB_RETURN_SYMBOL(@"float128bit", typeType, 0x6c64626c);}
-+ (instancetype)float_ {AEB_RETURN_SYMBOL(@"float_", typeType, 0x646f7562);}
-+ (instancetype)folderPlaylist {AEB_RETURN_SYMBOL(@"folderPlaylist", typeType, 0x63466f50);}
-+ (instancetype)format {AEB_RETURN_SYMBOL(@"format", typeType, 0x70466d74);}
-+ (instancetype)freeSpace {AEB_RETURN_SYMBOL(@"freeSpace", typeType, 0x66727370);}
-+ (instancetype)frontmost {AEB_RETURN_SYMBOL(@"frontmost", typeType, 0x70697366);}
-+ (instancetype)fullScreen {AEB_RETURN_SYMBOL(@"fullScreen", typeType, 0x70465363);}
-+ (instancetype)gallons {AEB_RETURN_SYMBOL(@"gallons", typeType, 0x67616c6e);}
-+ (instancetype)gapless {AEB_RETURN_SYMBOL(@"gapless", typeType, 0x7047706c);}
-+ (instancetype)genre {AEB_RETURN_SYMBOL(@"genre", typeType, 0x7047656e);}
-+ (instancetype)grams {AEB_RETURN_SYMBOL(@"grams", typeType, 0x6772616d);}
-+ (instancetype)graphicText {AEB_RETURN_SYMBOL(@"graphicText", typeType, 0x63677478);}
-+ (instancetype)grouping {AEB_RETURN_SYMBOL(@"grouping", typeType, 0x70477270);}
-+ (instancetype)id_ {AEB_RETURN_SYMBOL(@"id_", typeType, 0x49442020);}
-+ (instancetype)inches {AEB_RETURN_SYMBOL(@"inches", typeType, 0x696e6368);}
-+ (instancetype)index {AEB_RETURN_SYMBOL(@"index", typeType, 0x70696478);}
-+ (instancetype)integer {AEB_RETURN_SYMBOL(@"integer", typeType, 0x6c6f6e67);}
-+ (instancetype)internationalText {AEB_RETURN_SYMBOL(@"internationalText", typeType, 0x69747874);}
-+ (instancetype)internationalWritingCode {AEB_RETURN_SYMBOL(@"internationalWritingCode", typeType, 0x696e746c);}
-+ (instancetype)item {AEB_RETURN_SYMBOL(@"item", typeType, 0x636f626a);}
-+ (instancetype)kernelProcessID {AEB_RETURN_SYMBOL(@"kernelProcessID", typeType, 0x6b706964);}
-+ (instancetype)kilograms {AEB_RETURN_SYMBOL(@"kilograms", typeType, 0x6b67726d);}
-+ (instancetype)kilometers {AEB_RETURN_SYMBOL(@"kilometers", typeType, 0x6b6d7472);}
-+ (instancetype)kind {AEB_RETURN_SYMBOL(@"kind", typeType, 0x704b6e64);}
-+ (instancetype)libraryPlaylist {AEB_RETURN_SYMBOL(@"libraryPlaylist", typeType, 0x634c6950);}
-+ (instancetype)list {AEB_RETURN_SYMBOL(@"list", typeType, 0x6c697374);}
-+ (instancetype)liters {AEB_RETURN_SYMBOL(@"liters", typeType, 0x6c697472);}
-+ (instancetype)location {AEB_RETURN_SYMBOL(@"location", typeType, 0x704c6f63);}
-+ (instancetype)locationReference {AEB_RETURN_SYMBOL(@"locationReference", typeType, 0x696e736c);}
-+ (instancetype)longDescription {AEB_RETURN_SYMBOL(@"longDescription", typeType, 0x704c6473);}
-+ (instancetype)longFixed {AEB_RETURN_SYMBOL(@"longFixed", typeType, 0x6c667864);}
-+ (instancetype)longFixedPoint {AEB_RETURN_SYMBOL(@"longFixedPoint", typeType, 0x6c667074);}
-+ (instancetype)longFixedRectangle {AEB_RETURN_SYMBOL(@"longFixedRectangle", typeType, 0x6c667263);}
-+ (instancetype)longPoint {AEB_RETURN_SYMBOL(@"longPoint", typeType, 0x6c706e74);}
-+ (instancetype)longRectangle {AEB_RETURN_SYMBOL(@"longRectangle", typeType, 0x6c726374);}
-+ (instancetype)lyrics {AEB_RETURN_SYMBOL(@"lyrics", typeType, 0x704c7972);}
-+ (instancetype)machPort {AEB_RETURN_SYMBOL(@"machPort", typeType, 0x706f7274);}
-+ (instancetype)machine {AEB_RETURN_SYMBOL(@"machine", typeType, 0x6d616368);}
-+ (instancetype)machineLocation {AEB_RETURN_SYMBOL(@"machineLocation", typeType, 0x6d4c6f63);}
-+ (instancetype)meters {AEB_RETURN_SYMBOL(@"meters", typeType, 0x6d657472);}
-+ (instancetype)miles {AEB_RETURN_SYMBOL(@"miles", typeType, 0x6d696c65);}
-+ (instancetype)minimized {AEB_RETURN_SYMBOL(@"minimized", typeType, 0x704d696e);}
-+ (instancetype)missingValue {AEB_RETURN_SYMBOL(@"missingValue", typeType, 0x6d736e67);}
-+ (instancetype)modifiable {AEB_RETURN_SYMBOL(@"modifiable", typeType, 0x704d6f64);}
-+ (instancetype)modificationDate {AEB_RETURN_SYMBOL(@"modificationDate", typeType, 0x61736d6f);}
-+ (instancetype)mute {AEB_RETURN_SYMBOL(@"mute", typeType, 0x704d7574);}
-+ (instancetype)name {AEB_RETURN_SYMBOL(@"name", typeType, 0x706e616d);}
-+ (instancetype)null {AEB_RETURN_SYMBOL(@"null", typeType, 0x6e756c6c);}
-+ (instancetype)ounces {AEB_RETURN_SYMBOL(@"ounces", typeType, 0x6f7a7320);}
-+ (instancetype)pagesAcross {AEB_RETURN_SYMBOL(@"pagesAcross", typeType, 0x6c776c61);}
-+ (instancetype)pagesDown {AEB_RETURN_SYMBOL(@"pagesDown", typeType, 0x6c776c64);}
-+ (instancetype)parameterInfo {AEB_RETURN_SYMBOL(@"parameterInfo", typeType, 0x706d696e);}
-+ (instancetype)parent {AEB_RETURN_SYMBOL(@"parent", typeType, 0x70506c50);}
-+ (instancetype)persistentID {AEB_RETURN_SYMBOL(@"persistentID", typeType, 0x70504953);}
-+ (instancetype)picture {AEB_RETURN_SYMBOL(@"picture", typeType, 0x50494354);}
-+ (instancetype)pixelMapRecord {AEB_RETURN_SYMBOL(@"pixelMapRecord", typeType, 0x74706d6d);}
-+ (instancetype)playedCount {AEB_RETURN_SYMBOL(@"playedCount", typeType, 0x70506c43);}
-+ (instancetype)playedDate {AEB_RETURN_SYMBOL(@"playedDate", typeType, 0x70506c44);}
-+ (instancetype)playerPosition {AEB_RETURN_SYMBOL(@"playerPosition", typeType, 0x70506f73);}
-+ (instancetype)playerState {AEB_RETURN_SYMBOL(@"playerState", typeType, 0x70506c53);}
-+ (instancetype)playlist {AEB_RETURN_SYMBOL(@"playlist", typeType, 0x63506c79);}
-+ (instancetype)playlistWindow {AEB_RETURN_SYMBOL(@"playlistWindow", typeType, 0x63506c57);}
-+ (instancetype)podcast {AEB_RETURN_SYMBOL(@"podcast", typeType, 0x70545063);}
-+ (instancetype)point {AEB_RETURN_SYMBOL(@"point", typeType, 0x51447074);}
-+ (instancetype)position {AEB_RETURN_SYMBOL(@"position", typeType, 0x70706f73);}
-+ (instancetype)pounds {AEB_RETURN_SYMBOL(@"pounds", typeType, 0x6c627320);}
-+ (instancetype)preamp {AEB_RETURN_SYMBOL(@"preamp", typeType, 0x70455141);}
-+ (instancetype)printSettings {AEB_RETURN_SYMBOL(@"printSettings", typeType, 0x70736574);}
-+ (instancetype)printerFeatures {AEB_RETURN_SYMBOL(@"printerFeatures", typeType, 0x6c777066);}
-+ (instancetype)processSerialNumber {AEB_RETURN_SYMBOL(@"processSerialNumber", typeType, 0x70736e20);}
-+ (instancetype)properties {AEB_RETURN_SYMBOL(@"properties", typeType, 0x70414c4c);}
-+ (instancetype)property {AEB_RETURN_SYMBOL(@"property", typeType, 0x70726f70);}
-+ (instancetype)propertyInfo {AEB_RETURN_SYMBOL(@"propertyInfo", typeType, 0x70696e66);}
-+ (instancetype)quarts {AEB_RETURN_SYMBOL(@"quarts", typeType, 0x71727473);}
-+ (instancetype)radioTunerPlaylist {AEB_RETURN_SYMBOL(@"radioTunerPlaylist", typeType, 0x63525450);}
-+ (instancetype)rating {AEB_RETURN_SYMBOL(@"rating", typeType, 0x70527465);}
-+ (instancetype)ratingKind {AEB_RETURN_SYMBOL(@"ratingKind", typeType, 0x7052746b);}
-+ (instancetype)rawData {AEB_RETURN_SYMBOL(@"rawData", typeType, 0x74647461);}
-+ (instancetype)record {AEB_RETURN_SYMBOL(@"record", typeType, 0x7265636f);}
-+ (instancetype)reference {AEB_RETURN_SYMBOL(@"reference", typeType, 0x6f626a20);}
-+ (instancetype)releaseDate {AEB_RETURN_SYMBOL(@"releaseDate", typeType, 0x70526c44);}
-+ (instancetype)requestedPrintTime {AEB_RETURN_SYMBOL(@"requestedPrintTime", typeType, 0x6c777174);}
-+ (instancetype)resizable {AEB_RETURN_SYMBOL(@"resizable", typeType, 0x7072737a);}
-+ (instancetype)rotation {AEB_RETURN_SYMBOL(@"rotation", typeType, 0x74726f74);}
-+ (instancetype)sampleRate {AEB_RETURN_SYMBOL(@"sampleRate", typeType, 0x70535274);}
-+ (instancetype)script {AEB_RETURN_SYMBOL(@"script", typeType, 0x73637074);}
-+ (instancetype)seasonNumber {AEB_RETURN_SYMBOL(@"seasonNumber", typeType, 0x7053654e);}
-+ (instancetype)selection {AEB_RETURN_SYMBOL(@"selection", typeType, 0x73656c65);}
-+ (instancetype)shared {AEB_RETURN_SYMBOL(@"shared", typeType, 0x70536872);}
-+ (instancetype)sharedTrack {AEB_RETURN_SYMBOL(@"sharedTrack", typeType, 0x63536854);}
-+ (instancetype)shortFloat {AEB_RETURN_SYMBOL(@"shortFloat", typeType, 0x73696e67);}
-+ (instancetype)shortInteger {AEB_RETURN_SYMBOL(@"shortInteger", typeType, 0x73686f72);}
-+ (instancetype)show {AEB_RETURN_SYMBOL(@"show", typeType, 0x70536877);}
-+ (instancetype)shufflable {AEB_RETURN_SYMBOL(@"shufflable", typeType, 0x70536661);}
-+ (instancetype)shuffle {AEB_RETURN_SYMBOL(@"shuffle", typeType, 0x70536866);}
-+ (instancetype)size {AEB_RETURN_SYMBOL(@"size", typeType, 0x7053697a);}
-+ (instancetype)skippedCount {AEB_RETURN_SYMBOL(@"skippedCount", typeType, 0x70536b43);}
-+ (instancetype)skippedDate {AEB_RETURN_SYMBOL(@"skippedDate", typeType, 0x70536b44);}
-+ (instancetype)smart {AEB_RETURN_SYMBOL(@"smart", typeType, 0x70536d74);}
-+ (instancetype)songRepeat {AEB_RETURN_SYMBOL(@"songRepeat", typeType, 0x70527074);}
-+ (instancetype)sortAlbum {AEB_RETURN_SYMBOL(@"sortAlbum", typeType, 0x7053416c);}
-+ (instancetype)sortAlbumArtist {AEB_RETURN_SYMBOL(@"sortAlbumArtist", typeType, 0x70534141);}
-+ (instancetype)sortArtist {AEB_RETURN_SYMBOL(@"sortArtist", typeType, 0x70534172);}
-+ (instancetype)sortComposer {AEB_RETURN_SYMBOL(@"sortComposer", typeType, 0x7053436d);}
-+ (instancetype)sortName {AEB_RETURN_SYMBOL(@"sortName", typeType, 0x70534e6d);}
-+ (instancetype)sortShow {AEB_RETURN_SYMBOL(@"sortShow", typeType, 0x7053534e);}
-+ (instancetype)soundVolume {AEB_RETURN_SYMBOL(@"soundVolume", typeType, 0x70566f6c);}
-+ (instancetype)source {AEB_RETURN_SYMBOL(@"source", typeType, 0x63537263);}
-+ (instancetype)specialKind {AEB_RETURN_SYMBOL(@"specialKind", typeType, 0x7053704b);}
-+ (instancetype)squareFeet {AEB_RETURN_SYMBOL(@"squareFeet", typeType, 0x73716674);}
-+ (instancetype)squareKilometers {AEB_RETURN_SYMBOL(@"squareKilometers", typeType, 0x73716b6d);}
-+ (instancetype)squareMeters {AEB_RETURN_SYMBOL(@"squareMeters", typeType, 0x7371726d);}
-+ (instancetype)squareMiles {AEB_RETURN_SYMBOL(@"squareMiles", typeType, 0x73716d69);}
-+ (instancetype)squareYards {AEB_RETURN_SYMBOL(@"squareYards", typeType, 0x73717964);}
-+ (instancetype)start {AEB_RETURN_SYMBOL(@"start", typeType, 0x70537472);}
-+ (instancetype)startingPage {AEB_RETURN_SYMBOL(@"startingPage", typeType, 0x6c776670);}
-+ (instancetype)string {AEB_RETURN_SYMBOL(@"string", typeType, 0x54455854);}
-+ (instancetype)styledClipboardText {AEB_RETURN_SYMBOL(@"styledClipboardText", typeType, 0x7374796c);}
-+ (instancetype)styledText {AEB_RETURN_SYMBOL(@"styledText", typeType, 0x53545854);}
-+ (instancetype)styledUnicodeText {AEB_RETURN_SYMBOL(@"styledUnicodeText", typeType, 0x73757478);}
-+ (instancetype)suiteInfo {AEB_RETURN_SYMBOL(@"suiteInfo", typeType, 0x7375696e);}
-+ (instancetype)targetPrinter {AEB_RETURN_SYMBOL(@"targetPrinter", typeType, 0x74727072);}
-+ (instancetype)textStyleInfo {AEB_RETURN_SYMBOL(@"textStyleInfo", typeType, 0x74737479);}
-+ (instancetype)time {AEB_RETURN_SYMBOL(@"time", typeType, 0x7054696d);}
-+ (instancetype)track {AEB_RETURN_SYMBOL(@"track", typeType, 0x6354726b);}
-+ (instancetype)trackCount {AEB_RETURN_SYMBOL(@"trackCount", typeType, 0x70547243);}
-+ (instancetype)trackNumber {AEB_RETURN_SYMBOL(@"trackNumber", typeType, 0x7054724e);}
-+ (instancetype)typeClass {AEB_RETURN_SYMBOL(@"typeClass", typeType, 0x74797065);}
-+ (instancetype)unplayed {AEB_RETURN_SYMBOL(@"unplayed", typeType, 0x70556e70);}
-+ (instancetype)unsignedInteger {AEB_RETURN_SYMBOL(@"unsignedInteger", typeType, 0x6d61676e);}
-+ (instancetype)updateTracks {AEB_RETURN_SYMBOL(@"updateTracks", typeType, 0x70555443);}
-+ (instancetype)userPlaylist {AEB_RETURN_SYMBOL(@"userPlaylist", typeType, 0x63557350);}
-+ (instancetype)version_ {AEB_RETURN_SYMBOL(@"version_", typeType, 0x76657273);}
-+ (instancetype)videoKind {AEB_RETURN_SYMBOL(@"videoKind", typeType, 0x7056644b);}
-+ (instancetype)view {AEB_RETURN_SYMBOL(@"view", typeType, 0x70506c79);}
-+ (instancetype)visible {AEB_RETURN_SYMBOL(@"visible", typeType, 0x70766973);}
-+ (instancetype)visual {AEB_RETURN_SYMBOL(@"visual", typeType, 0x63566973);}
-+ (instancetype)visualSize {AEB_RETURN_SYMBOL(@"visualSize", typeType, 0x7056537a);}
-+ (instancetype)visualsEnabled {AEB_RETURN_SYMBOL(@"visualsEnabled", typeType, 0x70567345);}
-+ (instancetype)volumeAdjustment {AEB_RETURN_SYMBOL(@"volumeAdjustment", typeType, 0x7041646a);}
-+ (instancetype)window {AEB_RETURN_SYMBOL(@"window", typeType, 0x6377696e);}
-+ (instancetype)writingCode {AEB_RETURN_SYMBOL(@"writingCode", typeType, 0x70736374);}
-+ (instancetype)yards {AEB_RETURN_SYMBOL(@"yards", typeType, 0x79617264);}
-+ (instancetype)year {AEB_RETURN_SYMBOL(@"year", typeType, 0x70597220);}
-+ (instancetype)zoomable {AEB_RETURN_SYMBOL(@"zoomable", typeType, 0x69737a6d);}
-+ (instancetype)zoomed {AEB_RETURN_SYMBOL(@"zoomed", typeType, 0x707a756d);}
++ (AEBSymbol *)April {AEB_RETURN_SYMBOL(@"April", typeType, 0x61707220);}
++ (AEBSymbol *)August {AEB_RETURN_SYMBOL(@"August", typeType, 0x61756720);}
++ (AEBSymbol *)CString {AEB_RETURN_SYMBOL(@"CString", typeType, 0x63737472);}
++ (AEBSymbol *)December {AEB_RETURN_SYMBOL(@"December", typeType, 0x64656320);}
++ (AEBSymbol *)EPSPicture {AEB_RETURN_SYMBOL(@"EPSPicture", typeType, 0x45505320);}
++ (AEBSymbol *)EQ {AEB_RETURN_SYMBOL(@"EQ", typeType, 0x70455170);}
++ (AEBSymbol *)EQEnabled {AEB_RETURN_SYMBOL(@"EQEnabled", typeType, 0x70455120);}
++ (AEBSymbol *)EQPreset {AEB_RETURN_SYMBOL(@"EQPreset", typeType, 0x63455150);}
++ (AEBSymbol *)EQWindow {AEB_RETURN_SYMBOL(@"EQWindow", typeType, 0x63455157);}
++ (AEBSymbol *)February {AEB_RETURN_SYMBOL(@"February", typeType, 0x66656220);}
++ (AEBSymbol *)Friday {AEB_RETURN_SYMBOL(@"Friday", typeType, 0x66726920);}
++ (AEBSymbol *)GIFPicture {AEB_RETURN_SYMBOL(@"GIFPicture", typeType, 0x47494666);}
++ (AEBSymbol *)JPEGPicture {AEB_RETURN_SYMBOL(@"JPEGPicture", typeType, 0x4a504547);}
++ (AEBSymbol *)January {AEB_RETURN_SYMBOL(@"January", typeType, 0x6a616e20);}
++ (AEBSymbol *)July {AEB_RETURN_SYMBOL(@"July", typeType, 0x6a756c20);}
++ (AEBSymbol *)June {AEB_RETURN_SYMBOL(@"June", typeType, 0x6a756e20);}
++ (AEBSymbol *)March {AEB_RETURN_SYMBOL(@"March", typeType, 0x6d617220);}
++ (AEBSymbol *)May {AEB_RETURN_SYMBOL(@"May", typeType, 0x6d617920);}
++ (AEBSymbol *)Monday {AEB_RETURN_SYMBOL(@"Monday", typeType, 0x6d6f6e20);}
++ (AEBSymbol *)November {AEB_RETURN_SYMBOL(@"November", typeType, 0x6e6f7620);}
++ (AEBSymbol *)October {AEB_RETURN_SYMBOL(@"October", typeType, 0x6f637420);}
++ (AEBSymbol *)PICTPicture {AEB_RETURN_SYMBOL(@"PICTPicture", typeType, 0x50494354);}
++ (AEBSymbol *)PascalString {AEB_RETURN_SYMBOL(@"PascalString", typeType, 0x70737472);}
++ (AEBSymbol *)RGB16Color {AEB_RETURN_SYMBOL(@"RGB16Color", typeType, 0x74723136);}
++ (AEBSymbol *)RGB96Color {AEB_RETURN_SYMBOL(@"RGB96Color", typeType, 0x74723936);}
++ (AEBSymbol *)RGBColor {AEB_RETURN_SYMBOL(@"RGBColor", typeType, 0x63524742);}
++ (AEBSymbol *)Saturday {AEB_RETURN_SYMBOL(@"Saturday", typeType, 0x73617420);}
++ (AEBSymbol *)September {AEB_RETURN_SYMBOL(@"September", typeType, 0x73657020);}
++ (AEBSymbol *)Sunday {AEB_RETURN_SYMBOL(@"Sunday", typeType, 0x73756e20);}
++ (AEBSymbol *)TIFFPicture {AEB_RETURN_SYMBOL(@"TIFFPicture", typeType, 0x54494646);}
++ (AEBSymbol *)Thursday {AEB_RETURN_SYMBOL(@"Thursday", typeType, 0x74687520);}
++ (AEBSymbol *)Tuesday {AEB_RETURN_SYMBOL(@"Tuesday", typeType, 0x74756520);}
++ (AEBSymbol *)URLTrack {AEB_RETURN_SYMBOL(@"URLTrack", typeType, 0x63555254);}
++ (AEBSymbol *)UTF16Text {AEB_RETURN_SYMBOL(@"UTF16Text", typeType, 0x75743136);}
++ (AEBSymbol *)UTF8Text {AEB_RETURN_SYMBOL(@"UTF8Text", typeType, 0x75746638);}
++ (AEBSymbol *)UnicodeText {AEB_RETURN_SYMBOL(@"UnicodeText", typeType, 0x75747874);}
++ (AEBSymbol *)Wednesday {AEB_RETURN_SYMBOL(@"Wednesday", typeType, 0x77656420);}
++ (AEBSymbol *)address {AEB_RETURN_SYMBOL(@"address", typeType, 0x7055524c);}
++ (AEBSymbol *)album {AEB_RETURN_SYMBOL(@"album", typeType, 0x70416c62);}
++ (AEBSymbol *)albumArtist {AEB_RETURN_SYMBOL(@"albumArtist", typeType, 0x70416c41);}
++ (AEBSymbol *)albumRating {AEB_RETURN_SYMBOL(@"albumRating", typeType, 0x70416c52);}
++ (AEBSymbol *)albumRatingKind {AEB_RETURN_SYMBOL(@"albumRatingKind", typeType, 0x7041526b);}
++ (AEBSymbol *)alias {AEB_RETURN_SYMBOL(@"alias", typeType, 0x616c6973);}
++ (AEBSymbol *)anything {AEB_RETURN_SYMBOL(@"anything", typeType, 0x2a2a2a2a);}
++ (AEBSymbol *)application {AEB_RETURN_SYMBOL(@"application", typeType, 0x63617070);}
++ (AEBSymbol *)applicationBundleID {AEB_RETURN_SYMBOL(@"applicationBundleID", typeType, 0x62756e64);}
++ (AEBSymbol *)applicationSignature {AEB_RETURN_SYMBOL(@"applicationSignature", typeType, 0x7369676e);}
++ (AEBSymbol *)applicationURL {AEB_RETURN_SYMBOL(@"applicationURL", typeType, 0x6170726c);}
++ (AEBSymbol *)artist {AEB_RETURN_SYMBOL(@"artist", typeType, 0x70417274);}
++ (AEBSymbol *)artwork {AEB_RETURN_SYMBOL(@"artwork", typeType, 0x63417274);}
++ (AEBSymbol *)audioCDPlaylist {AEB_RETURN_SYMBOL(@"audioCDPlaylist", typeType, 0x63434450);}
++ (AEBSymbol *)audioCDTrack {AEB_RETURN_SYMBOL(@"audioCDTrack", typeType, 0x63434454);}
++ (AEBSymbol *)band1 {AEB_RETURN_SYMBOL(@"band1", typeType, 0x70455131);}
++ (AEBSymbol *)band10 {AEB_RETURN_SYMBOL(@"band10", typeType, 0x70455130);}
++ (AEBSymbol *)band2 {AEB_RETURN_SYMBOL(@"band2", typeType, 0x70455132);}
++ (AEBSymbol *)band3 {AEB_RETURN_SYMBOL(@"band3", typeType, 0x70455133);}
++ (AEBSymbol *)band4 {AEB_RETURN_SYMBOL(@"band4", typeType, 0x70455134);}
++ (AEBSymbol *)band5 {AEB_RETURN_SYMBOL(@"band5", typeType, 0x70455135);}
++ (AEBSymbol *)band6 {AEB_RETURN_SYMBOL(@"band6", typeType, 0x70455136);}
++ (AEBSymbol *)band7 {AEB_RETURN_SYMBOL(@"band7", typeType, 0x70455137);}
++ (AEBSymbol *)band8 {AEB_RETURN_SYMBOL(@"band8", typeType, 0x70455138);}
++ (AEBSymbol *)band9 {AEB_RETURN_SYMBOL(@"band9", typeType, 0x70455139);}
++ (AEBSymbol *)best {AEB_RETURN_SYMBOL(@"best", typeType, 0x62657374);}
++ (AEBSymbol *)bitRate {AEB_RETURN_SYMBOL(@"bitRate", typeType, 0x70425274);}
++ (AEBSymbol *)bookmark {AEB_RETURN_SYMBOL(@"bookmark", typeType, 0x70426b74);}
++ (AEBSymbol *)bookmarkable {AEB_RETURN_SYMBOL(@"bookmarkable", typeType, 0x70426b6d);}
++ (AEBSymbol *)boolean {AEB_RETURN_SYMBOL(@"boolean", typeType, 0x626f6f6c);}
++ (AEBSymbol *)boundingRectangle {AEB_RETURN_SYMBOL(@"boundingRectangle", typeType, 0x71647274);}
++ (AEBSymbol *)bounds {AEB_RETURN_SYMBOL(@"bounds", typeType, 0x70626e64);}
++ (AEBSymbol *)bpm {AEB_RETURN_SYMBOL(@"bpm", typeType, 0x7042504d);}
++ (AEBSymbol *)browserWindow {AEB_RETURN_SYMBOL(@"browserWindow", typeType, 0x63427257);}
++ (AEBSymbol *)capacity {AEB_RETURN_SYMBOL(@"capacity", typeType, 0x63617061);}
++ (AEBSymbol *)category {AEB_RETURN_SYMBOL(@"category", typeType, 0x70436174);}
++ (AEBSymbol *)centimeters {AEB_RETURN_SYMBOL(@"centimeters", typeType, 0x636d7472);}
++ (AEBSymbol *)classInfo {AEB_RETURN_SYMBOL(@"classInfo", typeType, 0x67636c69);}
++ (AEBSymbol *)class_ {AEB_RETURN_SYMBOL(@"class_", typeType, 0x70636c73);}
++ (AEBSymbol *)closeable {AEB_RETURN_SYMBOL(@"closeable", typeType, 0x68636c62);}
++ (AEBSymbol *)collapseable {AEB_RETURN_SYMBOL(@"collapseable", typeType, 0x70575368);}
++ (AEBSymbol *)collapsed {AEB_RETURN_SYMBOL(@"collapsed", typeType, 0x77736864);}
++ (AEBSymbol *)collating {AEB_RETURN_SYMBOL(@"collating", typeType, 0x6c77636c);}
++ (AEBSymbol *)colorTable {AEB_RETURN_SYMBOL(@"colorTable", typeType, 0x636c7274);}
++ (AEBSymbol *)comment {AEB_RETURN_SYMBOL(@"comment", typeType, 0x70436d74);}
++ (AEBSymbol *)compilation {AEB_RETURN_SYMBOL(@"compilation", typeType, 0x70416e74);}
++ (AEBSymbol *)composer {AEB_RETURN_SYMBOL(@"composer", typeType, 0x70436d70);}
++ (AEBSymbol *)container {AEB_RETURN_SYMBOL(@"container", typeType, 0x63746e72);}
++ (AEBSymbol *)copies {AEB_RETURN_SYMBOL(@"copies", typeType, 0x6c776370);}
++ (AEBSymbol *)cubicCentimeters {AEB_RETURN_SYMBOL(@"cubicCentimeters", typeType, 0x63636d74);}
++ (AEBSymbol *)cubicFeet {AEB_RETURN_SYMBOL(@"cubicFeet", typeType, 0x63666574);}
++ (AEBSymbol *)cubicInches {AEB_RETURN_SYMBOL(@"cubicInches", typeType, 0x6375696e);}
++ (AEBSymbol *)cubicMeters {AEB_RETURN_SYMBOL(@"cubicMeters", typeType, 0x636d6574);}
++ (AEBSymbol *)cubicYards {AEB_RETURN_SYMBOL(@"cubicYards", typeType, 0x63797264);}
++ (AEBSymbol *)currentEQPreset {AEB_RETURN_SYMBOL(@"currentEQPreset", typeType, 0x70455150);}
++ (AEBSymbol *)currentEncoder {AEB_RETURN_SYMBOL(@"currentEncoder", typeType, 0x70456e63);}
++ (AEBSymbol *)currentPlaylist {AEB_RETURN_SYMBOL(@"currentPlaylist", typeType, 0x70506c61);}
++ (AEBSymbol *)currentStreamTitle {AEB_RETURN_SYMBOL(@"currentStreamTitle", typeType, 0x70537454);}
++ (AEBSymbol *)currentStreamURL {AEB_RETURN_SYMBOL(@"currentStreamURL", typeType, 0x70537455);}
++ (AEBSymbol *)currentTrack {AEB_RETURN_SYMBOL(@"currentTrack", typeType, 0x7054726b);}
++ (AEBSymbol *)currentVisual {AEB_RETURN_SYMBOL(@"currentVisual", typeType, 0x70566973);}
++ (AEBSymbol *)dashStyle {AEB_RETURN_SYMBOL(@"dashStyle", typeType, 0x74646173);}
++ (AEBSymbol *)data {AEB_RETURN_SYMBOL(@"data", typeType, 0x72646174);}
++ (AEBSymbol *)data_ {AEB_RETURN_SYMBOL(@"data_", typeType, 0x70504354);}
++ (AEBSymbol *)databaseID {AEB_RETURN_SYMBOL(@"databaseID", typeType, 0x70444944);}
++ (AEBSymbol *)date {AEB_RETURN_SYMBOL(@"date", typeType, 0x6c647420);}
++ (AEBSymbol *)dateAdded {AEB_RETURN_SYMBOL(@"dateAdded", typeType, 0x70416464);}
++ (AEBSymbol *)decimalStruct {AEB_RETURN_SYMBOL(@"decimalStruct", typeType, 0x6465636d);}
++ (AEBSymbol *)degreesCelsius {AEB_RETURN_SYMBOL(@"degreesCelsius", typeType, 0x64656763);}
++ (AEBSymbol *)degreesFahrenheit {AEB_RETURN_SYMBOL(@"degreesFahrenheit", typeType, 0x64656766);}
++ (AEBSymbol *)degreesKelvin {AEB_RETURN_SYMBOL(@"degreesKelvin", typeType, 0x6465676b);}
++ (AEBSymbol *)description_ {AEB_RETURN_SYMBOL(@"description_", typeType, 0x70446573);}
++ (AEBSymbol *)devicePlaylist {AEB_RETURN_SYMBOL(@"devicePlaylist", typeType, 0x63447650);}
++ (AEBSymbol *)deviceTrack {AEB_RETURN_SYMBOL(@"deviceTrack", typeType, 0x63447654);}
++ (AEBSymbol *)discCount {AEB_RETURN_SYMBOL(@"discCount", typeType, 0x70447343);}
++ (AEBSymbol *)discNumber {AEB_RETURN_SYMBOL(@"discNumber", typeType, 0x7044734e);}
++ (AEBSymbol *)doubleInteger {AEB_RETURN_SYMBOL(@"doubleInteger", typeType, 0x636f6d70);}
++ (AEBSymbol *)downloaded {AEB_RETURN_SYMBOL(@"downloaded", typeType, 0x70446c41);}
++ (AEBSymbol *)duration {AEB_RETURN_SYMBOL(@"duration", typeType, 0x70447572);}
++ (AEBSymbol *)elementInfo {AEB_RETURN_SYMBOL(@"elementInfo", typeType, 0x656c696e);}
++ (AEBSymbol *)enabled {AEB_RETURN_SYMBOL(@"enabled", typeType, 0x656e626c);}
++ (AEBSymbol *)encodedString {AEB_RETURN_SYMBOL(@"encodedString", typeType, 0x656e6373);}
++ (AEBSymbol *)encoder {AEB_RETURN_SYMBOL(@"encoder", typeType, 0x63456e63);}
++ (AEBSymbol *)endingPage {AEB_RETURN_SYMBOL(@"endingPage", typeType, 0x6c776c70);}
++ (AEBSymbol *)enumerator {AEB_RETURN_SYMBOL(@"enumerator", typeType, 0x656e756d);}
++ (AEBSymbol *)episodeID {AEB_RETURN_SYMBOL(@"episodeID", typeType, 0x70457044);}
++ (AEBSymbol *)episodeNumber {AEB_RETURN_SYMBOL(@"episodeNumber", typeType, 0x7045704e);}
++ (AEBSymbol *)errorHandling {AEB_RETURN_SYMBOL(@"errorHandling", typeType, 0x6c776568);}
++ (AEBSymbol *)eventInfo {AEB_RETURN_SYMBOL(@"eventInfo", typeType, 0x6576696e);}
++ (AEBSymbol *)extendedFloat {AEB_RETURN_SYMBOL(@"extendedFloat", typeType, 0x65787465);}
++ (AEBSymbol *)faxNumber {AEB_RETURN_SYMBOL(@"faxNumber", typeType, 0x6661786e);}
++ (AEBSymbol *)feet {AEB_RETURN_SYMBOL(@"feet", typeType, 0x66656574);}
++ (AEBSymbol *)fileRef {AEB_RETURN_SYMBOL(@"fileRef", typeType, 0x66737266);}
++ (AEBSymbol *)fileSpecification {AEB_RETURN_SYMBOL(@"fileSpecification", typeType, 0x66737320);}
++ (AEBSymbol *)fileTrack {AEB_RETURN_SYMBOL(@"fileTrack", typeType, 0x63466c54);}
++ (AEBSymbol *)fileURL {AEB_RETURN_SYMBOL(@"fileURL", typeType, 0x6675726c);}
++ (AEBSymbol *)finish {AEB_RETURN_SYMBOL(@"finish", typeType, 0x70537470);}
++ (AEBSymbol *)fixed {AEB_RETURN_SYMBOL(@"fixed", typeType, 0x66697864);}
++ (AEBSymbol *)fixedIndexing {AEB_RETURN_SYMBOL(@"fixedIndexing", typeType, 0x70466978);}
++ (AEBSymbol *)fixedPoint {AEB_RETURN_SYMBOL(@"fixedPoint", typeType, 0x66706e74);}
++ (AEBSymbol *)fixedRectangle {AEB_RETURN_SYMBOL(@"fixedRectangle", typeType, 0x66726374);}
++ (AEBSymbol *)float128bit {AEB_RETURN_SYMBOL(@"float128bit", typeType, 0x6c64626c);}
++ (AEBSymbol *)float_ {AEB_RETURN_SYMBOL(@"float_", typeType, 0x646f7562);}
++ (AEBSymbol *)folderPlaylist {AEB_RETURN_SYMBOL(@"folderPlaylist", typeType, 0x63466f50);}
++ (AEBSymbol *)format {AEB_RETURN_SYMBOL(@"format", typeType, 0x70466d74);}
++ (AEBSymbol *)freeSpace {AEB_RETURN_SYMBOL(@"freeSpace", typeType, 0x66727370);}
++ (AEBSymbol *)frontmost {AEB_RETURN_SYMBOL(@"frontmost", typeType, 0x70697366);}
++ (AEBSymbol *)fullScreen {AEB_RETURN_SYMBOL(@"fullScreen", typeType, 0x70465363);}
++ (AEBSymbol *)gallons {AEB_RETURN_SYMBOL(@"gallons", typeType, 0x67616c6e);}
++ (AEBSymbol *)gapless {AEB_RETURN_SYMBOL(@"gapless", typeType, 0x7047706c);}
++ (AEBSymbol *)genre {AEB_RETURN_SYMBOL(@"genre", typeType, 0x7047656e);}
++ (AEBSymbol *)grams {AEB_RETURN_SYMBOL(@"grams", typeType, 0x6772616d);}
++ (AEBSymbol *)graphicText {AEB_RETURN_SYMBOL(@"graphicText", typeType, 0x63677478);}
++ (AEBSymbol *)grouping {AEB_RETURN_SYMBOL(@"grouping", typeType, 0x70477270);}
++ (AEBSymbol *)id_ {AEB_RETURN_SYMBOL(@"id_", typeType, 0x49442020);}
++ (AEBSymbol *)inches {AEB_RETURN_SYMBOL(@"inches", typeType, 0x696e6368);}
++ (AEBSymbol *)index {AEB_RETURN_SYMBOL(@"index", typeType, 0x70696478);}
++ (AEBSymbol *)integer {AEB_RETURN_SYMBOL(@"integer", typeType, 0x6c6f6e67);}
++ (AEBSymbol *)internationalText {AEB_RETURN_SYMBOL(@"internationalText", typeType, 0x69747874);}
++ (AEBSymbol *)internationalWritingCode {AEB_RETURN_SYMBOL(@"internationalWritingCode", typeType, 0x696e746c);}
++ (AEBSymbol *)item {AEB_RETURN_SYMBOL(@"item", typeType, 0x636f626a);}
++ (AEBSymbol *)kernelProcessID {AEB_RETURN_SYMBOL(@"kernelProcessID", typeType, 0x6b706964);}
++ (AEBSymbol *)kilograms {AEB_RETURN_SYMBOL(@"kilograms", typeType, 0x6b67726d);}
++ (AEBSymbol *)kilometers {AEB_RETURN_SYMBOL(@"kilometers", typeType, 0x6b6d7472);}
++ (AEBSymbol *)kind {AEB_RETURN_SYMBOL(@"kind", typeType, 0x704b6e64);}
++ (AEBSymbol *)libraryPlaylist {AEB_RETURN_SYMBOL(@"libraryPlaylist", typeType, 0x634c6950);}
++ (AEBSymbol *)list {AEB_RETURN_SYMBOL(@"list", typeType, 0x6c697374);}
++ (AEBSymbol *)liters {AEB_RETURN_SYMBOL(@"liters", typeType, 0x6c697472);}
++ (AEBSymbol *)location {AEB_RETURN_SYMBOL(@"location", typeType, 0x704c6f63);}
++ (AEBSymbol *)locationReference {AEB_RETURN_SYMBOL(@"locationReference", typeType, 0x696e736c);}
++ (AEBSymbol *)longDescription {AEB_RETURN_SYMBOL(@"longDescription", typeType, 0x704c6473);}
++ (AEBSymbol *)longFixed {AEB_RETURN_SYMBOL(@"longFixed", typeType, 0x6c667864);}
++ (AEBSymbol *)longFixedPoint {AEB_RETURN_SYMBOL(@"longFixedPoint", typeType, 0x6c667074);}
++ (AEBSymbol *)longFixedRectangle {AEB_RETURN_SYMBOL(@"longFixedRectangle", typeType, 0x6c667263);}
++ (AEBSymbol *)longPoint {AEB_RETURN_SYMBOL(@"longPoint", typeType, 0x6c706e74);}
++ (AEBSymbol *)longRectangle {AEB_RETURN_SYMBOL(@"longRectangle", typeType, 0x6c726374);}
++ (AEBSymbol *)lyrics {AEB_RETURN_SYMBOL(@"lyrics", typeType, 0x704c7972);}
++ (AEBSymbol *)machPort {AEB_RETURN_SYMBOL(@"machPort", typeType, 0x706f7274);}
++ (AEBSymbol *)machine {AEB_RETURN_SYMBOL(@"machine", typeType, 0x6d616368);}
++ (AEBSymbol *)machineLocation {AEB_RETURN_SYMBOL(@"machineLocation", typeType, 0x6d4c6f63);}
++ (AEBSymbol *)meters {AEB_RETURN_SYMBOL(@"meters", typeType, 0x6d657472);}
++ (AEBSymbol *)miles {AEB_RETURN_SYMBOL(@"miles", typeType, 0x6d696c65);}
++ (AEBSymbol *)minimized {AEB_RETURN_SYMBOL(@"minimized", typeType, 0x704d696e);}
++ (AEBSymbol *)missingValue {AEB_RETURN_SYMBOL(@"missingValue", typeType, 0x6d736e67);}
++ (AEBSymbol *)modifiable {AEB_RETURN_SYMBOL(@"modifiable", typeType, 0x704d6f64);}
++ (AEBSymbol *)modificationDate {AEB_RETURN_SYMBOL(@"modificationDate", typeType, 0x61736d6f);}
++ (AEBSymbol *)mute {AEB_RETURN_SYMBOL(@"mute", typeType, 0x704d7574);}
++ (AEBSymbol *)name {AEB_RETURN_SYMBOL(@"name", typeType, 0x706e616d);}
++ (AEBSymbol *)null {AEB_RETURN_SYMBOL(@"null", typeType, 0x6e756c6c);}
++ (AEBSymbol *)ounces {AEB_RETURN_SYMBOL(@"ounces", typeType, 0x6f7a7320);}
++ (AEBSymbol *)pagesAcross {AEB_RETURN_SYMBOL(@"pagesAcross", typeType, 0x6c776c61);}
++ (AEBSymbol *)pagesDown {AEB_RETURN_SYMBOL(@"pagesDown", typeType, 0x6c776c64);}
++ (AEBSymbol *)parameterInfo {AEB_RETURN_SYMBOL(@"parameterInfo", typeType, 0x706d696e);}
++ (AEBSymbol *)parent {AEB_RETURN_SYMBOL(@"parent", typeType, 0x70506c50);}
++ (AEBSymbol *)persistentID {AEB_RETURN_SYMBOL(@"persistentID", typeType, 0x70504953);}
++ (AEBSymbol *)picture {AEB_RETURN_SYMBOL(@"picture", typeType, 0x50494354);}
++ (AEBSymbol *)pixelMapRecord {AEB_RETURN_SYMBOL(@"pixelMapRecord", typeType, 0x74706d6d);}
++ (AEBSymbol *)playedCount {AEB_RETURN_SYMBOL(@"playedCount", typeType, 0x70506c43);}
++ (AEBSymbol *)playedDate {AEB_RETURN_SYMBOL(@"playedDate", typeType, 0x70506c44);}
++ (AEBSymbol *)playerPosition {AEB_RETURN_SYMBOL(@"playerPosition", typeType, 0x70506f73);}
++ (AEBSymbol *)playerState {AEB_RETURN_SYMBOL(@"playerState", typeType, 0x70506c53);}
++ (AEBSymbol *)playlist {AEB_RETURN_SYMBOL(@"playlist", typeType, 0x63506c79);}
++ (AEBSymbol *)playlistWindow {AEB_RETURN_SYMBOL(@"playlistWindow", typeType, 0x63506c57);}
++ (AEBSymbol *)podcast {AEB_RETURN_SYMBOL(@"podcast", typeType, 0x70545063);}
++ (AEBSymbol *)point {AEB_RETURN_SYMBOL(@"point", typeType, 0x51447074);}
++ (AEBSymbol *)position {AEB_RETURN_SYMBOL(@"position", typeType, 0x70706f73);}
++ (AEBSymbol *)pounds {AEB_RETURN_SYMBOL(@"pounds", typeType, 0x6c627320);}
++ (AEBSymbol *)preamp {AEB_RETURN_SYMBOL(@"preamp", typeType, 0x70455141);}
++ (AEBSymbol *)printSettings {AEB_RETURN_SYMBOL(@"printSettings", typeType, 0x70736574);}
++ (AEBSymbol *)printerFeatures {AEB_RETURN_SYMBOL(@"printerFeatures", typeType, 0x6c777066);}
++ (AEBSymbol *)processSerialNumber {AEB_RETURN_SYMBOL(@"processSerialNumber", typeType, 0x70736e20);}
++ (AEBSymbol *)properties {AEB_RETURN_SYMBOL(@"properties", typeType, 0x70414c4c);}
++ (AEBSymbol *)property {AEB_RETURN_SYMBOL(@"property", typeType, 0x70726f70);}
++ (AEBSymbol *)propertyInfo {AEB_RETURN_SYMBOL(@"propertyInfo", typeType, 0x70696e66);}
++ (AEBSymbol *)quarts {AEB_RETURN_SYMBOL(@"quarts", typeType, 0x71727473);}
++ (AEBSymbol *)radioTunerPlaylist {AEB_RETURN_SYMBOL(@"radioTunerPlaylist", typeType, 0x63525450);}
++ (AEBSymbol *)rating {AEB_RETURN_SYMBOL(@"rating", typeType, 0x70527465);}
++ (AEBSymbol *)ratingKind {AEB_RETURN_SYMBOL(@"ratingKind", typeType, 0x7052746b);}
++ (AEBSymbol *)rawData {AEB_RETURN_SYMBOL(@"rawData", typeType, 0x74647461);}
++ (AEBSymbol *)record {AEB_RETURN_SYMBOL(@"record", typeType, 0x7265636f);}
++ (AEBSymbol *)reference {AEB_RETURN_SYMBOL(@"reference", typeType, 0x6f626a20);}
++ (AEBSymbol *)releaseDate {AEB_RETURN_SYMBOL(@"releaseDate", typeType, 0x70526c44);}
++ (AEBSymbol *)requestedPrintTime {AEB_RETURN_SYMBOL(@"requestedPrintTime", typeType, 0x6c777174);}
++ (AEBSymbol *)resizable {AEB_RETURN_SYMBOL(@"resizable", typeType, 0x7072737a);}
++ (AEBSymbol *)rotation {AEB_RETURN_SYMBOL(@"rotation", typeType, 0x74726f74);}
++ (AEBSymbol *)sampleRate {AEB_RETURN_SYMBOL(@"sampleRate", typeType, 0x70535274);}
++ (AEBSymbol *)script {AEB_RETURN_SYMBOL(@"script", typeType, 0x73637074);}
++ (AEBSymbol *)seasonNumber {AEB_RETURN_SYMBOL(@"seasonNumber", typeType, 0x7053654e);}
++ (AEBSymbol *)selection {AEB_RETURN_SYMBOL(@"selection", typeType, 0x73656c65);}
++ (AEBSymbol *)shared {AEB_RETURN_SYMBOL(@"shared", typeType, 0x70536872);}
++ (AEBSymbol *)sharedTrack {AEB_RETURN_SYMBOL(@"sharedTrack", typeType, 0x63536854);}
++ (AEBSymbol *)shortFloat {AEB_RETURN_SYMBOL(@"shortFloat", typeType, 0x73696e67);}
++ (AEBSymbol *)shortInteger {AEB_RETURN_SYMBOL(@"shortInteger", typeType, 0x73686f72);}
++ (AEBSymbol *)show {AEB_RETURN_SYMBOL(@"show", typeType, 0x70536877);}
++ (AEBSymbol *)shufflable {AEB_RETURN_SYMBOL(@"shufflable", typeType, 0x70536661);}
++ (AEBSymbol *)shuffle {AEB_RETURN_SYMBOL(@"shuffle", typeType, 0x70536866);}
++ (AEBSymbol *)size {AEB_RETURN_SYMBOL(@"size", typeType, 0x7053697a);}
++ (AEBSymbol *)skippedCount {AEB_RETURN_SYMBOL(@"skippedCount", typeType, 0x70536b43);}
++ (AEBSymbol *)skippedDate {AEB_RETURN_SYMBOL(@"skippedDate", typeType, 0x70536b44);}
++ (AEBSymbol *)smart {AEB_RETURN_SYMBOL(@"smart", typeType, 0x70536d74);}
++ (AEBSymbol *)songRepeat {AEB_RETURN_SYMBOL(@"songRepeat", typeType, 0x70527074);}
++ (AEBSymbol *)sortAlbum {AEB_RETURN_SYMBOL(@"sortAlbum", typeType, 0x7053416c);}
++ (AEBSymbol *)sortAlbumArtist {AEB_RETURN_SYMBOL(@"sortAlbumArtist", typeType, 0x70534141);}
++ (AEBSymbol *)sortArtist {AEB_RETURN_SYMBOL(@"sortArtist", typeType, 0x70534172);}
++ (AEBSymbol *)sortComposer {AEB_RETURN_SYMBOL(@"sortComposer", typeType, 0x7053436d);}
++ (AEBSymbol *)sortName {AEB_RETURN_SYMBOL(@"sortName", typeType, 0x70534e6d);}
++ (AEBSymbol *)sortShow {AEB_RETURN_SYMBOL(@"sortShow", typeType, 0x7053534e);}
++ (AEBSymbol *)soundVolume {AEB_RETURN_SYMBOL(@"soundVolume", typeType, 0x70566f6c);}
++ (AEBSymbol *)source {AEB_RETURN_SYMBOL(@"source", typeType, 0x63537263);}
++ (AEBSymbol *)specialKind {AEB_RETURN_SYMBOL(@"specialKind", typeType, 0x7053704b);}
++ (AEBSymbol *)squareFeet {AEB_RETURN_SYMBOL(@"squareFeet", typeType, 0x73716674);}
++ (AEBSymbol *)squareKilometers {AEB_RETURN_SYMBOL(@"squareKilometers", typeType, 0x73716b6d);}
++ (AEBSymbol *)squareMeters {AEB_RETURN_SYMBOL(@"squareMeters", typeType, 0x7371726d);}
++ (AEBSymbol *)squareMiles {AEB_RETURN_SYMBOL(@"squareMiles", typeType, 0x73716d69);}
++ (AEBSymbol *)squareYards {AEB_RETURN_SYMBOL(@"squareYards", typeType, 0x73717964);}
++ (AEBSymbol *)start {AEB_RETURN_SYMBOL(@"start", typeType, 0x70537472);}
++ (AEBSymbol *)startingPage {AEB_RETURN_SYMBOL(@"startingPage", typeType, 0x6c776670);}
++ (AEBSymbol *)string {AEB_RETURN_SYMBOL(@"string", typeType, 0x54455854);}
++ (AEBSymbol *)styledClipboardText {AEB_RETURN_SYMBOL(@"styledClipboardText", typeType, 0x7374796c);}
++ (AEBSymbol *)styledText {AEB_RETURN_SYMBOL(@"styledText", typeType, 0x53545854);}
++ (AEBSymbol *)styledUnicodeText {AEB_RETURN_SYMBOL(@"styledUnicodeText", typeType, 0x73757478);}
++ (AEBSymbol *)suiteInfo {AEB_RETURN_SYMBOL(@"suiteInfo", typeType, 0x7375696e);}
++ (AEBSymbol *)targetPrinter {AEB_RETURN_SYMBOL(@"targetPrinter", typeType, 0x74727072);}
++ (AEBSymbol *)textStyleInfo {AEB_RETURN_SYMBOL(@"textStyleInfo", typeType, 0x74737479);}
++ (AEBSymbol *)time {AEB_RETURN_SYMBOL(@"time", typeType, 0x7054696d);}
++ (AEBSymbol *)track {AEB_RETURN_SYMBOL(@"track", typeType, 0x6354726b);}
++ (AEBSymbol *)trackCount {AEB_RETURN_SYMBOL(@"trackCount", typeType, 0x70547243);}
++ (AEBSymbol *)trackNumber {AEB_RETURN_SYMBOL(@"trackNumber", typeType, 0x7054724e);}
++ (AEBSymbol *)typeClass {AEB_RETURN_SYMBOL(@"typeClass", typeType, 0x74797065);}
++ (AEBSymbol *)unplayed {AEB_RETURN_SYMBOL(@"unplayed", typeType, 0x70556e70);}
++ (AEBSymbol *)unsignedInteger {AEB_RETURN_SYMBOL(@"unsignedInteger", typeType, 0x6d61676e);}
++ (AEBSymbol *)updateTracks {AEB_RETURN_SYMBOL(@"updateTracks", typeType, 0x70555443);}
++ (AEBSymbol *)userPlaylist {AEB_RETURN_SYMBOL(@"userPlaylist", typeType, 0x63557350);}
++ (AEBSymbol *)version_ {AEB_RETURN_SYMBOL(@"version_", typeType, 0x76657273);}
++ (AEBSymbol *)videoKind {AEB_RETURN_SYMBOL(@"videoKind", typeType, 0x7056644b);}
++ (AEBSymbol *)view {AEB_RETURN_SYMBOL(@"view", typeType, 0x70506c79);}
++ (AEBSymbol *)visible {AEB_RETURN_SYMBOL(@"visible", typeType, 0x70766973);}
++ (AEBSymbol *)visual {AEB_RETURN_SYMBOL(@"visual", typeType, 0x63566973);}
++ (AEBSymbol *)visualSize {AEB_RETURN_SYMBOL(@"visualSize", typeType, 0x7056537a);}
++ (AEBSymbol *)visualsEnabled {AEB_RETURN_SYMBOL(@"visualsEnabled", typeType, 0x70567345);}
++ (AEBSymbol *)volumeAdjustment {AEB_RETURN_SYMBOL(@"volumeAdjustment", typeType, 0x7041646a);}
++ (AEBSymbol *)window {AEB_RETURN_SYMBOL(@"window", typeType, 0x6377696e);}
++ (AEBSymbol *)writingCode {AEB_RETURN_SYMBOL(@"writingCode", typeType, 0x70736374);}
++ (AEBSymbol *)yards {AEB_RETURN_SYMBOL(@"yards", typeType, 0x79617264);}
++ (AEBSymbol *)year {AEB_RETURN_SYMBOL(@"year", typeType, 0x70597220);}
++ (AEBSymbol *)zoomable {AEB_RETURN_SYMBOL(@"zoomable", typeType, 0x69737a6d);}
++ (AEBSymbol *)zoomed {AEB_RETURN_SYMBOL(@"zoomed", typeType, 0x707a756d);}
 // Enumerators
-+ (instancetype)Books {AEB_RETURN_SYMBOL(@"Books", typeEnumerated, 0x6b537041);}
-+ (instancetype)Genius {AEB_RETURN_SYMBOL(@"Genius", typeEnumerated, 0x6b537047);}
-+ (instancetype)Library {AEB_RETURN_SYMBOL(@"Library", typeEnumerated, 0x6b53704c);}
-+ (instancetype)MP3CD {AEB_RETURN_SYMBOL(@"MP3CD", typeEnumerated, 0x6b4d4344);}
-+ (instancetype)Movies {AEB_RETURN_SYMBOL(@"Movies", typeEnumerated, 0x6b537049);}
-+ (instancetype)Music {AEB_RETURN_SYMBOL(@"Music", typeEnumerated, 0x6b53705a);}
-+ (instancetype)PartyShuffle {AEB_RETURN_SYMBOL(@"PartyShuffle", typeEnumerated, 0x6b537053);}
-+ (instancetype)Podcasts {AEB_RETURN_SYMBOL(@"Podcasts", typeEnumerated, 0x6b537050);}
-+ (instancetype)PurchasedMusic {AEB_RETURN_SYMBOL(@"PurchasedMusic", typeEnumerated, 0x6b53704d);}
-+ (instancetype)TVShow {AEB_RETURN_SYMBOL(@"TVShow", typeEnumerated, 0x6b566454);}
-+ (instancetype)TVShows {AEB_RETURN_SYMBOL(@"TVShows", typeEnumerated, 0x6b537054);}
-+ (instancetype)albumListing {AEB_RETURN_SYMBOL(@"albumListing", typeEnumerated, 0x6b416c62);}
-+ (instancetype)albums {AEB_RETURN_SYMBOL(@"albums", typeEnumerated, 0x6b53724c);}
-+ (instancetype)all {AEB_RETURN_SYMBOL(@"all", typeEnumerated, 0x6b416c6c);}
-+ (instancetype)applicationResponses {AEB_RETURN_SYMBOL(@"applicationResponses", typeEnumerated, 0x726d7465);}
-+ (instancetype)artists {AEB_RETURN_SYMBOL(@"artists", typeEnumerated, 0x6b537252);}
-+ (instancetype)ask {AEB_RETURN_SYMBOL(@"ask", typeEnumerated, 0x61736b20);}
-+ (instancetype)audioCD {AEB_RETURN_SYMBOL(@"audioCD", typeEnumerated, 0x6b414344);}
-+ (instancetype)case_ {AEB_RETURN_SYMBOL(@"case_", typeEnumerated, 0x63617365);}
-+ (instancetype)cdInsert {AEB_RETURN_SYMBOL(@"cdInsert", typeEnumerated, 0x6b434469);}
-+ (instancetype)composers {AEB_RETURN_SYMBOL(@"composers", typeEnumerated, 0x6b537243);}
-+ (instancetype)computed {AEB_RETURN_SYMBOL(@"computed", typeEnumerated, 0x6b527443);}
-+ (instancetype)detailed {AEB_RETURN_SYMBOL(@"detailed", typeEnumerated, 0x6c776474);}
-+ (instancetype)device {AEB_RETURN_SYMBOL(@"device", typeEnumerated, 0x6b446576);}
-+ (instancetype)diacriticals {AEB_RETURN_SYMBOL(@"diacriticals", typeEnumerated, 0x64696163);}
-+ (instancetype)displayed {AEB_RETURN_SYMBOL(@"displayed", typeEnumerated, 0x6b537256);}
-+ (instancetype)expansion {AEB_RETURN_SYMBOL(@"expansion", typeEnumerated, 0x65787061);}
-+ (instancetype)fastForwarding {AEB_RETURN_SYMBOL(@"fastForwarding", typeEnumerated, 0x6b505346);}
-+ (instancetype)folder {AEB_RETURN_SYMBOL(@"folder", typeEnumerated, 0x6b537046);}
-+ (instancetype)hyphens {AEB_RETURN_SYMBOL(@"hyphens", typeEnumerated, 0x68797068);}
-+ (instancetype)iPod {AEB_RETURN_SYMBOL(@"iPod", typeEnumerated, 0x6b506f64);}
-+ (instancetype)iTunesU {AEB_RETURN_SYMBOL(@"iTunesU", typeEnumerated, 0x6b537055);}
-+ (instancetype)large {AEB_RETURN_SYMBOL(@"large", typeEnumerated, 0x6b56534c);}
-+ (instancetype)library {AEB_RETURN_SYMBOL(@"library", typeEnumerated, 0x6b4c6962);}
-+ (instancetype)medium {AEB_RETURN_SYMBOL(@"medium", typeEnumerated, 0x6b56534d);}
-+ (instancetype)movie {AEB_RETURN_SYMBOL(@"movie", typeEnumerated, 0x6b56644d);}
-+ (instancetype)musicVideo {AEB_RETURN_SYMBOL(@"musicVideo", typeEnumerated, 0x6b566456);}
-+ (instancetype)no {AEB_RETURN_SYMBOL(@"no", typeEnumerated, 0x6e6f2020);}
-+ (instancetype)none {AEB_RETURN_SYMBOL(@"none", typeEnumerated, 0x6b4e6f6e);}
-+ (instancetype)numericStrings {AEB_RETURN_SYMBOL(@"numericStrings", typeEnumerated, 0x6e756d65);}
-+ (instancetype)off {AEB_RETURN_SYMBOL(@"off", typeEnumerated, 0x6b52704f);}
-+ (instancetype)one {AEB_RETURN_SYMBOL(@"one", typeEnumerated, 0x6b527031);}
-+ (instancetype)paused {AEB_RETURN_SYMBOL(@"paused", typeEnumerated, 0x6b505370);}
-+ (instancetype)playing {AEB_RETURN_SYMBOL(@"playing", typeEnumerated, 0x6b505350);}
-+ (instancetype)punctuation {AEB_RETURN_SYMBOL(@"punctuation", typeEnumerated, 0x70756e63);}
-+ (instancetype)radioTuner {AEB_RETURN_SYMBOL(@"radioTuner", typeEnumerated, 0x6b54756e);}
-+ (instancetype)rewinding {AEB_RETURN_SYMBOL(@"rewinding", typeEnumerated, 0x6b505352);}
-+ (instancetype)sharedLibrary {AEB_RETURN_SYMBOL(@"sharedLibrary", typeEnumerated, 0x6b536864);}
-+ (instancetype)small {AEB_RETURN_SYMBOL(@"small", typeEnumerated, 0x6b565353);}
-+ (instancetype)songs {AEB_RETURN_SYMBOL(@"songs", typeEnumerated, 0x6b537253);}
-+ (instancetype)standard {AEB_RETURN_SYMBOL(@"standard", typeEnumerated, 0x6c777374);}
-+ (instancetype)stopped {AEB_RETURN_SYMBOL(@"stopped", typeEnumerated, 0x6b505353);}
-+ (instancetype)trackListing {AEB_RETURN_SYMBOL(@"trackListing", typeEnumerated, 0x6b54726b);}
-+ (instancetype)unknown {AEB_RETURN_SYMBOL(@"unknown", typeEnumerated, 0x6b556e6b);}
-+ (instancetype)user {AEB_RETURN_SYMBOL(@"user", typeEnumerated, 0x6b527455);}
-+ (instancetype)whitespace {AEB_RETURN_SYMBOL(@"whitespace", typeEnumerated, 0x77686974);}
-+ (instancetype)yes {AEB_RETURN_SYMBOL(@"yes", typeEnumerated, 0x79657320);}
++ (AEBSymbol *)Books {AEB_RETURN_SYMBOL(@"Books", typeEnumerated, 0x6b537041);}
++ (AEBSymbol *)Genius {AEB_RETURN_SYMBOL(@"Genius", typeEnumerated, 0x6b537047);}
++ (AEBSymbol *)Library {AEB_RETURN_SYMBOL(@"Library", typeEnumerated, 0x6b53704c);}
++ (AEBSymbol *)MP3CD {AEB_RETURN_SYMBOL(@"MP3CD", typeEnumerated, 0x6b4d4344);}
++ (AEBSymbol *)Movies {AEB_RETURN_SYMBOL(@"Movies", typeEnumerated, 0x6b537049);}
++ (AEBSymbol *)Music {AEB_RETURN_SYMBOL(@"Music", typeEnumerated, 0x6b53705a);}
++ (AEBSymbol *)PartyShuffle {AEB_RETURN_SYMBOL(@"PartyShuffle", typeEnumerated, 0x6b537053);}
++ (AEBSymbol *)Podcasts {AEB_RETURN_SYMBOL(@"Podcasts", typeEnumerated, 0x6b537050);}
++ (AEBSymbol *)PurchasedMusic {AEB_RETURN_SYMBOL(@"PurchasedMusic", typeEnumerated, 0x6b53704d);}
++ (AEBSymbol *)TVShow {AEB_RETURN_SYMBOL(@"TVShow", typeEnumerated, 0x6b566454);}
++ (AEBSymbol *)TVShows {AEB_RETURN_SYMBOL(@"TVShows", typeEnumerated, 0x6b537054);}
++ (AEBSymbol *)albumListing {AEB_RETURN_SYMBOL(@"albumListing", typeEnumerated, 0x6b416c62);}
++ (AEBSymbol *)albums {AEB_RETURN_SYMBOL(@"albums", typeEnumerated, 0x6b53724c);}
++ (AEBSymbol *)all {AEB_RETURN_SYMBOL(@"all", typeEnumerated, 0x6b416c6c);}
++ (AEBSymbol *)applicationResponses {AEB_RETURN_SYMBOL(@"applicationResponses", typeEnumerated, 0x726d7465);}
++ (AEBSymbol *)artists {AEB_RETURN_SYMBOL(@"artists", typeEnumerated, 0x6b537252);}
++ (AEBSymbol *)ask {AEB_RETURN_SYMBOL(@"ask", typeEnumerated, 0x61736b20);}
++ (AEBSymbol *)audioCD {AEB_RETURN_SYMBOL(@"audioCD", typeEnumerated, 0x6b414344);}
++ (AEBSymbol *)case_ {AEB_RETURN_SYMBOL(@"case_", typeEnumerated, 0x63617365);}
++ (AEBSymbol *)cdInsert {AEB_RETURN_SYMBOL(@"cdInsert", typeEnumerated, 0x6b434469);}
++ (AEBSymbol *)composers {AEB_RETURN_SYMBOL(@"composers", typeEnumerated, 0x6b537243);}
++ (AEBSymbol *)computed {AEB_RETURN_SYMBOL(@"computed", typeEnumerated, 0x6b527443);}
++ (AEBSymbol *)detailed {AEB_RETURN_SYMBOL(@"detailed", typeEnumerated, 0x6c776474);}
++ (AEBSymbol *)device {AEB_RETURN_SYMBOL(@"device", typeEnumerated, 0x6b446576);}
++ (AEBSymbol *)diacriticals {AEB_RETURN_SYMBOL(@"diacriticals", typeEnumerated, 0x64696163);}
++ (AEBSymbol *)displayed {AEB_RETURN_SYMBOL(@"displayed", typeEnumerated, 0x6b537256);}
++ (AEBSymbol *)expansion {AEB_RETURN_SYMBOL(@"expansion", typeEnumerated, 0x65787061);}
++ (AEBSymbol *)fastForwarding {AEB_RETURN_SYMBOL(@"fastForwarding", typeEnumerated, 0x6b505346);}
++ (AEBSymbol *)folder {AEB_RETURN_SYMBOL(@"folder", typeEnumerated, 0x6b537046);}
++ (AEBSymbol *)hyphens {AEB_RETURN_SYMBOL(@"hyphens", typeEnumerated, 0x68797068);}
++ (AEBSymbol *)iPod {AEB_RETURN_SYMBOL(@"iPod", typeEnumerated, 0x6b506f64);}
++ (AEBSymbol *)iTunesU {AEB_RETURN_SYMBOL(@"iTunesU", typeEnumerated, 0x6b537055);}
++ (AEBSymbol *)large {AEB_RETURN_SYMBOL(@"large", typeEnumerated, 0x6b56534c);}
++ (AEBSymbol *)library {AEB_RETURN_SYMBOL(@"library", typeEnumerated, 0x6b4c6962);}
++ (AEBSymbol *)medium {AEB_RETURN_SYMBOL(@"medium", typeEnumerated, 0x6b56534d);}
++ (AEBSymbol *)movie {AEB_RETURN_SYMBOL(@"movie", typeEnumerated, 0x6b56644d);}
++ (AEBSymbol *)musicVideo {AEB_RETURN_SYMBOL(@"musicVideo", typeEnumerated, 0x6b566456);}
++ (AEBSymbol *)no {AEB_RETURN_SYMBOL(@"no", typeEnumerated, 0x6e6f2020);}
++ (AEBSymbol *)none {AEB_RETURN_SYMBOL(@"none", typeEnumerated, 0x6b4e6f6e);}
++ (AEBSymbol *)numericStrings {AEB_RETURN_SYMBOL(@"numericStrings", typeEnumerated, 0x6e756d65);}
++ (AEBSymbol *)off {AEB_RETURN_SYMBOL(@"off", typeEnumerated, 0x6b52704f);}
++ (AEBSymbol *)one {AEB_RETURN_SYMBOL(@"one", typeEnumerated, 0x6b527031);}
++ (AEBSymbol *)paused {AEB_RETURN_SYMBOL(@"paused", typeEnumerated, 0x6b505370);}
++ (AEBSymbol *)playing {AEB_RETURN_SYMBOL(@"playing", typeEnumerated, 0x6b505350);}
++ (AEBSymbol *)punctuation {AEB_RETURN_SYMBOL(@"punctuation", typeEnumerated, 0x70756e63);}
++ (AEBSymbol *)radioTuner {AEB_RETURN_SYMBOL(@"radioTuner", typeEnumerated, 0x6b54756e);}
++ (AEBSymbol *)rewinding {AEB_RETURN_SYMBOL(@"rewinding", typeEnumerated, 0x6b505352);}
++ (AEBSymbol *)sharedLibrary {AEB_RETURN_SYMBOL(@"sharedLibrary", typeEnumerated, 0x6b536864);}
++ (AEBSymbol *)small {AEB_RETURN_SYMBOL(@"small", typeEnumerated, 0x6b565353);}
++ (AEBSymbol *)songs {AEB_RETURN_SYMBOL(@"songs", typeEnumerated, 0x6b537253);}
++ (AEBSymbol *)standard {AEB_RETURN_SYMBOL(@"standard", typeEnumerated, 0x6c777374);}
++ (AEBSymbol *)stopped {AEB_RETURN_SYMBOL(@"stopped", typeEnumerated, 0x6b505353);}
++ (AEBSymbol *)trackListing {AEB_RETURN_SYMBOL(@"trackListing", typeEnumerated, 0x6b54726b);}
++ (AEBSymbol *)unknown {AEB_RETURN_SYMBOL(@"unknown", typeEnumerated, 0x6b556e6b);}
++ (AEBSymbol *)user {AEB_RETURN_SYMBOL(@"user", typeEnumerated, 0x6b527455);}
++ (AEBSymbol *)whitespace {AEB_RETURN_SYMBOL(@"whitespace", typeEnumerated, 0x77686974);}
++ (AEBSymbol *)yes {AEB_RETURN_SYMBOL(@"yes", typeEnumerated, 0x79657320);}
 @end
 
 
@@ -1383,641 +1384,641 @@
 }
 // Properties
 - (instancetype)EQ {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455170]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455170]];
 }
 - (instancetype)EQEnabled {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455120]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455120]];
 }
 - (instancetype)address {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7055524c]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7055524c]];
 }
 - (instancetype)album {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70416c62]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70416c62]];
 }
 - (instancetype)albumArtist {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70416c41]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70416c41]];
 }
 - (instancetype)albumRating {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70416c52]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70416c52]];
 }
 - (instancetype)albumRatingKind {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7041526b]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7041526b]];
 }
 - (instancetype)artist {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70417274]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70417274]];
 }
 - (instancetype)band1 {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455131]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455131]];
 }
 - (instancetype)band10 {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455130]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455130]];
 }
 - (instancetype)band2 {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455132]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455132]];
 }
 - (instancetype)band3 {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455133]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455133]];
 }
 - (instancetype)band4 {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455134]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455134]];
 }
 - (instancetype)band5 {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455135]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455135]];
 }
 - (instancetype)band6 {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455136]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455136]];
 }
 - (instancetype)band7 {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455137]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455137]];
 }
 - (instancetype)band8 {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455138]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455138]];
 }
 - (instancetype)band9 {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455139]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455139]];
 }
 - (instancetype)bitRate {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70425274]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70425274]];
 }
 - (instancetype)bookmark {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70426b74]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70426b74]];
 }
 - (instancetype)bookmarkable {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70426b6d]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70426b6d]];
 }
 - (instancetype)bounds {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70626e64]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70626e64]];
 }
 - (instancetype)bpm {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7042504d]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7042504d]];
 }
 - (instancetype)capacity {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x63617061]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x63617061]];
 }
 - (instancetype)category {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70436174]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70436174]];
 }
 - (instancetype)class_ {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70636c73]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70636c73]];
 }
 - (instancetype)closeable {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x68636c62]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x68636c62]];
 }
 - (instancetype)collapseable {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70575368]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70575368]];
 }
 - (instancetype)collapsed {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x77736864]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x77736864]];
 }
 - (instancetype)collating {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c77636c]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c77636c]];
 }
 - (instancetype)comment {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70436d74]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70436d74]];
 }
 - (instancetype)compilation {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70416e74]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70416e74]];
 }
 - (instancetype)composer {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70436d70]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70436d70]];
 }
 - (instancetype)container {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x63746e72]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x63746e72]];
 }
 - (instancetype)copies {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776370]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776370]];
 }
 - (instancetype)currentEQPreset {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455150]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455150]];
 }
 - (instancetype)currentEncoder {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70456e63]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70456e63]];
 }
 - (instancetype)currentPlaylist {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c61]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c61]];
 }
 - (instancetype)currentStreamTitle {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70537454]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70537454]];
 }
 - (instancetype)currentStreamURL {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70537455]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70537455]];
 }
 - (instancetype)currentTrack {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7054726b]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7054726b]];
 }
 - (instancetype)currentVisual {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70566973]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70566973]];
 }
 - (instancetype)data_ {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70504354]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70504354]];
 }
 - (instancetype)databaseID {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70444944]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70444944]];
 }
 - (instancetype)dateAdded {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70416464]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70416464]];
 }
 - (instancetype)description_ {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70446573]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70446573]];
 }
 - (instancetype)discCount {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70447343]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70447343]];
 }
 - (instancetype)discNumber {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7044734e]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7044734e]];
 }
 - (instancetype)downloaded {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70446c41]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70446c41]];
 }
 - (instancetype)duration {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70447572]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70447572]];
 }
 - (instancetype)enabled {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x656e626c]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x656e626c]];
 }
 - (instancetype)endingPage {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776c70]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776c70]];
 }
 - (instancetype)episodeID {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70457044]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70457044]];
 }
 - (instancetype)episodeNumber {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7045704e]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7045704e]];
 }
 - (instancetype)errorHandling {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776568]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776568]];
 }
 - (instancetype)faxNumber {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6661786e]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6661786e]];
 }
 - (instancetype)finish {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70537470]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70537470]];
 }
 - (instancetype)fixedIndexing {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70466978]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70466978]];
 }
 - (instancetype)format {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70466d74]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70466d74]];
 }
 - (instancetype)freeSpace {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x66727370]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x66727370]];
 }
 - (instancetype)frontmost {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70697366]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70697366]];
 }
 - (instancetype)fullScreen {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70465363]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70465363]];
 }
 - (instancetype)gapless {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7047706c]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7047706c]];
 }
 - (instancetype)genre {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7047656e]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7047656e]];
 }
 - (instancetype)grouping {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70477270]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70477270]];
 }
 - (instancetype)id_ {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x49442020]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x49442020]];
 }
 - (instancetype)index {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70696478]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70696478]];
 }
 - (instancetype)kind {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704b6e64]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704b6e64]];
 }
 - (instancetype)location {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704c6f63]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704c6f63]];
 }
 - (instancetype)longDescription {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704c6473]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704c6473]];
 }
 - (instancetype)lyrics {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704c7972]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704c7972]];
 }
 - (instancetype)minimized {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704d696e]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704d696e]];
 }
 - (instancetype)modifiable {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704d6f64]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704d6f64]];
 }
 - (instancetype)modificationDate {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x61736d6f]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x61736d6f]];
 }
 - (instancetype)mute {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704d7574]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x704d7574]];
 }
 - (instancetype)name {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x706e616d]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x706e616d]];
 }
 - (instancetype)pagesAcross {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776c61]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776c61]];
 }
 - (instancetype)pagesDown {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776c64]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776c64]];
 }
 - (instancetype)parent {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c50]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c50]];
 }
 - (instancetype)persistentID {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70504953]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70504953]];
 }
 - (instancetype)playedCount {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c43]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c43]];
 }
 - (instancetype)playedDate {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c44]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c44]];
 }
 - (instancetype)playerPosition {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506f73]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506f73]];
 }
 - (instancetype)playerState {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c53]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c53]];
 }
 - (instancetype)podcast {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70545063]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70545063]];
 }
 - (instancetype)position {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70706f73]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70706f73]];
 }
 - (instancetype)preamp {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455141]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70455141]];
 }
 - (instancetype)printerFeatures {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c777066]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c777066]];
 }
 - (instancetype)properties {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70414c4c]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70414c4c]];
 }
 - (instancetype)rating {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70527465]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70527465]];
 }
 - (instancetype)ratingKind {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7052746b]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7052746b]];
 }
 - (instancetype)rawData {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70526177]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70526177]];
 }
 - (instancetype)releaseDate {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70526c44]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70526c44]];
 }
 - (instancetype)requestedPrintTime {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c777174]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c777174]];
 }
 - (instancetype)resizable {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7072737a]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7072737a]];
 }
 - (instancetype)sampleRate {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70535274]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70535274]];
 }
 - (instancetype)seasonNumber {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053654e]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053654e]];
 }
 - (instancetype)selection {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x73656c65]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x73656c65]];
 }
 - (instancetype)shared {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536872]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536872]];
 }
 - (instancetype)show {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536877]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536877]];
 }
 - (instancetype)shufflable {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536661]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536661]];
 }
 - (instancetype)shuffle {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536866]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536866]];
 }
 - (instancetype)size {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053697a]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053697a]];
 }
 - (instancetype)skippedCount {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536b43]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536b43]];
 }
 - (instancetype)skippedDate {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536b44]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536b44]];
 }
 - (instancetype)smart {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536d74]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70536d74]];
 }
 - (instancetype)songRepeat {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70527074]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70527074]];
 }
 - (instancetype)sortAlbum {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053416c]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053416c]];
 }
 - (instancetype)sortAlbumArtist {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70534141]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70534141]];
 }
 - (instancetype)sortArtist {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70534172]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70534172]];
 }
 - (instancetype)sortComposer {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053436d]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053436d]];
 }
 - (instancetype)sortName {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70534e6d]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70534e6d]];
 }
 - (instancetype)sortShow {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053534e]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053534e]];
 }
 - (instancetype)soundVolume {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70566f6c]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70566f6c]];
 }
 - (instancetype)specialKind {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053704b]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7053704b]];
 }
 - (instancetype)start {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70537472]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70537472]];
 }
 - (instancetype)startingPage {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776670]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x6c776670]];
 }
 - (instancetype)targetPrinter {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x74727072]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x74727072]];
 }
 - (instancetype)time {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7054696d]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7054696d]];
 }
 - (instancetype)trackCount {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70547243]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70547243]];
 }
 - (instancetype)trackNumber {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7054724e]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7054724e]];
 }
 - (instancetype)unplayed {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70556e70]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70556e70]];
 }
 - (instancetype)updateTracks {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70555443]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70555443]];
 }
 - (instancetype)version_ {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x76657273]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x76657273]];
 }
 - (instancetype)videoKind {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7056644b]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7056644b]];
 }
 - (instancetype)view {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c79]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70506c79]];
 }
 - (instancetype)visible {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70766973]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70766973]];
 }
 - (instancetype)visualSize {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7056537a]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7056537a]];
 }
 - (instancetype)visualsEnabled {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70567345]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70567345]];
 }
 - (instancetype)volumeAdjustment {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7041646a]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x7041646a]];
 }
 - (instancetype)year {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70597220]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x70597220]];
 }
 - (instancetype)zoomable {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x69737a6d]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x69737a6d]];
 }
 - (instancetype)zoomed {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x707a756d]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: 0x707a756d]];
 }
 // Elements
 - (instancetype)EQPresets {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63455150]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63455150]];
 }
 - (instancetype)EQWindows {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63455157]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63455157]];
 }
 - (instancetype)URLTracks {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63555254]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63555254]];
 }
 - (instancetype)applications {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63617070]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63617070]];
 }
 - (instancetype)artworks {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63417274]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63417274]];
 }
 - (instancetype)audioCDPlaylists {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63434450]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63434450]];
 }
 - (instancetype)audioCDTracks {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63434454]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63434454]];
 }
 - (instancetype)browserWindows {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63427257]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63427257]];
 }
 - (instancetype)devicePlaylists {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63447650]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63447650]];
 }
 - (instancetype)deviceTracks {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63447654]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63447654]];
 }
 - (instancetype)encoders {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63456e63]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63456e63]];
 }
 - (instancetype)fileTracks {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63466c54]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63466c54]];
 }
 - (instancetype)folderPlaylists {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63466f50]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63466f50]];
 }
 - (instancetype)items {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x636f626a]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x636f626a]];
 }
 - (instancetype)libraryPlaylists {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x634c6950]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x634c6950]];
 }
 - (instancetype)picture {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x50494354]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x50494354]];
 }
 - (instancetype)playlistWindows {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63506c57]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63506c57]];
 }
 - (instancetype)playlists {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63506c79]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63506c79]];
 }
 - (instancetype)printSettings {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x70736574]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x70736574]];
 }
 - (instancetype)radioTunerPlaylists {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63525450]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63525450]];
 }
 - (instancetype)sharedTracks {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63536854]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63536854]];
 }
 - (instancetype)sources {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63537263]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63537263]];
 }
 - (instancetype)tracks {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x6354726b]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x6354726b]];
 }
 - (instancetype)userPlaylists {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63557350]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63557350]];
 }
 - (instancetype)visuals {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63566973]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x63566973]];
 }
 - (instancetype)windows {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x6377696e]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: 0x6377696e]];
 }
 // Commands
 - (ITUActivateCommand *)activate {
@@ -2562,11 +2563,12 @@
 /* note: clients shouldn't need to call -initWithTargetType:data: themselves */
 
 - (instancetype)initWithTargetType:(AEBTargetType)targetType_ data:(id)targetData_ {
-    AEBStaticAppData *data = [[AEBStaticAppData alloc] initWithApplicationClass: AEMApplication.class
-                                                                    symbolClass: ITUSymbol.class
-                                                                 specifierClass: ITUSpecifier.class
-                                                                     targetType: targetType_
-                                                                     targetData: targetData_];
+    AEBStaticAppData *data = [[AEBStaticAppData alloc] initWithTargetType: targetType_
+                                                               targetData: targetData_
+                                                            launchOptions: kAEMDefaultLaunchOptions
+                                                             relaunchMode: AEBRelaunchLimited
+                                                           specifierClass: ITUSpecifier.class
+                                                              symbolClass: ITUSymbol.class];
     self = [super initWithAppData: data aemQuery: AEMApp];
 
     if (!self) return self;
@@ -2600,22 +2602,22 @@
     return [self initWithBundleID: @"com.apple.iTunes"];
 }
 - (instancetype)initCurrentApplication {
-    return [self initWithTargetType: kAEBTargetCurrent data: nil];
+    return [self initWithTargetType: AEBTargetCurrent data: nil];
 }
 - (instancetype)initWithName:(NSString *)name {
-    return [self initWithTargetType: kAEBTargetName data: name];
+    return [self initWithTargetType: AEBTargetName data: name];
 }
 - (instancetype)initWithURL:(NSURL *)url {
-    return [self initWithTargetType: kAEBTargetURL data: url];
+    return [self initWithTargetType: AEBTargetURL data: url];
 }
 - (instancetype)initWithBundleID:(NSString *)bundleID {
-    return [self initWithTargetType: kAEBTargetBundleID data: bundleID];
+    return [self initWithTargetType: AEBTargetBundleID data: bundleID];
 }
 - (instancetype)initWithProcessID:(pid_t)pid {
-    return [self initWithTargetType: kAEBTargetProcessID data: [NSNumber numberWithInteger: pid]];
+    return [self initWithTargetType: AEBTargetProcessID data: [NSNumber numberWithInteger: pid]];
 }
 - (instancetype)initWithDescriptor:(NSAppleEventDescriptor *)desc {
-    return [self initWithTargetType: kAEBTargetDescriptor data: desc];
+    return [self initWithTargetType: AEBTargetDescriptor data: desc];
 }
 
 /* misc */

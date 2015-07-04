@@ -32,13 +32,13 @@
 /**********************************************************************/
 // typedefs
 
-typedef enum {
-	kAEMTargetCurrent = 1,
-	kAEMTargetFileURL,
-	kAEMTargetEppcURL,
-	kAEMTargetProcessID,
-	kAEMTargetDescriptor,
-} AEMTargetType;
+typedef NS_ENUM(NSUInteger, AEMTargetType) {
+	AEMTargetCurrent = 1,
+	AEMTargetFileURL,
+	AEMTargetEppcURL,
+	AEMTargetProcessID,
+	AEMTargetDescriptor,
+};
 
 
 #define kAEMDefaultLaunchOptions (NSWorkspaceLaunchWithoutActivation)

@@ -41,7 +41,7 @@ private func appDataForProcess(var addressDesc: NSAppleEventDescriptor!, useSDEF
     if addressDesc.descriptorType == AEM4CC("psn ") { // typeProcessSerialNumber // AppleScript is old school
         addressDesc = addressDesc.coerceToDescriptorType(AEM4CC("kpid"))! // typeKernelProcessID
     }
-    var targetType = kAEBTargetURL
+    var targetType = AEBTargetType.URL
     var targetData: AnyObject
     var appClassName: String = "XXXApplication"
     var prefix: String = "XXX"
@@ -51,20 +51,19 @@ private func appDataForProcess(var addressDesc: NSAppleEventDescriptor!, useSDEF
         targetData = NSRunningApplication(processIdentifier: pid)!.bundleURL!
         (appClassName, prefix) = glueInfoForLocalProcess(pid)
     } else {
-        targetType = kAEBTargetDescriptor
+        targetType = AEBTargetType.Descriptor
         targetData = addressDesc
     }
     // get terms for use in custom formatter
-    let dynamicAppData = AEBDynamicAppData(applicationClass: AEMApplication.self, targetType: targetType, targetData: targetData,
-        relaunchMode: kAEBRelaunchAlways,
-        launchOptions: NSWorkspaceLaunchOptions.WithoutActivation,
-        targetTerms: (useSDEF ? kAEBUseSDEFTerminology : kAEBUseAETETerminology),
-        defaultTerms: kAEBUseDefaultTerminology,
-        keywordConverter: AEBSwiftKeywordConverter.sharedKeywordConverter())
+    let dynamicAppData = AEBDynamicAppData(targetType: targetType, targetData: targetData,
+                                        launchOptions: NSWorkspaceLaunchOptions.WithoutActivation, relaunchMode: .Always,
+                                          targetTerms: (useSDEF ? kAEBUseSDEFTerminology : kAEBUseAETETerminology),
+                                         defaultTerms: kAEBUseDefaultTerminology,
+                                     keywordConverter: AEBSwiftKeywordConverter.sharedKeywordConverter(),
+                                  aemApplicationClass: AEMApplication.self)
     let appTerms = try dynamicAppData.terminologyWithError()
-    return SwiftAETranslationAppData(applicationClass: SwiftAETranslationSpecifier.self, symbolClass: SwiftAETranslationSymbol.self,
-        specifierClass: SwiftAETranslationSpecifier.self, targetType: targetType, targetData: targetData,
-        terms: appTerms, appClassName: appClassName, prefix: prefix) // note: symbolClass arg is ignored as it's hardcoded into unpack
+    return SwiftAETranslationAppData(targetType: targetType, targetData: targetData,
+                                          terms: appTerms, appClassName: appClassName, prefix: prefix)
 }
 //
 
@@ -163,9 +162,6 @@ func SwiftAETranslateAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = 
 /******************************************************************************/
 // dynamic formatter; used to generate Swift code representation of an AppleEvent
 
-// init(applicationClass:targetType:targetData:relaunchMode:launchOptions:)
-// init!(applicationClass appClass: AnyClass!, targetType type: AEBTargetType, targetData data: AnyObject!, relaunchMode mode: AEBRelaunchMode, launchOptions options: NSWorkspaceLaunchOptions)
-
 
 class SwiftAETranslationAppData: SwiftAEAppData { // extends static app data (which provides pack/unpack) to include terms
     
@@ -176,18 +172,17 @@ class SwiftAETranslationAppData: SwiftAEAppData { // extends static app data (wh
     var appClassName: String
     var prefix: String
     
-    required init(applicationClass appClass: AnyClass!, symbolClass symbolClass_: AnyClass!,
-        specifierClass specifierClass_: AnyClass!, targetType type: AEBTargetType,
-        targetData data: AnyObject!, terms: AEBDynamicTerminology,
-        appClassName appClassName_: String, prefix prefix_: String) {
+    required init(targetType type: AEBTargetType, targetData data: AnyObject!,
+                            terms: AEBDynamicTerminology, appClassName appClassName_: String, prefix prefix_: String) {
             typesByCodeTable = terms.typesByCode.copy() as! [NSNumber:String]
             propertiesByCodeTable = terms.propertiesByCode.copy() as! [NSNumber:String]
             elementsByCodeTable = terms.elementsByCode.copy() as! [NSNumber:String]
             commandsByCodeTable = terms.commandsByCode.copy() as! [NSNumber:AEBDynamicCommandTerm]
             appClassName = appClassName_
             prefix = prefix_
-            super.init(applicationClass: appClass, symbolClass: symbolClass_, specifierClass: specifierClass_,
-                targetType: type, targetData: data)
+            super.init(targetType: type, targetData: data,
+                    launchOptions: .WithoutActivation, relaunchMode: .Limited,
+                   specifierClass: SwiftAETranslationSpecifier.self, symbolClass: SwiftAETranslationSymbol.self)
     }
         
     private func unpackAEBSymbol(desc: NSAppleEventDescriptor!) -> AnyObject {

@@ -19,11 +19,12 @@
 	Class symbolClass, specifierClass;
 }
 
-- (instancetype)initWithApplicationClass:(Class)appClass
-                             symbolClass:(Class)symbolClass_
-                          specifierClass:(Class)specifierClass_
-                              targetType:(AEBTargetType)type
-                              targetData:(id)data;
+- (instancetype)initWithTargetType:(AEBTargetType)type
+                        targetData:(id)data
+                     launchOptions:(NSWorkspaceLaunchOptions)options
+                      relaunchMode:(AEBRelaunchMode)mode
+                    specifierClass:(Class)specifierClass_
+                       symbolClass:(Class)symbolClass_;
 
 @end
 

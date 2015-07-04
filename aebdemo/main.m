@@ -6,7 +6,8 @@
 #import <Foundation/Foundation.h>
 #import "AppleEventBridge/AppleEventBridge.h"
 
-#import "TETGlue/TETGlue.h"
+#import "TEDGlue/TEDGlue.h"
+#import "ITUGlue/ITUGlue.h"
 
 void AEMLog(NSString *format, ...) {
     va_list argList; va_start (argList, format);
@@ -28,11 +29,11 @@ int main(int argc, const char * argv[]) {
         }
         // build and send event using high-level 'AEB' API with statically-generated glue classes
         {
-            TETApplication *te = [TETApplication application];
+            TEDApplication *te = [TEDApplication application];
             {
                 // tell app "TextEdit" to make new document with properties {name: "TEST1", text: @"Hi!"}
-                TETMakeCommand *cmd = [[[te.documents.end make] new_: TETSymbol.document]
-                                                     withProperties: @{TET.name: @"TEST1", TET.text: @"Hi!"}];
+                TEDMakeCommand *cmd = [[[te.documents.end make] new_: TEDSymbol.document]
+                                                     withProperties: @{TED.name: @"TEST1", TED.text: @"Hi!"}];
                 id result = [cmd sendWithError: &error];
                 AEMLog(@"2\nRESULT: %@\nERROR: %@", result, error); // result is specifier for newly created document: [[TEApplication applicationWithName: @"/Applications/TextEdit.app"].documents byName: @"TEST1"]
             }
@@ -46,6 +47,12 @@ int main(int argc, const char * argv[]) {
                 id result = [[te.documents at: 1000] getItemWithError: &error];
                 AEMLog(@"4\nRESULT: %@\nERROR: %@", result, error); // reports error: "Application error: Can't get reference. Invalid index. (-1719)"
             }
+        }
+        {
+            ITUApplication *itunes = [ITUApplication application];
+            AEMLog(@"iTunes player state: %@", [[itunes playerState] getItem]);
+            AEMLog(@"iTunes playlists: %@", [[itunes playlists].name getList]);
+            // [[itunes play] send];
         }
     }
     return 0;

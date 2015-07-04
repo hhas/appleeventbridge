@@ -460,7 +460,9 @@
                                  @"returnID",
                                  @"help",
                                  nil];
-        kReservedWords = [kObjectiveCKeywords setByAddingObjectsFromSet: kAEBObjectiveCMethods];
+        kReservedWords = [[[kObjectiveCKeywords setByAddingObjectsFromSet: kAEBObjectiveCMethods]
+                                                setByAddingObjectsFromSet: self.kAEBSpecifierMethods]
+                                                setByAddingObjectsFromSet: self.kNSObjectMethods];
         kReservedPrefixes = [self.kObjectiveCKeywords setByAddingObjectsFromSet: self.kAEBReservedPrefixes];
     }
     return self;

@@ -14,9 +14,9 @@
 // Generic specifier roots. These can be used to construct «PREFIX»Specifiers for use in other «PREFIX»Specifiers and «PREFIX»Commands,
 // though only real specifiers constructed from a «PREFIX»Application can be used to send commands to the target application.
 
-#define «PREFIX»App ([«PREFIX»Specifier specifierWithAppData: nil aemQuery: AEMApp])
-#define «PREFIX»Con ([«PREFIX»Specifier specifierWithAppData: nil aemQuery: AEMCon])
-#define «PREFIX»Its ([«PREFIX»Specifier specifierWithAppData: nil aemQuery: AEMIts])
+#define «PREFIX»App ([[«PREFIX»Specifier alloc] initWithAppData: nil aemQuery: AEMApp])
+#define «PREFIX»Con ([[«PREFIX»Specifier alloc] initWithAppData: nil aemQuery: AEMCon])
+#define «PREFIX»Its ([[«PREFIX»Specifier alloc] initWithAppData: nil aemQuery: AEMIts])
 
 // Symbol namespace // TO DO: is macro appropriate?
 #define «PREFIX» «PREFIX»Symbol
@@ -33,11 +33,11 @@
 @interface «PREFIX»Symbol : AEBStaticSymbol
 // Types and properties
 «+ENUM_SYMBOL»
-+ (instancetype)«NAME»;
++ (AEBSymbol *)«NAME»;
 «-ENUM_SYMBOL»
 // Enumerators
 «+TYPE_SYMBOL»
-+ (instancetype)«NAME»;
++ (AEBSymbol *)«NAME»;
 «-TYPE_SYMBOL»
 @end
 
@@ -69,8 +69,7 @@
 
 
 @interface «PREFIX»Application : «PREFIX»Specifier
-// note: clients shouldn't need to call -initWithTargetType:data: themselves
-- (instancetype)initWithTargetType:(AEBTargetType)targetType_ data:(id)targetData_;
+- (instancetype)initWithTargetType:(AEBTargetType)targetType_ data:(id)targetData_; // private; used internally
 // initialisers
 + (instancetype)application;
 + (instancetype)currentApplication;

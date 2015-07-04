@@ -34,7 +34,7 @@
 
 
 @implementation «PREFIX»Symbol
-+ (instancetype)aebSymbolForCode:(OSType)code_ {
++ (AEBSymbol *)aebSymbolForCode:(OSType)code_ {
     switch (code_) {
 «+SYMBOL_SWITCH»
         case «CODE»: return self.«NAME»;
@@ -44,11 +44,11 @@
 }
 // Types/properties 
 «+TYPE_SYMBOL»
-+ (instancetype)«NAME» {AEB_RETURN_SYMBOL(@"«NAME»", typeType, «CODE»);}
++ (AEBSymbol *)«NAME» {AEB_RETURN_SYMBOL(@"«NAME»", typeType, «CODE»);}
 «-TYPE_SYMBOL»
 // Enumerators
 «+ENUM_SYMBOL»
-+ (instancetype)«NAME» {AEB_RETURN_SYMBOL(@"«NAME»", typeEnumerated, «CODE»);}
++ (AEBSymbol *)«NAME» {AEB_RETURN_SYMBOL(@"«NAME»", typeEnumerated, «CODE»);}
 «-ENUM_SYMBOL»
 @end
 
@@ -87,15 +87,15 @@
 // Properties
 «+PROPERTY_SPECIFIER»
 - (instancetype)«NAME» {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: «CODE»]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery property: «CODE»]];
 }
 «-PROPERTY_SPECIFIER»
 // Elements
 «+ELEMENTS_SPECIFIER»
 - (instancetype)«NAME» {
-    return [self.class specifierWithAppData: self.aebAppData
-                                   aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: «CODE»]];
+    return [[self.class alloc] initWithAppData: self.aebAppData
+                                      aemQuery: [(AEMObjectSpecifier *)self.aemQuery elements: «CODE»]];
 }
 «-ELEMENTS_SPECIFIER»
 // Commands
@@ -125,11 +125,12 @@
 /* note: clients shouldn't need to call -initWithTargetType:data: themselves */
 
 - (instancetype)initWithTargetType:(AEBTargetType)targetType_ data:(id)targetData_ {
-    AEBStaticAppData *data = [[AEBStaticAppData alloc] initWithApplicationClass: AEMApplication.class
-                                                                    symbolClass: «PREFIX»Symbol.class
-                                                                 specifierClass: «PREFIX»Specifier.class
-                                                                     targetType: targetType_
-                                                                     targetData: targetData_];
+    AEBStaticAppData *data = [[AEBStaticAppData alloc] initWithTargetType: targetType_
+                                                               targetData: targetData_
+                                                            launchOptions: kAEMDefaultLaunchOptions
+                                                             relaunchMode: AEBRelaunchLimited
+                                                           specifierClass: «PREFIX»Specifier.class
+                                                              symbolClass: «PREFIX»Symbol.class];
     self = [super initWithAppData: data aemQuery: AEMApp];
 
     if (!self) return self;
@@ -163,22 +164,22 @@
     return [self initWithBundleID: @"«BUNDLE_ID»"];
 }
 - (instancetype)initCurrentApplication {
-    return [self initWithTargetType: kAEBTargetCurrent data: nil];
+    return [self initWithTargetType: AEBTargetCurrent data: nil];
 }
 - (instancetype)initWithName:(NSString *)name {
-    return [self initWithTargetType: kAEBTargetName data: name];
+    return [self initWithTargetType: AEBTargetName data: name];
 }
 - (instancetype)initWithURL:(NSURL *)url {
-    return [self initWithTargetType: kAEBTargetURL data: url];
+    return [self initWithTargetType: AEBTargetURL data: url];
 }
 - (instancetype)initWithBundleID:(NSString *)bundleID {
-    return [self initWithTargetType: kAEBTargetBundleID data: bundleID];
+    return [self initWithTargetType: AEBTargetBundleID data: bundleID];
 }
 - (instancetype)initWithProcessID:(pid_t)pid {
-    return [self initWithTargetType: kAEBTargetProcessID data: [NSNumber numberWithInteger: pid]];
+    return [self initWithTargetType: AEBTargetProcessID data: [NSNumber numberWithInteger: pid]];
 }
 - (instancetype)initWithDescriptor:(NSAppleEventDescriptor *)desc {
-    return [self initWithTargetType: kAEBTargetDescriptor data: desc];
+    return [self initWithTargetType: AEBTargetDescriptor data: desc];
 }
 
 /* misc */

@@ -2,6 +2,8 @@
 
 ## Creating application objects
 
+[[TO DO: update to cover optional launchOptions:, relaunchMode: args]]
+
 Before you can communicate with a scriptable application you must create an application object. When targeting local applications, the glue's default constructor is usually the best choice. For example, to target TextEdit:
 
     import TEGlue

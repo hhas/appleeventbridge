@@ -8,10 +8,12 @@
 import Foundation
 import AppleEventBridge
 
-// TO DO: decide if generic specifier roots should appear as app/con/its static vars on XXSymbol class, or as XXApp/XXCon/XXIts vars on module
+
+/******************************************************************************/
+// «PREFIX»Formatter is used by «PREFIX»Specifier to generate description strings
 
 
-class «PREFIX»Formatter: SwiftAEFormatter { // used internally to generate description strings
+class «PREFIX»Formatter: SwiftAEFormatter {
 
     override var prefix: String {return "«PREFIX»"}
     override var appClassName: String {return "«APP_CLASS_NAME»"}
@@ -34,6 +36,39 @@ class «PREFIX»Formatter: SwiftAEFormatter { // used internally to generate des
         }
     }
 }
+
+
+/******************************************************************************/
+// «PREFIX»Symbol instances represent built-in and app-defined type, enum, and property names
+
+
+class «PREFIX»Symbol: SwiftAESymbol {
+
+override var aebPrefix: String {return "«PREFIX»"}
+
+override class func aebSymbolForCode(code_: OSType) -> AEBSymbol {
+switch (code_) {
+«+SYMBOL_SWITCH»
+case «CODE»: return self.«NAME»
+«-SYMBOL_SWITCH»
+default: return super.aebSymbolForCode(code_)
+}
+}
+
+// Types/properties    // TO DO: add 'override' if var is already defined in AEBSymbol
+«+TYPE_SYMBOL»
+static var «NAME»: «PREFIX»Symbol {return «PREFIX»Symbol(name: "«NAME»", type: 0x74797065, code: «CODE»)}
+«-TYPE_SYMBOL»
+
+// Enumerators    // TO DO: add 'override' if var is already defined in AEBSymbol
+«+ENUM_SYMBOL»
+static var «NAME»: «PREFIX»Symbol {return «PREFIX»Symbol(name: "«NAME»", type: 0x656e756d, code: «CODE»)}
+«-ENUM_SYMBOL»
+}
+
+
+/******************************************************************************/
+// «PREFIX»Specifier instances represent Apple event queries (aka 'specifiers'/'references')
 
 
 class «PREFIX»Specifier: SwiftAESpecifier {
@@ -181,37 +216,42 @@ class «PREFIX»Specifier: SwiftAESpecifier {
 }
 
 
+/******************************************************************************/
+// «APP_CLASS_NAME» instances identify the target process(es) to which Apple events will be sent
+
+
 class «APP_CLASS_NAME»: «PREFIX»Specifier {
-    private init(targetType: AEBTargetType, targetData: AnyObject?) {
-        let data = SwiftAEAppData(applicationClass: AEMApplication.self,
-                                       symbolClass: «PREFIX»Symbol.self,
-                                    specifierClass: «PREFIX»Specifier.self,
-                                        targetType: targetType,
-                                        targetData: targetData)
+    private init(targetType: AEBTargetType, targetData: AnyObject?, launchOptions: NSWorkspaceLaunchOptions?, relaunchMode: AEBRelaunchMode?) {
+        let data = SwiftAEAppData(targetType: targetType,
+                                  targetData: targetData,
+                               launchOptions: launchOptions ?? .WithoutActivation,
+                                relaunchMode: relaunchMode ?? .Limited,
+                              specifierClass: «PREFIX»Specifier.self,
+                                 symbolClass: «PREFIX»Symbol.self)
         super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
     }
-    override convenience init() { // TO DO: delete/raise error if bundle id not given
-        self.init(bundleIdentifier: "«BUNDLE_ID»")
+    convenience init(launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) { // TO DO: delete this initializer/raise error if bundle id not given
+        self.init(bundleIdentifier: "«BUNDLE_ID»", launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(name: NSString) {
-        self.init(targetType: kAEBTargetName, targetData: name)
+    convenience init(name: NSString, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+        self.init(targetType: .Name, targetData: name, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(url: NSURL) {
-        self.init(targetType: kAEBTargetURL, targetData: url)
+    convenience init(url: NSURL, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+        self.init(targetType: .URL, targetData: url, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(bundleIdentifier: NSString) {
-        self.init(targetType: kAEBTargetBundleID, targetData: bundleIdentifier)
+    convenience init(bundleIdentifier: NSString, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+        self.init(targetType: .BundleID, targetData: bundleIdentifier, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(processIdentifier: Int) {
-        self.init(targetType: kAEBTargetProcessID, targetData: processIdentifier)
+    convenience init(processIdentifier: Int, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+        self.init(targetType: .ProcessID, targetData: processIdentifier, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(descriptor: NSAppleEventDescriptor) {
-        self.init(targetType: kAEBTargetDescriptor, targetData: descriptor)
+    convenience init(descriptor: NSAppleEventDescriptor, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+        self.init(targetType: .Descriptor, targetData: descriptor, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
     class func currentApplication() -> «APP_CLASS_NAME» {
-        return «APP_CLASS_NAME»(targetType: kAEBTargetCurrent, targetData: nil)
+        return «APP_CLASS_NAME»(targetType: .Current, targetData: nil, launchOptions: nil, relaunchMode: nil) // TO DO: make this static
     }
-    
+
     // Construct a «PREFIX»Specifier using a raw AEMQuery or other custom object
     // (e.g. if app's terminology is broken or when dealing with especially cranky old apps)
     
@@ -268,35 +308,6 @@ func || (left: «PREFIX»Specifier!, right: «PREFIX»Specifier!) -> «PREFIX»S
 prefix func ! (input: «PREFIX»Specifier!) -> «PREFIX»Specifier! {
     let (baseQuery, queryError) = input.aemTestClause("test")
     return «PREFIX»Specifier(appData: input.aebAppData, aemQuery: baseQuery?.NOT(), queryError: queryError)
-}
-
-
-/******************************************************************************/
-// SYMBOLS
-
-
-class «PREFIX»Symbol: SwiftAESymbol {
-
-    override var aebPrefix: String {return "«PREFIX»"}
-
-    override class func aebSymbolForCode(code_: OSType) -> AEBSymbol {
-        switch (code_) {
-«+SYMBOL_SWITCH»
-        case «CODE»: return self.«NAME»
-«-SYMBOL_SWITCH»
-        default: return super.aebSymbolForCode(code_)
-        }
-    }
-
-    // Types/properties    // TO DO: add 'override' if var is already defined in AEBSymbol
-«+TYPE_SYMBOL»
-    static var «NAME»: «PREFIX»Symbol {return «PREFIX»Symbol(name: "«NAME»", type: 0x74797065, code: «CODE»)}
-«-TYPE_SYMBOL»
-
-    // Enumerators    // TO DO: add 'override' if var is already defined in AEBSymbol
-«+ENUM_SYMBOL»
-    static var «NAME»: «PREFIX»Symbol {return «PREFIX»Symbol(name: "«NAME»", type: 0x656e756d, code: «CODE»)}
-«-ENUM_SYMBOL»
 }
 
 

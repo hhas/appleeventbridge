@@ -13,10 +13,6 @@
 
 @synthesize aebAppData, aemQuery;
 
-+ (instancetype)specifierWithAppData:(id)appData_ aemQuery:(id)aemQuery_ {
-	return [[self alloc] initWithAppData: appData_ aemQuery: aemQuery_];
-}
-
 - (instancetype)initWithAppData:(AEBAppData *)appData_ aemQuery:(AEMQuery *)aemQuery_ {
 	self = [super init];
 	if (!self) return self;
@@ -79,19 +75,19 @@
 // transaction support
 
 - (BOOL)beginTransactionWithError:(NSError * __autoreleasing *)error {
-    return [[aebAppData targetWithError: nil] beginTransactionWithError: error];
+    return [[aebAppData targetWithError: error] beginTransactionWithError: error];
 }
 
 - (BOOL)beginTransactionWithSession:(id)session error:(NSError * __autoreleasing *)error {
-	 return [[aebAppData targetWithError: nil] beginTransactionWithSession: session error: error];
+	 return [[aebAppData targetWithError: error] beginTransactionWithSession: session error: error];
 }
 
 - (BOOL)endTransactionWithError:(NSError * __autoreleasing *)error {
-	 return [[aebAppData targetWithError: nil] endTransactionWithError: error];
+	 return [[aebAppData targetWithError: error] endTransactionWithError: error];
 }
 
 - (BOOL)abortTransactionWithError:(NSError * __autoreleasing *)error {
-	 return [[aebAppData targetWithError: nil] abortTransactionWithError: error];
+	 return [[aebAppData targetWithError: error] abortTransactionWithError: error];
 }
 
 @end

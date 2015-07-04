@@ -152,7 +152,7 @@
 @implementation AEBGetSetItemCommand
 
 - (NSString *)aebCommandName {
-    return ([(AEMType *)[self.aemEvent attributeForKeyword: keyEventIDAttr] code] == kAEGetData) ? @"get" : @"set";
+    return ([(AEBSymbol *)[self.aemEvent attributeForKeyword: keyEventIDAttr] aebCode] == kAEGetData) ? @"get" : @"set";
 }
 
 - (NSString *)aebParameterNameForCode:(DescType)code {

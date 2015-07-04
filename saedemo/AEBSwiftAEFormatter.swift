@@ -233,15 +233,15 @@ class SwiftAEFormatter: AEMQueryVisitor {
                 let target = try aebAppData!.targetWithError()
                 let targetData = target.targetData()
                 let targetType = target.targetType()
-                if targetType == kAEMTargetCurrent {
+                if targetType == AEMTargetType.Current {
                     self.mutableResult?.appendString(".currentApplication()")
-                } else if targetType == kAEMTargetFileURL {
+                } else if targetType == AEMTargetType.FileURL {
                     self.mutableResult?.appendFormat("(name:%@)", self.format((targetData as! NSURL).path!)) // TO DO: check this
-                } else if targetType == kAEMTargetEppcURL {
+                } else if targetType == AEMTargetType.EppcURL {
                     self.mutableResult?.appendFormat("(url:%@)", self.format(targetData))
-                } else if targetType == kAEMTargetProcessID {
+                } else if targetType == AEMTargetType.ProcessID {
                     self.mutableResult?.appendFormat("(processIdentifier:%@)", self.format(targetData))
-                } else { // if targetType == kAEMTargetDescriptor {
+                } else { // if targetType == AEMTargetType.Descriptor {
                     self.mutableResult?.appendFormat("(descriptor:%@)", self.format(targetData))
                 }
             } catch {

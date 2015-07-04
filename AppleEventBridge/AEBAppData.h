@@ -16,15 +16,21 @@
 /**********************************************************************/
 // typedefs
 
-typedef enum {
-	kAEBTargetCurrent = 1,
-	kAEBTargetName,
-	kAEBTargetURL,
-	kAEBTargetBundleID,
-	kAEBTargetProcessID,
-	kAEBTargetDescriptor,
-} AEBTargetType;
+typedef NS_ENUM(NSUInteger, AEBTargetType) {
+	AEBTargetCurrent = 1,
+	AEBTargetName,
+	AEBTargetURL,
+	AEBTargetBundleID,
+	AEBTargetProcessID,
+	AEBTargetDescriptor,
+}; // used by AppData instances; client code generally shouldn't need to use it
 
+
+typedef NS_ENUM(NSUInteger, AEBRelaunchMode) {
+    AEBRelaunchNever,
+    AEBRelaunchLimited, // automatically relaunches application only if a 'run' event is being sent (this is the default)
+    AEBRelaunchAlways   // (AppleScript behavior)
+}; // specifies behavior when an event is being sent to a local process that has since terminated
 
 /**********************************************************************/
 
@@ -47,24 +53,24 @@ typedef enum {
 @property (readwrite) AEBRelaunchMode relaunchMode;
 
 
-- (instancetype)initWithApplicationClass:(Class)appClass
-                              targetType:(AEBTargetType)type
-                              targetData:(id)data
-                            relaunchMode:(AEBRelaunchMode)mode
-                           launchOptions:(NSWorkspaceLaunchOptions)options;
+- (instancetype)initWithTargetType:(AEBTargetType)type
+                        targetData:(id)data
+                     launchOptions:(NSWorkspaceLaunchOptions)options
+                      relaunchMode:(AEBRelaunchMode)mode
+               aemApplicationClass:(Class)appClass; // hook; e.g. an OSA component can supply an AEMApplication subclass with custom AESend hook
 
 
 - (instancetype)initWithTargetType:(AEBTargetType)type targetData:(id)data;
 
 // creates AEMApplication instance for target application; used internally
-- (BOOL)connectWithError:(NSError * __autoreleasing *)error;
+- (BOOL)connectWithError:(NSError * __autoreleasing *)error; // error may be nil
 
 // returns AEMApplication instance for target application
-- (id)targetWithError:(NSError * __autoreleasing *)error;
+- (AEMApplication *)targetWithError:(NSError * __autoreleasing *)error; // error may be nil
 
 // launch the target application without sending it the usual 'run' event;
 // equivalent to 'launch' command in AppleScript.
-- (BOOL)launchApplicationWithError:(NSError * __autoreleasing *)error;
+- (BOOL)launchApplicationWithError:(NSError * __autoreleasing *)error; // error may be nil
 
 @end
 

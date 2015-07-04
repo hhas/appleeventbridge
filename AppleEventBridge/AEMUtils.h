@@ -85,15 +85,6 @@ OSType AEM4CC(NSString * codeStr);
 
 // TO DO: AEMTestClauseProtocol?
 
-/**********************************************************************/
-
-
-typedef enum {
-	kAEBRelaunchNever,
-	kAEBRelaunchLimited,
-	kAEBRelaunchAlways
-} AEBRelaunchMode;
-
 
 /**********************************************************************/
 

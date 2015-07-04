@@ -23,8 +23,6 @@
 
 @interface AEBSpecifier : NSObject <AEMSelfPackingProtocol, AEMQueryProtocol>
 
-+ (instancetype)specifierWithAppData:(AEBAppData *)appData_ aemQuery:(AEMQuery *)aemQuery_;
-
 - (instancetype)initWithAppData:(AEBAppData *)appData_ aemQuery:(AEMQuery *)aemQuery_;
 
 
@@ -32,7 +30,7 @@
 @property (readonly) AEBAppData *aebAppData;
 @property (readonly) AEMQuery *aemQuery;
 
-// TO DO: most/all of the following should only be public on application objects; move to category for use by glues?
+// TO DO: what about launchOptions? (might be best if launchOptions and relaunchMode moved to ObjC XXApplication glues)
 
 // should application be automatically relaunched when sending command if no longer running?
 @property AEBRelaunchMode relaunchMode;

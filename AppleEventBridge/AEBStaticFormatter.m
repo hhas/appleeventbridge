@@ -273,27 +273,27 @@
 - (instancetype)app {
 	if (appData) {
 		NSError *error = nil;
-		id target = [appData targetWithError: &error];
+		AEMApplication *target = [appData targetWithError: &error];
 		if (target) {
 			AEMTargetType targetType = [target targetType];
 			id targetData = [target targetData];
 			switch (targetType) {
-				case kAEMTargetCurrent:
+				case AEMTargetCurrent:
 					[mutableResult appendFormat: @"[%@Application application]", self.prefix];
 					return self;
-				case kAEMTargetFileURL:
+				case AEMTargetFileURL:
 					[mutableResult appendFormat: @"[%@Application applicationWithName: %@]",
                                                     self.prefix, [self format: [targetData path]]];
 					return self;
-				case kAEMTargetEppcURL:
+				case AEMTargetEppcURL:
 					[mutableResult appendFormat: @"[%@Application applicationWithURL: %@]",
                                                     self.prefix, [self format: targetData]];
 					return self;
-				case kAEMTargetProcessID:
+				case AEMTargetProcessID:
 					[mutableResult appendFormat: @"[%@Application applicationWithProcessID: %@]",
                                                     self.prefix, [self format: targetData]];
 					return self;
-				case kAEMTargetDescriptor:
+				case AEMTargetDescriptor:
 					[mutableResult appendFormat: @"[%@Application applicationWithDescriptor: %@]",
                                                     self.prefix, [self format: targetData]];
 					return self;

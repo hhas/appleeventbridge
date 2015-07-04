@@ -27,8 +27,8 @@
 	considsAndIgnoresFlags = kAECaseIgnoreMask;
 	// if -targetWithError: fails, store NSError and return it when -sendWithError: is invoked
     NSError *err = nil;
-	id target = [appData targetWithError: &err];
-    // If process failed to launch, there's no point creating an AEMEvent instance as we don't have a valid kAEBTargetProcessID for
+	AEMApplication *target = [appData targetWithError: &err];
+    // If process failed to launch, there's no point creating an AEMEvent instance as we don't have a valid AEBTargetProcessID for
     // it. However, the error can't be reported immediately as there's no way to pass an NSError back to client code
     // from here. Instead, the NSError is temporarily stored, and will be returned to client when it finally calls
     // -sendWithError:. Until then, any calls to add parameters, set attributes, etc. are effectively ignored, since
@@ -38,9 +38,9 @@
 	// if an application specified by path has quit/restart, its AEAddressDesc is no longer valid;
 	// this code will automatically restart it (or not) according to client-specified auto-relaunch policy
 	AEBRelaunchMode relaunchPolicy = appData.relaunchMode;
-	if (relaunchPolicy != kAEBRelaunchNever && [target targetType] == kAEMTargetFileURL
+	if (relaunchPolicy != AEBRelaunchNever && [target targetType] == AEMTargetFileURL
 			&& ![AEMApplication isApplicationRunningWithProcessID: [[target descriptor] int32Value]]) {
-		if (relaunchPolicy == kAEBRelaunchAlways || (eventClass_ == kCoreEventClass && eventID_ == kAEOpenApplication)) {
+		if (relaunchPolicy == AEBRelaunchAlways || (eventClass_ == kCoreEventClass && eventID_ == kAEOpenApplication)) {
 			BOOL success = [target reconnectWithError: &err];
             // As above, if process failed to relaunch, store the NSError and return it on -sendWithError:.
             commandError = err;

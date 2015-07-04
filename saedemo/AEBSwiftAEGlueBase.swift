@@ -143,7 +143,7 @@ class SwiftAESymbol: AEBSymbol {
 // misc constants used in SwiftAESpecifier
 
 struct SwiftAEParameter {
-    var name: String?
+    var name: String? // TO DO: name is never used; probably simplest to replace this struct with simple (code:OSType,value:AnyObject) tuple
     var code: OSType
     var value: AnyObject!
 }
@@ -243,7 +243,9 @@ class SwiftAESpecifier: AEBSpecifier {
     // TO DO: support optional completionHandler closure for async sends? (not sure how best to implement this; might be simpler to take optional `queueReply:true` arg that calls command.queueReply() to set AESendMode's kAEQueueReply flag and, on successful dispatch of the event, immediately return the event's returnID as result, leaving user to collect reply event themselves)
     
     // note: clients may call the following method directly as workaround if app's terminology is missing or incorrect
+    
     // TO DO: add convenience raw send method that takes four-char code strings (c.f. elementsByFourCharCode)
+    // sendAppleEvent(eventCode: AEBEightCharCode, parameters: [AEBFourCharCode:AnyObject], ....)
     
     func sendAppleEvent(eventClass: OSType, eventID: OSType, parameters: Array<SwiftAEParameter>,
             returnType: AEBReturnType?, waitReply: Bool?, withTimeout: NSTimeInterval?,
@@ -313,7 +315,7 @@ class SwiftAESpecifier: AEBSpecifier {
         }
         // send the event
                 
-        let res = try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript; Q. implement SwiftAEError as enum (at least for common standard error codes)? e.g. SwiftAEError.UnsupportedCoercion, .MissingParameter, .SpecifierNotFound, .ProcessNotFound, .ProcessTerminated, etc. prob. easiest for writing do...catch...catch...catch blocks
+        let res = try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript; Q. implement SwiftAEError as enum (at least for common standard error codes)? e.g. SwiftAEError.UnsupportedCoercion, .MissingParameter, .SpecifierNotFound, .ProcessNotFound, .ProcessTerminated, etc. prob. easiest for writing do...catch...catch...catch blocks, though not so good when dealing with app-specific error codes and codes that aren't explicitly bridged (all of which would need to be .Other); TBH, it'd be best if users could just pattern match on the error number itself (e.g. as in Haskell); defining an AEBError class with custom ~= operator override may allow this (would need to experiment, e.g. whether to match error no. directly, or a tuple with code:domain:errorInfo: fields); bear in mind that expression-based matching is only available in switch statements (need to check catch clauses' capabilities)
     
    //     print(try SwiftAETranslateAppleEvent(command.aemEvent.descriptor)) // TEST; TO DO: delete
         

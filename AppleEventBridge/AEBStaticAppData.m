@@ -10,23 +10,23 @@
 
 @implementation AEBStaticAppData
 
-// TO DO: should this use AEBStaticSymbol, AEBStaticSpecifier as defaults?
+// TO DO: should this use AEBStaticSymbol, AEBStaticSpecifier as defaults? need to check which superclasses define this method, and maybe push it down to AEBDynamicAppData
 - (instancetype)initWithTargetType:(AEBTargetType)type targetData:(id)data {
     [NSException raise: kAEMErrorDomain format: @"Unsupported initializer for AEBStaticAppData"];
     return nil;
 }
 
-- (instancetype)initWithApplicationClass:(Class)appClass // TO DO: appClass arg is currently unused; suspect it's supposed to be high-level XXApplication class, for use in unpacking application objects (as opposed to AEMApplication.class alternative)
-                             symbolClass:(Class)symbolClass_
-                          specifierClass:(Class)specifierClass_
-                              targetType:(AEBTargetType)type
-                              targetData:(id)data {
-    //self = [super initWithTargetType: type targetData: data]; // TO DO: currently disabled due to Swift 2.0 runtime bug: -[AEBAppData initWithTargetType:targetData:] throws "fatal error: use of unimplemented initializer" when it tries to call [self initWithApplicationClass:targetType:targetData:relaunchMode:launchOptions:]
-    self = [super initWithApplicationClass: AEMApplication.class
-                               targetType: type
-                               targetData: data
-                             relaunchMode: kAEBRelaunchLimited
-                            launchOptions: kAEMDefaultLaunchOptions]; // TO DO: temporary workaround for above Swift bug
+- (instancetype)initWithTargetType:(AEBTargetType)type
+                        targetData:(id)data
+                     launchOptions:(NSWorkspaceLaunchOptions)options
+                      relaunchMode:(AEBRelaunchMode)mode
+                    specifierClass:(Class)specifierClass_
+                       symbolClass:(Class)symbolClass_ {
+    self = [super initWithTargetType: type
+                          targetData: data
+                       launchOptions: options // default is kAEMDefaultLaunchOptions
+                        relaunchMode: mode // default is AEBRelaunchLimited
+                 aemApplicationClass: AEMApplication.class];
 	if (!self) return self;
 	symbolClass = symbolClass_;
 	specifierClass = specifierClass_;
@@ -57,11 +57,11 @@
 }
 
 - (id)unpackObjectSpecifier:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error {
-	return [specifierClass specifierWithAppData: self aemQuery: [super unpackObjectSpecifier: desc error: error]];
+	return [[specifierClass alloc] initWithAppData: self aemQuery: [super unpackObjectSpecifier: desc error: error]];
 }
 
 - (id)unpackInsertionLoc:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error {
-	return [specifierClass specifierWithAppData: self aemQuery: [super unpackInsertionLoc: desc error: error]];
+	return [[specifierClass alloc] initWithAppData: self aemQuery: [super unpackInsertionLoc: desc error: error]];
 }
 
 
