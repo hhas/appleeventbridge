@@ -6,8 +6,8 @@
 #import <Foundation/Foundation.h>
 #import "AppleEventBridge/AppleEventBridge.h"
 
-#import "TEDGlue/TEDGlue.h"
-#import "ITUGlue/ITUGlue.h"
+#import "TEDGlue.h"
+#import "ITUGlue.h"
 
 void AEMLog(NSString *format, ...) {
     va_list argList; va_start (argList, format);

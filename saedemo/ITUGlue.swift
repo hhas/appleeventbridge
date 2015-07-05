@@ -1482,35 +1482,35 @@ class ITUSpecifier: SwiftAESpecifier {
 
 
 class ITunes: ITUSpecifier {
-    private init(targetType: AEBTargetType, targetData: AnyObject?, launchOptions: NSWorkspaceLaunchOptions?, relaunchMode: AEBRelaunchMode?) {
+    private init(targetType: AEBTargetType, targetData: AnyObject?, launchOptions: NSWorkspaceLaunchOptions, relaunchMode: AEBRelaunchMode) {
         let data = SwiftAEAppData(targetType: targetType,
                                   targetData: targetData,
-                               launchOptions: launchOptions ?? .WithoutActivation,
-                                relaunchMode: relaunchMode ?? .Limited,
+                               launchOptions: launchOptions,
+                                relaunchMode: relaunchMode,
                               specifierClass: ITUSpecifier.self,
                                  symbolClass: ITUSymbol.self)
         super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
     }
-    convenience init(launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) { // TO DO: delete this initializer/raise error if bundle id not given
+    convenience init(launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) { // TO DO: delete this initializer/raise error if bundle id not given
         self.init(bundleIdentifier: "com.apple.iTunes", launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(name: NSString, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+    convenience init(name: NSString, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .Name, targetData: name, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(url: NSURL, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+    convenience init(url: NSURL, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .URL, targetData: url, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(bundleIdentifier: NSString, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+    convenience init(bundleIdentifier: NSString, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .BundleID, targetData: bundleIdentifier, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(processIdentifier: Int, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+    convenience init(processIdentifier: Int, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .ProcessID, targetData: processIdentifier, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(descriptor: NSAppleEventDescriptor, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+    convenience init(descriptor: NSAppleEventDescriptor, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .Descriptor, targetData: descriptor, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
     class func currentApplication() -> ITunes {
-        return ITunes(targetType: .Current, targetData: nil, launchOptions: nil, relaunchMode: nil) // TO DO: make this static
+        return ITunes(targetType: .Current, targetData: nil, launchOptions: .WithoutActivation, relaunchMode: .Limited) // TO DO: make this static
     }
 
     // Construct a ITUSpecifier using a raw AEMQuery or other custom object
@@ -1582,7 +1582,7 @@ let ITU = ITUSymbol.self
 // Generic specifier roots. These can be used to construct ITUSpecifiers for use in other
 // ITUSpecifiers and ITUCommands, though only real specifiers constructed from a
 // ITunes application instance can be used to send commands to the target application.
-let ITUapp = ITUSpecifier(appData: nil, aemQuery: AEMQuery.app())
-let ITUcon = ITUSpecifier(appData: nil, aemQuery: AEMQuery.con())
-let ITUits = ITUSpecifier(appData: nil, aemQuery: AEMQuery.its())
+let ITUApp = ITUSpecifier(appData: nil, aemQuery: AEMQuery.app())
+let ITUCon = ITUSpecifier(appData: nil, aemQuery: AEMQuery.con())
+let ITUIts = ITUSpecifier(appData: nil, aemQuery: AEMQuery.its())
 

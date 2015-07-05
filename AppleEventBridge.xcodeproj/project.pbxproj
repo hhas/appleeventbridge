@@ -84,6 +84,8 @@
 		4FA7A8C21A0A79B900F0E578 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1AA01119F92B4C00FBD23E /* Foundation.framework */; };
 		4FA7A8C31A0A79BC00F0E578 /* AppleEventBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */; };
 		4FA7A8C51A0A99AE00F0E578 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA7A8C41A0A99AE00F0E578 /* Carbon.framework */; };
+		4FAA6C941B491CF800626E60 /* ITUGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA6C901B491CF800626E60 /* ITUGlue.m */; };
+		4FAA6C951B491CF800626E60 /* TEDGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA6C931B491CF800626E60 /* TEDGlue.m */; };
 		4FD8E4A11B334D63004B5CD5 /* AEBKeywordConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */; };
 		4FFA2D721A129BCA00AF09E4 /* application-objects.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5E1A129B7E00AF09E4 /* application-objects.html */; };
@@ -109,8 +111,6 @@
 		4FFD9EB41B46EC1200145A9A /* AEBSwiftAEFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFD9EB11B46EC1200145A9A /* AEBSwiftAEFormatter.swift */; };
 		4FFD9EB51B46EC1200145A9A /* AEBSwiftAEGlueBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFD9EB21B46EC1200145A9A /* AEBSwiftAEGlueBase.swift */; };
 		4FFD9EB61B46EC1200145A9A /* AEBSwiftAETranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFD9EB31B46EC1200145A9A /* AEBSwiftAETranslate.swift */; };
-		4FFD9EC01B47F4A900145A9A /* ITUGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FFD9EBB1B47F4A900145A9A /* ITUGlue.m */; };
-		4FFD9EC11B47F4A900145A9A /* TEDGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FFD9EBF1B47F4A900145A9A /* TEDGlue.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -297,6 +297,12 @@
 		4FA7A8BD1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEMCopyScriptingDefinitionFromURL.m; sourceTree = "<group>"; };
 		4FA7A8BE1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMCopyScriptingDefinitionFromURL.h; sourceTree = "<group>"; };
 		4FA7A8C41A0A99AE00F0E578 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		4FAA6C8E1B491CF800626E60 /* ITUGlue-objc.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "ITUGlue-objc.sdef"; sourceTree = "<group>"; };
+		4FAA6C8F1B491CF800626E60 /* ITUGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITUGlue.h; sourceTree = "<group>"; };
+		4FAA6C901B491CF800626E60 /* ITUGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITUGlue.m; sourceTree = "<group>"; };
+		4FAA6C911B491CF800626E60 /* TEDGlue-objc.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "TEDGlue-objc.sdef"; sourceTree = "<group>"; };
+		4FAA6C921B491CF800626E60 /* TEDGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEDGlue.h; sourceTree = "<group>"; };
+		4FAA6C931B491CF800626E60 /* TEDGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEDGlue.m; sourceTree = "<group>"; };
 		4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBKeywordConverter.h; sourceTree = "<group>"; };
 		4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBKeywordConverter.m; sourceTree = "<group>"; };
 		4FE621291B4568C700604DC1 /* a-quick-tutorial.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "a-quick-tutorial.html"; sourceTree = "<group>"; };
@@ -343,13 +349,6 @@
 		4FFD9EB11B46EC1200145A9A /* AEBSwiftAEFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEBSwiftAEFormatter.swift; sourceTree = "<group>"; };
 		4FFD9EB21B46EC1200145A9A /* AEBSwiftAEGlueBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEBSwiftAEGlueBase.swift; sourceTree = "<group>"; };
 		4FFD9EB31B46EC1200145A9A /* AEBSwiftAETranslate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEBSwiftAETranslate.swift; sourceTree = "<group>"; };
-		4FFD9EB81B47F4A900145A9A /* ITUGlue-objc.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "ITUGlue-objc.sdef"; sourceTree = "<group>"; };
-		4FFD9EB91B47F4A900145A9A /* ITUGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITUGlue.h; sourceTree = "<group>"; };
-		4FFD9EBA1B47F4A900145A9A /* ITUGlue.h.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ITUGlue.h.sdef; sourceTree = "<group>"; };
-		4FFD9EBB1B47F4A900145A9A /* ITUGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITUGlue.m; sourceTree = "<group>"; };
-		4FFD9EBD1B47F4A900145A9A /* TEDGlue-objc.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "TEDGlue-objc.sdef"; sourceTree = "<group>"; };
-		4FFD9EBE1B47F4A900145A9A /* TEDGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEDGlue.h; sourceTree = "<group>"; };
-		4FFD9EBF1B47F4A900145A9A /* TEDGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEDGlue.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -618,8 +617,12 @@
 			isa = PBXGroup;
 			children = (
 				4FA7A8B81A0A607400F0E578 /* main.m */,
-				4FFD9EB71B47F4A900145A9A /* ITUGlue */,
-				4FFD9EBC1B47F4A900145A9A /* TEDGlue */,
+				4FAA6C8E1B491CF800626E60 /* ITUGlue-objc.sdef */,
+				4FAA6C8F1B491CF800626E60 /* ITUGlue.h */,
+				4FAA6C901B491CF800626E60 /* ITUGlue.m */,
+				4FAA6C911B491CF800626E60 /* TEDGlue-objc.sdef */,
+				4FAA6C921B491CF800626E60 /* TEDGlue.h */,
+				4FAA6C931B491CF800626E60 /* TEDGlue.m */,
 			);
 			name = "Objective-C demo";
 			path = aebdemo;
@@ -688,27 +691,6 @@
 				4FFA2D6F1A129B7E00AF09E4 /* relationships_example.gif */,
 			);
 			path = "doc-html";
-			sourceTree = "<group>";
-		};
-		4FFD9EB71B47F4A900145A9A /* ITUGlue */ = {
-			isa = PBXGroup;
-			children = (
-				4FFD9EB81B47F4A900145A9A /* ITUGlue-objc.sdef */,
-				4FFD9EB91B47F4A900145A9A /* ITUGlue.h */,
-				4FFD9EBA1B47F4A900145A9A /* ITUGlue.h.sdef */,
-				4FFD9EBB1B47F4A900145A9A /* ITUGlue.m */,
-			);
-			path = ITUGlue;
-			sourceTree = "<group>";
-		};
-		4FFD9EBC1B47F4A900145A9A /* TEDGlue */ = {
-			isa = PBXGroup;
-			children = (
-				4FFD9EBD1B47F4A900145A9A /* TEDGlue-objc.sdef */,
-				4FFD9EBE1B47F4A900145A9A /* TEDGlue.h */,
-				4FFD9EBF1B47F4A900145A9A /* TEDGlue.m */,
-			);
-			path = TEDGlue;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -976,8 +958,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FA7A8B91A0A607400F0E578 /* main.m in Sources */,
-				4FFD9EC11B47F4A900145A9A /* TEDGlue.m in Sources */,
-				4FFD9EC01B47F4A900145A9A /* ITUGlue.m in Sources */,
+				4FAA6C951B491CF800626E60 /* TEDGlue.m in Sources */,
+				4FAA6C941B491CF800626E60 /* ITUGlue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

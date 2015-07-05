@@ -2569,10 +2569,7 @@
                                                              relaunchMode: AEBRelaunchLimited
                                                            specifierClass: ITUSpecifier.class
                                                               symbolClass: ITUSymbol.class];
-    self = [super initWithAppData: data aemQuery: AEMApp];
-
-    if (!self) return self;
-    return self;
+    return [super initWithAppData: data aemQuery: AEMApp];
 }
 
 /* initialisers */

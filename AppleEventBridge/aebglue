@@ -353,8 +353,6 @@ if __name__ == '__main__':
         if not appinfo.bundleid:
             print >> sys.stderr, "Warning: default constructor won't work as bundle identifier not found."
         outdir = os.path.abspath(os.path.expanduser(outdir))
-        if isobjc: # ObjC glue files will be created in a new XXGlue directory
-            outdir = os.path.join(outdir, appinfo.prefix+'Glue')
         if not os.path.exists(outdir):
             parentdir = os.path.dirname(outdir)
             if not os.path.isdir(parentdir):

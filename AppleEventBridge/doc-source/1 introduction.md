@@ -6,17 +6,11 @@ AppleEventBridge allows you to control Apple event-aware ("AppleScriptable") Mac
 
 For example, to get the value of the first paragraph of the topmost document in TextEdit:
     
-    let textedit = TextEdit()
-
-    let query = textedit.documents[1].paragraphs[1]
-
-    let result = query.get() as! String
+    let result = try TextEdit().documents[1].paragraphs[1].get() as! String
 
 This is equivalent to the AppleScript statement:
 
-    tell application id "com.apple.TextEdit"
-        get paragraph 1 of document 1
-    end tell
+    tell application id "com.apple.TextEdit" to get paragraph 1 of document 1
 
 
 ## "Hello World!" example
@@ -25,4 +19,4 @@ The following example uses AppleEventBridge to create a new "Hello World!" docum
 
     let textedit = TextEdit()
 
-    let query = textedit.make(new: TED.document, withProperties: [TED.text: "Hello World!"])
+    try textedit.make(new: TED.document, withProperties: [TED.text: "Hello World!"])

@@ -97,7 +97,7 @@
 ## Test references
 
     // a reference to every document of application "TextEdit" whose text is "\n"
-    textedit.documents[TEDits.text == "\n"]
+    textedit.documents[TEDIts.text == "\n"]
 
     // a reference to every paragraph of document 1 of application "Tex-Edit Plus" ¬
     //      whose first character is last character
@@ -166,7 +166,7 @@ Append text to a TextEdit document:
     //     at end of text of document 1 ¬
     //     with properties {text:"Yesterday\nToday\nTomorrow\n"}
     textedit.make(new: TED.paragraph, 
-                   at: TEDapp.documents[1].text.end,
+                   at: TEDApp.documents[1].text.end,
              withData: "Yesterday\nToday\nTomorrow\n")
 
 

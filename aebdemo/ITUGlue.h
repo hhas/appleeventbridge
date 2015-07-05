@@ -9,8 +9,6 @@
 #import "AppleEventBridge/AppleEventBridge.h"
 
 
-// TO DO: finish API revisions (e.g. should symbol namespace drop 'k' prefix and provide app, con, its constructors as in Swift glues?)
-
 // Generic specifier roots. These can be used to construct ITUSpecifiers for use in other ITUSpecifiers and ITUCommands,
 // though only real specifiers constructed from a ITUApplication can be used to send commands to the target application.
 
@@ -18,7 +16,7 @@
 #define ITUCon ([[ITUSpecifier alloc] initWithAppData: nil aemQuery: AEMCon])
 #define ITUIts ([[ITUSpecifier alloc] initWithAppData: nil aemQuery: AEMIts])
 
-// Symbol namespace // TO DO: is macro appropriate?
+// Symbol namespace
 #define ITU ITUSymbol
 
 // TO DO: rename/alias Application class, c.f. Swift glue
@@ -750,8 +748,7 @@
 
 
 @interface ITUApplication : ITUSpecifier
-// note: clients shouldn't need to call -initWithTargetType:data: themselves
-- (instancetype)initWithTargetType:(AEBTargetType)targetType_ data:(id)targetData_;
+- (instancetype)initWithTargetType:(AEBTargetType)targetType_ data:(id)targetData_; // private; used internally
 // initialisers
 + (instancetype)application;
 + (instancetype)currentApplication;

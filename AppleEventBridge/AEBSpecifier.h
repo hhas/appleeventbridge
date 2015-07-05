@@ -30,7 +30,7 @@
 @property (readonly) AEBAppData *aebAppData;
 @property (readonly) AEMQuery *aemQuery;
 
-// TO DO: what about launchOptions? (might be best if launchOptions and relaunchMode moved to ObjC XXApplication glues)
+// TO DO: what about launchOptions? (might be best if launchOptions and relaunchMode moved to ObjC XXApplication glues and implemented as chainable instance methods that can be called on newly created XXApplication instance)
 
 // should application be automatically relaunched when sending command if no longer running?
 @property AEBRelaunchMode relaunchMode;

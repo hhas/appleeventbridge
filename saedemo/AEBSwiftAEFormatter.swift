@@ -226,7 +226,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
     
     override func app() -> Self {
         if aebAppData == nil { // generic specifier
-            self.mutableResult?.appendFormat("%@app", self.prefix)
+            self.mutableResult?.appendFormat("%@App", self.prefix)
         } else { // concrete specifier
             self.mutableResult?.appendString(self.appClassName)
             do {
@@ -251,11 +251,11 @@ class SwiftAEFormatter: AEMQueryVisitor {
         return self;
     }
     override func con() -> Self {
-        self.mutableResult?.appendFormat("%@con", self.prefix)
+        self.mutableResult?.appendFormat("%@Con", self.prefix)
         return self
     }
     override func its() -> Self {
-        self.mutableResult?.appendFormat("%@its", self.prefix)
+        self.mutableResult?.appendFormat("%@Its", self.prefix)
         return self
     }
     override func customRoot(rootObject: AnyObject!) -> Self {
@@ -301,9 +301,9 @@ func SwiftAEFormatObject(object: AnyObject!) -> String {
         }
         return "\"\(tmp)\""
     case let obj as NSDate:
-        return "NSDate(string: \(SwiftAEFormatObject(obj.description))"
+        return "NSDate(string:\(SwiftAEFormatObject(obj.description)))"
     case let obj as NSURL:
-        return "NSURL(string: \(SwiftAEFormatObject(obj.description))"
+        return "NSURL(string:\(SwiftAEFormatObject(obj.absoluteString)))"
     default:
         return "\(object)" // SwiftAE objects (specifiers, symbols) are self-formatting; any other Swift object will use its default description (which may or may not be the same as its literal representation, but that's Swift's problem, not ours)
     }

@@ -141,13 +141,13 @@ Examples:
 
 Range references select all elements between and including two object specifiers indicating the start and end of the range. The start and end specifiers are normally declared relative to the container of the elements being selected. 
 
-These sub-specifiers are constructed using the glue's' `XXcon` constant, e.g. `TEDcon`, as their root. For example, to indicate the third paragraph relative to the currrent container object:
+These sub-specifiers are constructed using the glue's' `XXcon` constant, e.g. `TEDCon`, as their root. For example, to indicate the third paragraph relative to the currrent container object:
 
-    TEDcon.paragraphs[3]
+    TEDCon.paragraphs[3]
 
 Thus, to specify all paragraphs from paragraph 3 to paragraph -1:
     
-    ref.paragraphs[TEDcon.paragraphs[3], TEDcon.paragraphs[-1]]
+    ref.paragraphs[TEDCon.paragraphs[3], TEDCon.paragraphs[-1]]
 
 For convenience, sub-specifiers can be written in shorthand form where their element class is the same as the elements being selected; thus the above can be written more concisely as:
 
@@ -185,11 +185,11 @@ A specifier to each element that satisfies one or more conditions specified by a
 
 Test expressions consist of the following:
 
-* A test specifier relative to each element being tested. This specifier must be constructed using the glue's 'XXits' root, e.g. `TEDits`. Its-based references support all valid reference forms, allowing you to construct references to its properties and elements. For example:
+* A test specifier relative to each element being tested. This specifier must be constructed using the glue's 'XXits' root, e.g. `TEDIts`. Its-based references support all valid reference forms, allowing you to construct references to its properties and elements. For example:
     
-        TEDits
-        TEDits.size
-        TEDits.words.first
+        TEDIts
+        TEDIts.size
+        TEDIts.words.first
 
 * One or more conditional tests, implemented as operators/methods on the specifier being tested. Each operator takes a test specifier as its first operand and any value as its second. Each method takes any value as its sole argument.
 
@@ -209,10 +209,10 @@ specifier <strong>isIn</strong>(<var>value</var>)
 
   Examples:
 
-    TEDits == ""
+    TEDIts == ""
     FINits.size > 1024
-    TEDits.words.first.beginsWith("A")
-    TEDits.characters.first == TEDits.characters.last
+    TEDIts.words.first.beginsWith("A")
+    TEDIts.characters.first == TEDIts.characters.last
     
  // TO DO: note about `==` -> Bool vs Specifier
 
@@ -226,11 +226,11 @@ specifier <strong>isIn</strong>(<var>value</var>)
 
   Examples:
 
-    TEDits.contains("?")
+    TEDIts.contains("?")
 
     FINits.size > 1024 && FINits.size < 10240
 
-    TEDits.words[1].beginsWith("A") || TEDits.words[1].contains("ce") || TEDits.words[2] == "foo"
+    TEDIts.words[1].beginsWith("A") || TEDIts.words[1].contains("ce") || TEDIts.words[2] == "foo"
 
 
 ### Element insertion location

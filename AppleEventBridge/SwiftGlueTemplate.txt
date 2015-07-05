@@ -221,35 +221,35 @@ class «PREFIX»Specifier: SwiftAESpecifier {
 
 
 class «APP_CLASS_NAME»: «PREFIX»Specifier {
-    private init(targetType: AEBTargetType, targetData: AnyObject?, launchOptions: NSWorkspaceLaunchOptions?, relaunchMode: AEBRelaunchMode?) {
+    private init(targetType: AEBTargetType, targetData: AnyObject?, launchOptions: NSWorkspaceLaunchOptions, relaunchMode: AEBRelaunchMode) {
         let data = SwiftAEAppData(targetType: targetType,
                                   targetData: targetData,
-                               launchOptions: launchOptions ?? .WithoutActivation,
-                                relaunchMode: relaunchMode ?? .Limited,
+                               launchOptions: launchOptions,
+                                relaunchMode: relaunchMode,
                               specifierClass: «PREFIX»Specifier.self,
                                  symbolClass: «PREFIX»Symbol.self)
         super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
     }
-    convenience init(launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) { // TO DO: delete this initializer/raise error if bundle id not given
+    convenience init(launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) { // TO DO: delete this initializer/raise error if bundle id not given
         self.init(bundleIdentifier: "«BUNDLE_ID»", launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(name: NSString, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+    convenience init(name: NSString, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .Name, targetData: name, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(url: NSURL, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+    convenience init(url: NSURL, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .URL, targetData: url, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(bundleIdentifier: NSString, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+    convenience init(bundleIdentifier: NSString, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .BundleID, targetData: bundleIdentifier, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(processIdentifier: Int, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+    convenience init(processIdentifier: Int, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .ProcessID, targetData: processIdentifier, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    convenience init(descriptor: NSAppleEventDescriptor, launchOptions: NSWorkspaceLaunchOptions? = nil, relaunchMode: AEBRelaunchMode? = nil) {
+    convenience init(descriptor: NSAppleEventDescriptor, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .Descriptor, targetData: descriptor, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
     class func currentApplication() -> «APP_CLASS_NAME» {
-        return «APP_CLASS_NAME»(targetType: .Current, targetData: nil, launchOptions: nil, relaunchMode: nil) // TO DO: make this static
+        return «APP_CLASS_NAME»(targetType: .Current, targetData: nil, launchOptions: .WithoutActivation, relaunchMode: .Limited) // TO DO: make this static
     }
 
     // Construct a «PREFIX»Specifier using a raw AEMQuery or other custom object
@@ -321,7 +321,7 @@ let «PREFIX» = «PREFIX»Symbol.self
 // Generic specifier roots. These can be used to construct «PREFIX»Specifiers for use in other
 // «PREFIX»Specifiers and «PREFIX»Commands, though only real specifiers constructed from a
 // «APP_CLASS_NAME» application instance can be used to send commands to the target application.
-let «PREFIX»app = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.app())
-let «PREFIX»con = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.con())
-let «PREFIX»its = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.its())
+let «PREFIX»App = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.app())
+let «PREFIX»Con = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.con())
+let «PREFIX»Its = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.its())
 

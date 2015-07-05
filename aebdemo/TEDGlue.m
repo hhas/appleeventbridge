@@ -1203,10 +1203,7 @@
                                                              relaunchMode: AEBRelaunchLimited
                                                            specifierClass: TEDSpecifier.class
                                                               symbolClass: TEDSymbol.class];
-    self = [super initWithAppData: data aemQuery: AEMApp];
-
-    if (!self) return self;
-    return self;
+    return [super initWithAppData: data aemQuery: AEMApp];
 }
 
 /* initialisers */

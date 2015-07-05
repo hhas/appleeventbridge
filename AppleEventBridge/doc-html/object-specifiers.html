@@ -159,14 +159,14 @@ element <strong>next:</strong> <var>typeName</var>]
 
 <p>Range references select all elements between and including two object specifiers indicating the start and end of the range. The start and end specifiers are normally declared relative to the container of the elements being selected. </p>
 
-<p>These sub-specifiers are constructed using the glue's' <code>XXcon</code> constant, e.g. <code>TEDcon</code>, as their root. For example, to indicate the third paragraph relative to the currrent container object:</p>
+<p>These sub-specifiers are constructed using the glue's' <code>XXcon</code> constant, e.g. <code>TEDCon</code>, as their root. For example, to indicate the third paragraph relative to the currrent container object:</p>
 
-<pre><code>  TEDcon.paragraphs[3]
+<pre><code>  TEDCon.paragraphs[3]
 </code></pre>
 
 <p>Thus, to specify all paragraphs from paragraph 3 to paragraph -1:</p>
 
-<pre><code>  ref.paragraphs[TEDcon.paragraphs[3], TEDcon.paragraphs[-1]]
+<pre><code>  ref.paragraphs[TEDCon.paragraphs[3], TEDCon.paragraphs[-1]]
 </code></pre>
 
 <p>For convenience, sub-specifiers can be written in shorthand form where their element class is the same as the elements being selected; thus the above can be written more concisely as:</p>
@@ -208,11 +208,11 @@ element <strong>next:</strong> <var>typeName</var>]
 <p>Test expressions consist of the following:</p>
 
 <ul>
-<li><p>A test specifier relative to each element being tested. This specifier must be constructed using the glue's 'XXits' root, e.g. <code>TEDits</code>. Its-based references support all valid reference forms, allowing you to construct references to its properties and elements. For example:</p>
+<li><p>A test specifier relative to each element being tested. This specifier must be constructed using the glue's 'XXits' root, e.g. <code>TEDIts</code>. Its-based references support all valid reference forms, allowing you to construct references to its properties and elements. For example:</p>
 
-<pre><code>    TEDits
-    TEDits.size
-    TEDits.words.first
+<pre><code>    TEDIts
+    TEDIts.size
+    TEDIts.words.first
 </code></pre></li>
 <li><p>One or more conditional tests, implemented as operators/methods on the specifier being tested. Each operator takes a test specifier as its first operand and any value as its second. Each method takes any value as its sole argument.</p>
 
@@ -232,10 +232,10 @@ specifier <strong>isIn</strong>(<var>value</var>)
 
 <p>Examples:</p>
 
-<pre><code>TEDits == ""
+<pre><code>TEDIts == ""
 FINits.size &gt; 1024
-TEDits.words.first.beginsWith("A")
-TEDits.characters.first == TEDits.characters.last
+TEDIts.words.first.beginsWith("A")
+TEDIts.characters.first == TEDIts.characters.last
 </code></pre>
 
 <p>// TO DO: note about <code>==</code> -> Bool vs Specifier</p></li>
@@ -249,11 +249,11 @@ TEDits.characters.first == TEDits.characters.last
 
 <p>Examples:</p>
 
-<pre><code>TEDits.contains("?")
+<pre><code>TEDIts.contains("?")
 
 FINits.size &gt; 1024 &amp;&amp; FINits.size &lt; 10240
 
-TEDits.words[1].beginsWith("A") || TEDits.words[1].contains("ce") || TEDits.words[2] == "foo"
+TEDIts.words[1].beginsWith("A") || TEDIts.words[1].contains("ce") || TEDIts.words[2] == "foo"
 </code></pre></li>
 </ul>
 

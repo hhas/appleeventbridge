@@ -25,8 +25,8 @@ While iterating over application objects and manipulating each in turn is a comm
     let desiredEmail = "sam.brown@example.com"
     
     var foundNames: [String] = []
-    for person in contacts.people.get() as! CONSpecifiers {
-        for email in people.emails.get() as! CONSpecifiers {
+    for person in contacts.people.get() as! [CONSpecifier] {
+        for email in people.emails.get() as! [CONSpecifier] {
             if email.value.get() == desiredEmail {
                 foundNames += person.name.get()
             }
@@ -50,7 +50,7 @@ In this case, the entire search can be performed using a single complex query se
     
     let desiredEmail = "sam.brown@example.com"
     
-    let foundNames = contacts.people[CONits.emails.value.contains(desiredEmail)].name.get() as! [String]
+    let foundNames = contacts.people[CONIts.emails.value.contains(desiredEmail)].name.get() as! [String]
 
     print(foundNames)
 

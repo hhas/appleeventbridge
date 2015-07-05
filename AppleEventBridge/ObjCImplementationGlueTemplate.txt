@@ -131,10 +131,7 @@
                                                              relaunchMode: AEBRelaunchLimited
                                                            specifierClass: «PREFIX»Specifier.class
                                                               symbolClass: «PREFIX»Symbol.class];
-    self = [super initWithAppData: data aemQuery: AEMApp];
-
-    if (!self) return self;
-    return self;
+    return [super initWithAppData: data aemQuery: AEMApp];
 }
 
 /* initialisers */

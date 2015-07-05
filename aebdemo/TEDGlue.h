@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "AppleEventBridge/AppleEventBridge.h"
 
+
 // Generic specifier roots. These can be used to construct TEDSpecifiers for use in other TEDSpecifiers and TEDCommands,
 // though only real specifiers constructed from a TEDApplication can be used to send commands to the target application.
 
@@ -15,7 +16,7 @@
 #define TEDCon ([[TEDSpecifier alloc] initWithAppData: nil aemQuery: AEMCon])
 #define TEDIts ([[TEDSpecifier alloc] initWithAppData: nil aemQuery: AEMIts])
 
-// Symbol namespace // TO DO: is macro appropriate?
+// Symbol namespace
 #define TED TEDSymbol
 
 // TO DO: rename/alias Application class, c.f. Swift glue
@@ -379,8 +380,7 @@
 
 
 @interface TEDApplication : TEDSpecifier
-// note: clients shouldn't need to call -initWithTargetType:data: themselves
-- (instancetype)initWithTargetType:(AEBTargetType)targetType_ data:(id)targetData_;
+- (instancetype)initWithTargetType:(AEBTargetType)targetType_ data:(id)targetData_; // private; used internally
 // initialisers
 + (instancetype)application;
 + (instancetype)currentApplication;

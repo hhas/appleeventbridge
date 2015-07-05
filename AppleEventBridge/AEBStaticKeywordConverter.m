@@ -20,7 +20,7 @@
 
     Notes:
 
-    - Method names that take more than one argument (e.g. -at:to:) do not need to be reserved as they cannot conflict.
+    - Method names that take more than one argument (e.g. -at:to:) do not need to be reserved as they cannot conflict. // TO DO: this is only true of ObjC glues; in Swift glues, application commands could conflict with any base class methods due to the way it maps ObjC's inter-arg method names to Swift method and arg names
 
     - The following tokens are reserved as punctuation in Swift and can’t be used as custom operators:
       (, ), {, }, [, ], ., ,, :, ;, =, @, #, & (as a prefix operator), ->, `, ?, and ! (as a postfix operator).

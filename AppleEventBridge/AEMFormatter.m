@@ -5,7 +5,7 @@
 #import "AEMFormatter.h"
 
 
-static void FormatObject(id obj, NSString *indent, NSMutableString *result) {
+static void FormatObject(id obj, NSString *indent, NSMutableString *result) { // TO DO: get rid of (unused) indent arg?
 	[result appendString: indent];
 	if ([obj isKindOfClass: NSArray.class]) {
 		[result appendString: @"@["];
@@ -48,7 +48,7 @@ static void FormatObject(id obj, NSString *indent, NSMutableString *result) {
 		
 	} else if ([obj isKindOfClass: NSURL.class]) {
 		[result appendString: @"[NSURL URLWithString: "];
-		FormatObject([obj description], @"", result);
+		FormatObject([obj absoluteString], @"", result);
 		[result appendString: @"]"];
 	
 	} else {

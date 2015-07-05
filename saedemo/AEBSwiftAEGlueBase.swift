@@ -314,12 +314,8 @@ class SwiftAESpecifier: AEBSpecifier {
             command.considering(considersAndIgnores)
         }
         // send the event
-                
-        let res = try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript; Q. implement SwiftAEError as enum (at least for common standard error codes)? e.g. SwiftAEError.UnsupportedCoercion, .MissingParameter, .SpecifierNotFound, .ProcessNotFound, .ProcessTerminated, etc. prob. easiest for writing do...catch...catch...catch blocks, though not so good when dealing with app-specific error codes and codes that aren't explicitly bridged (all of which would need to be .Other); TBH, it'd be best if users could just pattern match on the error number itself (e.g. as in Haskell); defining an AEBError class with custom ~= operator override may allow this (would need to experiment, e.g. whether to match error no. directly, or a tuple with code:domain:errorInfo: fields); bear in mind that expression-based matching is only available in switch statements (need to check catch clauses' capabilities)
-    
-   //     print(try SwiftAETranslateAppleEvent(command.aemEvent.descriptor)) // TEST; TO DO: delete
-        
-        return res
+        //defer { print("SENT: \(try! SwiftAETranslateAppleEvent(command.aemEvent.descriptor, useSDEF: true))") } // TEST; TO DO: delete
+        return try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript; Q. implement SwiftAEError as enum (at least for common standard error codes)? e.g. SwiftAEError.UnsupportedCoercion, .MissingParameter, .SpecifierNotFound, .ProcessNotFound, .ProcessTerminated, etc. prob. easiest for writing do...catch...catch...catch blocks, though not so good when dealing with app-specific error codes and codes that aren't explicitly bridged (all of which would need to be .Other); TBH, it'd be best if users could just pattern match on the error number itself (e.g. as in Haskell); defining an AEBError class with custom ~= operator override may allow this (would need to experiment, e.g. whether to match error no. directly, or a tuple with code:domain:errorInfo: fields); bear in mind that expression-based matching is only available in switch statements (need to check catch clauses' capabilities)
     }
     
 }

@@ -9,8 +9,6 @@
 #import "AppleEventBridge/AppleEventBridge.h"
 
 
-// TO DO: finish API revisions (e.g. should symbol namespace drop 'k' prefix and provide app, con, its constructors as in Swift glues?)
-
 // Generic specifier roots. These can be used to construct «PREFIX»Specifiers for use in other «PREFIX»Specifiers and «PREFIX»Commands,
 // though only real specifiers constructed from a «PREFIX»Application can be used to send commands to the target application.
 
@@ -18,7 +16,7 @@
 #define «PREFIX»Con ([[«PREFIX»Specifier alloc] initWithAppData: nil aemQuery: AEMCon])
 #define «PREFIX»Its ([[«PREFIX»Specifier alloc] initWithAppData: nil aemQuery: AEMIts])
 
-// Symbol namespace // TO DO: is macro appropriate?
+// Symbol namespace
 #define «PREFIX» «PREFIX»Symbol
 
 // TO DO: rename/alias Application class, c.f. Swift glue

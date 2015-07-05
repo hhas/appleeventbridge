@@ -77,7 +77,7 @@ The Apple Event Object Model (AEOM) is a View-Controller layer that provides an 
 
 ## How does the AEOM work?
 
-The AEOM is a tree structure made up of objects. These objects may have attributes (descriptive values such as class, name, id, size, bounds; usually primitive AE types but occasionally other application objects), e.g.:
+The AEOM is a tree-like structure made up of objects. These objects may have attributes (descriptive values such as class, name, id, size, bounds; usually primitive AE types but occasionally other application objects), e.g.:
 
     Finder().name
     Finder().version
@@ -103,15 +103,21 @@ While relationships often follow the containment structure of the underlying dat
 
     TextEdit().documents
 
-this is not always the case. For example:
+this is not always the case. For example, the following object specifiers all identify the same objects (files on the user's desktop):
 
-    Finder().files
+    Finder().disks["Macintosh HD"].folders["Users"].folders["jsmith"].folders["Desktop"].files
 
     Finder().desktop.files
 
-    Finder().disks["MacHD"].folders["Users"].folders["jsmith"].folders["Desktop"].files
+    Finder().files
 
-would all identify the same objects (files on the user's desktop), though only one of these specifiers describes their position according to physical containment.
+though only the first specifier describes the files' location by physical containment; the other two use other relationships provided by the application as convenient shortcuts. Some applications can be surprisingly flexible in interpreting and evaluating queries against this relational object graph:
+
+    Finder().home.folders["Desktop"].files
+
+    Finder().startupDisks.folders["Users:jsmith:Desktop:"].files
+
+    Finder().items[NSURL(string:"file:///Users/jsmith/Desktop")].files
 
 Some specifiers may identify different objects at different times, according to changes in the application's state, e.g.:
 

@@ -13,23 +13,25 @@ let textedit = TextEdit()
 let itunes = ITunes()
 
 
+//print(try Finder().items[NSURL(fileURLWithPath:"/Users/has/Desktop")].files.get() as! [FINSpecifier])
+
 
 let t = true; let f = false
 
 
 // note that TextEdit pays no attention to considering/ignoring flags in events, so always ignores case and considers everything else
-//print(try textedit.documents[1].words[TEDits == "foo"].get())
-//print(try textedit.documents[1].words[TEDits == "foo"].get(considering: [TED.case_, TED.diacriticals], ignoring: [TED.expansion]))
+//print(try textedit.documents[1].words[TEDIts == "foo"].get())
+//print(try textedit.documents[1].words[TEDIts == "foo"].get(considering: [TED.case_, TED.diacriticals], ignoring: [TED.expansion]))
 
 
 if f {
     do {
-        print(try textedit.get(TEDapp.documents[1][1].text)) // check invalid specifiers are reported as errors upon use
+        print(try textedit.get(TEDApp.documents[1][1].text)) // check invalid specifiers are reported as errors upon use
     //    print(try textedit.documents[1][1].text.get())
     } catch {
     print(error)
     }
-    do { print(try TEDapp.documents[1].next(TED.document).get()) } catch { print(error) } // calling a command on a generic specifier throws error as only concrete specifiers (i.e. those created from an Application object) contain application's address info
+    do { print(try TEDApp.documents[1].next(TED.document).get()) } catch { print(error) } // calling a command on a generic specifier throws error as only concrete specifiers (i.e. those created from an Application object) contain application's address info
 }
 
 
@@ -40,18 +42,18 @@ if f {
 //print((try itunes.playlists["Top 25 Most Played"].tracks.name.get(waitReply: false)))
 
 // test formatting support for relative specifiers
-//print(TEDapp.documents[1].next(TED.document)) // -> "TEDapp.documents[1].next(TED.document)"
+//print(TEDApp.documents[1].next(TED.document)) // -> "TEDApp.documents[1].next(TED.document)"
 //print(TextEdit().documents[1].next(TED.document)) // -> "TextEdit(name:\"...TextEdit.app\").documents[1].next(TED.document)"
 //try TextEdit().documents[1].next(TED.document).get() // AE translation: "TextEdit().documents[1].next(TED.document).get()"
 
 
 //try itunes.playpause()
 
-print(try textedit.documents.count())
+//print(try textedit.documents.count())
 //print(try textedit.count(each: TED.document))
 
 
-if t {
+if f {
 
     // build an object specifier (note: formatter is unfinished so some types still appear ObjC style):
     //
@@ -62,7 +64,7 @@ if t {
     let objSpec = textedit.documents[1].name
     print(objSpec) // TextEdit(name: @"/Applications/TextEdit.app").documents[1].name
 
-    print(TEDapp.documents[1].name) // 'generic' refs can be used as parameters to commands
+    print(TEDApp.documents[1].name) // 'generic' refs can be used as parameters to commands
 
     do {
         // tell application "TextEdit" to make new document with properties {text:"Hello World!"}
@@ -88,7 +90,7 @@ if t {
 
 
     // tell application "iTunes" to get {name, rating} of (every track whose artist = "Sigur Ros" and (name begins with "G" or rating ≥ 60))
-    let q = itunes.tracks[ITUits.artist == "Sigur Ros" && (ITUits.name.beginsWith("G") || ITUits.rating >= 60)]
+    let q = itunes.tracks[ITUIts.artist == "Sigur Ros" && (ITUIts.name.beginsWith("G") || ITUIts.rating >= 60)]
     print(Array(zip(try q.name.get() as! [String], try q.rating.get() as! [Int])))
     // [("Gobbledigook", 80), ("Góðan Daginn", 40), ("Við Spilum Endalaust", 60), ...]
 
@@ -96,25 +98,25 @@ if t {
 
 
 
-    print(itunes.tracks[ITUits.artist == "Sigur Ros" && (ITUits.name.beginsWith("G") || ITUits.rating >= 60)].rating)
-    //ITUApplication(name: @"/Applications/iTunes.app").tracks[(ITUits.artist == @"Sigur Ros" && (ITUits.name.beginsWith(@"G") || ITUits.rating >= @60))].rating
+    print(itunes.tracks[ITUIts.artist == "Sigur Ros" && (ITUIts.name.beginsWith("G") || ITUIts.rating >= 60)].rating)
+    //ITUApplication(name: @"/Applications/iTunes.app").tracks[(ITUIts.artist == @"Sigur Ros" && (ITUIts.name.beginsWith(@"G") || ITUIts.rating >= @60))].rating
 
 
 }
 
 
 /*
-let t: AnyObject = TEDits.documents.name == "test.rtf" // caution: using == outside of [...] can produce bool result...
+let t: AnyObject = TEDIts.documents.name == "test.rtf" // caution: using == outside of [...] can produce bool result...
 print("EQ: \(t)") // 0  // !!!
-let t1: TEDSpecifier = TEDits.documents.name == "test.rtf" // ...unless result is explicitly typed ensure is correct type
-print("EQ: \(t1)") // [TEDits.documents.name equals: @"test.rtf"]
+let t1: TEDSpecifier = TEDIts.documents.name == "test.rtf" // ...unless result is explicitly typed ensure is correct type
+print("EQ: \(t1)") // [TEDIts.documents.name equals: @"test.rtf"]
 
-print(textedit.documents[TEDits.name == "test.rtf"]) // this appears to produce correct result, but can it always be guaranteed to do so?
+print(textedit.documents[TEDIts.name == "test.rtf"]) // this appears to produce correct result, but can it always be guaranteed to do so?
 
 
-let t2: AnyObject = TEDits.documents.name != "test.rtf"
+let t2: AnyObject = TEDIts.documents.name != "test.rtf"
 print("EQ: \(t2)")
-let t3: TEDSpecifier = TEDits.documents.name != "test.rtf"
+let t3: TEDSpecifier = TEDIts.documents.name != "test.rtf"
 print("EQ: \(t3)")
 */
 

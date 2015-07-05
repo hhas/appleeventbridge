@@ -247,7 +247,7 @@ class SwiftAETranslationFormatter: SwiftAEFormatter {
 
     override func app() -> SwiftAETranslationFormatter {
         if aebAppData == nil { // generic specifier
-            self.mutableResult?.appendFormat("%@.app", self.prefix)
+            self.mutableResult?.appendFormat("%@App", self.prefix)
         } else { // concrete specifier
             self.mutableResult?.appendFormat("%@()", self.appClassName)
         }
