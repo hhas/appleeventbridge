@@ -1,7 +1,7 @@
 //
 //  AEBCommand.h
 //
-//  Base class for AEBStaticCommand base class used in static ObjC glues.
+//  Base class for AEBObjCCommand base class used in static ObjC glues.
 //
 //  May also be used by AEBDynamic-based bridges as the superclass to
 //  their own equivalent, as it provides most of the logic required to

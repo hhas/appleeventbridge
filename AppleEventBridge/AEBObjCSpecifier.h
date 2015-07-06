@@ -1,13 +1,13 @@
 //
-//  AEBStaticSpecifier.h
+//  AEBObjCSpecifier.h
 //
 //  Extends AEBSpecifier with selector methods for ObjC.
 //
 
 #import "AEBSpecifier.h"
-#import "AEBStaticCommand.h"
+#import "AEBObjCCommand.h"
 
-@interface AEBStaticSpecifier : AEBSpecifier
+@interface AEBObjCSpecifier : AEBSpecifier
 
 // get/set shortcuts
 

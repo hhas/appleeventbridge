@@ -1,11 +1,11 @@
 //
-//  AEBStaticSpecifier.m
+//  AEBObjCSpecifier.m
 //
 
-#import "AEBStaticSpecifier.h"
+#import "AEBObjCSpecifier.h"
 #import "AEMTestClause.h"
 
-@implementation AEBStaticSpecifier
+@implementation AEBObjCSpecifier
 
 // get/set shortcuts
 

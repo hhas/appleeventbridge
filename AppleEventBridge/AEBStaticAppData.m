@@ -10,7 +10,7 @@
 
 @implementation AEBStaticAppData
 
-// TO DO: should this use AEBStaticSymbol, AEBStaticSpecifier as defaults? need to check which superclasses define this method, and maybe push it down to AEBDynamicAppData
+// TO DO: should this use AEBObjCSymbol, AEBObjCSpecifier as defaults? need to check which superclasses define this method, and maybe push it down to AEBDynamicAppData
 - (instancetype)initWithTargetType:(AEBTargetType)type targetData:(id)data {
     [NSException raise: kAEMErrorDomain format: @"Unsupported initializer for AEBStaticAppData"];
     return nil;

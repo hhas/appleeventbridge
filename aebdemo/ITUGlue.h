@@ -24,11 +24,11 @@
 
 // Classes
 
-@interface ITUFormatter : AEBStaticFormatter
+@interface ITUFormatter : AEBObjCFormatter
 @end
 
 
-@interface ITUSymbol : AEBStaticSymbol
+@interface ITUSymbol : AEBObjCSymbol
 // Types and properties
 + (AEBSymbol *)Books;
 + (AEBSymbol *)Genius;
@@ -375,137 +375,137 @@
 @end
 
 
-@interface ITUActivateCommand : AEBStaticCommand
+@interface ITUActivateCommand : AEBObjCCommand
 @end
 
-@interface ITUAddCommand : AEBStaticCommand
+@interface ITUAddCommand : AEBObjCCommand
 - (instancetype)to:(id)value;
 @end
 
-@interface ITUBackTrackCommand : AEBStaticCommand
+@interface ITUBackTrackCommand : AEBObjCCommand
 @end
 
-@interface ITUCloseCommand : AEBStaticCommand
+@interface ITUCloseCommand : AEBObjCCommand
 @end
 
-@interface ITUConvertCommand : AEBStaticCommand
+@interface ITUConvertCommand : AEBObjCCommand
 @end
 
-@interface ITUCountCommand : AEBStaticCommand
+@interface ITUCountCommand : AEBObjCCommand
 - (instancetype)each:(id)value;
 @end
 
-@interface ITUDeleteCommand : AEBStaticCommand
+@interface ITUDeleteCommand : AEBObjCCommand
 @end
 
-@interface ITUDownloadCommand : AEBStaticCommand
+@interface ITUDownloadCommand : AEBObjCCommand
 @end
 
-@interface ITUDuplicateCommand : AEBStaticCommand
+@interface ITUDuplicateCommand : AEBObjCCommand
 - (instancetype)to:(id)value;
 @end
 
-@interface ITUEjectCommand : AEBStaticCommand
+@interface ITUEjectCommand : AEBObjCCommand
 @end
 
-@interface ITUExistsCommand : AEBStaticCommand
+@interface ITUExistsCommand : AEBObjCCommand
 @end
 
-@interface ITUFastForwardCommand : AEBStaticCommand
+@interface ITUFastForwardCommand : AEBObjCCommand
 @end
 
-@interface ITUGetCommand : AEBStaticCommand
+@interface ITUGetCommand : AEBObjCCommand
 @end
 
-@interface ITULaunchCommand : AEBStaticCommand
+@interface ITULaunchCommand : AEBObjCCommand
 @end
 
-@interface ITUMakeCommand : AEBStaticCommand
+@interface ITUMakeCommand : AEBObjCCommand
 - (instancetype)at_:(id)value;
 - (instancetype)new_:(id)value;
 - (instancetype)withProperties:(id)value;
 @end
 
-@interface ITUMoveCommand : AEBStaticCommand
+@interface ITUMoveCommand : AEBObjCCommand
 - (instancetype)to:(id)value;
 @end
 
-@interface ITUNextTrackCommand : AEBStaticCommand
+@interface ITUNextTrackCommand : AEBObjCCommand
 @end
 
-@interface ITUOpenCommand : AEBStaticCommand
+@interface ITUOpenCommand : AEBObjCCommand
 @end
 
-@interface ITUOpenLocationCommand : AEBStaticCommand
+@interface ITUOpenLocationCommand : AEBObjCCommand
 @end
 
-@interface ITUPauseCommand : AEBStaticCommand
+@interface ITUPauseCommand : AEBObjCCommand
 @end
 
-@interface ITUPlayCommand : AEBStaticCommand
+@interface ITUPlayCommand : AEBObjCCommand
 - (instancetype)once:(id)value;
 @end
 
-@interface ITUPlaypauseCommand : AEBStaticCommand
+@interface ITUPlaypauseCommand : AEBObjCCommand
 @end
 
-@interface ITUPreviousTrackCommand : AEBStaticCommand
+@interface ITUPreviousTrackCommand : AEBObjCCommand
 @end
 
-@interface ITUPrintCommand : AEBStaticCommand
+@interface ITUPrintCommand : AEBObjCCommand
 - (instancetype)kind:(id)value;
 - (instancetype)theme:(id)value;
 - (instancetype)printDialog:(id)value;
 - (instancetype)withProperties:(id)value;
 @end
 
-@interface ITUQuitCommand : AEBStaticCommand
+@interface ITUQuitCommand : AEBObjCCommand
 @end
 
-@interface ITURefreshCommand : AEBStaticCommand
+@interface ITURefreshCommand : AEBObjCCommand
 @end
 
-@interface ITUReopenCommand : AEBStaticCommand
+@interface ITUReopenCommand : AEBObjCCommand
 @end
 
-@interface ITUResumeCommand : AEBStaticCommand
+@interface ITUResumeCommand : AEBObjCCommand
 @end
 
-@interface ITURevealCommand : AEBStaticCommand
+@interface ITURevealCommand : AEBObjCCommand
 @end
 
-@interface ITURewindCommand : AEBStaticCommand
+@interface ITURewindCommand : AEBObjCCommand
 @end
 
-@interface ITURunCommand : AEBStaticCommand
+@interface ITURunCommand : AEBObjCCommand
 @end
 
-@interface ITUSearchCommand : AEBStaticCommand
+@interface ITUSearchCommand : AEBObjCCommand
 - (instancetype)only:(id)value;
 - (instancetype)for_:(id)value;
 @end
 
-@interface ITUSetCommand : AEBStaticCommand
+@interface ITUSetCommand : AEBObjCCommand
 - (instancetype)to:(id)value;
 @end
 
-@interface ITUStopCommand : AEBStaticCommand
+@interface ITUStopCommand : AEBObjCCommand
 @end
 
-@interface ITUSubscribeCommand : AEBStaticCommand
+@interface ITUSubscribeCommand : AEBObjCCommand
 @end
 
-@interface ITUUpdateCommand : AEBStaticCommand
+@interface ITUUpdateCommand : AEBObjCCommand
 @end
 
-@interface ITUUpdateAllPodcastsCommand : AEBStaticCommand
+@interface ITUUpdateAllPodcastsCommand : AEBObjCCommand
 @end
 
-@interface ITUUpdatePodcastCommand : AEBStaticCommand
+@interface ITUUpdatePodcastCommand : AEBObjCCommand
 @end
 
 
-@interface ITUSpecifier : AEBStaticSpecifier
+@interface ITUSpecifier : AEBObjCSpecifier
 // Properties
 - (instancetype)EQ;
 - (instancetype)EQEnabled;

@@ -79,7 +79,7 @@
 
 <h2>How does the AEOM work?</h2>
 
-<p>The AEOM is a tree structure made up of objects. These objects may have attributes (descriptive values such as class, name, id, size, bounds; usually primitive AE types but occasionally other application objects), e.g.:</p>
+<p>The AEOM is a tree-like structure made up of objects. These objects may have attributes (descriptive values such as class, name, id, size, bounds; usually primitive AE types but occasionally other application objects), e.g.:</p>
 
 <pre><code>  Finder().name
   Finder().version
@@ -110,16 +110,23 @@
 <pre><code>  TextEdit().documents
 </code></pre>
 
-<p>this is not always the case. For example:</p>
+<p>this is not always the case. For example, the following object specifiers all identify the same objects (files on the user's desktop):</p>
 
-<pre><code>  Finder().files
+<pre><code>  Finder().disks["Macintosh HD"].folders["Users"].folders["jsmith"].folders["Desktop"].files
 
   Finder().desktop.files
 
-  Finder().disks["MacHD"].folders["Users"].folders["jsmith"].folders["Desktop"].files
+  Finder().files
 </code></pre>
 
-<p>would all identify the same objects (files on the user's desktop), though only one of these specifiers describes their position according to physical containment.</p>
+<p>though only the first specifier describes the files' location by physical containment; the other two use other relationships provided by the application as convenient shortcuts. Some applications can be surprisingly flexible in interpreting and evaluating queries against this relational object graph:</p>
+
+<pre><code>  Finder().home.folders["Desktop"].files
+
+  Finder().startupDisks.folders["Users:jsmith:Desktop:"].files
+
+  Finder().items[NSURL(string:"file:///Users/jsmith/Desktop")].files
+</code></pre>
 
 <p>Some specifiers may identify different objects at different times, according to changes in the application's state, e.g.:</p>
 

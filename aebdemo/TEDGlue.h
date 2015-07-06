@@ -24,11 +24,11 @@
 
 // Classes
 
-@interface TEDFormatter : AEBStaticFormatter
+@interface TEDFormatter : AEBObjCFormatter
 @end
 
 
-@interface TEDSymbol : AEBStaticSymbol
+@interface TEDSymbol : AEBObjCSymbol
 // Types and properties
 + (AEBSymbol *)applicationResponses;
 + (AEBSymbol *)ask;
@@ -217,79 +217,79 @@
 @end
 
 
-@interface TEDActivateCommand : AEBStaticCommand
+@interface TEDActivateCommand : AEBObjCCommand
 @end
 
-@interface TEDCloseCommand : AEBStaticCommand
+@interface TEDCloseCommand : AEBObjCCommand
 - (instancetype)savingIn:(id)value;
 - (instancetype)saving:(id)value;
 @end
 
-@interface TEDCountCommand : AEBStaticCommand
+@interface TEDCountCommand : AEBObjCCommand
 - (instancetype)each:(id)value;
 @end
 
-@interface TEDDeleteCommand : AEBStaticCommand
+@interface TEDDeleteCommand : AEBObjCCommand
 @end
 
-@interface TEDDuplicateCommand : AEBStaticCommand
+@interface TEDDuplicateCommand : AEBObjCCommand
 - (instancetype)to:(id)value;
 - (instancetype)withProperties:(id)value;
 @end
 
-@interface TEDExistsCommand : AEBStaticCommand
+@interface TEDExistsCommand : AEBObjCCommand
 @end
 
-@interface TEDGetCommand : AEBStaticCommand
+@interface TEDGetCommand : AEBObjCCommand
 @end
 
-@interface TEDLaunchCommand : AEBStaticCommand
+@interface TEDLaunchCommand : AEBObjCCommand
 @end
 
-@interface TEDMakeCommand : AEBStaticCommand
+@interface TEDMakeCommand : AEBObjCCommand
 - (instancetype)withData:(id)value;
 - (instancetype)at_:(id)value;
 - (instancetype)new_:(id)value;
 - (instancetype)withProperties:(id)value;
 @end
 
-@interface TEDMoveCommand : AEBStaticCommand
+@interface TEDMoveCommand : AEBObjCCommand
 - (instancetype)to:(id)value;
 @end
 
-@interface TEDOpenCommand : AEBStaticCommand
+@interface TEDOpenCommand : AEBObjCCommand
 @end
 
-@interface TEDOpenLocationCommand : AEBStaticCommand
+@interface TEDOpenLocationCommand : AEBObjCCommand
 - (instancetype)window:(id)value;
 @end
 
-@interface TEDPrintCommand : AEBStaticCommand
+@interface TEDPrintCommand : AEBObjCCommand
 - (instancetype)printDialog:(id)value;
 - (instancetype)withProperties:(id)value;
 @end
 
-@interface TEDQuitCommand : AEBStaticCommand
+@interface TEDQuitCommand : AEBObjCCommand
 - (instancetype)saving:(id)value;
 @end
 
-@interface TEDReopenCommand : AEBStaticCommand
+@interface TEDReopenCommand : AEBObjCCommand
 @end
 
-@interface TEDRunCommand : AEBStaticCommand
+@interface TEDRunCommand : AEBObjCCommand
 @end
 
-@interface TEDSaveCommand : AEBStaticCommand
+@interface TEDSaveCommand : AEBObjCCommand
 - (instancetype)as:(id)value;
 - (instancetype)in_:(id)value;
 @end
 
-@interface TEDSetCommand : AEBStaticCommand
+@interface TEDSetCommand : AEBObjCCommand
 - (instancetype)to:(id)value;
 @end
 
 
-@interface TEDSpecifier : AEBStaticSpecifier
+@interface TEDSpecifier : AEBObjCSpecifier
 // Properties
 - (instancetype)bounds;
 - (instancetype)class_;

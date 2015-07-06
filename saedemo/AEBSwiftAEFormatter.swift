@@ -304,6 +304,8 @@ func SwiftAEFormatObject(object: AnyObject!) -> String {
         return "NSDate(string:\(SwiftAEFormatObject(obj.description)))"
     case let obj as NSURL:
         return "NSURL(string:\(SwiftAEFormatObject(obj.absoluteString)))"
+//    case is Bool: // glitchy due to Swift's crappy bridging of ObjC's crappy NSNumber
+//        return object as! Bool ? "true" : "false"
     default:
         return "\(object)" // SwiftAE objects (specifiers, symbols) are self-formatting; any other Swift object will use its default description (which may or may not be the same as its literal representation, but that's Swift's problem, not ours)
     }

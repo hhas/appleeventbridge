@@ -1,14 +1,14 @@
 //
-//  AEBStaticSymbol.m
+//  AEBObjCSymbol.m
 //
 
-#import "AEBStaticSymbol.h"
+#import "AEBObjCSymbol.h"
 
 
 /**********************************************************************/
 
 
-@implementation AEBStaticSymbol
+@implementation AEBObjCSymbol
 
 // used by AEBAppData unpack AEDescs representing standard types and enumerators defined by Apple Event Manager/AppleScript
 

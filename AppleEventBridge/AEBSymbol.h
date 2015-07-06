@@ -29,7 +29,7 @@
 //
 // TO DO: update following comment
 // by default, this returns nil to indicate that no named symbol was found for the given code; subclasses should extend
-// as needed to return named symbols for all AE codes that they recognize; e.g. AEBStaticSymbol recognizes standard AEM/AS
+// as needed to return named symbols for all AE codes that they recognize; e.g. AEBObjCSymbol recognizes standard AEM/AS
 // types such as typeUnicodeText and typeList, so construct corresponding AEMStaticSymbol.unicodeText, AEMStaticSymbol.list
 // instances; in turn, glue-defined subclasses construct names for type, enum, and property names defined by app's dictionary
 //

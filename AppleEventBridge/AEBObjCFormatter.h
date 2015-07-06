@@ -1,7 +1,7 @@
 //
-//  AEBStaticFormatter.h
+//  AEBObjCFormatter.h
 //
-//  Generate ObjC-style description strings for AEBStaticSpecifiers, etc.
+//  Generate ObjC-style description strings for AEBObjCSpecifiers, etc.
 //
 //  TO DO: replace `id` in method signatures where possible
 //
@@ -16,7 +16,7 @@
 /**********************************************************************/
 // Abstract base class for specifier renderers
 
-@interface AEBStaticFormatter : AEMQueryVisitor {
+@interface AEBObjCFormatter : AEMQueryVisitor {
 	AEBStaticAppData *appData;
 }
 

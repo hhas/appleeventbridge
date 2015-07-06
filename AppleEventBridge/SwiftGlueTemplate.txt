@@ -199,18 +199,18 @@ class «PREFIX»Specifier: SwiftAESpecifier {
     // Commands
     
 «+COMMAND»
-    func «COMMAND_NAME»(directParameter: AnyObject = kAEBNoParameter,
+    func «COMMAND_NAME»(directParameter: AnyObject = AEBNoParameter,
 «+PARAMETER»
-            «NAME»: AnyObject = kAEBNoParameter,
+            «NAME»: AnyObject = AEBNoParameter,
 «-PARAMETER»
-            returnType: AEBReturnType? = nil, waitReply: Bool? = true, withTimeout: NSTimeInterval? = nil,
+            returnType: AEBReturnType? = nil, waitReply: Bool? = nil, withTimeout: NSTimeInterval? = nil,
             considering: AEBConsiderIgnoreType? = nil, ignoring: AEBConsiderIgnoreType? = nil) throws -> AnyObject! {
-        return try self.sendAppleEvent(«EVENT_CLASS», eventID: «EVENT_ID», parameters: [
+        return try self.sendAppleEvent("«COMMAND_NAME»", eventClass: «EVENT_CLASS», eventID: «EVENT_ID», parameters: [
+                (nil, 0x2d2d2d2d, directParameter),
 «+PARAMETER»
-                SwiftAEParameter(name: "«NAME»", code: «CODE», value: «NAME»),
+                ("«NAME»", «CODE», «NAME»),
 «-PARAMETER»
-                SwiftAEParameter(name: nil, code: 0x2d2d2d2d, value: directParameter)],
-            returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
+            ], returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
     }
 «-COMMAND»
 }
@@ -228,9 +228,9 @@ class «APP_CLASS_NAME»: «PREFIX»Specifier {
                                 relaunchMode: relaunchMode,
                               specifierClass: «PREFIX»Specifier.self,
                                  symbolClass: «PREFIX»Symbol.self)
-        super.init(appData: data, aemQuery: AppleEventBridge.AEMQuery.app())
+        super.init(appData: data, aemQuery: AEMQuery.app(), queryError: nil)
     }
-    convenience init(launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) { // TO DO: delete this initializer/raise error if bundle id not given
+    convenience init(launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) { // TO DO: delete this initializer/or have it raise an error if BUNDLE_ID is unknown
         self.init(bundleIdentifier: "«BUNDLE_ID»", launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
     convenience init(name: NSString, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
@@ -248,22 +248,20 @@ class «APP_CLASS_NAME»: «PREFIX»Specifier {
     convenience init(descriptor: NSAppleEventDescriptor, launchOptions: NSWorkspaceLaunchOptions = .WithoutActivation, relaunchMode: AEBRelaunchMode = .Limited) {
         self.init(targetType: .Descriptor, targetData: descriptor, launchOptions: launchOptions, relaunchMode: relaunchMode)
     }
-    class func currentApplication() -> «APP_CLASS_NAME» {
-        return «APP_CLASS_NAME»(targetType: .Current, targetData: nil, launchOptions: .WithoutActivation, relaunchMode: .Limited) // TO DO: make this static
-    }
+    static let currentApplication = «APP_CLASS_NAME»(targetType: .Current, targetData: nil, launchOptions: .WithoutActivation, relaunchMode: .Limited)
 
     // Construct a «PREFIX»Specifier using a raw AEMQuery or other custom object
     // (e.g. if app's terminology is broken or when dealing with especially cranky old apps)
     
     func customRoot(object: AnyObject!) -> «PREFIX»Specifier {
         if object is «PREFIX»Specifier {
-            return «PREFIX»Specifier(appData: aebAppData, aemQuery: (object as! «PREFIX»Specifier).aemQuery)
-        } else if object is AppleEventBridge.AEMQuery {
-            return «PREFIX»Specifier(appData: aebAppData, aemQuery: object as! AppleEventBridge.AEMQuery)
+            return «PREFIX»Specifier(appData: aebAppData, aemQuery: (object as! «PREFIX»Specifier).aemQuery, queryError: nil)
+        } else if object is AEMQuery {
+            return «PREFIX»Specifier(appData: aebAppData, aemQuery: (object as! AEMQuery), queryError: nil)
         } else if object == nil {
-            return «PREFIX»Specifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.app())
+            return «PREFIX»Specifier(appData: aebAppData, aemQuery: AEMQuery.app(), queryError: nil)
         } else {
-            return «PREFIX»Specifier(appData: aebAppData, aemQuery: AppleEventBridge.AEMQuery.customRoot(object))
+            return «PREFIX»Specifier(appData: aebAppData, aemQuery: AEMQuery.customRoot(object), queryError: nil)
         }
     }
 }
@@ -321,7 +319,7 @@ let «PREFIX» = «PREFIX»Symbol.self
 // Generic specifier roots. These can be used to construct «PREFIX»Specifiers for use in other
 // «PREFIX»Specifiers and «PREFIX»Commands, though only real specifiers constructed from a
 // «APP_CLASS_NAME» application instance can be used to send commands to the target application.
-let «PREFIX»App = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.app())
-let «PREFIX»Con = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.con())
-let «PREFIX»Its = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.its())
+let «PREFIX»App = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.app(), queryError: nil)
+let «PREFIX»Con = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.con(), queryError: nil)
+let «PREFIX»Its = «PREFIX»Specifier(appData: nil, aemQuery: AEMQuery.its(), queryError: nil)
 

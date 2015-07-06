@@ -8,6 +8,8 @@
 
 // note: AEBAppData uses AEMCodecs to unpack basic AE types (text, list, etc) as NSObjects; TO DO: would it be better to unpack them as native Swift types (and would Swift objects cause any issues with other NSObject-based APIs such as AEMQuery)?
 
+// TO DO: rename returnType arg to requestedType? need to decide how best to implement generics support in commands, e.g. get(asType:[String].Type) would specify return type _and_ coercions to apply as value is unpacked (note: this'll require enhancing AEMCodecs and instrospecting types)
+
 import Foundation
 import AppKit
 import AppleEventBridge
@@ -142,15 +144,9 @@ class SwiftAESymbol: AEBSymbol {
 /******************************************************************************/
 // misc constants used in SwiftAESpecifier
 
-struct SwiftAEParameter {
-    var name: String? // TO DO: name is never used; probably simplest to replace this struct with simple (code:OSType,value:AnyObject) tuple
-    var code: OSType
-    var value: AnyObject!
-}
+class AEBNoParameterValue {}
 
-
-class AEBNoParameter {}
-let kAEBNoParameter = AEBNoParameter() // TO DO: what's easiest way to create unique symbol? (i.e. don't want to use nil to indicate omission of directParameter in commands, as that can't be distinguished from nil values returned by Cocoa APIs [e.g.] to signal a runtime error)
+let AEBNoParameter = AEBNoParameterValue() // TO DO: what's easiest way to create unique symbol? (i.e. don't want to use nil to indicate omission of directParameter in commands, as that can't be distinguished from nil values returned by Cocoa APIs [e.g.] to signal a runtime error)
 
 // command attributes
 
@@ -160,6 +156,9 @@ let AEBDefaultTimeout: NSTimeInterval = -1
 
 typealias AEBReturnType = AnyObject // TO DO: more specific returnType
 typealias AEBConsiderIgnoreType = [AEBSymbol]
+
+typealias AEBEightCharCode = NSString
+typealias AEBFourCharCode = String
 
 
 // TO DO: not certain if using arrays of AEBSymbols to specify considers/ignores values is best choice; would a Swift enum be better?
@@ -177,17 +176,44 @@ let AEBConsidersAndIgnoresMasks: [OSType: (consider: UInt32, ignore: UInt32)] = 
 let kAEBDefaultConsidersIgnoresMask: UInt32 = 0x00010000 // AppleScript ignores case by default
 
 
+// error keys // TO DO: merge AEM/AEB keys
+
+let AEBErrorDomain: String = kAEMErrorDomain
+
+let AEBErrorNumber                   = "ErrorNumber"
+let AEBErrorMessage                  = "ErrorMessage"
+let AEBErrorFailedCommandDescription = "FailedCommandDescription" // code representation of the failed command
+let AEBErrorBriefMessage             = "BriefErrorMessage"
+let AEBErrorExpectedType             = "ExpectedType"
+let AEBErrorOffendingObject          = "OffendingObject"
+let AEBErrorFailedAEMEvent           = "FailedAEMEvent"
+
+
+class SwiftAECommandError: NSError {
+    override var description: String {return self.localizedDescription} // avoid printing entire userInfo dict by default (too much detail)
+    // TO DO: convenience getters for number (as OSStatus), message, etc.?
+}
+
+
+func ~= (left: SwiftAECommandError, right: Int) -> Bool { // TO DO: decide if this is best approach (should work for case; not sure about catch)
+    return left.code == right
+}
+
+
 /******************************************************************************/
 // Specifier base class
 
 class SwiftAESpecifier: AEBSpecifier {
     
-    var aemQueryError: NSError? = nil
+    var aemQueryError: NSError? // captures, defers error if user creates malformed specifier, to be thrown if/when used in command
     
-    // TO DO: make this `required`
-    convenience init(appData appData_: AEBAppData!, aemQuery aemQuery_: AEMQuery?, queryError queryError_: NSError?) {
-        self.init(appData: appData_, aemQuery: aemQuery_)
-        aemQueryError = queryError_
+    convenience override init(appData: AEBAppData?, aemQuery: AEMQuery?) { // called by -[AEBStaticAppData unpackObjectSpecifier:error:]
+        self.init(appData: appData, aemQuery: aemQuery, queryError: nil)
+    }
+    
+    init(appData: AEBAppData?, aemQuery: AEMQuery?, queryError: NSError?) {
+        aemQueryError = queryError
+        super.init(appData: appData, aemQuery: aemQuery)
     }
     
     // TO DO: a better approach would be to pass a closure, e.g. {$0?[index]} which can be used to generate either new query or (using formatter) representation of malformed query
@@ -199,7 +225,7 @@ class SwiftAESpecifier: AEBSpecifier {
     func aemObjectSpecifer(what: String) -> (AEMObjectSpecifier?, NSError?) {
         if aemQuery is AEMObjectSpecifier {
             return ((self.aemQuery as! AEMObjectSpecifier), nil)
-        } else if aemQueryError == nil { // invalid specifier, e.g. app.documents[1].first
+        } else if aemQueryError == nil { // invalid specifier, e.g. TEDApp.documents[1][1]
             return (nil, NSError(domain: kAEMErrorDomain, code: -1728, userInfo: [
                     NSLocalizedDescriptionKey: "Can't \(what) of the following specifier (not an object specifier): \(self)",
                     kAEMErrorOffendingObjectKey: self]))
@@ -210,7 +236,7 @@ class SwiftAESpecifier: AEBSpecifier {
     func aemElementsSpecifer(what: String) -> (AEMMultipleElementsSpecifier?, NSError?) {
         if aemQuery is AEMMultipleElementsSpecifier {
             return ((self.aemQuery as! AEMMultipleElementsSpecifier), nil)
-        } else if aemQueryError == nil { // invalid specifier, e.g. app.documents[1].first
+        } else if aemQueryError == nil { // invalid specifier, e.g. TEDApp.documents.end.words
             return (nil, NSError(domain: kAEMErrorDomain, code: -1728, userInfo: [
                     NSLocalizedDescriptionKey: "Can't \(what) of the following specifier (not a multiple elements specifier): \(self)",
                     kAEMErrorOffendingObjectKey: self]))
@@ -221,9 +247,9 @@ class SwiftAESpecifier: AEBSpecifier {
     func aemTestClause(what: String) -> (AEMTestClause?, NSError?) {
         if aemQuery is AEMTestClause {
             return ((self.aemQuery as! AEMTestClause), nil)
-        } else if aemQueryError == nil { // invalid specifier, e.g. app.documents[1].first
+        } else if aemQueryError == nil { // invalid specifier, e.g. TEDApp.name && ...
             return (nil, NSError(domain: kAEMErrorDomain, code: -1728, userInfo: [
-                    NSLocalizedDescriptionKey: "Can't \(what) of the following specifier (not an object specifier): \(self)",
+                    NSLocalizedDescriptionKey: "Can't \(what) of the following specifier (not a test  specifier): \(self)",
                     kAEMErrorOffendingObjectKey: self]))
         } else {
             return (nil, aemQueryError)
@@ -240,14 +266,22 @@ class SwiftAESpecifier: AEBSpecifier {
         }
     }
     
-    // TO DO: support optional completionHandler closure for async sends? (not sure how best to implement this; might be simpler to take optional `queueReply:true` arg that calls command.queueReply() to set AESendMode's kAEQueueReply flag and, on successful dispatch of the event, immediately return the event's returnID as result, leaving user to collect reply event themselves)
+    // note: clients may call the following method to send an event as a workaround if app's terminology is missing or incorrect
+    func sendAppleEvent(eventCode: AEBEightCharCode, parameters: [AEBFourCharCode:AnyObject!],
+                       returnType: AEBReturnType?, waitReply: Bool?, withTimeout: NSTimeInterval?,
+                      considering: AEBConsiderIgnoreType?, ignoring: AEBConsiderIgnoreType?) throws -> AnyObject! {
+        if eventCode.length != 8 {
+            throw AEMErrorWithInfo(-1701, "Invalid event code (not 8-character string): \"\(eventCode)\"")
+        }
+        return try self.sendAppleEvent("«\(eventCode)»",
+                             eventClass: AEM4CC(eventCode.substringToIndex(4)),
+                                eventID: AEM4CC(eventCode.substringFromIndex(4)),
+                             parameters: parameters.map { (code, value) in (name: "«\(code)»" as String?, code: AEM4CC(code), value: value) },
+                        returnType: returnType, waitReply: waitReply, withTimeout: withTimeout, considering: considering, ignoring: ignoring)
+    }
     
-    // note: clients may call the following method directly as workaround if app's terminology is missing or incorrect
     
-    // TO DO: add convenience raw send method that takes four-char code strings (c.f. elementsByFourCharCode)
-    // sendAppleEvent(eventCode: AEBEightCharCode, parameters: [AEBFourCharCode:AnyObject], ....)
-    
-    func sendAppleEvent(eventClass: OSType, eventID: OSType, parameters: Array<SwiftAEParameter>,
+    func sendAppleEvent(name: String, eventClass: OSType, eventID: OSType, parameters: [(name: String?, code: OSType, value: AnyObject!)],
             returnType: AEBReturnType?, waitReply: Bool?, withTimeout: NSTimeInterval?,
             considering: AEBConsiderIgnoreType?, ignoring: AEBConsiderIgnoreType?) throws -> AnyObject! {
         if aebAppData == nil { // only concrete specifiers (i.e. created from an application object, not generic roots) can send events
@@ -264,7 +298,7 @@ class SwiftAESpecifier: AEBSpecifier {
         // create Apple event and pack its parameters
         let command = AEBCommand(appData: aebAppData, eventClass: eventClass, eventID: eventID, parentQuery: aemQuery)
         for param in parameters {
-            if !(param.value is AEBNoParameter) {
+            if !(param.value is AEBNoParameterValue) {
                 command.setParameter(param.value, forKeyword: param.code)
             }
         }
@@ -315,9 +349,47 @@ class SwiftAESpecifier: AEBSpecifier {
         }
         // send the event
         //defer { print("SENT: \(try! SwiftAETranslateAppleEvent(command.aemEvent.descriptor, useSDEF: true))") } // TEST; TO DO: delete
-        return try command.sendWithError() // TO DO: trap and rethrow with better error message, c.f. py-appscript; Q. implement SwiftAEError as enum (at least for common standard error codes)? e.g. SwiftAEError.UnsupportedCoercion, .MissingParameter, .SpecifierNotFound, .ProcessNotFound, .ProcessTerminated, etc. prob. easiest for writing do...catch...catch...catch blocks, though not so good when dealing with app-specific error codes and codes that aren't explicitly bridged (all of which would need to be .Other); TBH, it'd be best if users could just pattern match on the error number itself (e.g. as in Haskell); defining an AEBError class with custom ~= operator override may allow this (would need to experiment, e.g. whether to match error no. directly, or a tuple with code:domain:errorInfo: fields); bear in mind that expression-based matching is only available in switch statements (need to check catch clauses' capabilities)
+        do {
+            return try command.sendWithError()
+        } catch {
+            let aemError = error as NSError
+            var args = [String]()
+            for param in parameters {
+                if !(param.value is AEBNoParameterValue) {
+                    args.append((param.name != nil ? "\(param.name): " : "") + "\(SwiftAEFormatObject(param.value))")
+                }
+            }
+            for (name, value) in [("returnType", returnType), ("waitReply", waitReply as Bool?),
+                    ("withTimeout", withTimeout), ("considering", considering), ("ignoring", ignoring)] {
+                if value != nil {
+                    args.append("\(name): \(SwiftAEFormatObject(value))")
+                }
+            }
+            let failedCommandDescription = "\(self).\(name)(" + ", ".join(args) + ")"
+            var errorDescription = "Application command failed:\n\n\(failedCommandDescription)"
+            var info: [NSObject: AnyObject] = [AEBErrorNumber:aemError.code, AEBErrorFailedCommandDescription: failedCommandDescription]
+            let errorMessage = aemError.userInfo[kAEMErrorStringKey] ?? AEMDescriptionForError(Int32(aemError.code))
+            if errorMessage != nil {
+                info[AEBErrorMessage] = errorMessage!
+                errorDescription += "\n\nError \(aemError.code): \(errorMessage!)"
+            } else {
+                errorDescription += "\n\nError \(aemError.code)."
+            }
+            info[NSLocalizedDescriptionKey] = errorDescription
+            if let briefMessage = aemError.userInfo[kAEMErrorBriefMessageKey] {
+                info[AEBErrorBriefMessage] = briefMessage
+            }
+            if let expectedType = aemError.userInfo[kAEMErrorExpectedTypeKey] {
+                info[AEBErrorExpectedType] = expectedType // TO DO: also include in message? // TO DO: check if unpacked as AEM or AEB object
+            }
+            if let offendingObject = aemError.userInfo[kAEMErrorOffendingObjectKey] {
+                info[AEBErrorOffendingObject] = offendingObject // TO DO: also include in message? // TO DO: check if unpacked as AEM or AEB object
+            }
+            if let failedAEMEvent = aemError.userInfo[kAEMErrorFailedEvent] {
+                info[AEBErrorFailedAEMEvent] = failedAEMEvent
+            }
+            throw SwiftAECommandError(domain: kAEMErrorDomain, code: aemError.code, userInfo: info)
+        }
     }
-    
 }
-
 

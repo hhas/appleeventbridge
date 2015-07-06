@@ -1,14 +1,14 @@
 //
-//  AEBStaticFormatter.m
+//  AEBObjCFormatter.m
 //
 
-#import "AEBStaticFormatter.h"
+#import "AEBObjCFormatter.h"
 
 
 /**********************************************************************/
 // Abstract base class for specifier renderers
 
-@implementation AEBStaticFormatter
+@implementation AEBObjCFormatter
 
 @synthesize appData, mutableResult;
 
@@ -29,7 +29,7 @@
 // takes an AEMQuery plus AEBStaticAppData instance, and returns the query's literal ObjC representation
 + (NSString *)formatObject:(id)object appData:(id)appData_ {
 	if ([object isKindOfClass: AEMQuery.class]) {
-		AEBStaticFormatter *renderer = [[self.class alloc] initWithAppData: appData_];
+		AEBObjCFormatter *renderer = [[self.class alloc] initWithAppData: appData_];
 		[object resolveWithObject: renderer];
         return renderer.mutableResult ? renderer.mutableResult.copy : [NSString stringWithFormat: @"[%@ specifierWithObject: %@]", renderer.app, object];
 	} else {

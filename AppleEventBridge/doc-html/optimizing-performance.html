@@ -34,8 +34,8 @@
   let desiredEmail = "sam.brown@example.com"
 
   var foundNames: [String] = []
-  for person in contacts.people.get() as! CONSpecifiers {
-      for email in people.emails.get() as! CONSpecifiers {
+  for person in contacts.people.get() as! [CONSpecifier] {
+      for email in people.emails.get() as! [CONSpecifier] {
           if email.value.get() == desiredEmail {
               foundNames += person.name.get()
           }
@@ -58,7 +58,7 @@
 
   let desiredEmail = "sam.brown@example.com"
 
-  let foundNames = contacts.people[CONits.emails.value.contains(desiredEmail)].name.get() as! [String]
+  let foundNames = contacts.people[CONIts.emails.value.contains(desiredEmail)].name.get() as! [String]
 
   print(foundNames)
 </code></pre>

@@ -16,18 +16,12 @@
 
 <p>For example, to get the value of the first paragraph of the topmost document in TextEdit:</p>
 
-<pre><code>  let textedit = TextEdit()
-
-  let query = textedit.documents[1].paragraphs[1]
-
-  let result = query.get() as! String
+<pre><code>  let result = try TextEdit().documents[1].paragraphs[1].get() as! String
 </code></pre>
 
 <p>This is equivalent to the AppleScript statement:</p>
 
-<pre><code>  tell application id "com.apple.TextEdit"
-      get paragraph 1 of document 1
-  end tell
+<pre><code>  tell application id "com.apple.TextEdit" to get paragraph 1 of document 1
 </code></pre>
 
 <h2>"Hello World!" example</h2>
@@ -36,7 +30,7 @@
 
 <pre><code>  let textedit = TextEdit()
 
-  let query = textedit.make(new: TED.document, withProperties: [TED.text: "Hello World!"])
+  try textedit.make(new: TED.document, withProperties: [TED.text: "Hello World!"])
 </code></pre>
 
 			</div>

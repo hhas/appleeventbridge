@@ -1,21 +1,21 @@
 //
-//  AEBStaticCommand.m
+//  AEBObjCCommand.m
 //
 
-#import "AEBStaticCommand.h"
+#import "AEBObjCCommand.h"
 
 
 /**********************************************************************/
 
 
-@implementation AEBStaticCommand
+@implementation AEBObjCCommand
 
 + (instancetype)commandWithAppData:(AEBAppData *)appData
                         eventClass:(AEEventClass)classCode
                            eventID:(AEEventID)code
                    directParameter:(id)directParameter
                        parentQuery:(AEMQuery *)parentQuery {
-	AEBStaticCommand *command = [[self.class alloc] initWithAppData: appData
+	AEBObjCCommand *command = [[self.class alloc] initWithAppData: appData
                                                          eventClass: classCode
                                                             eventID: code
                                                         parentQuery: parentQuery];

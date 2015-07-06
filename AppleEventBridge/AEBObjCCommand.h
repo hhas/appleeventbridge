@@ -1,5 +1,5 @@
 //
-//  AEBStaticCommand.h
+//  AEBObjCCommand.h
 //
 //  Base class for all XXCommand classes in static ObjC glues.
 //
@@ -14,7 +14,7 @@
 // Command base
 
 
-@interface AEBStaticCommand : AEBCommand
+@interface AEBObjCCommand : AEBCommand
 
 + (instancetype)commandWithAppData:(AEBAppData *)appData
                         eventClass:(AEEventClass)classCode
@@ -76,6 +76,6 @@
 /**********************************************************************/
 
 
-@interface AEBGetSetItemCommand : AEBStaticCommand
+@interface AEBGetSetItemCommand : AEBObjCCommand
 @end
 

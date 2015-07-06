@@ -32,12 +32,12 @@
 		4F1AA05819F92D6000FBD23E /* AEBDynamicTerminology.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA02419F92D6000FBD23E /* AEBDynamicTerminology.m */; };
 		4F1AA05A19F92D6000FBD23E /* AEBStaticAppData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA02619F92D6000FBD23E /* AEBStaticAppData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1AA05B19F92D6000FBD23E /* AEBStaticAppData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA02719F92D6000FBD23E /* AEBStaticAppData.m */; };
-		4F1AA05C19F92D6000FBD23E /* AEBStaticCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA02819F92D6000FBD23E /* AEBStaticCommand.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4F1AA05D19F92D6000FBD23E /* AEBStaticCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA02919F92D6000FBD23E /* AEBStaticCommand.m */; };
+		4F1AA05C19F92D6000FBD23E /* AEBObjCCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA02819F92D6000FBD23E /* AEBObjCCommand.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F1AA05D19F92D6000FBD23E /* AEBObjCCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA02919F92D6000FBD23E /* AEBObjCCommand.m */; };
 		4F1AA05E19F92D6000FBD23E /* AEBSymbol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA02A19F92D6000FBD23E /* AEBSymbol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1AA05F19F92D6000FBD23E /* AEBSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA02B19F92D6000FBD23E /* AEBSymbol.m */; };
-		4F1AA06019F92D6000FBD23E /* AEBStaticFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA02C19F92D6000FBD23E /* AEBStaticFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4F1AA06119F92D6000FBD23E /* AEBStaticFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA02D19F92D6000FBD23E /* AEBStaticFormatter.m */; };
+		4F1AA06019F92D6000FBD23E /* AEBObjCFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA02C19F92D6000FBD23E /* AEBObjCFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F1AA06119F92D6000FBD23E /* AEBObjCFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA02D19F92D6000FBD23E /* AEBObjCFormatter.m */; };
 		4F1AA06219F92D6000FBD23E /* AEBSpecifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA02E19F92D6000FBD23E /* AEBSpecifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1AA06319F92D6000FBD23E /* AEBSpecifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA02F19F92D6000FBD23E /* AEBSpecifier.m */; };
 		4F1AA06419F92D6000FBD23E /* AEMApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA03019F92D6000FBD23E /* AEMApplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -70,10 +70,10 @@
 		4F5EE3DE1B2D9BD4007C58B5 /* AEMQueryVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5EE3DC1B2D9BD4007C58B5 /* AEMQueryVisitor.m */; };
 		4F70FBD61A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F70FBD41A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F70FBD71A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F70FBD51A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m */; };
-		4F9B7FC91B30292200BE621C /* AEBStaticSpecifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9B7FC71B30292200BE621C /* AEBStaticSpecifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4F9B7FCA1B30292200BE621C /* AEBStaticSpecifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FC81B30292200BE621C /* AEBStaticSpecifier.m */; };
-		4F9B7FCF1B30A4B900BE621C /* AEBStaticSymbol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9B7FCD1B30A4B900BE621C /* AEBStaticSymbol.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4F9B7FD01B30A4B900BE621C /* AEBStaticSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FCE1B30A4B900BE621C /* AEBStaticSymbol.m */; };
+		4F9B7FC91B30292200BE621C /* AEBObjCSpecifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9B7FC71B30292200BE621C /* AEBObjCSpecifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F9B7FCA1B30292200BE621C /* AEBObjCSpecifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FC81B30292200BE621C /* AEBObjCSpecifier.m */; };
+		4F9B7FCF1B30A4B900BE621C /* AEBObjCSymbol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9B7FCD1B30A4B900BE621C /* AEBObjCSymbol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F9B7FD01B30A4B900BE621C /* AEBObjCSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FCE1B30A4B900BE621C /* AEBObjCSymbol.m */; };
 		4FA7A88D1A02412600F0E578 /* AEMURL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA7A88B1A02412600F0E578 /* AEMURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FA7A88E1A02412600F0E578 /* AEMURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA7A88C1A02412600F0E578 /* AEMURL.m */; };
 		4FA7A8AE1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA7A8AC1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -241,12 +241,12 @@
 		4F1AA02419F92D6000FBD23E /* AEBDynamicTerminology.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBDynamicTerminology.m; sourceTree = "<group>"; };
 		4F1AA02619F92D6000FBD23E /* AEBStaticAppData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBStaticAppData.h; sourceTree = "<group>"; };
 		4F1AA02719F92D6000FBD23E /* AEBStaticAppData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBStaticAppData.m; sourceTree = "<group>"; };
-		4F1AA02819F92D6000FBD23E /* AEBStaticCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AEBStaticCommand.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		4F1AA02919F92D6000FBD23E /* AEBStaticCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AEBStaticCommand.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		4F1AA02819F92D6000FBD23E /* AEBObjCCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AEBObjCCommand.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		4F1AA02919F92D6000FBD23E /* AEBObjCCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AEBObjCCommand.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4F1AA02A19F92D6000FBD23E /* AEBSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBSymbol.h; sourceTree = "<group>"; };
 		4F1AA02B19F92D6000FBD23E /* AEBSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBSymbol.m; sourceTree = "<group>"; };
-		4F1AA02C19F92D6000FBD23E /* AEBStaticFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBStaticFormatter.h; sourceTree = "<group>"; };
-		4F1AA02D19F92D6000FBD23E /* AEBStaticFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBStaticFormatter.m; sourceTree = "<group>"; };
+		4F1AA02C19F92D6000FBD23E /* AEBObjCFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBObjCFormatter.h; sourceTree = "<group>"; };
+		4F1AA02D19F92D6000FBD23E /* AEBObjCFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBObjCFormatter.m; sourceTree = "<group>"; };
 		4F1AA02E19F92D6000FBD23E /* AEBSpecifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBSpecifier.h; sourceTree = "<group>"; };
 		4F1AA02F19F92D6000FBD23E /* AEBSpecifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBSpecifier.m; sourceTree = "<group>"; };
 		4F1AA03019F92D6000FBD23E /* AEMApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMApplication.h; sourceTree = "<group>"; };
@@ -284,10 +284,10 @@
 		4F5EE3DC1B2D9BD4007C58B5 /* AEMQueryVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEMQueryVisitor.m; sourceTree = "<group>"; };
 		4F70FBD41A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAppleEventDescriptor+AEDescMoreExtensions.h"; sourceTree = "<group>"; };
 		4F70FBD51A3123AC0051CA21 /* NSAppleEventDescriptor+AEDescMoreExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAppleEventDescriptor+AEDescMoreExtensions.m"; sourceTree = "<group>"; };
-		4F9B7FC71B30292200BE621C /* AEBStaticSpecifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBStaticSpecifier.h; sourceTree = "<group>"; };
-		4F9B7FC81B30292200BE621C /* AEBStaticSpecifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBStaticSpecifier.m; sourceTree = "<group>"; };
-		4F9B7FCD1B30A4B900BE621C /* AEBStaticSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBStaticSymbol.h; sourceTree = "<group>"; };
-		4F9B7FCE1B30A4B900BE621C /* AEBStaticSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBStaticSymbol.m; sourceTree = "<group>"; };
+		4F9B7FC71B30292200BE621C /* AEBObjCSpecifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBObjCSpecifier.h; sourceTree = "<group>"; };
+		4F9B7FC81B30292200BE621C /* AEBObjCSpecifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBObjCSpecifier.m; sourceTree = "<group>"; };
+		4F9B7FCD1B30A4B900BE621C /* AEBObjCSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBObjCSymbol.h; sourceTree = "<group>"; };
+		4F9B7FCE1B30A4B900BE621C /* AEBObjCSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBObjCSymbol.m; sourceTree = "<group>"; };
 		4FA7A88B1A02412600F0E578 /* AEMURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEMURL.h; sourceTree = "<group>"; };
 		4FA7A88C1A02412600F0E578 /* AEMURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEMURL.m; sourceTree = "<group>"; };
 		4FA7A8AC1A06EAA100F0E578 /* NSAppleEventDescriptor+AEDescExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAppleEventDescriptor+AEDescExtensions.h"; sourceTree = "<group>"; };
@@ -567,14 +567,14 @@
 			children = (
 				4F4ADE781B35C3600017EE65 /* ObjCInterfaceGlueTemplate.txt */,
 				4F4ADE771B35C3600017EE65 /* ObjCImplementationGlueTemplate.txt */,
-				4F9B7FC71B30292200BE621C /* AEBStaticSpecifier.h */,
-				4F9B7FC81B30292200BE621C /* AEBStaticSpecifier.m */,
-				4F1AA02819F92D6000FBD23E /* AEBStaticCommand.h */,
-				4F1AA02919F92D6000FBD23E /* AEBStaticCommand.m */,
-				4F9B7FCD1B30A4B900BE621C /* AEBStaticSymbol.h */,
-				4F9B7FCE1B30A4B900BE621C /* AEBStaticSymbol.m */,
-				4F1AA02C19F92D6000FBD23E /* AEBStaticFormatter.h */,
-				4F1AA02D19F92D6000FBD23E /* AEBStaticFormatter.m */,
+				4F9B7FC71B30292200BE621C /* AEBObjCSpecifier.h */,
+				4F9B7FC81B30292200BE621C /* AEBObjCSpecifier.m */,
+				4F1AA02819F92D6000FBD23E /* AEBObjCCommand.h */,
+				4F1AA02919F92D6000FBD23E /* AEBObjCCommand.m */,
+				4F9B7FCD1B30A4B900BE621C /* AEBObjCSymbol.h */,
+				4F9B7FCE1B30A4B900BE621C /* AEBObjCSymbol.m */,
+				4F1AA02C19F92D6000FBD23E /* AEBObjCFormatter.h */,
+				4F1AA02D19F92D6000FBD23E /* AEBObjCFormatter.m */,
 			);
 			name = ObjC;
 			sourceTree = "<group>";
@@ -708,10 +708,10 @@
 				4F1AA04D19F92D6000FBD23E /* AEBDefaultTerms.h in Headers */,
 				4FD8E4A11B334D63004B5CD5 /* AEBKeywordConverter.h in Headers */,
 				4F1AA05A19F92D6000FBD23E /* AEBStaticAppData.h in Headers */,
-				4F1AA05C19F92D6000FBD23E /* AEBStaticCommand.h in Headers */,
-				4F9B7FC91B30292200BE621C /* AEBStaticSpecifier.h in Headers */,
-				4F1AA06019F92D6000FBD23E /* AEBStaticFormatter.h in Headers */,
-				4F9B7FCF1B30A4B900BE621C /* AEBStaticSymbol.h in Headers */,
+				4F1AA05C19F92D6000FBD23E /* AEBObjCCommand.h in Headers */,
+				4F9B7FC91B30292200BE621C /* AEBObjCSpecifier.h in Headers */,
+				4F1AA06019F92D6000FBD23E /* AEBObjCFormatter.h in Headers */,
+				4F9B7FCF1B30A4B900BE621C /* AEBObjCSymbol.h in Headers */,
 				4F1311271B3F34050060179E /* AEBStaticKeywordConverter.h in Headers */,
 				4F1AA05119F92D6000FBD23E /* AEBDynamicAppData.h in Headers */,
 				4F1AA04F19F92D6000FBD23E /* AEBDynamicAETEParser.h in Headers */,
@@ -898,14 +898,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F1AA05819F92D6000FBD23E /* AEBDynamicTerminology.m in Sources */,
-				4F9B7FCA1B30292200BE621C /* AEBStaticSpecifier.m in Sources */,
+				4F9B7FCA1B30292200BE621C /* AEBObjCSpecifier.m in Sources */,
 				4FA7A88E1A02412600F0E578 /* AEMURL.m in Sources */,
 				4F5EE3DE1B2D9BD4007C58B5 /* AEMQueryVisitor.m in Sources */,
 				4F1AA05619F92D6000FBD23E /* AEBDynamicTerm.m in Sources */,
 				4F1AA06F19F92D6000FBD23E /* AEMSpecifier.m in Sources */,
 				4F1AA04E19F92D6000FBD23E /* AEBDefaultTerms.m in Sources */,
 				4F1AA06B19F92D6000FBD23E /* AEMFormatter.m in Sources */,
-				4F1AA06119F92D6000FBD23E /* AEBStaticFormatter.m in Sources */,
+				4F1AA06119F92D6000FBD23E /* AEBObjCFormatter.m in Sources */,
 				4F1AA05F19F92D6000FBD23E /* AEBSymbol.m in Sources */,
 				4F1AA05B19F92D6000FBD23E /* AEBStaticAppData.m in Sources */,
 				4F1AA06519F92D6000FBD23E /* AEMApplication.m in Sources */,
@@ -921,8 +921,8 @@
 				4F1AA06719F92D6000FBD23E /* AEMCodecs.m in Sources */,
 				4F1AA05019F92D6000FBD23E /* AEBDynamicAETEParser.m in Sources */,
 				4F1AA04A19F92D6000FBD23E /* AEBAppData.m in Sources */,
-				4F9B7FD01B30A4B900BE621C /* AEBStaticSymbol.m in Sources */,
-				4F1AA05D19F92D6000FBD23E /* AEBStaticCommand.m in Sources */,
+				4F9B7FD01B30A4B900BE621C /* AEBObjCSymbol.m in Sources */,
+				4F1AA05D19F92D6000FBD23E /* AEBObjCCommand.m in Sources */,
 				4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */,
 				4FA7A8BF1A0A706300F0E578 /* AEMCopyScriptingDefinitionFromURL.m in Sources */,
 				4F1AA05419F92D6000FBD23E /* AEBDynamicSDEFParser.m in Sources */,

@@ -16,37 +16,32 @@
 
 <pre><code>  import TEGlue
 
-  TextEdit()
+  let textedit = TextEdit()
 </code></pre>
 
 <p>This uses the bundle identifier of the application from which the glue was originally generated (e.g. "com.apple.TextEdit") to locate the application on the current machine, or returns <code>nil</code> if no match is found. (See <code>-[NSWorkspace URLForApplicationWithBundleIdentifier:]</code> for more information.)</p>
 
-<p>For convenience, the glue also provides a module-level var that returns a newly created instance automatically:</p>
-
-<pre><code>  TextEdit
-</code></pre>
-
-<p>// TO DO: check throws</p>
-
 <p>Alternatively, one of the following initializers may be used (e.g. if multiple versions of the application are installed, or the application is running on another machine):</p>
 
-<pre><code>  // application's name or full path (.app suffix is optional)
-  TEApplication(name: String)
+<pre><code>  // application's name or full path (`.app` suffix is optional)
+  SomeApplication(name: String, ...)
 
   // application's bundle ID
-  TEApplication(bundleIdentifier: String)
+  SomeApplication(bundleIdentifier: String, ...)
 
   // `file:` URL for local application or `eppc:` URL for remote process
-  TEApplication(url: NSURL)
+  SomeApplication(url: NSURL, ...)
 
   // Unix process id
-  TEApplication(processIdentifier: pid_t)
+  SomeApplication(processIdentifier: pid_t, ...)
 
   // AEAddressDesc
-  TEApplication(descriptor: NSAppleEventDescriptor)
+  SomeApplication(descriptor: NSAppleEventDescriptor, ...)
+</code></pre>
 
-  // the current (host) process
-  TEApplication.currentApplication()
+<p>Or, should you need to target the current (i.e. host) process:</p>
+
+<pre><code>  SomeApplication.currentApplication
 </code></pre>
 
 <p>For example, to target a specific version of InDesign by name:</p>
@@ -63,9 +58,16 @@
   let itunes = ITUApplication(url: NSURL(string: "eppc://jsmith@media-mac.local/iTunes"))
 </code></pre>
 
-<p>Note that local applications will be launched if not already running when the <code>XXApplication()</code>, <code>XXApplication(name:String)</code>, <code>XXApplication(bundleIdentifier:String)</code> or <code>XXApplication(url:NSURL)</code> constructors are invoked, and events will be sent to the running application according to its process ID. If the process is later terminated, that process ID is no longer valid and events sent subsequently using this application object will fail as application objects currently don't provide a 'reconnect' facility.</p>
+<p>Each of the above initializers also accepts the following optional arguments:</p>
 
-<p>If the <code>XXApplication(url:NSURL)</code> constructor is invoked with an <code>eppc://</code> URL, or if the <code>XXApplication(processIdentifier:pid_t)</code> or <code>XXApplication(descriptor:NSAppleEventDescriptor)</code> constructors are used, the caller is responsible for ensuring the target application is running before sending any events to it.</p>
+<ul>
+<li><p><code>launchOptions: NSWorkspaceLaunchOptions</code> – determines behavior when launching a local application; see NSWorkspace documentation for details. If omitted, the <code>NSWorkspaceLaunchOptions.WithoutActivation</code> option is used.</p></li>
+<li><p><code>relaunchMode: AEBRelaunchMode</code> - determines behavior if the target process no longer exists; see Restarting applications section below. If omitted, <code>AEBRelaunchMode.Limited</code> is used.</p></li>
+</ul>
+
+<p>Note that local applications will be launched if not already running when the <code>SomeApplication()</code>, <code>SomeApplication(name:String)</code>, <code>SomeApplication(bundleIdentifier:String)</code> or <code>SomeApplication(url:NSURL)</code> constructors are invoked, and events will be sent to the running application according to its process ID. If the process is later terminated, that process ID is no longer valid and events sent subsequently using this application object will fail as application objects currently don't provide a 'reconnect' facility.</p>
+
+<p>If the <code>SomeApplication(url:NSURL)</code> constructor is invoked with an <code>eppc://</code> URL, or if the <code>SomeApplication(processIdentifier:pid_t)</code> or <code>SomeApplication(descriptor:NSAppleEventDescriptor)</code> constructors are used, the caller is responsible for ensuring the target application is running before sending any events to it.</p>
 
 <h2>Basic commands</h2>
 
@@ -77,9 +79,9 @@
 
   reopen() throws // Reactivate a running application
 
-  open(directParameter: AnyObject) throws // Open the specified file(s), e.g. an NSArray of NSURL
+  open(directParameter: AnyObject?) throws // Open the specified file(s), e.g. an NSArray of NSURL
 
-  print(directParameter: AnyObject) throws // Print the specified file(s), e.g. an NSArray of NSURL
+  print(directParameter: AnyObject?) throws // Print the specified file(s), e.g. an NSArray of NSURL
 
   quit( [ saving: AEB.yes | AEB.ask | AEB.no ] ) throws    // TO DO: AEB prefix currently only works for default glue 
                // Quit an application optionally specifying if currently open documents be saved first
@@ -89,9 +91,9 @@
 
 <p>AppleEventBridge also defines <code>get</code> and <code>set</code> commands for any scriptable application that doesn't supply its own definitions:</p>
 
-<pre><code>  get(directParameter: AnyObject) throws -&gt; AnyObject! // Get the value of the given object specifier
+<pre><code>  get(directParameter: AnyObject?) throws -&gt; AnyObject! // Get the value of the given object specifier
 
-  set(directParameter: AnyObject, // Set the value of the given object specifier
+  set(directParameter: AnyObject?, // Set the value of the given object specifier
       to: AnyObject) throws // The new value; may be anything
 </code></pre>
 
@@ -121,7 +123,7 @@
 
 <p>You can check if the application specified by an Application object is currently running by checking its <code>isRunning</code> property. This is useful if you don't want to perform commands on an application that isn't already running. For example:</p>
 
-<pre><code>  let textedit = TEApplication()
+<pre><code>  let textedit = TextEdit()
 
   // Only perform TextEdit-related commands if it's already running:
   if textedit.isRunning {
@@ -144,20 +146,24 @@
 
 <p>This is useful when you want to start an application without it going through its normal startup procedure, and is equivalent to the using AppleScript's <code>launch</code> command. For example, to launch TextEdit without causing it to display a new, empty document (its usual behaviour):</p>
 
-<pre><code>  textedit = TEApplication()
+<pre><code>  textedit = TextEdit()
   textedit.launchApplication()
   // other TextEdit-related code goes here...
 </code></pre>
-
-<p>The lower level <code>AEMApplication</code> class also provides several class methods that allow fine-grained control over application launches.</p>
 
 <h3>Restarting applications</h3>
 
 <p>As soon as you start to construct a reference or command using a newly created Application objects, if the application is not already running then AppleEventBridge will automatically launch it in order to obtain its terminology.</p>
 
-<p>If the target application has stopped running since the Application object was created, trying to send it a command using that Application object will result in an invalid connection error (-609), unless that command is <code>run</code> or <code>launch</code>. This restriction prevents AppleEventBridge accidentally restarting an application that has unexpectedly quit while a script is controlling it. Scripts can restart an application by sending an explicit <code>run</code> or <code>launch</code> command, or by creating a new Application object for it.</p>
+<p>Be default, if the target application has stopped running since the Application object was created, trying to send it a command using that Application object will result in an invalid connection error (-609), unless that command is <code>run</code> or <code>launch</code>. This restriction prevents AppleEventBridge accidentally restarting an application that has unexpectedly quit while a script is controlling it. You can restart an application by sending an explicit <code>run</code> or <code>launch</code> command, or by creating a new Application object for it. To change this behavior, use one of the following values as the initializer's <code>relaunchMode:</code> argument:</p>
 
-<p>Note that you can still use Application objects to control applications that have been quit <em>and</em> restarted since the Application object was created. AppleEventBridge will automatically update the Application object's process id information as needed.</p>
+<ul>
+<li><code>AEBRelaunchMode.Never</code> -- prevent the Application object automatically relaunching the application, even for a <code>run</code> or <code>launch</code> command</li>
+<li><code>AEBRelaunchMode.Limited</code> -- allow the Application object to relaunch the application before sending a <code>run</code> or <code>launch</code> command (AEB's default behavior)</li>
+<li><code>AEBRelaunchMode.Always</code> -- allow the Application object to relaunch the application before sending any command (AppleScript's behavior)</li>
+</ul>
+
+<p>Note that you can still use Application objects to control applications that have been quit <em>and</em> restarted since the Application object was created. AppleEventBridge will automatically update the Application object's process id information as needed. [[TO DO: check this is correct; also check how it behaves when .Never is used]]</p>
 
 <p class="hilitebox">There is a known problem with quitting and immediately relaunching an application via AppleEventBridge, where the relaunch instruction is sent to the application before it has actually quit. This timing issue appears to be the OS's fault; one workaround is to send the `quit` command, wait until `-isRunning` returns `NO`, then send the `run`/`launch` command.</p>
 

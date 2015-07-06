@@ -16,9 +16,9 @@
 
 <p>For convenience, AppleEventBridge makes application commands available as methods on every object specifier. (Note: due to the limitations of aete-based terminology, the user must determine for themselves which commands can operate on a particular reference. Some applications document this information separately.) All application commands have the same basic structure: a single, optional direct parameter, followed by zero or more named parameters specific to that command, followed by zero or more event attributes that determine how the Apple event is processed:</p>
 
-<pre><code>func <var>commandName</var>(directParameter: AnyObject = kAEBNoParameter,
-                 <var>namedParameter1:</var> AnyObject = kAEBNoParameter,
-                 <var>namedParameter2:</var> AnyObject = kAEBNoParameter,
+<pre><code>func <var>commandName</var>(directParameter: AnyObject = AEBNoParameter,
+                 <var>namedParameter1:</var> AnyObject = AEBNoParameter,
+                 <var>namedParameter2:</var> AnyObject = AEBNoParameter,
                  ...
                  returnType:      AEBReturnType?         = nil,
                  waitReply:       Bool?                  = nil,

@@ -8,7 +8,7 @@
 /**********************************************************************/
 // NSError userInfo constants
 
-NSString *const kAEMErrorDomain = @"net.sourceforge.appscript.AppleEventBridge.ErrorDomain";
+NSString *const kAEMErrorDomain = @"org.bitbucket.hhas.AppleEventBridge.ErrorDomain";
 
 
 NSString *const kAEMErrorNumberKey			= @"ErrorNumber";

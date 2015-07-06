@@ -14,9 +14,9 @@
 
     - names of language keywords
     - names of NSObject class and instance methods
-    - names of methods used in AEBStaticSymbol, AEBStaticSpecifier classes
+    - names of methods used in AEBObjCSymbol, AEBObjCSpecifier classes
     - names of additional methods used in Application classes
-    - names of built-in keyword arguments in AEBStaticCommand
+    - names of built-in keyword arguments in AEBObjCCommand
 
     Notes:
 
@@ -249,6 +249,7 @@
                                      @"elementsByCode",
                                      @"customRoot",
                                      // sendAppleEvent(eventClass:eventID:...
+                                     @"currentApplication",
                                      // element(s) selectors
                                      @"ID",
                                      @"beginning",
@@ -376,7 +377,7 @@
                                @"false",
                                @"inline",
                                nil];
-        // methods defined by ObjC glue base classes (AEBStaticSpecifier, etc)
+        // methods defined by ObjC glue base classes (AEBObjCSpecifier, etc)
         kAEBObjectiveCMethods = [NSSet setWithObjects:
                                  // custom property/element specifiers
                                  @"propertyByCode",
@@ -435,10 +436,10 @@
                                  @"initWithURL",
                                  @"initWithProcessID",
                                  @"initWithDescriptor",
-                                 // used by AEBStaticSymbol
+                                 // used by AEBObjCSymbol
                                  @"symbolWithName",
                                  @"aebSymbolForCode",
-                                 // used by AEBStaticCommand
+                                 // used by AEBObjCCommand
                                  @"considering",
                                  @"sendMode",
                                  @"waitForReply",

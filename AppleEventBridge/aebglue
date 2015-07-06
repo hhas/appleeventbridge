@@ -7,7 +7,7 @@
 
 # TO DO: use correct signatures for appdata.terminologyWithError_, AEBDynamicSDEFParser.copyScriptingDefinitionAtURL_error_ so error description is returned; see objc.setSignatureForSelector()
 
-# TO DO: XXXSymbol classes shouldn't include type and enum symbols already defined by AEBStaticSymbol (also check how partial matches, e.g. where name is same but code is different, are treated)
+# TO DO: XXXSymbol classes shouldn't include type and enum symbols already defined by AEBObjCSymbol (also check how partial matches, e.g. where name is same but code is different, are treated)
 
 # TO DO: SDEF exporter needs to support synonyms
 

@@ -3,7 +3,7 @@
 //
 
 #import "AEBSpecifier.h"
-#import "AEBStaticCommand.h"
+#import "AEBObjCCommand.h"
 
 
 /**********************************************************************/

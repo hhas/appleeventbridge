@@ -24,11 +24,11 @@
 
 // Classes
 
-@interface «PREFIX»Formatter : AEBStaticFormatter
+@interface «PREFIX»Formatter : AEBObjCFormatter
 @end
 
 
-@interface «PREFIX»Symbol : AEBStaticSymbol
+@interface «PREFIX»Symbol : AEBObjCSymbol
 // Types and properties
 «+ENUM_SYMBOL»
 + (AEBSymbol *)«NAME»;
@@ -41,7 +41,7 @@
 
 «+COMMAND»
 
-@interface «PREFIX»«CAP_NAME»Command : AEBStaticCommand
+@interface «PREFIX»«CAP_NAME»Command : AEBObjCCommand
 «+PARAMETER»
 - (instancetype)«NAME»:(id)value;
 «-PARAMETER»
@@ -49,7 +49,7 @@
 «-COMMAND»
 
 
-@interface «PREFIX»Specifier : AEBStaticSpecifier
+@interface «PREFIX»Specifier : AEBObjCSpecifier
 // Properties
 «+PROPERTY_SPECIFIER»
 - (instancetype)«NAME»;

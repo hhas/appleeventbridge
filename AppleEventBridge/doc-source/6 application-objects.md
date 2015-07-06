@@ -27,6 +27,10 @@ Alternatively, one of the following initializers may be used (e.g. if multiple v
     // AEAddressDesc
     SomeApplication(descriptor: NSAppleEventDescriptor, ...)
 
+Or, should you need to target the current (i.e. host) process:
+
+    SomeApplication.currentApplication
+
 For example, to target a specific version of InDesign by name:
     
     import AIDGlue
@@ -48,10 +52,6 @@ Each of the above initializers also accepts the following optional arguments:
 Note that local applications will be launched if not already running when the `SomeApplication()`, `SomeApplication(name:String)`, `SomeApplication(bundleIdentifier:String)` or `SomeApplication(url:NSURL)` constructors are invoked, and events will be sent to the running application according to its process ID. If the process is later terminated, that process ID is no longer valid and events sent subsequently using this application object will fail as application objects currently don't provide a 'reconnect' facility.
 
 If the `SomeApplication(url:NSURL)` constructor is invoked with an `eppc://` URL, or if the `SomeApplication(processIdentifier:pid_t)` or `SomeApplication(descriptor:NSAppleEventDescriptor)` constructors are used, the caller is responsible for ensuring the target application is running before sending any events to it.
-
-Alternatively, to target the current (host) process:
-
-    SomeApplication.currentApplication()
 
 
 ## Basic commands

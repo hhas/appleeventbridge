@@ -8,7 +8,7 @@ TO DO:
 
 - given all command methods return errors (since no Apple event is guaranteed to succeed), would it be worth overloading command methods to provide an alternative error handling scheme, allowing user to omit 'try' where they aren't concerned with error details, e.g. by passing a closure that returns a default value to be returned if command fails:
 
-    func get(directParameter: AnyObject = kAEBNoParameter,
+    func get(directParameter: AnyObject = AEBNoParameter,
             eventAttributes: AnyObject? = nil, ifError: ErrorType -> AnyObject) -> AnyObject {
         do {
             return try self.get(directParameter, eventAttributes: eventAttributes)
@@ -104,6 +104,8 @@ print(q) // q=false, but should be TETSpecifier; other operators do not seem to 
 
 - would it be preferable for AEBSwiftSpecifiers to be pure Swift classes, rather than subclasses of NSObject?
 
+
+- support optional completionHandler closure for async sends? (not sure how best to implement this; might be simpler to take optional `queueReply:true` arg that calls command.queueReply() to set AESendMode's kAEQueueReply flag and, on successful dispatch of the event, immediately return the event's returnID as result, leaving user to collect reply event themselves)
 
 
 

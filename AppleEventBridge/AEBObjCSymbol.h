@@ -1,5 +1,5 @@
 //
-//  AEBStaticSymbol.h
+//  AEBObjCSymbol.h
 //
 //  Base class for all named symbols used by static ObjC bridge
 //
@@ -14,16 +14,16 @@
 /**********************************************************************/
 // macros
 
-// convenience shortcut for writing e.g. `kAE.unicodeText` rather than `AEBStaticSymbol.unicodeText`
-#define kAEB (AEBStaticSymbol)
+// convenience shortcut for writing e.g. `kAE.unicodeText` rather than `AEBObjCSymbol.unicodeText` // TO DO: remove `k` prefix?
+#define kAEB (AEBObjCSymbol)
 
 
-// used here and by AEBStaticSymbol subclasses in generated glues to initialize instances lazily on first use
+// used here and by AEBObjCSymbol subclasses in generated glues to initialize instances lazily on first use
 #define AEB_RETURN_SYMBOL(aName, aType, aCode) \
     static dispatch_once_t pred = 0; \
     __strong static id obj = nil; \
     dispatch_once(&pred, ^{ \
-        obj = [AEBStaticSymbol symbolWithName: (aName) type: (aType) code: (aCode)]; \
+        obj = [AEBSymbol symbolWithName: (aName) type: (aType) code: (aCode)]; \
     }); \
     return obj;
 
@@ -31,7 +31,7 @@
 /**********************************************************************/
 // base class for standard and application-defined symbols
 
-@interface AEBStaticSymbol : AEBSymbol
+@interface AEBObjCSymbol : AEBSymbol
 
 /***********************************/
 // Apple Event Manager-defined types and enumerators
