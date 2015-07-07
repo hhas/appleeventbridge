@@ -1,5 +1,5 @@
 //
-//  AEBSwiftAETranslate.swift
+//  SwiftAETranslate.swift
 //  AppleEventBridge
 //
 //  Format an AppleEvent descriptor as Swift source code. Enables user tools

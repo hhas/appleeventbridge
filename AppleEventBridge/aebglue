@@ -60,10 +60,10 @@ def writefile(path, s):
 
 def readfile(path):
     with open(path) as f:
-            return f.read().decode('utf-8')
+        return f.read().decode('utf-8')
 
-def readtemplate(name):
-    path = kAEBBundle.pathForResource_ofType_inDirectory_(name, 'txt', u'templates')
+def readtemplate(name, suffix='txt'):
+    path = kAEBBundle.pathForResource_ofType_inDirectory_(name, suffix, u'templates')
     if not path:
         raise ValueError("Can't find template: %s" % name)
     return readfile(path)
@@ -361,6 +361,10 @@ if __name__ == '__main__':
             print >> sys.stderr, "Created output directory:", outdir
         elif not os.path.isdir(outdir):
             raise ValueError("Not a valid output directory: %s" % outdir)
+        # copy Swift base class files; TO DO: get rid of this once Swift frameworks are fully supported
+        if not isobjc:
+            for name in ['SwiftAEGlueBase', 'SwiftAEFormatter', 'SwiftAETranslate']:
+                writefile(os.path.join(os.path.join(outdir, name+'.swift')), readtemplate(name, 'swift'))
         # generate glue files
         shellcmd = 'aebglue %s' % (' '.join([('%s %s' % (k, shquote(v) if k[1]+':' in kOpts else '')).strip() for k, v in opts.items()]
                                             + [shquote(os.path.basename(arg)) for arg in args]))

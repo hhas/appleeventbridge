@@ -1,6 +1,8 @@
 //
-//  AEBSwiftAEFormatter.swift
+//  SwiftAEFormatter.swift
 //  AppleEventBridge
+//
+//  Generates source code representation of SwiftAESpecifier.
 //
 
 import Foundation

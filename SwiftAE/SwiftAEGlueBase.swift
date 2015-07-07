@@ -1,10 +1,9 @@
 //
 //  SwiftAEGlueSupport.swift
+//  AppleEventBridge
 //
-
-// TO DO: move into AppleEventBridge.framework
-
-// TO DO: should XXApplication.currentApplication() be init(currentApplication:())? c.f. init(listDescriptor: ()) in NSAEDesc
+//  Base classes for aebglue-generated Swift application glues.
+//
 
 // note: AEBAppData uses AEMCodecs to unpack basic AE types (text, list, etc) as NSObjects; TO DO: would it be better to unpack them as native Swift types (and would Swift objects cause any issues with other NSObject-based APIs such as AEMQuery)?
 
@@ -16,22 +15,30 @@ import AppleEventBridge
 
 
 /******************************************************************************/
-// AppData class
-// each APPNAME application class creates its own XXAppData instance, which it then shares with all XXSpecifiers derived from it
+// AppData class 
+//
+// Holds an AEMApplication instance targeting the specified application, and converts Swift/Cocoa objects to/from AEDescs.
+// Created when the glue's Application class is instantiated, and passed to all Specifiers constructed from that Application.
+//
 
 
 class SwiftAEAppData: AEBStaticAppData {
     
     override func pack(anObject: AnyObject!) throws -> NSAppleEventDescriptor {
-        if anObject is Bool {
-            return NSAppleEventDescriptor(boolean: (anObject as! Bool ? 1 : 0))
+        if anObject is NSNumber {
+            // kludge: Swift's crappy bridging of Cocoa's crappy NSNumber cannot distinguish booleans from numerical values,
+            // so we just have to hope it's still a CFBoolean underneath
+            if CFBooleanGetTypeID() == CFGetTypeID(anObject) {
+                return NSAppleEventDescriptor(boolean: (anObject as! Bool ? 1 : 0))
+            }
         }
         return try super.pack(anObject)
     }
     
     override func unpack(desc: NSAppleEventDescriptor!) throws -> AnyObject {
+        // TO DO: intervening ObjC converts true and false to NSNumbers (NSCFBooleans), which Swift then displays as Ints
         switch desc.descriptorType {
-        case 0x74727565: return true // TO DO: unpacking arrays turns Swift true/false to NSCFBooleans
+        case 0x74727565: return true
         case 0x66616c73: return false
         case 0x626f6f6c: return desc.booleanValue != 0
         default: return try super.unpack(desc)
@@ -94,8 +101,10 @@ class SwiftAEAppData: AEBStaticAppData {
 
 /******************************************************************************/
 // Symbol base class
+//
+// Base class for all standard and application-specific type, enum, and property names (typeUnicodeText, cDocument, kAEYes, pName, etc).
+//
 
-// base class for all standard and application-specific named symbols
 // (note: while an enum would be idiomatic Swift, the need to map reliably between human-readable names and AE codes, and/or represent such mappings even when one or other is unavailable, may make this tricky or impractical; need to research further)
 
 // TO DO: might be simpler for glues to subclass AEBSymbol, and define standard symbols as their own baseclass (Q. how best to generate that class? prob best done manually using glue generator, so that new types defined by Apple are permanently included in all subsequent framework releases)
@@ -202,6 +211,14 @@ func ~= (left: SwiftAECommandError, right: Int) -> Bool { // TO DO: decide if th
 
 /******************************************************************************/
 // Specifier base class
+//
+// Base class for glue-defined Specifier classes. Each application glue defines a custom Specifier class that implements
+// property and elements getters, and command methods using names obtained from application's terminology (AETE/SDEF) resource.
+// Invoking these getters constructs an AEMQuery using the corresponding four-char codes, then wraps both its AppData object
+// and the new AEMQuery in a new Specifier instance. Invoking a command method creates a new AppleEvent instance, uses the
+// AppData object to convert its arguments to AEDescs and packs those into the AE, dispatches the event, and finally unpacks the
+// reply event's return value/raises an error.
+//
 
 class SwiftAESpecifier: AEBSpecifier {
     

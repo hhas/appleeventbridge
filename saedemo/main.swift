@@ -20,11 +20,14 @@ let t = true; let f = false
 
 
 do {
-    try TextEdit().documents[100].get()
+    print(try TextEdit().documents[10000].get())
+    print("bug!")
 } catch {
     print(error)
+    print("\n")
 }
 
+//print(try TextEdit().documents[1].modified.get()) // note: currently prints '0', not 'true', due to vagaries of NSNumber bridging
 
 // note that TextEdit pays no attention to considering/ignoring flags in events, so always ignores case and considers everything else
 //print(try textedit.documents[1].words[TEDIts == "foo"].get())
