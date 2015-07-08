@@ -674,8 +674,8 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 }
 
 // takes two app- or con-based specifiers, expanding any other values as necessary
-- (AEMElementsByRangeSpecifier *)byRange:(id)startSpecifier to:(id)stopSpecifier { 
-	return [[AEMElementsByRangeSpecifier alloc]
+- (AEMElementsByRangeSpecifier *)byRange:(id)startSpecifier to:(id)stopSpecifier {
+    return [[AEMElementsByRangeSpecifier alloc]
 							  initWithContainer: self
 										  start: startSpecifier
 										   stop: stopSpecifier
@@ -686,6 +686,7 @@ NSAppleEventDescriptor *AEMNewObjectSpecifier(AEMCodecs *codecs,
 // by-test selector
 
 - (AEMElementsByTestSpecifier *)byTest:(AEMTestClause *)testSpecifier {
+    if (!([testSpecifier isKindOfClass: AEMTestClause.class] && [testSpecifier.root isEqualTo: AEMIts])) return nil;
 	return [[AEMElementsByTestSpecifier alloc]
 							 initWithContainer: self
 										   key: testSpecifier

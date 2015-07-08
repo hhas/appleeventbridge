@@ -60,26 +60,25 @@
 - (instancetype)last;
 - (instancetype)any;
 
-/* by-index, by-name, by-id selectors */
+/* by-index, by-name, by-test selectors */
 
-- (instancetype)at:(int)index;
-- (instancetype)byIndex:(id)index;
-- (instancetype)byName:(id)name;
-- (instancetype)byID:(id)id_;
+ - (instancetype)objectAtIndexedSubscript:(int)idx; // convenience shortcut for by-index selector where index is a C int
+ - (instancetype)objectForKeyedSubscript:(id)key; // by-name, by-test, by-index
+
+- (instancetype)named:(id)name; // TO DO: superceded by id subscript, except where specifying non-string name (AppleScript API parity)
+
+/* by-id selector */
+
+- (instancetype)ID:(id)elementID;
 
 /* by-relative-position selectors */
 
-- (instancetype)previous:(AEBSymbol *)class_;
-- (instancetype)next:(AEBSymbol *)class_;
+- (instancetype)previous:(AEBSymbol *)elementClass;
+- (instancetype)next:(AEBSymbol *)elementClass;
 
 /* by-range selector */
 
-- (instancetype)at:(int)fromIndex to:(int)toIndex;
-- (instancetype)byRange:(id)fromObject to:(id)toObject;
-
-/* by-test selector */
-
-- (instancetype)byTest:(id)testQuery;
+- (instancetype)from:(id)fromObject to:(id)toObject;
 
 /* insertion location selectors */
 
@@ -90,12 +89,12 @@
 
 /* Comparison and logic tests */
 
-- (instancetype)greaterThan:(id)object;
-- (instancetype)greaterOrEquals:(id)object;
-- (instancetype)equals:(id)object;
-- (instancetype)notEquals:(id)object;
-- (instancetype)lessThan:(id)object;
-- (instancetype)lessOrEquals:(id)object;
+- (instancetype)gt:(id)object;
+- (instancetype)ge:(id)object;
+- (instancetype)eq:(id)object;
+- (instancetype)ne:(id)object;
+- (instancetype)lt:(id)object;
+- (instancetype)le:(id)object;
 - (instancetype)beginsWith:(id)object;
 - (instancetype)endsWith:(id)object;
 - (instancetype)contains:(id)object;

@@ -95,12 +95,12 @@ For example, if an application requires a `typeAlias` descriptor but doesn't coe
 Be aware when specifying a command's required/result type, you must specify the exact AE type (`AEMSymbol.alias`/`typeAlias`, `AEMSymbol.fileURL`/`typeFileURL`, etc). For example, the Finder normally returns file system references as object specifiers:
 
         [[finder.home get] send]
-        // Result: [[[Finder.startupDisk elements: @"cfol"] byName: @"Users"] ...]
+        // [[Finder.startupDisk.folders byName: @"Users"].folders byName: @"Users"]
 
- To get the current user's home folder as an `AEMURL` instead:
+ To get the current user's home folder as an `NSURL` instead:
 
         [[[finder.home get] resultType: AEBSymbol.fileURL] send]
-        // Result: <NSURL file:///Users/jsmith>
+        // <NSURL file:///Users/jsmith>
 
 
 ### Records
@@ -129,7 +129,9 @@ For your convenience, AppleEventBridge represents Apple event type names and app
     TESymbol.no
     TESymbol.ask
 
-Occasionally an application dictionary defines a type or enumerator without providing it with a corresponding name name. In these cases, the value will be represented as a raw `AEMType` or `AEMEnum` instance instead, e.g.: 
+[TO DO: SwiftAE uses AEBSymbol(fourCharCode:String)]
+
+Occasionally an application dictionary defines a type or enumerator without providing it with a corresponding name name. In these cases, the value will be represented as a raw `AEMType` or `AEMEnum` instance instead, e.g.:
 
     [AEMType typeWithCode: 'abcd']
     [AEMEnum enumWithCode: 'xyz ']

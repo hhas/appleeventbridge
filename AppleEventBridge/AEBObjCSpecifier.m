@@ -78,8 +78,10 @@
  * specifier roots and reference forms
  */
 
-/* +app, +con, +its methods can be used in place of XXApp, XXCon, XXIts macros */
+// TO DO: add -propertyByCode:, -elementsByCode:, -userProperty:, -commandByCode:
 
+/* +app, +con, +its methods can be used in place of XXApp, XXCon, XXIts macros */
+// TO DO: these are probably redundant if this glue is only used in ObjC, as static glues already define their own specifier roots
 + (instancetype)app {
     return [[self alloc] initWithAppData: nil aemQuery: AEMApp];
 }
@@ -107,49 +109,55 @@
     return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery any]);
 }
 
-/* by-index, by-name, by-id selectors */
+/* by-index, by-name, by-test selectors */
 
-- (instancetype)at:(int)index {
-    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery at: index]);
+- (instancetype)objectAtIndexedSubscript:(int)idx {
+    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery at: idx]);
 }
-- (instancetype)byIndex:(id)index {
-    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery byIndex: index]);
+
+- (instancetype)objectForKeyedSubscript:(id)key {
+    if ([key isKindOfClass: AEBSpecifier.class] || [key conformsToProtocol: @protocol(AEMQueryProtocol)]) {
+        AEMQuery *query = [key aemQuery];
+        if ([query isKindOfClass: AEMTestClause.class] && [query.root isEqualTo: AEMIts]) {
+            return NEW_SPECIFIER([((AEMMultipleElementsSpecifier *)self.aemQuery) byTest: (AEMTestClause *)query]);
+        } else {
+            return nil; // TO DO: pack as by-index/by-name if it's a correctly formed app- or customRoot-based specifier?
+        }
+    } else if ([key isKindOfClass: NSString.class]) {
+        return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery byName: key]);
+    } else {
+        return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery byIndex: key]);
+    }
 }
-- (instancetype)byName:(id)name {
+
+- (instancetype)named:(id)name {
     return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery byName: name]);
 }
-- (instancetype)byID:(id)id_ {
-    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery byID: id_]);
+
+/* by-ID selector */
+
+- (instancetype)ID:(id)elementID {
+    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery byID: elementID]);
 }
 
 /* by-relative-position selectors */
 
-- (instancetype)previous:(AEBSymbol *)class_ {
-    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery previous: [class_ aebCode]]);
+- (instancetype)previous:(AEBSymbol *)elementClass {
+    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery previous: [elementClass aebCode]]);
 }
-- (instancetype)next:(AEBSymbol *)class_ {
-    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery next: [class_ aebCode]]);
+- (instancetype)next:(AEBSymbol *)elementClass {
+    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery next: [elementClass aebCode]]);
 }
 
 /* by-range selector */
 
-- (instancetype)at:(int)fromIndex to:(int)toIndex {
-    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery at: fromIndex to: toIndex]);
-}
-- (instancetype)byRange:(id)fromObject to:(id)toObject {
+- (instancetype)from:(id)fromObject to:(id)toObject {
     // takes two con-based specifiers, with other values being expanded as necessary
     if ([fromObject isKindOfClass: self.class]) fromObject = [fromObject aemQuery]; // TO DO: check unwrapping logic here and in byTest; note: this'd be simpler with AEMQueryProtocol, which'd allow any AEM/AEB query to be passed directly to AEM API, which would automatically unwrap it as needed by calling -aemQuery on it
     if ([toObject isKindOfClass: self.class]) toObject = [toObject aemQuery];
     return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery byRange: fromObject to: toObject]);
 }
 
-/* by-test selector */
-
-- (instancetype)byTest:(id)testQuery { // TO DO: use <id>AEMTestClauseProtocol
-    if ([testQuery isKindOfClass: self.class]) testQuery = [testQuery aemQuery]; // TO DO: also implement AEMTestClauseProtocol? this'd simplify AEM's byTest: method, since it could be typed as id<AEMTestClauseProtocol>, avoiding the need for extra fiddling
-    if (![testQuery isKindOfClass: AEMTestClause.class]) return nil;
-    return NEW_SPECIFIER([(AEMMultipleElementsSpecifier *)self.aemQuery byTest: testQuery]); // TO DO: check unwrapping logic here and in byRange
-}
 
 /* insertion location selectors */
 
@@ -168,22 +176,22 @@
 
 /* Comparison and logic tests */
 
-- (instancetype)greaterThan:(id)object {
+- (instancetype)gt:(id)object {
     return NEW_SPECIFIER([(AEMObjectSpecifier *)self.aemQuery greaterThan: object]);
 }
-- (instancetype)greaterOrEquals:(id)object {
+- (instancetype)ge:(id)object {
     return NEW_SPECIFIER([(AEMObjectSpecifier *)self.aemQuery greaterOrEquals: object]);
 }
-- (instancetype)equals:(id)object {
+- (instancetype)eq:(id)object {
     return NEW_SPECIFIER([(AEMObjectSpecifier *)self.aemQuery equals: object]);
 }
-- (instancetype)notEquals:(id)object {
+- (instancetype)ne:(id)object {
     return NEW_SPECIFIER([(AEMObjectSpecifier *)self.aemQuery notEquals: object]);
 }
-- (instancetype)lessThan:(id)object {
+- (instancetype)lt:(id)object {
     return NEW_SPECIFIER([(AEMObjectSpecifier *)self.aemQuery lessThan: object]);
 }
-- (instancetype)lessOrEquals:(id)object {
+- (instancetype)le:(id)object {
     return NEW_SPECIFIER([(AEMObjectSpecifier *)self.aemQuery lessOrEquals: object]);
 }
 - (instancetype)beginsWith:(id)object {

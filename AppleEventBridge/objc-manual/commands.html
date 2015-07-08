@@ -1,16 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<head>
-		<title>AppleEventBridge | Commands</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<style type="text/css" media="all"><!--@import url(full.css);--></style>
-	</head>
-	<body>
-		<div id="wrap">
-			<div id="main">
-				<h1>Commands</h1>
-				<div class="navbar"><a href="object-specifiers.html">back</a> | <a href="index.html">index</a> | <a href="examples.html">next</a></div>
-				<p>// TO DO: waitReply should be nil; all attributes should be kAEBNoAttribute (or make them all AEBNoValue/AEBNoArgument?)</p>
+    <head>
+        <title>AppleEventBridge | Commands</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css" media="all"><!--@import url(full.css);--></style>
+    </head>
+    <body>
+        <div id="wrap">
+            <div id="main">
+                <h1>Commands</h1>
+                <div class="navbar"><a href="object-specifiers.html">back</a> | <a href="index.html">index</a> | <a href="examples.html">next</a></div>
+                <p>// TO DO: finish including ObjC-specific material once a decision is made on how best to construct commands in ObjC (i.e. chained methods vs dict of params/attrs vs varargs)</p>
+
+<p>// TO DO: waitReply should be nil; all attributes should be kAEBNoAttribute (or make them all AEBNoValue/AEBNoArgument?)</p>
 
 <h2>Syntax</h2>
 
@@ -86,7 +88,7 @@ The conventional form is also supported should you ever wish (or need) to use it
 <p>the object specifier upon which it is called will be packed as the Apple event's "subject" attribute (<code>keySubjectAttr</code>).</p>
 
 <ul>
-<li><p>If the <code>make</code> command is called on an insertion location specifier (<code>before</code>/<code>after</code>/<code>beginning</code>/<code>end</code>), appscript will pack that specifier as the Apple event's <code>at:</code> parameter if it doesn't already have one; i.e.:</p>
+<li><p>If the <code>make</code> command is called on an insertion location specifier (<code>before</code>/<code>after</code>/<code>beginning</code>/<code>end</code>), AEB will pack that specifier as the Apple event's <code>at:</code> parameter if it doesn't already have one; i.e.:</p>
 
 <pre><code>    insertionLoc.make(new: className)
 </code></pre>
@@ -96,7 +98,7 @@ The conventional form is also supported should you ever wish (or need) to use it
 <pre><code>    appObj.make(new: className, at: insertionLoc)
 </code></pre>
 
-<p>If the <code>make</code> command is called on an object specifier, appscript will pack that specifier as the Apple event's "subject" attribute. Be aware that some applications may not handle this attribute correctly, in which case the specifier should be passed via the <code>make</code> command's <code>at:</code> parameter.</p></li>
+<p>If the <code>make</code> command is called on an object specifier, AEB will pack that specifier as the Apple event's "subject" attribute. Be aware that some applications may not handle this attribute correctly, in which case the specifier should be passed via the <code>make</code> command's <code>at:</code> parameter.</p></li>
 </ul>
 
 <h2>Command errors</h2>
@@ -125,7 +127,7 @@ The conventional form is also supported should you ever wish (or need) to use it
 
 <h2>Note to AppleScript users</h2>
 
-<p>Unlike AppleScript, which implicitly sends a <code>get</code> command to any unresolved application object references at the end of evaluating an expression, appscript only resolves a reference when it receives an appropriate command. For example:</p>
+<p>Unlike AppleScript, which implicitly sends a <code>get</code> command to any unresolved application object references at the end of evaluating an expression, AEB only resolves a reference when it receives an appropriate command. For example:</p>
 
 <pre><code>  let v = TextEdit().documents
 </code></pre>
@@ -162,8 +164,8 @@ The conventional form is also supported should you ever wish (or need) to use it
   //  TextEdit(name: "/Applications/TextEdit.app").documents[2]]
 </code></pre>
 
-			</div>
-		</div>
-		<div id="footer"><div class="navbar"><a href="object-specifiers.html">back</a> | <a href="index.html">index</a> | <a href="examples.html">next</a></div></div>
-	</body>
+            </div>
+        </div>
+        <div id="footer"><div class="navbar"><a href="object-specifiers.html">back</a> | <a href="index.html">index</a> | <a href="examples.html">next</a></div></div>
+    </body>
 </html>

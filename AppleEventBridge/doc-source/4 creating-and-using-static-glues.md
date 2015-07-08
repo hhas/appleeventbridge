@@ -24,7 +24,7 @@ while the following command uses a custom class name prefix, `TE`, and creates t
 
 The generated glue folder also contains an `.sdef` file containing the application's dictionary (interface documentation) in the correct format. For example, to view the `TEGlue` terminology in Script Editor: 
 
-    open -a 'Script Editor' ~/Documents/TEGlue/TextEdit.h.sdef
+    open -a 'Script Editor' ~/Documents/TEGlue/TextEdit.objc.sdef
 
 Refer to this documentation when using AppleEventBridge glues in your own code, as it shows element, property, command, etc. names as they appear in the generated glue classes. (Make sure Script Editor's dictionary viewer is set to "AppleScript" language; other formats are for use with OS X's Scripting Bridge/JavaScript for Automation bridges only.)
 
@@ -38,6 +38,7 @@ For compatibility, `aebglue` normally sends the application an `ascr/gdte` event
 
 (Be aware that OS X's AETE-to-SDEF converter is not 100% reliable; for example, some four-char codes may fail to translate, in which case `aebglue` will warn of their omission. You'll have to correct the glue files manually should you need to use the affected features, or use the lower-level `AEM` APIs instead.)
 
+«»«<p class="hilitebox">If using Objective-C glues in a non-ARC project, `autorelease` calls must be manually added to the `XXApplication` class where indicated to avoid memory leaks.</p>»
 
 ## Using a glue
 

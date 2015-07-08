@@ -26,6 +26,9 @@
 // Base class for all AEM queries (object and test specifiers)
 
 
+// TO DO: when specifier is used as selector or parameter, need to check its root is the right type (i.e. AEMIts in -byTest:, AEMApp/AEMCon in -byRange:to:, AEMApp in event params) and return error if not
+
+
 @interface AEMQuery : NSObject <AEMSelfPackingProtocol, AEMQueryProtocol> {
 	NSAppleEventDescriptor *cachedDesc;
 }

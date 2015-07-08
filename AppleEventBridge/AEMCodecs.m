@@ -14,7 +14,7 @@
 //
 
 
-// TO DO: in -[NSNumber objCType], 'c' indicates either char or bool; is there any way to reliably tell the difference? (if there was, AEMBoolean could be eliminated and NSNumber mapped instead to typeTrue/typeFalse), at least in ObjC bridge (note: Swift bridge should map directly to native true/false, so will either need to override pack/unpack or else AEMCodes should break those types out into overrideable methods)
+// TO DO: in -[NSNumber objCType], 'c' indicates either char or bool; is there any way to reliably tell the difference? (if there was, AEMBoolean could be eliminated and NSNumber mapped instead to typeTrue/typeFalse), at least in ObjC bridge (note: Swift bridge should map directly to native true/false, so will either need to override pack/unpack or else AEMCodes should break those types out into overrideable methods); best kludge seems to be `CFBooleanGetTypeID() == CFGetTypeID(anObject)` to determine if an NSNumber is bool/non-bool
 
 
 /**********************************************************************/

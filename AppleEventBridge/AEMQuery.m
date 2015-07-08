@@ -63,16 +63,16 @@
 
 
 - (AEMQueryRoot *)root { // stub method; subclasses will override this
-	return nil;
+	@throw [NSException exceptionWithName: @"NotImplementedError" reason: nil userInfo: nil];
 }
 
 - (id)resolveWithObject:(id)object { // stub method; subclasses will override this
-	return nil;
+	@throw [NSException exceptionWithName: @"NotImplementedError" reason: nil userInfo: nil];
 }
 
 - (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     // stub method; subclasses will override this
-	return nil;
+	@throw [NSException exceptionWithName: @"NotImplementedError" reason: nil userInfo: nil];
 }
 
 - (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {

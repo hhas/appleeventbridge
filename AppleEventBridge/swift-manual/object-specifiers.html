@@ -1,16 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<head>
-		<title>AppleEventBridge | Object specifiers</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<style type="text/css" media="all"><!--@import url(full.css);--></style>
-	</head>
-	<body>
-		<div id="wrap">
-			<div id="main">
-				<h1>Object specifiers</h1>
-				<div class="navbar"><a href="application-objects.html">back</a> | <a href="index.html">index</a> | <a href="commands.html">next</a></div>
-				<h2>How object specifiers work</h2>
+    <head>
+        <title>AppleEventBridge | Object specifiers</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css" media="all"><!--@import url(full.css);--></style>
+    </head>
+    <body>
+        <div id="wrap">
+            <div id="main">
+                <h1>Object specifiers</h1>
+                <div class="navbar"><a href="application-objects.html">back</a> | <a href="index.html">index</a> | <a href="commands.html">next</a></div>
+                <h2>How object specifiers work</h2>
+
+<p>[TO DO: finish (note that this is a bit of a rehash of ch.2; might be simpler just to refer users back to that)]</p>
 
 <p>A property contains either a simple value describing an object attribute (<code>name</code>, <code>class</code>, <code>creationDate</code>, etc.) or an object specifier representing a one-to-one relationship between objects (e.g. <code>home</code>, <code>currentTrack</code>).</p>
 
@@ -20,13 +22,15 @@
 
 <p>characters/words/paragraphs of documents by index/relative-position/range/filter</p>
 
-<p>[TO DO: finish]</p>
+<p>[TO DO: list of supported reference forms, with links to sections below]</p>
+
+<p>[TO DO: following sections should include AppleScript syntax equivalents for reference]</p>
 
 <h2>Reference forms</h2>
 
 <h3>Property</h3>
 
-<pre><code>  var PROPERTY: XXSpecifier!
+<pre><code>  var PROPERTY: XXSpecifier
 </code></pre>
 
 <p>Syntax:</p>
@@ -41,8 +45,18 @@ finder.<strong>home</strong>.files.<strong>name</strong></code></pre>
 
 <h3>All elements</h3>
 
-<pre><code>  var ELEMENTS: XXSpecifier!
+<pre><code>  var ELEMENTS: XXSpecifier
 </code></pre>
+
+<p>Syntax:</p>
+
+<pre><code>specifier.<var>elements</var></code></pre>
+
+<p>Examples:</p>
+
+<pre><code>finder.home.<strong>folders</strong>
+textedit.<strong>documents</strong>
+textedit.<strong>documents</strong>.<strong>paragraphs</strong>.<strong>words</strong></code></pre>
 
 <p>Syntax:</p>
 
@@ -56,13 +70,18 @@ textedit.<strong>documents</strong>.<strong>paragraphs</strong>.<strong>words</s
 
 <h3>Element by index</h3>
 
-<pre><code>  subscript(index: AnyObject!) -&gt; XXSpecifier!
+<pre><code>  subscript(index: AnyObject) -&gt; XXSpecifier
+
+   - (instancetype)objectAtIndexedSubscript:(int)idx;
+   - (instancetype)objectForKeyedSubscript:(id)key;
 </code></pre>
 
-<p>Syntax:</p>
+<p>»
+Syntax:</p>
 
 <pre><code>elements<strong>[</strong><var>selector</var><strong>]</strong>
-    <var>selector</var> : Int! | AnyObject! -- the object's index (1-indexed), or other identifying value [1]</code></pre>
+
+    <var>selector</var> : Int | AnyObject -- the object's index (1-indexed), or other identifying value [1]</code></pre>
 
 <p>[1] While element indexes are normally integers, some applications may also accept other types (e.g. Finder's file/folder/disk specifiers also accept alias values). The only exceptions are <code>String</code> and <code>XXSpecifier</code>, which are used to construct by-name and by-test specifiers respectively.</p>
 
@@ -76,10 +95,11 @@ textedit.<strong>documents</strong>.<strong>paragraphs</strong>.<strong>words</s
 
 <h3>Element by name</h3>
 
-<pre><code>  subscript(index: String!) -&gt; XXSpecifier!
+<pre><code>  subscript(index: String) -&gt; XXSpecifier
+  func named(name: AnyObject) -&gt; XXSpecifier
 </code></pre>
 
-<p>Specifies the first element with the given name.</p>
+<p>Specifies the first element with the given name. (The subscript syntax is preferred; the <code>named</code> method would only need used if a non-string value was required.)</p>
 
 <p>Syntax:</p>
 
@@ -96,13 +116,13 @@ textedit.<strong>documents</strong>.<strong>paragraphs</strong>.<strong>words</s
 
 <h3>Element by ID</h3>
 
-<pre><code>  func ID(uid:AnyObject!) -&gt; XXSpecifier! // by-ID
+<pre><code>  func ID(elementID:AnyObject) -&gt; XXSpecifier
 </code></pre>
 
 <p>Syntax:</p>
 
 <pre><code>elements.<strong>ID</strong>(uid: <var>selector</var>)
-        <var>selector</var> : AnyObject! -- the object's id (as defined in its 'id' property)</code></pre>
+        <var>selector</var> : AnyObject -- the object's id (as defined in its 'id' property)</code></pre>
 
 <p>Examples:</p>
 
@@ -111,10 +131,10 @@ textedit.<strong>documents</strong>.<strong>paragraphs</strong>.<strong>words</s
 
 <h3>Element by absolute position</h3>
 
-<pre><code>  var first: XXSpecifier!
-  var middle: XXSpecifier!
-  var last: XXSpecifier!
-  var any: XXSpecifier!
+<pre><code>  var first: XXSpecifier
+  var middle: XXSpecifier
+  var last: XXSpecifier
+  var any: XXSpecifier
 </code></pre>
 
 <p>Syntax:</p>
@@ -133,28 +153,30 @@ elements.<strong>any</strong> -- random element</code></pre>
 
 <h3>Element by relative position</h3>
 
-<pre><code>  func previous(class_: AEBSymbol!) -&gt; XXSpecifier!
-  func next(class_: AEBSymbol!) -&gt; XXSpecifier!
+<pre><code>  func previous(elementClass: AEBSymbol) -&gt; XXSpecifier
+  func next(elementClass: AEBSymbol) -&gt; XXSpecifier
 </code></pre>
 
 <p>Syntax:</p>
 
 <pre><code>
 // nearest element of a given class to appear before the specified element:
-element.<strong>previous</strong>(class_: <var>typeName</var>)
+element.<strong>previous</strong>(<var>elementClass</var>)
+
 // nearest element of a given class to appear after the specified element
-element <strong>next:</strong> <var>typeName</var>]
-        <var>typeName</var> : AEBSymbol -- the name of the previous/next element's class</code></pre>
+element.<strong>next</strong>(<var>elementClass</var>)
+
+        <var>elementClass</var> : AEBSymbol -- the name of the previous/next element's class</code></pre>
 
 <p>Examples:</p>
 
-<pre><code>  words[3].next(TED.word) // gets word 4
-  paragraphs[-1].previous(TED.character) // gets last character before last paragraph
+<pre><code>  words[3].next(TED.word) // word 4
+  paragraphs[-1].previous(TED.character) // the last character before the last paragraph
 </code></pre>
 
 <h3>Elements by range</h3>
 
-<pre><code>  subscript(from: AnyObject!, to: AnyObject!) -&gt; XXSpecifier! // by-range
+<pre><code>  subscript(from: AnyObject, to: AnyObject) -&gt; XXSpecifier // by-range
 </code></pre>
 
 <p>Range references select all elements between and including two object specifiers indicating the start and end of the range. The start and end specifiers are normally declared relative to the container of the elements being selected. </p>
@@ -166,38 +188,35 @@ element <strong>next:</strong> <var>typeName</var>]
 
 <p>Thus, to specify all paragraphs from paragraph 3 to paragraph -1:</p>
 
-<pre><code>  ref.paragraphs[TEDCon.paragraphs[3], TEDCon.paragraphs[-1]]
+<pre><code>  paragraphs[TEDCon.paragraphs[3], TEDCon.paragraphs[-1]]
 </code></pre>
 
 <p>For convenience, sub-specifiers can be written in shorthand form where their element class is the same as the elements being selected; thus the above can be written more concisely as:</p>
 
-<pre><code>  ref.paragraphs[3, -1]
+<pre><code>  paragraphs[3, -1]
 </code></pre>
 
 <p>Some applications can handle more complex range references. For example, the following will work in Tex-Edit Plus:</p>
 
-<pre><code>ref.words[TEPcon.characters[5], TEPcon.paragraphs[-2]]</code></pre>
+<pre><code>  words[TEPcon.characters[5], TEPcon.paragraphs[-2]]
+</code></pre>
 
 <p>Syntax:</p>
 
-<pre><code>elements<strong>[</strong> <var>start</var> to:</strong> <var>end</var>]
-        <var>start</var> : NSNumber | NSString | AEBSpecifier -- start of range
-        <var>end</var> : Int | NSString | AEBSpecifier -- end of range
-
-[elements <strong>at:</strong> <var>start</var> <strong>to:</strong> <var>end</var>]
-        <var>start</var> : int -- start of range
-        <var>end</var> : int -- end of range</code></pre>
+<pre><code>elements<strong>[</strong> <var>start</var>, </strong> <var>end</var>]
+        <var>start</var> : Int | String | AEBSpecifier -- start of range
+        <var>end</var> : Int | String | AEBSpecifier -- end of range</code></pre>
 
 <p>Examples:</p>
 
-<pre><code>  [documents at: 1 to: 3]
-  [folders byRange: @"Documents" to: @"Movies"]
-  [text byRange: [TEPCon.characters at: 5] to: [TEPCon.words] at: -2]
+<pre><code>  documents[1, 3]
+  folders["Documents", "Movies"]
+  text[TEPCon.characters[5], TEPCon.words[-2]]
 </code></pre>
 
 <h3>Elements by test</h3>
 
-<pre><code>  subscript(index: XXSpecifier!) -&gt; XXSpecifier!
+<pre><code>  subscript(index: XXSpecifier) -&gt; XXSpecifier
 </code></pre>
 
 <p>A specifier to each element that satisfies one or more conditions specified by a test specifier:</p>
@@ -214,7 +233,7 @@ element <strong>next:</strong> <var>typeName</var>]
     TEDIts.size
     TEDIts.words.first
 </code></pre></li>
-<li><p>One or more conditional tests, implemented as operators/methods on the specifier being tested. Each operator takes a test specifier as its first operand and any value as its second. Each method takes any value as its sole argument.</p>
+<li><p>One or more conditional tests, implemented as operators/methods on the specifier being tested. The left-hand operand or receiver must be an <code>XXSpecifier</code> instance; the other operand or argument can be anything.</p>
 
 <p>Syntax:</p>
 
@@ -227,33 +246,36 @@ specifier <strong>&gt;=</strong> <var>value</var>
 specifier <strong>beginsWith</strong>(<var>value</var>)
 specifier <strong>endsWith</strong>(<var>value</var>)
 specifier <strong>contains</strong>(<var>value</var>)
-specifier <strong>isIn</strong>(<var>value</var>)
-      <var>value</var> : XXSpecifier -- the test specifier</code></pre>
+specifier <strong>isIn</strong>(<var>value</var>)</code></pre>
 
 <p>Examples:</p>
 
-<pre><code>TEDIts == ""
-FINits.size &gt; 1024
-TEDIts.words.first.beginsWith("A")
-TEDIts.characters.first == TEDIts.characters.last
+<pre><code>  TEDIts == ""
+  FINits.size &gt; 1024
+  TEDIts.words.first.beginsWith("A")
+  TEDIts.characters.first == TEDIts.characters.last
 </code></pre>
 
-<p>// TO DO: note about <code>==</code> -> Bool vs Specifier</p></li>
-<li><p>Zero or more logical tests, implemented as properties/methods on conditional tests. The <code>-AND:</code> and <code>-OR:</code> methods take conditional and/or logic test specifiers as arguments.</p>
+<p>Caution: if assigning a test specifier to a variable, the variable must be explicitly typed to ensure the compiler uses the correct operator overload, e.g.:</p>
+
+<pre><code>  let test: AEBSpecifier = TEDIts.color == [0,0,0]
+  let query = textedit.documents[1].words[test]
+</code></pre></li>
+<li><p>Zero or more logical tests, implemented as properties/methods on conditional tests. All operands must be conditional and/or logic test specifiers.</p>
 
 <p>Syntax:</p>
 
 <pre><code><var>test</var> <strong>&amp;&amp;</strong> <var>test</var>
-<var>test</var> <strong>||</strong> <var>test</var>]
+<var>test</var> <strong>||</strong> <var>test</var>
 <strong>!</strong><var>test</var></code></pre>
 
 <p>Examples:</p>
 
-<pre><code>TEDIts.contains("?")
+<pre><code>  !(TEDIts.contains("?"))
 
-FINits.size &gt; 1024 &amp;&amp; FINits.size &lt; 10240
+  FINits.size &gt; 1024 &amp;&amp; FINits.size &lt; 10240
 
-TEDIts.words[1].beginsWith("A") || TEDIts.words[1].contains("ce") || TEDIts.words[2] == "foo"
+  TEDIts.words[1].beginsWith("A") || TEDIts.words[1].contains("ce") || TEDIts.words[2] == "foo"
 </code></pre></li>
 </ul>
 
@@ -261,10 +283,10 @@ TEDIts.words[1].beginsWith("A") || TEDIts.words[1].contains("ce") || TEDIts.word
 
 <p>Insertion locations can be specified at the beginning or end of all elements, or before or after a specified element or element range.</p>
 
-<pre><code>  var beginning: XXSpecifier!
-  var end: XXSpecifier!
-  var before: XXSpecifier!
-  var after: XXSpecifier!
+<pre><code>  var beginning: XXSpecifier
+  var end: XXSpecifier
+  var before: XXSpecifier
+  var after: XXSpecifier
 </code></pre>
 
 <p>Syntax:</p>
@@ -280,8 +302,8 @@ element.<strong>after</strong></code></pre>
   paragraphs.last.before
 </code></pre>
 
-			</div>
-		</div>
-		<div id="footer"><div class="navbar"><a href="application-objects.html">back</a> | <a href="index.html">index</a> | <a href="commands.html">next</a></div></div>
-	</body>
+            </div>
+        </div>
+        <div id="footer"><div class="navbar"><a href="application-objects.html">back</a> | <a href="index.html">index</a> | <a href="commands.html">next</a></div></div>
+    </body>
 </html>

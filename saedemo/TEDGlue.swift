@@ -475,7 +475,9 @@ class TEDSpecifier: SwiftAESpecifier {
     override var description: String { return TEDFormatter.formatObject(aemQuery, appData: aebAppData) }
     
     // Raw property and element specifiers, e.g. TextEdit.elementsByFourCharCode("docu") => TextEdit.documents
-    
+
+    // TO DO: userProperty(name:String)
+
     func propertyByCode(code: OSType) -> TEDSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("specify a property")
         return TEDSpecifier(appData: aebAppData, aemQuery: baseQuery?.property(code), queryError: queryError)
@@ -494,17 +496,20 @@ class TEDSpecifier: SwiftAESpecifier {
     // Element(s) selectors
     // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
 
-    subscript(index: AnyObject!) -> TEDSpecifier! { // by-index, by-name, by-test
+    subscript(index: AnyObject) -> TEDSpecifier! { // by-index, by-name, by-test
 
         var baseQuery: AEMMultipleElementsSpecifier?, newQuery: AEMQuery?, queryError: NSError?
         switch (index) {
         case is String:
             (baseQuery, queryError) = self.aemElementsSpecifer("select element named \(index)")
             newQuery = baseQuery?.byName(index)
-        case is AEMQueryProtocol: // TO DO: use AEMTestClauseProtocol
+        case is AEMQueryProtocol:
             (baseQuery, queryError) = self.aemElementsSpecifer("select elements where \(index)")
             if let testClause = (index as! AEMQueryProtocol).aemQuery as? AEMTestClause {
+                // TO DO: also need to check that testClause.root == AEMQuery.its()
                 newQuery = baseQuery?.byTest(testClause)
+            } else {
+                // TO DO: set queryError, or pack by-index/by-name specifier? check how AS does it, e.g. for SysEv (disk item (alias...))
             }
         default:
             (baseQuery, queryError) = self.aemElementsSpecifer("select element \(index)")
@@ -512,22 +517,26 @@ class TEDSpecifier: SwiftAESpecifier {
         }
         return TEDSpecifier(appData: aebAppData, aemQuery: newQuery, queryError: queryError)
     }
-    func ID(uid: AnyObject) -> TEDSpecifier { // by-id
-        let (baseQuery, queryError) = self.aemElementsSpecifer("select element with id \(uid)")
-        return TEDSpecifier(appData: aebAppData, aemQuery: baseQuery?.byID(uid), queryError: queryError)
+    func named(name: AnyObject) -> TEDSpecifier { // by-name; use this if name is not a String, else use subscript
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select element named \(name)")
+        return TEDSpecifier(appData: aebAppData, aemQuery: baseQuery?.byName(name), queryError: queryError)
     }
-    subscript(from: AnyObject!, to: AnyObject!) -> TEDSpecifier! { // by-range
+    func ID(elementID: AnyObject) -> TEDSpecifier { // by-id
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select element with id \(elementID)")
+        return TEDSpecifier(appData: aebAppData, aemQuery: baseQuery?.byID(elementID), queryError: queryError)
+    }
+    subscript(from: AnyObject, to: AnyObject!) -> TEDSpecifier! { // by-range
         let (baseQuery, queryError) = self.aemElementsSpecifer("select elements \(from) thru \(to)")
         return TEDSpecifier(appData: aebAppData, aemQuery: baseQuery?.byRange(from, to: to), queryError: queryError)
     }
 
-    func previous(class_: AEBSymbol) -> TEDSpecifier {
+    func previous(elementClass: AEBSymbol) -> TEDSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select previous element")
-        return TEDSpecifier(appData: aebAppData, aemQuery: baseQuery?.previous(class_.aebCode), queryError: queryError)
+        return TEDSpecifier(appData: aebAppData, aemQuery: baseQuery?.previous(elementClass.aebCode), queryError: queryError)
     }
-    func next(class_: AEBSymbol) -> TEDSpecifier {
+    func next(elementClass: AEBSymbol) -> TEDSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select next element")
-        return TEDSpecifier(appData: aebAppData, aemQuery: baseQuery?.next(class_.aebCode), queryError: queryError)
+        return TEDSpecifier(appData: aebAppData, aemQuery: baseQuery?.next(elementClass.aebCode), queryError: queryError)
     }
     
     var first: TEDSpecifier {

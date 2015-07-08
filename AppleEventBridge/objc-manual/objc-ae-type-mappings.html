@@ -1,16 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<head>
-		<title>AppleEventBridge | Objective-C/Apple event type mappings</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<style type="text/css" media="all"><!--@import url(full.css);--></style>
-	</head>
-	<body>
-		<div id="wrap">
-			<div id="main">
-				<h1>Objective-C/Apple event type mappings</h1>
-				<div class="navbar"><a href="creating-and-using-static-glues.html">back</a> | <a href="index.html">index</a> | <a href="application-objects.html">next</a></div>
-				<h2>Overview</h2>
+    <head>
+        <title>AppleEventBridge | Objective-C/Apple event type mappings</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css" media="all"><!--@import url(full.css);--></style>
+    </head>
+    <body>
+        <div id="wrap">
+            <div id="main">
+                <h1>Objective-C/Apple event type mappings</h1>
+                <div class="navbar"><a href="creating-and-using-static-glues.html">back</a> | <a href="index.html">index</a> | <a href="application-objects.html">next</a></div>
+                <h2>Overview</h2>
 
 <p>[TO DO: finish updating this chapter]</p>
 
@@ -103,13 +103,13 @@
 <p>Be aware when specifying a command's required/result type, you must specify the exact AE type (<code>AEMSymbol.alias</code>/<code>typeAlias</code>, <code>AEMSymbol.fileURL</code>/<code>typeFileURL</code>, etc). For example, the Finder normally returns file system references as object specifiers:</p>
 
 <pre><code>      [[finder.home get] send]
-      // Result: [[[Finder.startupDisk elements: @"cfol"] byName: @"Users"] ...]
+      // [[Finder.startupDisk.folders byName: @"Users"].folders byName: @"Users"]
 </code></pre>
 
-<p>To get the current user's home folder as an <code>AEMURL</code> instead:</p>
+<p>To get the current user's home folder as an <code>NSURL</code> instead:</p>
 
 <pre><code>      [[[finder.home get] resultType: AEBSymbol.fileURL] send]
-      // Result: &lt;NSURL file:///Users/jsmith&gt;
+      // &lt;NSURL file:///Users/jsmith&gt;
 </code></pre>
 
 <h3>Records</h3>
@@ -138,7 +138,9 @@
   TESymbol.ask
 </code></pre>
 
-<p>Occasionally an application dictionary defines a type or enumerator without providing it with a corresponding name name. In these cases, the value will be represented as a raw <code>AEMType</code> or <code>AEMEnum</code> instance instead, e.g.: </p>
+<p>[TO DO: SwiftAE uses AEBSymbol(fourCharCode:String)]</p>
+
+<p>Occasionally an application dictionary defines a type or enumerator without providing it with a corresponding name name. In these cases, the value will be represented as a raw <code>AEMType</code> or <code>AEMEnum</code> instance instead, e.g.:</p>
 
 <pre><code>  [AEMType typeWithCode: 'abcd']
   [AEMEnum enumWithCode: 'xyz ']
@@ -150,8 +152,8 @@
 
 <p>The Apple Event Manager defines many other AE types whose names and codes are defined by AppleEventBridge for completeness. A few of these types are of occasional interest to users, the rest can simply be ignored. In most cases, values of these types will be represented by <code>NSAppleEventDescriptor</code> instances as AppleEventBridge doesn't automatically convert them.</p>
 
-			</div>
-		</div>
-		<div id="footer"><div class="navbar"><a href="creating-and-using-static-glues.html">back</a> | <a href="index.html">index</a> | <a href="application-objects.html">next</a></div></div>
-	</body>
+            </div>
+        </div>
+        <div id="footer"><div class="navbar"><a href="creating-and-using-static-glues.html">back</a> | <a href="index.html">index</a> | <a href="application-objects.html">next</a></div></div>
+    </body>
 </html>

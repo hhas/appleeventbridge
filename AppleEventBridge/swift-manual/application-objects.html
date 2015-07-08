@@ -1,22 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<head>
-		<title>AppleEventBridge | Application objects</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<style type="text/css" media="all"><!--@import url(full.css);--></style>
-	</head>
-	<body>
-		<div id="wrap">
-			<div id="main">
-				<h1>Application objects</h1>
-				<div class="navbar"><a href="objc-ae-type-mappings.html">back</a> | <a href="index.html">index</a> | <a href="object-specifiers.html">next</a></div>
-				<h2>Creating application objects</h2>
+    <head>
+        <title>AppleEventBridge | Application objects</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css" media="all"><!--@import url(full.css);--></style>
+    </head>
+    <body>
+        <div id="wrap">
+            <div id="main">
+                <h1>Application objects</h1>
+                <div class="navbar"><a href="objc-ae-type-mappings.html">back</a> | <a href="index.html">index</a> | <a href="object-specifiers.html">next</a></div>
+                <h2>Creating application objects</h2>
 
 <p>Before you can communicate with a scriptable application you must create an application object. When targeting local applications, the glue's default constructor is usually the best choice. For example, to target TextEdit:</p>
 
-<pre><code>  import TEGlue
-
-  let textedit = TextEdit()
+<pre><code>  let textedit = TextEdit()
 </code></pre>
 
 <p>This uses the bundle identifier of the application from which the glue was originally generated (e.g. "com.apple.TextEdit") to locate the application on the current machine, or returns <code>nil</code> if no match is found. (See <code>-[NSWorkspace URLForApplicationWithBundleIdentifier:]</code> for more information.)</p>
@@ -46,16 +44,12 @@
 
 <p>For example, to target a specific version of InDesign by name:</p>
 
-<pre><code>  import AIDGlue
-
-  let indesign = AIDApplication(name: "Adobe InDesign CS6.app")
+<pre><code>  let indesign = AdobeInDesign(name: "Adobe InDesign CS6.app")
 </code></pre>
 
 <p>Or to control an iTunes process on another machine using Remote Apple Events:</p>
 
-<pre><code>  import ITUGlue
-
-  let itunes = ITUApplication(url: NSURL(string: "eppc://jsmith@media-mac.local/iTunes"))
+<pre><code>  let itunes = ITunes(url: NSURL(string: "eppc://jsmith@media-mac.local/iTunes"))
 </code></pre>
 
 <p>Each of the above initializers also accepts the following optional arguments:</p>
@@ -71,19 +65,20 @@
 
 <h2>Basic commands</h2>
 
-<p>All applications should respond to the following commands:</p>
+<p>[TO DO: how best to format commands?]
+All applications should respond to the following commands (note: all application commands return <code>throws -&gt; AnyObject</code> as standard):</p>
 
-<pre><code>  run() throws // Run an application
+<pre><code>  run() // Run an application
 
-  activate() throws // Bring the application to the front
+  activate() // Bring the application to the front
 
-  reopen() throws // Reactivate a running application
+  reopen() // Reactivate a running application
 
-  open(directParameter: AnyObject?) throws // Open the specified file(s), e.g. an NSArray of NSURL
+  open(AnyObject) // Open the specified file(s), e.g. an NSArray of NSURL
 
-  print(directParameter: AnyObject?) throws // Print the specified file(s), e.g. an NSArray of NSURL
+  print(AnyObject) // Print the specified file(s), e.g. an NSArray of NSURL
 
-  quit( [ saving: AEB.yes | AEB.ask | AEB.no ] ) throws    // TO DO: AEB prefix currently only works for default glue 
+  quit( [ saving: AEB.yes | AEB.ask | AEB.no ] )    // TO DO: AEB prefix currently only works for default glue 
                // Quit an application optionally specifying if currently open documents be saved first
 </code></pre>
 
@@ -91,10 +86,9 @@
 
 <p>AppleEventBridge also defines <code>get</code> and <code>set</code> commands for any scriptable application that doesn't supply its own definitions:</p>
 
-<pre><code>  get(directParameter: AnyObject?) throws -&gt; AnyObject! // Get the value of the given object specifier
+<pre><code>  get(AEBSpecifier) // Get the value of the given object specifier
 
-  set(directParameter: AnyObject?, // Set the value of the given object specifier
-      to: AnyObject) throws // The new value; may be anything
+  set(AEBSpecifier, to: AnyObject) // Set the value of the given object specifier to the new value
 </code></pre>
 
 <p>Note that these commands are only useful in applications that define an Apple Event Object Model as part of their Apple event interface.</p>
@@ -167,8 +161,8 @@
 
 <p class="hilitebox">There is a known problem with quitting and immediately relaunching an application via AppleEventBridge, where the relaunch instruction is sent to the application before it has actually quit. This timing issue appears to be the OS's fault; one workaround is to send the `quit` command, wait until `-isRunning` returns `NO`, then send the `run`/`launch` command.</p>
 
-			</div>
-		</div>
-		<div id="footer"><div class="navbar"><a href="objc-ae-type-mappings.html">back</a> | <a href="index.html">index</a> | <a href="object-specifiers.html">next</a></div></div>
-	</body>
+            </div>
+        </div>
+        <div id="footer"><div class="navbar"><a href="objc-ae-type-mappings.html">back</a> | <a href="index.html">index</a> | <a href="object-specifiers.html">next</a></div></div>
+    </body>
 </html>

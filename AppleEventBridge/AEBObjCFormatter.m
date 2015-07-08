@@ -112,24 +112,23 @@
 // by-index, by-name, by-id selectors
 
 - (instancetype)byIndex:(id)index {
-	[mutableResult insertString: @"[" atIndex: 0];
-	if ([index isKindOfClass: NSNumber.class]) {
-		[mutableResult appendFormat: @" at: %@]", index];
-	} else {
-		[mutableResult appendFormat: @" byIndex: %@]", [self format: index]];
-    }
+	[mutableResult appendFormat: @"[%@]", [self format: index]];
     return self;
 }
 
 - (instancetype)byName:(id)name {
+    if ([name isKindOfClass: NSString.class]) {
+        [mutableResult appendFormat: @"[%@]", [self format: name]];
+    } else {
 	[mutableResult insertString: @"[" atIndex: 0];
-	[mutableResult appendFormat: @" byName: %@]", [self format: name]];
+        [mutableResult appendFormat: @" named: %@]", [self format: name]];
+    }
     return self;
 }
 
 - (instancetype)byID:(id)id_ {
 	[mutableResult insertString: @"[" atIndex: 0];
-	[mutableResult appendFormat: @" byID: %@]", [self format: id_]];
+	[mutableResult appendFormat: @" ID: %@]", [self format: id_]];
     return self;
 }
 
@@ -153,15 +152,14 @@
 
 - (instancetype)byRange:(id)fromObject to:(id)toObject {
 	[mutableResult insertString: @"[" atIndex: 0];
-	[mutableResult appendFormat: @" byRange: %@ to: %@]", [self format: fromObject], [self format: toObject]];
+	[mutableResult appendFormat: @" from: %@ to: %@]", [self format: fromObject], [self format: toObject]];
     return self;
 }
 
 // by-test selector
 
 - (instancetype)byTest:(id)testSpecifier {
-	[mutableResult insertString: @"[" atIndex: 0];
-	[mutableResult appendFormat: @" byTest: %@]", [self format: testSpecifier]];
+	[mutableResult appendFormat: @"[%@]", [self format: testSpecifier]];
     return self;
 }
 
@@ -191,37 +189,37 @@
 
 - (instancetype)greaterThan:(id)object {
 	[mutableResult insertString: @"[" atIndex: 0];
-	[mutableResult appendFormat: @" greaterThan: %@]", [self format: object]];
+	[mutableResult appendFormat: @" gt: %@]", [self format: object]];
     return self;
 }
 
 - (instancetype)greaterOrEquals:(id)object {
 	[mutableResult insertString: @"[" atIndex: 0];
-	[mutableResult appendFormat: @" greaterOrEquals: %@]", [self format: object]];
+	[mutableResult appendFormat: @" ge: %@]", [self format: object]];
     return self;
 }
 
 - (instancetype)equals:(id)object {
 	[mutableResult insertString: @"[" atIndex: 0];
-	[mutableResult appendFormat: @" equals: %@]", [self format: object]];
+	[mutableResult appendFormat: @" eq: %@]", [self format: object]];
     return self;
 }
 
 - (instancetype)notEquals:(id)object {
 	[mutableResult insertString: @"[" atIndex: 0];
-	[mutableResult appendFormat: @" notEquals: %@]", [self format: object]];
+	[mutableResult appendFormat: @" ne: %@]", [self format: object]];
     return self;
 }
 
 - (instancetype)lessThan:(id)object {
 	[mutableResult insertString: @"[" atIndex: 0];
-	[mutableResult appendFormat: @" lessThan: %@]", [self format: object]];
+	[mutableResult appendFormat: @" lt: %@]", [self format: object]];
     return self;
 }
 
 - (instancetype)lessOrEquals:(id)object {
 	[mutableResult insertString: @"[" atIndex: 0];
-	[mutableResult appendFormat: @" lessOrEquals: %@]", [self format: object]];
+	[mutableResult appendFormat: @" le: %@]", [self format: object]];
     return self;
 }
 

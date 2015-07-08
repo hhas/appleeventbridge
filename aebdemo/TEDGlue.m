@@ -7,6 +7,8 @@
 
 #import "TEDGlue.h"
 
+// TO DO: add comments where -release calls are needed in non-ARC builds
+
 
 @implementation TEDFormatter
 - (NSString *)propertyByCode:(OSType)code {
@@ -572,7 +574,7 @@
     [self setParameter: value forKeyword: 0x64617461];
     return self;
 }
-- (instancetype)at_:(id)value {
+- (instancetype)at:(id)value {
     [self setParameter: value forKeyword: 0x696e7368];
     return self;
 }
@@ -590,7 +592,7 @@
 - (NSString *)aebParameterNameForCode:(DescType)code {
     switch (code) {
         case 0x64617461: return @"withData";
-        case 0x696e7368: return @"at_";
+        case 0x696e7368: return @"at";
         case 0x6b6f636c: return @"new_";
         case 0x70726474: return @"withProperties";
     }
@@ -1202,7 +1204,7 @@
                                                             launchOptions: kAEMDefaultLaunchOptions
                                                              relaunchMode: AEBRelaunchLimited
                                                            specifierClass: TEDSpecifier.class
-                                                              symbolClass: TEDSymbol.class];
+                                                              symbolClass: TEDSymbol.class]; // non-ARC: add autorelease
     return [super initWithAppData: data aemQuery: AEMApp];
 }
 
@@ -1212,22 +1214,22 @@
     return [[self alloc] init];
 }
 + (instancetype)currentApplication {
-    return [[self alloc] initCurrentApplication];
+    return [[self alloc] initCurrentApplication]; // non-ARC: add autorelease
 }
 + (instancetype)applicationWithName:(NSString *)name {
-    return [[self alloc] initWithName: name];
+    return [[self alloc] initWithName: name]; // non-ARC: add autorelease
 }
 + (instancetype)applicationWithURL:(NSURL *)url {
-    return [[self alloc] initWithURL: url];
+    return [[self alloc] initWithURL: url]; // non-ARC: add autorelease
 }
 + (instancetype)applicationWithBundleID:(NSString *)bundleID {
-    return [[self alloc] initWithBundleID: bundleID];
+    return [[self alloc] initWithBundleID: bundleID]; // non-ARC: add autorelease
 }
 + (instancetype)applicationWithProcessID:(pid_t)pid {
-    return [[self alloc] initWithProcessID: pid];
+    return [[self alloc] initWithProcessID: pid]; // non-ARC: add autorelease
 }
 + (instancetype)applicationWithDescriptor:(NSAppleEventDescriptor *)desc {
-    return [[self alloc] initWithDescriptor: desc];
+    return [[self alloc] initWithDescriptor: desc]; // non-ARC: add autorelease
 }
 - (instancetype)init {
     return [self initWithBundleID: @"com.apple.TextEdit"];
@@ -1255,13 +1257,13 @@
 
 - (TEDSpecifier *)customRoot:(id)object {
     if ([object isKindOfClass: TEDSpecifier.class]) {
-        return [[TEDSpecifier alloc] initWithAppData: self.aebAppData aemQuery: [object aemQuery]];
+        return [[TEDSpecifier alloc] initWithAppData: self.aebAppData aemQuery: [object aemQuery]]; // non-ARC: add autorelease
     } else if ([object isKindOfClass: AEMQuery.class]) {
-        return [[TEDSpecifier alloc] initWithAppData: self.aebAppData aemQuery: object];
+        return [[TEDSpecifier alloc] initWithAppData: self.aebAppData aemQuery: object];  // non-ARC: add autorelease
     } else if (!object) {
-        return [[TEDSpecifier alloc] initWithAppData: self.aebAppData aemQuery: AEMApp];
+        return [[TEDSpecifier alloc] initWithAppData: self.aebAppData aemQuery: AEMApp];  // non-ARC: add autorelease
     } else {
-        return [[TEDSpecifier alloc] initWithAppData: self.aebAppData aemQuery: AEMRoot(object)];
+        return [[TEDSpecifier alloc] initWithAppData: self.aebAppData aemQuery: AEMRoot(object)]; // non-ARC: add autorelease
     }
 }
 @end

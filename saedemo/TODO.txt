@@ -1,9 +1,28 @@
 TO DO:
 
+- rewrite AEB framework to simplify architecture, consolidating layered AEM+AEB query classes into a single layer of built-in and glue-defined classes:
+
+        AEBSpecifier
+            AEBObject
+                «PREFIX»Object
+                    «PREFIX»Elements <AEBElementsProtocol>
+                        «PREFIX»Application
+            AEBInsertion
+                «PREFIX»Insertion -- defined for typechecking purposes only
+            AEBTestClause
+                «PREFIX»TestClause -- defined for typechecking purposes only
+
+    AEBElementsProtocol -- selector methods would be defined on AEBObject, but only exposed on «PREFIX»Elements (ideally would use mixins/traits or multiple inheritance, but ObjC doesn't support this); not sure how to support insertion and test clause constructors, as those return different types (AEBInsertion, AEBTestClause; but ideally we want them to return their glue-defined subclasses for stronger typechecks)
+
+    note: glues would subclass AEBObject to define property/elements/command attributes, so «PREFIX»Elements, «PREFIX»Application would need to be defined in ObjC glues [including default glue, which would probably be built in as AEBElements, AEBApplication]), and AEMType, etc. into AEBSymbol; consider using -command:parameters:attributes:
+
+note: specifiers should pass self, AppData, property/elements name as string (for display, error reporting), selector type, selector data; note that deferred specifier support should remain for efficiency (with AppData option to disable); need to decide if packing should be done on the fly (caution: this would require generic specifiers to contain an AppData instance, which would be problematic for dynamic glues unless those can override pack to create a 'deferred desc' to be packed for real when added to AppleEvent); note: might also want to pass specifier root, allowing quicker 'is it a test clause?' check
+
+
 - what, if any, standard Swift method/var names need reserved in AEBStaticKeywordConverter?
 
 
-- how best to specify launch flags? e.g. as optional args to Application object constructor
+- how best to specify launch flags in ObjC bridge? properties? chained method calls? (note: relaunchMode is currently implemented as property on AEBSpecifier; launchOptions needs exposed)
 
 
 - given all command methods return errors (since no Apple event is guaranteed to succeed), would it be worth overloading command methods to provide an alternative error handling scheme, allowing user to omit 'try' where they aren't concerned with error details, e.g. by passing a closure that returns a default value to be returned if command fails:
@@ -77,12 +96,6 @@ print(q) // q=false, but should be TETSpecifier; other operators do not seem to 
 
 
 - currently built-in terms aren't predefined in GlueSupport base classes, but are included in glue each time; not sure if this is best approach (though is prob. simplest as it avoids glue gen having to detect overridden terms and explicitly mark them `override`)
-
-
-- move AEBSwiftAEGlueBase, AEBSwiftAETranslate to AppleEventBridge.framework (note: need to check how mixed-code framework APIs are exposed to Swift vs ObjC)
-
-
-- finish event attributes support
 
 
 - is `defer` any use for auto-closing transactions? (not that many, if any, apps use those these days)

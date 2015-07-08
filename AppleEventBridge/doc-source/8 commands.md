@@ -1,4 +1,7 @@
 # Commands
+
+// TO DO: finish including ObjC-specific material once a decision is made on how best to construct commands in ObjC (i.e. chained methods vs dict of params/attrs vs varargs)
+
 // TO DO: waitReply should be nil; all attributes should be kAEBNoAttribute (or make them all AEBNoValue/AEBNoArgument?)
 
 ## Syntax
@@ -76,7 +79,7 @@ The two forms are equivalent (`AEBSpecifier` converts the first form to the seco
 the object specifier upon which it is called will be packed as the Apple event's "subject" attribute (`keySubjectAttr`).
 
 
-* If the `make` command is called on an insertion location specifier (`before`/`after`/`beginning`/`end`), appscript will pack that specifier as the Apple event's `at:` parameter if it doesn't already have one; i.e.:
+* If the `make` command is called on an insertion location specifier (`before`/`after`/`beginning`/`end`), AEB will pack that specifier as the Apple event's `at:` parameter if it doesn't already have one; i.e.:
 
         insertionLoc.make(new: className)
 
@@ -84,7 +87,7 @@ the object specifier upon which it is called will be packed as the Apple event's
 
         appObj.make(new: className, at: insertionLoc)
 
-   If the `make` command is called on an object specifier, appscript will pack that specifier as the Apple event's "subject" attribute. Be aware that some applications may not handle this attribute correctly, in which case the specifier should be passed via the `make` command's `at:` parameter.
+   If the `make` command is called on an object specifier, AEB will pack that specifier as the Apple event's "subject" attribute. Be aware that some applications may not handle this attribute correctly, in which case the specifier should be passed via the `make` command's `at:` parameter.
 
 
 ## Command errors
@@ -114,7 +117,7 @@ The `AEBCommandError` exception describes an error raised by the target applicat
 
 ## Note to AppleScript users
 
-Unlike AppleScript, which implicitly sends a `get` command to any unresolved application object references at the end of evaluating an expression, appscript only resolves a reference when it receives an appropriate command. For example:
+Unlike AppleScript, which implicitly sends a `get` command to any unresolved application object references at the end of evaluating an expression, AEB only resolves a reference when it receives an appropriate command. For example:
 
     let v = TextEdit().documents
 

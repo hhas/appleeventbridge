@@ -903,7 +903,9 @@ class ITUSpecifier: SwiftAESpecifier {
     override var description: String { return ITUFormatter.formatObject(aemQuery, appData: aebAppData) }
     
     // Raw property and element specifiers, e.g. TextEdit.elementsByFourCharCode("docu") => TextEdit.documents
-    
+
+    // TO DO: userProperty(name:String)
+
     func propertyByCode(code: OSType) -> ITUSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("specify a property")
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.property(code), queryError: queryError)
@@ -922,17 +924,20 @@ class ITUSpecifier: SwiftAESpecifier {
     // Element(s) selectors
     // important: by-index selectors use Apple event-style 1-indexing, NOT Swift-style 0-indexing
 
-    subscript(index: AnyObject!) -> ITUSpecifier! { // by-index, by-name, by-test
+    subscript(index: AnyObject) -> ITUSpecifier! { // by-index, by-name, by-test
 
         var baseQuery: AEMMultipleElementsSpecifier?, newQuery: AEMQuery?, queryError: NSError?
         switch (index) {
         case is String:
             (baseQuery, queryError) = self.aemElementsSpecifer("select element named \(index)")
             newQuery = baseQuery?.byName(index)
-        case is AEMQueryProtocol: // TO DO: use AEMTestClauseProtocol
+        case is AEMQueryProtocol:
             (baseQuery, queryError) = self.aemElementsSpecifer("select elements where \(index)")
             if let testClause = (index as! AEMQueryProtocol).aemQuery as? AEMTestClause {
+                // TO DO: also need to check that testClause.root == AEMQuery.its()
                 newQuery = baseQuery?.byTest(testClause)
+            } else {
+                // TO DO: set queryError, or pack by-index/by-name specifier? check how AS does it, e.g. for SysEv (disk item (alias...))
             }
         default:
             (baseQuery, queryError) = self.aemElementsSpecifer("select element \(index)")
@@ -940,22 +945,26 @@ class ITUSpecifier: SwiftAESpecifier {
         }
         return ITUSpecifier(appData: aebAppData, aemQuery: newQuery, queryError: queryError)
     }
-    func ID(uid: AnyObject) -> ITUSpecifier { // by-id
-        let (baseQuery, queryError) = self.aemElementsSpecifer("select element with id \(uid)")
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.byID(uid), queryError: queryError)
+    func named(name: AnyObject) -> ITUSpecifier { // by-name; use this if name is not a String, else use subscript
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select element named \(name)")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.byName(name), queryError: queryError)
     }
-    subscript(from: AnyObject!, to: AnyObject!) -> ITUSpecifier! { // by-range
+    func ID(elementID: AnyObject) -> ITUSpecifier { // by-id
+        let (baseQuery, queryError) = self.aemElementsSpecifer("select element with id \(elementID)")
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.byID(elementID), queryError: queryError)
+    }
+    subscript(from: AnyObject, to: AnyObject!) -> ITUSpecifier! { // by-range
         let (baseQuery, queryError) = self.aemElementsSpecifer("select elements \(from) thru \(to)")
         return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.byRange(from, to: to), queryError: queryError)
     }
 
-    func previous(class_: AEBSymbol) -> ITUSpecifier {
+    func previous(elementClass: AEBSymbol) -> ITUSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select previous element")
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.previous(class_.aebCode), queryError: queryError)
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.previous(elementClass.aebCode), queryError: queryError)
     }
-    func next(class_: AEBSymbol) -> ITUSpecifier {
+    func next(elementClass: AEBSymbol) -> ITUSpecifier {
         let (baseQuery, queryError) = self.aemObjectSpecifer("select next element")
-        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.next(class_.aebCode), queryError: queryError)
+        return ITUSpecifier(appData: aebAppData, aemQuery: baseQuery?.next(elementClass.aebCode), queryError: queryError)
     }
     
     var first: ITUSpecifier {

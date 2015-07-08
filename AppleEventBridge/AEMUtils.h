@@ -77,19 +77,16 @@ OSType AEM4CC(NSString * codeStr);
 
 
 @protocol AEMQueryProtocol <NSObject>
-
 @property (readonly) AEMQuery *aemQuery;
-
 @end
-
-
-// TO DO: AEMTestClauseProtocol?
 
 
 /**********************************************************************/
 
 NSString *AEMDescriptionForError(OSStatus err);
 
+
+void AEMLog(NSString *format, ...); // TEST
 
 
 

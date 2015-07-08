@@ -88,7 +88,7 @@
 }
 
 - (instancetype)initWithCode:(OSType)code_ { // subclasses should override this method
-    return nil;
+    @throw [NSException exceptionWithName: @"NotImplementedError" reason: nil userInfo: nil];
 }
 
 

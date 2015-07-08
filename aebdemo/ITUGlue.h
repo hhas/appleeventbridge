@@ -421,7 +421,7 @@
 @end
 
 @interface ITUMakeCommand : AEBObjCCommand
-- (instancetype)at_:(id)value;
+- (instancetype)at:(id)value;
 - (instancetype)new_:(id)value;
 - (instancetype)withProperties:(id)value;
 @end

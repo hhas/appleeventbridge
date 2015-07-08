@@ -76,6 +76,46 @@
 		4F7B99A01B4C280E0028EEFA /* SwiftAEFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B999D1B4C280E0028EEFA /* SwiftAEFormatter.swift */; };
 		4F7B99A11B4C280E0028EEFA /* SwiftAEGlueBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B999E1B4C280E0028EEFA /* SwiftAEGlueBase.swift */; };
 		4F7B99A21B4C280E0028EEFA /* SwiftAETranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B999F1B4C280E0028EEFA /* SwiftAETranslate.swift */; };
+		4F7B9A1B1B4DAEA20028EEFA /* a-quick-tutorial.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99B91B4DAE580028EEFA /* a-quick-tutorial.html */; };
+		4F7B9A1C1B4DAEA20028EEFA /* application-objects.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99BA1B4DAE580028EEFA /* application-objects.html */; };
+		4F7B9A1D1B4DAEA20028EEFA /* application_architecture.gif in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99BB1B4DAE580028EEFA /* application_architecture.gif */; };
+		4F7B9A1E1B4DAEA20028EEFA /* application_architecture2.gif in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99BC1B4DAE580028EEFA /* application_architecture2.gif */; };
+		4F7B9A1F1B4DAEA20028EEFA /* client_app_to_itunes_event.gif in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99BD1B4DAE580028EEFA /* client_app_to_itunes_event.gif */; };
+		4F7B9A201B4DAEA20028EEFA /* commands.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99BE1B4DAE580028EEFA /* commands.html */; };
+		4F7B9A211B4DAEA20028EEFA /* creating-and-using-static-glues.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99BF1B4DAE580028EEFA /* creating-and-using-static-glues.html */; };
+		4F7B9A221B4DAEA20028EEFA /* examples.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C01B4DAE580028EEFA /* examples.html */; };
+		4F7B9A231B4DAEA20028EEFA /* finder_to_textedit_event.gif in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C11B4DAE580028EEFA /* finder_to_textedit_event.gif */; };
+		4F7B9A241B4DAEA20028EEFA /* full.css in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C21B4DAE580028EEFA /* full.css */; };
+		4F7B9A251B4DAEA20028EEFA /* how-appleeventbridge-works.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C31B4DAE580028EEFA /* how-appleeventbridge-works.html */; };
+		4F7B9A261B4DAEA20028EEFA /* index.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C41B4DAE580028EEFA /* index.html */; };
+		4F7B9A271B4DAEA20028EEFA /* introduction.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C51B4DAE580028EEFA /* introduction.html */; };
+		4F7B9A281B4DAEA20028EEFA /* low-level-apis.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C61B4DAE580028EEFA /* low-level-apis.html */; };
+		4F7B9A291B4DAEA20028EEFA /* notes.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C71B4DAE580028EEFA /* notes.html */; };
+		4F7B9A2A1B4DAEA20028EEFA /* objc-ae-type-mappings.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C81B4DAE580028EEFA /* objc-ae-type-mappings.html */; };
+		4F7B9A2B1B4DAEA20028EEFA /* object-specifiers.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C91B4DAE580028EEFA /* object-specifiers.html */; };
+		4F7B9A2C1B4DAEA20028EEFA /* optimizing-performance.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99CA1B4DAE580028EEFA /* optimizing-performance.html */; };
+		4F7B9A2D1B4DAEA20028EEFA /* relationships_example.gif in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99CB1B4DAE580028EEFA /* relationships_example.gif */; };
+		4F7B9A2E1B4DAEA20028EEFA /* understanding-apple-events.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99CC1B4DAE580028EEFA /* understanding-apple-events.html */; };
+		4F7B9A301B4DAEFD0028EEFA /* a-quick-tutorial.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99F51B4DAE720028EEFA /* a-quick-tutorial.html */; };
+		4F7B9A311B4DAEFD0028EEFA /* application-objects.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99F61B4DAE720028EEFA /* application-objects.html */; };
+		4F7B9A321B4DAEFD0028EEFA /* application_architecture.gif in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99F71B4DAE720028EEFA /* application_architecture.gif */; };
+		4F7B9A331B4DAEFD0028EEFA /* application_architecture2.gif in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99F81B4DAE720028EEFA /* application_architecture2.gif */; };
+		4F7B9A341B4DAEFD0028EEFA /* client_app_to_itunes_event.gif in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99F91B4DAE720028EEFA /* client_app_to_itunes_event.gif */; };
+		4F7B9A351B4DAEFD0028EEFA /* commands.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99FA1B4DAE720028EEFA /* commands.html */; };
+		4F7B9A361B4DAEFD0028EEFA /* creating-and-using-static-glues.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99FB1B4DAE720028EEFA /* creating-and-using-static-glues.html */; };
+		4F7B9A371B4DAEFD0028EEFA /* examples.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99FC1B4DAE720028EEFA /* examples.html */; };
+		4F7B9A381B4DAEFD0028EEFA /* finder_to_textedit_event.gif in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99FD1B4DAE720028EEFA /* finder_to_textedit_event.gif */; };
+		4F7B9A391B4DAEFD0028EEFA /* full.css in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99FE1B4DAE720028EEFA /* full.css */; };
+		4F7B9A3A1B4DAEFD0028EEFA /* index.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99FF1B4DAE720028EEFA /* index.html */; };
+		4F7B9A3B1B4DAEFD0028EEFA /* introduction.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A001B4DAE720028EEFA /* introduction.html */; };
+		4F7B9A3C1B4DAEFD0028EEFA /* low-level-apis.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A011B4DAE720028EEFA /* low-level-apis.html */; };
+		4F7B9A3D1B4DAEFD0028EEFA /* notes.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A021B4DAE720028EEFA /* notes.html */; };
+		4F7B9A3E1B4DAEFD0028EEFA /* objc-ae-type-mappings.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A031B4DAE720028EEFA /* objc-ae-type-mappings.html */; };
+		4F7B9A3F1B4DAEFD0028EEFA /* object-specifiers.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A041B4DAE720028EEFA /* object-specifiers.html */; };
+		4F7B9A401B4DAEFD0028EEFA /* optimizing-performance.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A051B4DAE720028EEFA /* optimizing-performance.html */; };
+		4F7B9A411B4DAEFD0028EEFA /* relationships_example.gif in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A061B4DAE720028EEFA /* relationships_example.gif */; };
+		4F7B9A421B4DAEFD0028EEFA /* understanding-apple-events.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A071B4DAE720028EEFA /* understanding-apple-events.html */; };
+		4F7B9A461B4DCC020028EEFA /* FINGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B9A451B4DCC020028EEFA /* FINGlue.m */; };
 		4F9B7FC91B30292200BE621C /* AEBObjCSpecifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9B7FC71B30292200BE621C /* AEBObjCSpecifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F9B7FCA1B30292200BE621C /* AEBObjCSpecifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9B7FC81B30292200BE621C /* AEBObjCSpecifier.m */; };
 		4F9B7FCF1B30A4B900BE621C /* AEBObjCSymbol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9B7FCD1B30A4B900BE621C /* AEBObjCSymbol.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -94,26 +134,6 @@
 		4FAA6C951B491CF800626E60 /* TEDGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA6C931B491CF800626E60 /* TEDGlue.m */; };
 		4FD8E4A11B334D63004B5CD5 /* AEBKeywordConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */; };
-		4FFA2D721A129BCA00AF09E4 /* application-objects.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5E1A129B7E00AF09E4 /* application-objects.html */; };
-		4FFA2D731A129BCA00AF09E4 /* application_architecture.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D5F1A129B7E00AF09E4 /* application_architecture.gif */; };
-		4FFA2D741A129BCA00AF09E4 /* application_architecture2.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D601A129B7E00AF09E4 /* application_architecture2.gif */; };
-		4FFA2D751A129BCA00AF09E4 /* client_app_to_itunes_event.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D611A129B7E00AF09E4 /* client_app_to_itunes_event.gif */; };
-		4FFA2D761A129BCA00AF09E4 /* commands.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D621A129B7E00AF09E4 /* commands.html */; };
-		4FFA2D771A129BCA00AF09E4 /* creating-and-using-static-glues.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D631A129B7E00AF09E4 /* creating-and-using-static-glues.html */; };
-		4FFA2D781A129BCA00AF09E4 /* examples.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D641A129B7E00AF09E4 /* examples.html */; };
-		4FFA2D791A129BCA00AF09E4 /* finder_to_textedit_event.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D651A129B7E00AF09E4 /* finder_to_textedit_event.gif */; };
-		4FFA2D7A1A129BCA00AF09E4 /* full.css in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D661A129B7E00AF09E4 /* full.css */; };
-		4FFA2D7B1A129BCA00AF09E4 /* how-appleeventbridge-works.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D671A129B7E00AF09E4 /* how-appleeventbridge-works.html */; };
-		4FFA2D7C1A129BCA00AF09E4 /* index.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D681A129B7E00AF09E4 /* index.html */; };
-		4FFA2D7D1A129BCA00AF09E4 /* introduction.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D691A129B7E00AF09E4 /* introduction.html */; };
-		4FFA2D7E1A129BCA00AF09E4 /* low-level-apis.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D6A1A129B7E00AF09E4 /* low-level-apis.html */; };
-		4FFA2D7F1A129BCA00AF09E4 /* notes.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D6B1A129B7E00AF09E4 /* notes.html */; };
-		4FFA2D801A129BCA00AF09E4 /* objc-ae-type-mappings.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D6C1A129B7E00AF09E4 /* objc-ae-type-mappings.html */; };
-		4FFA2D811A129BCA00AF09E4 /* object-specifiers.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D6D1A129B7E00AF09E4 /* object-specifiers.html */; };
-		4FFA2D821A129BCA00AF09E4 /* optimizing-performance.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D6E1A129B7E00AF09E4 /* optimizing-performance.html */; };
-		4FFA2D831A129BCA00AF09E4 /* relationships_example.gif in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D6F1A129B7E00AF09E4 /* relationships_example.gif */; };
-		4FFA2D841A129BCA00AF09E4 /* understanding-apple-events.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FFA2D701A129B7E00AF09E4 /* understanding-apple-events.html */; };
-		4FFD9EB01B46E65200145A9A /* a-quick-tutorial.html in Copy Files (documentation) */ = {isa = PBXBuildFile; fileRef = 4FE621291B4568C700604DC1 /* a-quick-tutorial.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +186,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		4F7B9A2F1B4DAEDD0028EEFA /* Copy Files (objc manual) */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "objc-manual";
+			dstSubfolderSpec = 7;
+			files = (
+				4F7B9A301B4DAEFD0028EEFA /* a-quick-tutorial.html in Copy Files (objc manual) */,
+				4F7B9A311B4DAEFD0028EEFA /* application-objects.html in Copy Files (objc manual) */,
+				4F7B9A321B4DAEFD0028EEFA /* application_architecture.gif in Copy Files (objc manual) */,
+				4F7B9A331B4DAEFD0028EEFA /* application_architecture2.gif in Copy Files (objc manual) */,
+				4F7B9A341B4DAEFD0028EEFA /* client_app_to_itunes_event.gif in Copy Files (objc manual) */,
+				4F7B9A351B4DAEFD0028EEFA /* commands.html in Copy Files (objc manual) */,
+				4F7B9A361B4DAEFD0028EEFA /* creating-and-using-static-glues.html in Copy Files (objc manual) */,
+				4F7B9A371B4DAEFD0028EEFA /* examples.html in Copy Files (objc manual) */,
+				4F7B9A381B4DAEFD0028EEFA /* finder_to_textedit_event.gif in Copy Files (objc manual) */,
+				4F7B9A391B4DAEFD0028EEFA /* full.css in Copy Files (objc manual) */,
+				4F7B9A3A1B4DAEFD0028EEFA /* index.html in Copy Files (objc manual) */,
+				4F7B9A3B1B4DAEFD0028EEFA /* introduction.html in Copy Files (objc manual) */,
+				4F7B9A3C1B4DAEFD0028EEFA /* low-level-apis.html in Copy Files (objc manual) */,
+				4F7B9A3D1B4DAEFD0028EEFA /* notes.html in Copy Files (objc manual) */,
+				4F7B9A3E1B4DAEFD0028EEFA /* objc-ae-type-mappings.html in Copy Files (objc manual) */,
+				4F7B9A3F1B4DAEFD0028EEFA /* object-specifiers.html in Copy Files (objc manual) */,
+				4F7B9A401B4DAEFD0028EEFA /* optimizing-performance.html in Copy Files (objc manual) */,
+				4F7B9A411B4DAEFD0028EEFA /* relationships_example.gif in Copy Files (objc manual) */,
+				4F7B9A421B4DAEFD0028EEFA /* understanding-apple-events.html in Copy Files (objc manual) */,
+			);
+			name = "Copy Files (objc manual)";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4FA7A8B41A0A607400F0E578 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -186,34 +235,34 @@
 			name = "Copy Files (aebglue)";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4FFA2D711A129BAB00AF09E4 /* Copy Files (documentation) */ = {
+		4FFA2D711A129BAB00AF09E4 /* Copy Files (swift manual) */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = doc;
+			dstPath = "swift-manual";
 			dstSubfolderSpec = 7;
 			files = (
-				4FFD9EB01B46E65200145A9A /* a-quick-tutorial.html in Copy Files (documentation) */,
-				4FFA2D721A129BCA00AF09E4 /* application-objects.html in Copy Files (documentation) */,
-				4FFA2D731A129BCA00AF09E4 /* application_architecture.gif in Copy Files (documentation) */,
-				4FFA2D741A129BCA00AF09E4 /* application_architecture2.gif in Copy Files (documentation) */,
-				4FFA2D751A129BCA00AF09E4 /* client_app_to_itunes_event.gif in Copy Files (documentation) */,
-				4FFA2D761A129BCA00AF09E4 /* commands.html in Copy Files (documentation) */,
-				4FFA2D771A129BCA00AF09E4 /* creating-and-using-static-glues.html in Copy Files (documentation) */,
-				4FFA2D781A129BCA00AF09E4 /* examples.html in Copy Files (documentation) */,
-				4FFA2D791A129BCA00AF09E4 /* finder_to_textedit_event.gif in Copy Files (documentation) */,
-				4FFA2D7A1A129BCA00AF09E4 /* full.css in Copy Files (documentation) */,
-				4FFA2D7B1A129BCA00AF09E4 /* how-appleeventbridge-works.html in Copy Files (documentation) */,
-				4FFA2D7C1A129BCA00AF09E4 /* index.html in Copy Files (documentation) */,
-				4FFA2D7D1A129BCA00AF09E4 /* introduction.html in Copy Files (documentation) */,
-				4FFA2D7E1A129BCA00AF09E4 /* low-level-apis.html in Copy Files (documentation) */,
-				4FFA2D7F1A129BCA00AF09E4 /* notes.html in Copy Files (documentation) */,
-				4FFA2D801A129BCA00AF09E4 /* objc-ae-type-mappings.html in Copy Files (documentation) */,
-				4FFA2D811A129BCA00AF09E4 /* object-specifiers.html in Copy Files (documentation) */,
-				4FFA2D821A129BCA00AF09E4 /* optimizing-performance.html in Copy Files (documentation) */,
-				4FFA2D831A129BCA00AF09E4 /* relationships_example.gif in Copy Files (documentation) */,
-				4FFA2D841A129BCA00AF09E4 /* understanding-apple-events.html in Copy Files (documentation) */,
+				4F7B9A1B1B4DAEA20028EEFA /* a-quick-tutorial.html in Copy Files (swift manual) */,
+				4F7B9A1C1B4DAEA20028EEFA /* application-objects.html in Copy Files (swift manual) */,
+				4F7B9A1D1B4DAEA20028EEFA /* application_architecture.gif in Copy Files (swift manual) */,
+				4F7B9A1E1B4DAEA20028EEFA /* application_architecture2.gif in Copy Files (swift manual) */,
+				4F7B9A1F1B4DAEA20028EEFA /* client_app_to_itunes_event.gif in Copy Files (swift manual) */,
+				4F7B9A201B4DAEA20028EEFA /* commands.html in Copy Files (swift manual) */,
+				4F7B9A211B4DAEA20028EEFA /* creating-and-using-static-glues.html in Copy Files (swift manual) */,
+				4F7B9A221B4DAEA20028EEFA /* examples.html in Copy Files (swift manual) */,
+				4F7B9A231B4DAEA20028EEFA /* finder_to_textedit_event.gif in Copy Files (swift manual) */,
+				4F7B9A241B4DAEA20028EEFA /* full.css in Copy Files (swift manual) */,
+				4F7B9A251B4DAEA20028EEFA /* how-appleeventbridge-works.html in Copy Files (swift manual) */,
+				4F7B9A261B4DAEA20028EEFA /* index.html in Copy Files (swift manual) */,
+				4F7B9A271B4DAEA20028EEFA /* introduction.html in Copy Files (swift manual) */,
+				4F7B9A281B4DAEA20028EEFA /* low-level-apis.html in Copy Files (swift manual) */,
+				4F7B9A291B4DAEA20028EEFA /* notes.html in Copy Files (swift manual) */,
+				4F7B9A2A1B4DAEA20028EEFA /* objc-ae-type-mappings.html in Copy Files (swift manual) */,
+				4F7B9A2B1B4DAEA20028EEFA /* object-specifiers.html in Copy Files (swift manual) */,
+				4F7B9A2C1B4DAEA20028EEFA /* optimizing-performance.html in Copy Files (swift manual) */,
+				4F7B9A2D1B4DAEA20028EEFA /* relationships_example.gif in Copy Files (swift manual) */,
+				4F7B9A2E1B4DAEA20028EEFA /* understanding-apple-events.html in Copy Files (swift manual) */,
 			);
-			name = "Copy Files (documentation)";
+			name = "Copy Files (swift manual)";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -296,6 +345,48 @@
 		4F7B999D1B4C280E0028EEFA /* SwiftAEFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAEFormatter.swift; sourceTree = "<group>"; };
 		4F7B999E1B4C280E0028EEFA /* SwiftAEGlueBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAEGlueBase.swift; sourceTree = "<group>"; };
 		4F7B999F1B4C280E0028EEFA /* SwiftAETranslate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAETranslate.swift; sourceTree = "<group>"; };
+		4F7B99B91B4DAE580028EEFA /* a-quick-tutorial.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "a-quick-tutorial.html"; sourceTree = "<group>"; };
+		4F7B99BA1B4DAE580028EEFA /* application-objects.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "application-objects.html"; sourceTree = "<group>"; };
+		4F7B99BB1B4DAE580028EEFA /* application_architecture.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = application_architecture.gif; sourceTree = "<group>"; };
+		4F7B99BC1B4DAE580028EEFA /* application_architecture2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = application_architecture2.gif; sourceTree = "<group>"; };
+		4F7B99BD1B4DAE580028EEFA /* client_app_to_itunes_event.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = client_app_to_itunes_event.gif; sourceTree = "<group>"; };
+		4F7B99BE1B4DAE580028EEFA /* commands.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = commands.html; sourceTree = "<group>"; };
+		4F7B99BF1B4DAE580028EEFA /* creating-and-using-static-glues.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "creating-and-using-static-glues.html"; sourceTree = "<group>"; };
+		4F7B99C01B4DAE580028EEFA /* examples.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = examples.html; sourceTree = "<group>"; };
+		4F7B99C11B4DAE580028EEFA /* finder_to_textedit_event.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = finder_to_textedit_event.gif; sourceTree = "<group>"; };
+		4F7B99C21B4DAE580028EEFA /* full.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = full.css; sourceTree = "<group>"; };
+		4F7B99C31B4DAE580028EEFA /* how-appleeventbridge-works.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "how-appleeventbridge-works.html"; sourceTree = "<group>"; };
+		4F7B99C41B4DAE580028EEFA /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		4F7B99C51B4DAE580028EEFA /* introduction.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = introduction.html; sourceTree = "<group>"; };
+		4F7B99C61B4DAE580028EEFA /* low-level-apis.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "low-level-apis.html"; sourceTree = "<group>"; };
+		4F7B99C71B4DAE580028EEFA /* notes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = notes.html; sourceTree = "<group>"; };
+		4F7B99C81B4DAE580028EEFA /* objc-ae-type-mappings.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "objc-ae-type-mappings.html"; sourceTree = "<group>"; };
+		4F7B99C91B4DAE580028EEFA /* object-specifiers.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "object-specifiers.html"; sourceTree = "<group>"; };
+		4F7B99CA1B4DAE580028EEFA /* optimizing-performance.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "optimizing-performance.html"; sourceTree = "<group>"; };
+		4F7B99CB1B4DAE580028EEFA /* relationships_example.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = relationships_example.gif; sourceTree = "<group>"; };
+		4F7B99CC1B4DAE580028EEFA /* understanding-apple-events.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "understanding-apple-events.html"; sourceTree = "<group>"; };
+		4F7B99F51B4DAE720028EEFA /* a-quick-tutorial.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "a-quick-tutorial.html"; sourceTree = "<group>"; };
+		4F7B99F61B4DAE720028EEFA /* application-objects.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "application-objects.html"; sourceTree = "<group>"; };
+		4F7B99F71B4DAE720028EEFA /* application_architecture.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = application_architecture.gif; sourceTree = "<group>"; };
+		4F7B99F81B4DAE720028EEFA /* application_architecture2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = application_architecture2.gif; sourceTree = "<group>"; };
+		4F7B99F91B4DAE720028EEFA /* client_app_to_itunes_event.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = client_app_to_itunes_event.gif; sourceTree = "<group>"; };
+		4F7B99FA1B4DAE720028EEFA /* commands.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = commands.html; sourceTree = "<group>"; };
+		4F7B99FB1B4DAE720028EEFA /* creating-and-using-static-glues.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "creating-and-using-static-glues.html"; sourceTree = "<group>"; };
+		4F7B99FC1B4DAE720028EEFA /* examples.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = examples.html; sourceTree = "<group>"; };
+		4F7B99FD1B4DAE720028EEFA /* finder_to_textedit_event.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = finder_to_textedit_event.gif; sourceTree = "<group>"; };
+		4F7B99FE1B4DAE720028EEFA /* full.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = full.css; sourceTree = "<group>"; };
+		4F7B99FF1B4DAE720028EEFA /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		4F7B9A001B4DAE720028EEFA /* introduction.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = introduction.html; sourceTree = "<group>"; };
+		4F7B9A011B4DAE720028EEFA /* low-level-apis.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "low-level-apis.html"; sourceTree = "<group>"; };
+		4F7B9A021B4DAE720028EEFA /* notes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = notes.html; sourceTree = "<group>"; };
+		4F7B9A031B4DAE720028EEFA /* objc-ae-type-mappings.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "objc-ae-type-mappings.html"; sourceTree = "<group>"; };
+		4F7B9A041B4DAE720028EEFA /* object-specifiers.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "object-specifiers.html"; sourceTree = "<group>"; };
+		4F7B9A051B4DAE720028EEFA /* optimizing-performance.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "optimizing-performance.html"; sourceTree = "<group>"; };
+		4F7B9A061B4DAE720028EEFA /* relationships_example.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = relationships_example.gif; sourceTree = "<group>"; };
+		4F7B9A071B4DAE720028EEFA /* understanding-apple-events.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "understanding-apple-events.html"; sourceTree = "<group>"; };
+		4F7B9A431B4DCC020028EEFA /* FINGlue-objc.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "FINGlue-objc.sdef"; sourceTree = "<group>"; };
+		4F7B9A441B4DCC020028EEFA /* FINGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FINGlue.h; sourceTree = "<group>"; };
+		4F7B9A451B4DCC020028EEFA /* FINGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FINGlue.m; sourceTree = "<group>"; };
 		4F9B7FC71B30292200BE621C /* AEBObjCSpecifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBObjCSpecifier.h; sourceTree = "<group>"; };
 		4F9B7FC81B30292200BE621C /* AEBObjCSpecifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBObjCSpecifier.m; sourceTree = "<group>"; };
 		4F9B7FCD1B30A4B900BE621C /* AEBObjCSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBObjCSymbol.h; sourceTree = "<group>"; };
@@ -317,7 +408,6 @@
 		4FAA6C931B491CF800626E60 /* TEDGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEDGlue.m; sourceTree = "<group>"; };
 		4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBKeywordConverter.h; sourceTree = "<group>"; };
 		4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBKeywordConverter.m; sourceTree = "<group>"; };
-		4FE621291B4568C700604DC1 /* a-quick-tutorial.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "a-quick-tutorial.html"; sourceTree = "<group>"; };
 		4FFA2D371A129AAE00AF09E4 /* 1 introduction.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "1 introduction.md"; sourceTree = "<group>"; };
 		4FFA2D381A129AAE00AF09E4 /* 10 optimizing-performance.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "10 optimizing-performance.md"; sourceTree = "<group>"; };
 		4FFA2D391A129AAE00AF09E4 /* 11 low-level-apis.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "11 low-level-apis.md"; sourceTree = "<group>"; };
@@ -336,25 +426,6 @@
 		4FFA2D471A129AAE00AF09E4 /* full.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = full.css; sourceTree = "<group>"; };
 		4FFA2D481A129AAE00AF09E4 /* relationships_example.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = relationships_example.gif; sourceTree = "<group>"; };
 		4FFA2D5B1A129AD700AF09E4 /* mkdoc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = mkdoc; sourceTree = "<group>"; };
-		4FFA2D5E1A129B7E00AF09E4 /* application-objects.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "application-objects.html"; sourceTree = "<group>"; };
-		4FFA2D5F1A129B7E00AF09E4 /* application_architecture.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = application_architecture.gif; sourceTree = "<group>"; };
-		4FFA2D601A129B7E00AF09E4 /* application_architecture2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = application_architecture2.gif; sourceTree = "<group>"; };
-		4FFA2D611A129B7E00AF09E4 /* client_app_to_itunes_event.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = client_app_to_itunes_event.gif; sourceTree = "<group>"; };
-		4FFA2D621A129B7E00AF09E4 /* commands.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = commands.html; sourceTree = "<group>"; };
-		4FFA2D631A129B7E00AF09E4 /* creating-and-using-static-glues.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "creating-and-using-static-glues.html"; sourceTree = "<group>"; };
-		4FFA2D641A129B7E00AF09E4 /* examples.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = examples.html; sourceTree = "<group>"; };
-		4FFA2D651A129B7E00AF09E4 /* finder_to_textedit_event.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = finder_to_textedit_event.gif; sourceTree = "<group>"; };
-		4FFA2D661A129B7E00AF09E4 /* full.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = full.css; sourceTree = "<group>"; };
-		4FFA2D671A129B7E00AF09E4 /* how-appleeventbridge-works.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "how-appleeventbridge-works.html"; sourceTree = "<group>"; };
-		4FFA2D681A129B7E00AF09E4 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
-		4FFA2D691A129B7E00AF09E4 /* introduction.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = introduction.html; sourceTree = "<group>"; };
-		4FFA2D6A1A129B7E00AF09E4 /* low-level-apis.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "low-level-apis.html"; sourceTree = "<group>"; };
-		4FFA2D6B1A129B7E00AF09E4 /* notes.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = notes.html; sourceTree = "<group>"; };
-		4FFA2D6C1A129B7E00AF09E4 /* objc-ae-type-mappings.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "objc-ae-type-mappings.html"; sourceTree = "<group>"; };
-		4FFA2D6D1A129B7E00AF09E4 /* object-specifiers.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "object-specifiers.html"; sourceTree = "<group>"; };
-		4FFA2D6E1A129B7E00AF09E4 /* optimizing-performance.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "optimizing-performance.html"; sourceTree = "<group>"; };
-		4FFA2D6F1A129B7E00AF09E4 /* relationships_example.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = relationships_example.gif; sourceTree = "<group>"; };
-		4FFA2D701A129B7E00AF09E4 /* understanding-apple-events.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "understanding-apple-events.html"; sourceTree = "<group>"; };
 		4FFA2D851A129BEC00AF09E4 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		4FFA2D861A129CE700AF09E4 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		4FFA2EAC1A13A05300AF09E4 /* AppleEventBridge-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppleEventBridge-Info.plist"; sourceTree = "<group>"; };
@@ -429,7 +500,8 @@
 			children = (
 				4F1A9FF919F92A9F00FBD23E /* AppleEventBridge.h */,
 				4FFA2D361A129AAE00AF09E4 /* doc-source */,
-				4FFA2D5D1A129B7E00AF09E4 /* doc-html */,
+				4F7B99B81B4DAE580028EEFA /* swift-manual */,
+				4F7B99F41B4DAE720028EEFA /* objc-manual */,
 				4F1AA07D19F92D7D00FBD23E /* bin */,
 				4F1AA07E19F92D9B00FBD23E /* AEM* (low-level APIs) */,
 				4F1AA08119F92E4C00FBD23E /* AEB* (high-level, glue-based APIs) */,
@@ -561,12 +633,12 @@
 				4F7B999D1B4C280E0028EEFA /* SwiftAEFormatter.swift */,
 				4F7B999F1B4C280E0028EEFA /* SwiftAETranslate.swift */,
 				4F5EE3D41B2D7F1F007C58B5 /* main.swift */,
-				4F4ADEDB1B3824E30017EE65 /* FINGlue.swift */,
 				4F4ADEDA1B3824E30017EE65 /* FINGlue-swift.sdef */,
-				4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */,
+				4F4ADEDB1B3824E30017EE65 /* FINGlue.swift */,
 				4F4ADED11B35DC2B0017EE65 /* ITUGlue-swift.sdef */,
-				4F4ADED31B35DC330017EE65 /* TEDGlue.swift */,
+				4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */,
 				4F4ADED41B35DC330017EE65 /* TEDGlue-swift.sdef */,
+				4F4ADED31B35DC330017EE65 /* TEDGlue.swift */,
 			);
 			name = "Swift demo";
 			path = saedemo;
@@ -581,6 +653,59 @@
 			);
 			name = SwiftAE;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		4F7B99B81B4DAE580028EEFA /* swift-manual */ = {
+			isa = PBXGroup;
+			children = (
+				4F7B99B91B4DAE580028EEFA /* a-quick-tutorial.html */,
+				4F7B99BA1B4DAE580028EEFA /* application-objects.html */,
+				4F7B99BB1B4DAE580028EEFA /* application_architecture.gif */,
+				4F7B99BC1B4DAE580028EEFA /* application_architecture2.gif */,
+				4F7B99BD1B4DAE580028EEFA /* client_app_to_itunes_event.gif */,
+				4F7B99BE1B4DAE580028EEFA /* commands.html */,
+				4F7B99BF1B4DAE580028EEFA /* creating-and-using-static-glues.html */,
+				4F7B99C01B4DAE580028EEFA /* examples.html */,
+				4F7B99C11B4DAE580028EEFA /* finder_to_textedit_event.gif */,
+				4F7B99C21B4DAE580028EEFA /* full.css */,
+				4F7B99C31B4DAE580028EEFA /* how-appleeventbridge-works.html */,
+				4F7B99C41B4DAE580028EEFA /* index.html */,
+				4F7B99C51B4DAE580028EEFA /* introduction.html */,
+				4F7B99C61B4DAE580028EEFA /* low-level-apis.html */,
+				4F7B99C71B4DAE580028EEFA /* notes.html */,
+				4F7B99C81B4DAE580028EEFA /* objc-ae-type-mappings.html */,
+				4F7B99C91B4DAE580028EEFA /* object-specifiers.html */,
+				4F7B99CA1B4DAE580028EEFA /* optimizing-performance.html */,
+				4F7B99CB1B4DAE580028EEFA /* relationships_example.gif */,
+				4F7B99CC1B4DAE580028EEFA /* understanding-apple-events.html */,
+			);
+			path = "swift-manual";
+			sourceTree = "<group>";
+		};
+		4F7B99F41B4DAE720028EEFA /* objc-manual */ = {
+			isa = PBXGroup;
+			children = (
+				4F7B99F51B4DAE720028EEFA /* a-quick-tutorial.html */,
+				4F7B99F61B4DAE720028EEFA /* application-objects.html */,
+				4F7B99F71B4DAE720028EEFA /* application_architecture.gif */,
+				4F7B99F81B4DAE720028EEFA /* application_architecture2.gif */,
+				4F7B99F91B4DAE720028EEFA /* client_app_to_itunes_event.gif */,
+				4F7B99FA1B4DAE720028EEFA /* commands.html */,
+				4F7B99FB1B4DAE720028EEFA /* creating-and-using-static-glues.html */,
+				4F7B99FC1B4DAE720028EEFA /* examples.html */,
+				4F7B99FD1B4DAE720028EEFA /* finder_to_textedit_event.gif */,
+				4F7B99FE1B4DAE720028EEFA /* full.css */,
+				4F7B99FF1B4DAE720028EEFA /* index.html */,
+				4F7B9A001B4DAE720028EEFA /* introduction.html */,
+				4F7B9A011B4DAE720028EEFA /* low-level-apis.html */,
+				4F7B9A021B4DAE720028EEFA /* notes.html */,
+				4F7B9A031B4DAE720028EEFA /* objc-ae-type-mappings.html */,
+				4F7B9A041B4DAE720028EEFA /* object-specifiers.html */,
+				4F7B9A051B4DAE720028EEFA /* optimizing-performance.html */,
+				4F7B9A061B4DAE720028EEFA /* relationships_example.gif */,
+				4F7B9A071B4DAE720028EEFA /* understanding-apple-events.html */,
+			);
+			path = "objc-manual";
 			sourceTree = "<group>";
 		};
 		4F9B7FD11B30B90B00BE621C /* ObjC */ = {
@@ -638,6 +763,9 @@
 			isa = PBXGroup;
 			children = (
 				4FA7A8B81A0A607400F0E578 /* main.m */,
+				4F7B9A431B4DCC020028EEFA /* FINGlue-objc.sdef */,
+				4F7B9A441B4DCC020028EEFA /* FINGlue.h */,
+				4F7B9A451B4DCC020028EEFA /* FINGlue.m */,
 				4FAA6C8E1B491CF800626E60 /* ITUGlue-objc.sdef */,
 				4FAA6C8F1B491CF800626E60 /* ITUGlue.h */,
 				4FAA6C901B491CF800626E60 /* ITUGlue.m */,
@@ -685,33 +813,6 @@
 				4FFA2D471A129AAE00AF09E4 /* full.css */,
 			);
 			path = "doc-source";
-			sourceTree = "<group>";
-		};
-		4FFA2D5D1A129B7E00AF09E4 /* doc-html */ = {
-			isa = PBXGroup;
-			children = (
-				4FFA2D681A129B7E00AF09E4 /* index.html */,
-				4FFA2D691A129B7E00AF09E4 /* introduction.html */,
-				4FFA2D701A129B7E00AF09E4 /* understanding-apple-events.html */,
-				4FFA2D671A129B7E00AF09E4 /* how-appleeventbridge-works.html */,
-				4FE621291B4568C700604DC1 /* a-quick-tutorial.html */,
-				4FFA2D631A129B7E00AF09E4 /* creating-and-using-static-glues.html */,
-				4FFA2D6C1A129B7E00AF09E4 /* objc-ae-type-mappings.html */,
-				4FFA2D5E1A129B7E00AF09E4 /* application-objects.html */,
-				4FFA2D6D1A129B7E00AF09E4 /* object-specifiers.html */,
-				4FFA2D621A129B7E00AF09E4 /* commands.html */,
-				4FFA2D641A129B7E00AF09E4 /* examples.html */,
-				4FFA2D6E1A129B7E00AF09E4 /* optimizing-performance.html */,
-				4FFA2D6A1A129B7E00AF09E4 /* low-level-apis.html */,
-				4FFA2D6B1A129B7E00AF09E4 /* notes.html */,
-				4FFA2D5F1A129B7E00AF09E4 /* application_architecture.gif */,
-				4FFA2D601A129B7E00AF09E4 /* application_architecture2.gif */,
-				4FFA2D611A129B7E00AF09E4 /* client_app_to_itunes_event.gif */,
-				4FFA2D651A129B7E00AF09E4 /* finder_to_textedit_event.gif */,
-				4FFA2D661A129B7E00AF09E4 /* full.css */,
-				4FFA2D6F1A129B7E00AF09E4 /* relationships_example.gif */,
-			);
-			path = "doc-html";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -769,7 +870,8 @@
 				4F1A9FF219F92A9F00FBD23E /* Resources */,
 				4FF619C41A0CF500002277B8 /* Copy Files (aebglue) */,
 				4F4ADED61B370B690017EE65 /* Copy Files (glue templates) */,
-				4FFA2D711A129BAB00AF09E4 /* Copy Files (documentation) */,
+				4FFA2D711A129BAB00AF09E4 /* Copy Files (swift manual) */,
+				4F7B9A2F1B4DAEDD0028EEFA /* Copy Files (objc manual) */,
 				4F70FBD81A33B6210051CA21 /* Run Script (gen_bridge_metadata) */,
 			);
 			buildRules = (
@@ -980,6 +1082,7 @@
 			files = (
 				4FA7A8B91A0A607400F0E578 /* main.m in Sources */,
 				4FAA6C951B491CF800626E60 /* TEDGlue.m in Sources */,
+				4F7B9A461B4DCC020028EEFA /* FINGlue.m in Sources */,
 				4FAA6C941B491CF800626E60 /* ITUGlue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

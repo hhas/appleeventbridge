@@ -1,16 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<head>
-		<title>AppleEventBridge | Creating and using static glues</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<style type="text/css" media="all"><!--@import url(full.css);--></style>
-	</head>
-	<body>
-		<div id="wrap">
-			<div id="main">
-				<h1>Creating and using static glues</h1>
-				<div class="navbar"><a href="how-appleeventbridge-works.html">back</a> | <a href="index.html">index</a> | <a href="objc-ae-type-mappings.html">next</a></div>
-				<h2>Generating a glue</h2>
+    <head>
+        <title>AppleEventBridge | Creating and using static glues</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css" media="all"><!--@import url(full.css);--></style>
+    </head>
+    <body>
+        <div id="wrap">
+            <div id="main">
+                <h1>Creating and using static glues</h1>
+                <div class="navbar"><a href="a-quick-tutorial.html">back</a> | <a href="index.html">index</a> | <a href="objc-ae-type-mappings.html">next</a></div>
+                <h2>Generating a glue</h2>
 
 <p>The AppleEventBridge framework bundle includes an <code>aebglue</code> tool for generating static glue files containing high-level terminology-based APIs.</p>
 
@@ -38,7 +38,7 @@
 
 <p>The generated glue folder also contains an <code>.sdef</code> file containing the application's dictionary (interface documentation) in the correct format. For example, to view the <code>TEGlue</code> terminology in Script Editor: </p>
 
-<pre><code>  open -a 'Script Editor' ~/Documents/TEGlue/TextEdit.h.sdef
+<pre><code>  open -a 'Script Editor' ~/Documents/TEGlue/TextEdit.objc.sdef
 </code></pre>
 
 <p>Refer to this documentation when using AppleEventBridge glues in your own code, as it shows element, property, command, etc. names as they appear in the generated glue classes. (Make sure Script Editor's dictionary viewer is set to "AppleScript" language; other formats are for use with OS X's Scripting Bridge/JavaScript for Automation bridges only.)</p>
@@ -99,8 +99,8 @@
 <li><p>AppleEventBridge provides default terminology for standard type classes such as <code>integer</code> and <code>unicodeText</code>, and standard commands such as <code>open</code> and <code>quit</code>. If an application-defined name matches a built-in name but has a different Apple event code, AppleEventBridge will append an underscore to the application-defined name.</p></li>
 </ul>
 
-			</div>
-		</div>
-		<div id="footer"><div class="navbar"><a href="how-appleeventbridge-works.html">back</a> | <a href="index.html">index</a> | <a href="objc-ae-type-mappings.html">next</a></div></div>
-	</body>
+            </div>
+        </div>
+        <div id="footer"><div class="navbar"><a href="a-quick-tutorial.html">back</a> | <a href="index.html">index</a> | <a href="objc-ae-type-mappings.html">next</a></div></div>
+    </body>
 </html>

@@ -33,7 +33,7 @@
 		</command>
 		<command code="corecrel" description="Make a new element" name="make">
 			<parameter code="kocl" description="the class of the new element. Keyword 'new' is optional in AppleScript" name="new_:" type="type" />
-			<parameter code="insh" description="the location at which to insert the element" name="at_:" optional="yes" type="location specifier" />
+			<parameter code="insh" description="the location at which to insert the element" name="at:" optional="yes" type="location specifier" />
 			<parameter code="prdt" description="the initial values for the properties of the element" name="withProperties:" optional="yes" type="record" />
 			<result description="to the new object(s)" type="specifier" />
 		</command>

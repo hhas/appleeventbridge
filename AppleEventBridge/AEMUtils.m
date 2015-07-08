@@ -135,3 +135,13 @@ NSString *AEMDescriptionForError(OSStatus err) {
              }[@(err)] ?: [NSString stringWithFormat: @"Mac OS error %i", err];
 }
 
+
+
+void AEMLog(NSString *format, ...) {
+    va_list argList; va_start (argList, format);
+    NSString *message = [[NSString alloc] initWithFormat: format arguments: argList];
+    va_end (argList); CFShow((CFStringRef)message);
+}
+
+
+

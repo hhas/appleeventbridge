@@ -48,10 +48,6 @@ void AEMInitTestClauseModule(void) {
 
 @implementation AEMTestClause : AEMQuery
 
-- (AEMQueryRoot *)root {
-	return AEMIts; // test specifiers can only be constructed from AEMIts
-}
-
 // takes a single test clause or an array of test clauses
 // note: currently performs no runtime type checks to ensure arg is/contains
 // AEMTestClause instances only
@@ -87,11 +83,11 @@ void AEMInitTestClauseModule(void) {
 }
 
 - (NSString *)formatString { // stub method; subclasses will override
-	return nil;
+	@throw [NSException exceptionWithName: @"NotImplementedError" reason: nil userInfo: nil];
 }
 
 - (NSAppleEventDescriptor *)operator { // stub method; subclasses will override
-	return nil;
+	@throw [NSException exceptionWithName: @"NotImplementedError" reason: nil userInfo: nil];
 }
 
 @end
@@ -138,8 +134,8 @@ void AEMInitTestClauseModule(void) {
 	return [NSString stringWithFormat: self.formatString, AEMFormatObject(operand1), AEMFormatObject(operand2)];
 }
 
-- (id)resolveWithObject:(id)object {
-	return nil;
+- (AEMQueryRoot *)root {
+    return [([operand1 isKindOfClass: AEMQuery.class] ? operand1 : operand2) root]; // since it's possible for operands to be swapped (see AEMIsInTest), need to confirm operand1 is AEMQuery and, if not, use operand2; TO DO: check other methods in this class and subclasses
 }
 
 - (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
@@ -367,6 +363,10 @@ void AEMInitTestClauseModule(void) {
 
 - (id)operands {
 	return operands;
+}
+
+- (AEMQueryRoot *)root {
+    return [operands[0] root];
 }
 
 - (NSString *)description {
