@@ -367,7 +367,7 @@ class SwiftAESpecifier: AEBSpecifier {
         // send the event
         //defer { print("SENT: \(try! SwiftAETranslateAppleEvent(command.aemEvent.descriptor, useSDEF: true))") } // TEST; TO DO: delete
         do {
-            return try command.sendWithError()
+            return try command.send()
         } catch {
             let aemError = error as NSError
             var args = [String]()

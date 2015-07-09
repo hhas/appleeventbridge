@@ -6,18 +6,19 @@ TO DO:
             AEBObject
                 «PREFIX»Object
                     «PREFIX»Elements <AEBElementsProtocol>
-                        «PREFIX»Application
+                    «PREFIX»Application // TO DO: where should this be in class hierarchy? it needs raw and glue-defined property, elements, command methods, but none of the selector/test clause methods that normally appear on ObjectSpecifiers
             AEBInsertion
                 «PREFIX»Insertion -- defined for typechecking purposes only
-            AEBTestClause
+            AEBTestClause -- defines AND, OR, NOT only, and should only be constructable from specifiers with an `its` root
                 «PREFIX»TestClause -- defined for typechecking purposes only
 
     AEBElementsProtocol -- selector methods would be defined on AEBObject, but only exposed on «PREFIX»Elements (ideally would use mixins/traits or multiple inheritance, but ObjC doesn't support this); not sure how to support insertion and test clause constructors, as those return different types (AEBInsertion, AEBTestClause; but ideally we want them to return their glue-defined subclasses for stronger typechecks)
 
     note: glues would subclass AEBObject to define property/elements/command attributes, so «PREFIX»Elements, «PREFIX»Application would need to be defined in ObjC glues [including default glue, which would probably be built in as AEBElements, AEBApplication]), and AEMType, etc. into AEBSymbol; consider using -command:parameters:attributes:
 
-note: specifiers should pass self, AppData, property/elements name as string (for display, error reporting), selector type, selector data; note that deferred specifier support should remain for efficiency (with AppData option to disable); need to decide if packing should be done on the fly (caution: this would require generic specifiers to contain an AppData instance, which would be problematic for dynamic glues unless those can override pack to create a 'deferred desc' to be packed for real when added to AppleEvent); note: might also want to pass specifier root, allowing quicker 'is it a test clause?' check
+    note: specifiers should pass self, AppData, property/elements name as string (for display, error reporting), selector type, selector data; note that deferred specifier support should remain for efficiency (with AppData option to disable); need to decide if packing should be done on the fly (caution: this would require generic specifiers to contain an AppData instance, which would be problematic for dynamic glues unless those can override pack to create a 'deferred desc' to be packed for real when added to AppleEvent); note: might also want to pass specifier root, allowing quicker 'is it a test clause?' check
 
+    Q. how best to implement 'all-elements' shim? Currently `-[AEMObjectSpecifier elements:]` returns an all-elements specifier; invoking a selector on that extracts the underlying 'selector-less' object and applies the selector to that, in effect replacing the all-elements specifier with a different element[s] specifier (one option might be to add a «Prefix»AllElements subclass?); amongst other things, the shim ensures multiple selectors are applied correctly, e.g. app.documents[its.modified == true][1], where the first selector replaces the all-elements specifier with a by-test specifier, while the second appends a new by-index specifier with the same element class
 
 - what, if any, standard Swift method/var names need reserved in AEBStaticKeywordConverter?
 

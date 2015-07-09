@@ -10,9 +10,11 @@
             <div id="main">
                 <h1>Optimizing performance</h1>
                 <div class="navbar"><a href="examples.html">back</a> | <a href="index.html">index</a> | <a href="low-level-apis.html">next</a></div>
-                <h2>About performance</h2>
+                <p>// TO DO: check code examples work</p>
 
-<p>Application scripting is subject to a number of potential performance bottlenecks:</p>
+<h2>About performance</h2>
+
+<p>Apple event IPC is subject to a number of potential performance bottlenecks:</p>
 
 <ul>
 <li><p>Sending Apple events is more expensive than calling local functions.</p></li>
@@ -28,23 +30,23 @@
 
 <p>While iterating over application objects and manipulating each in turn is a common technique, it's also the slowest by far:</p>
 
-<pre><code>  // aebglue Contacts
-  let contacts = Contacts()
+<pre><code>// aebglue -o Contacts
+CONApplication *contacts = [CONApplication application];
 
-  let desiredEmail = "sam.brown@example.com"
+NSString *desiredEmail = @"sam.brown@example.com";
 
-  var foundNames: [String] = []
-  for person in contacts.people.get() as! [CONSpecifier] {
-      for email in people.emails.get() as! [CONSpecifier] {
-          if email.value.get() == desiredEmail {
-              foundNames += person.name.get()
-          }
-      }
-  }
-  print(foundNames)
+NSMutableArray *foundNames = [NSMutableArray array];
+for (CONSpecifier *person in [contacts.people getList]) {
+    for (CONSpecifier *email in [people.emails getList]) {
+        if ([[email.value getItem] isEqual: desiredEmail]) {
+            [foundNames addObject: [person.name getItem]];
+        }
+    }
+}
+NSLog(@"%@", foundNames);
 </code></pre>
 
-<p>The above script sends one Apple event to get a list of references to all people, then one Apple event for each person to get a list of references to their emails, then one Apple event for each of those emails. Thus the time taken increases directly in proportion to the number of people in Contacts. If there's hundreds of people to search, that's hundreds of Apple events to be built, sent and individually resolved, and performance suffers as a result.</p>
+<p>The above code sends one Apple event to get a list of references to all people, then one Apple event for each person to get a list of references to their emails, then one Apple event for each of those emails. Thus the time taken increases directly in proportion to the number of people in Contacts. If there's hundreds of people to search, that's hundreds of Apple events to be built, sent and individually resolved, and performance suffers as a result.</p>
 
 <p>The solution, where possible, is to use fewer, more sophisticated commands to do the same job.</p>
 
@@ -54,50 +56,51 @@
 
 <p>In this case, the entire search can be performed using a single complex query sent to Contacts via a single Apple event:</p>
 
-<pre><code>  let contacts = Contacts()
+<pre><code>CONApplication *contacts = [CONApplication application];
 
-  let desiredEmail = "sam.brown@example.com"
+NSString *desiredEmail = @"sam.brown@example.com";
 
-  let foundNames = contacts.people[CONIts.emails.value.contains(desiredEmail)].name.get() as! [String]
+NSArray *foundNames = [contacts.people[[CONIts.emails.value contains: desiredEmail]].name get];
 
-  print(foundNames)
+NSLog(@"%@", foundNames);
 </code></pre>
 
 <p>To explain:</p>
 
 <ul>
 <li><p>The query states: "Find the name of every person object that passes a specific test."</p></li>
-<li><p>The test is: "Does a given value, <code>"sam.brown@example.com"</code>, appear in a list that consists of the value of each email object contained by an individual person?"</p></li>
+<li><p>The test is: "Does a given value, <code>@"sam.brown@example.com"</code>, appear in a list that consists of the value of each email object contained by an individual person?"</p></li>
 <li><p>The command is: "Evaluate that query against the AEOM and get (return) the result, which is a list of zero or more strings: the names of the people matched by the query."</p></li>
 </ul>
 
 <h2>The hybrid solution</h2>
 
-<p>While AEOM queries can be surprisingly powerful, there are still many problems too complex for the application to evaluate entirely by itself. For example, let's say that you want to obtain the name of every person who has an email addresses that uses a particular domain name. Unfortunately, this test is too complex to express as a single AEOM query; however, it can still be solved reasonably efficiently by obtaining all the data from the application up-front and processing it locally. For this we need: 1. the name of every person in the Contacts, and 2. each person's email addresses. Fortunately, each of these can be expressed in a single query, allowing all this data to be retrieved using just two <code>get</code> commands.</p>
+<p>While AEOM queries can be surprisingly powerful, there are still many problems too complex for the application to evaluate entirely by itself. For example, let's say that you want to obtain the name of every person who has an email addresses that uses a particular domain name. Unfortunately, this test is too complex to express as a single AEOM query; however, it can still be solved reasonably efficiently by obtaining all the data from the application up-front and processing it locally. For this we need: 1. the name of every person in the Contacts, and 2. each person's email addresses. Each request can be described in a single query, allowing all of the required data to be retrieved using just two <code>get</code> commands.</p>
 
-<pre><code>  let contacts = Contacts()
+<pre><code>CONApplication *contacts = [CONApplication application];
 
-  let desiredDomain = "@example.com"
+NSString *desiredDomain = @"@example.com";
 
-  // get a list of name strings
-  let names = contacts.people.name.get() as! [String]
+// get a list of name strings
+NSArray *names = [contacts.people.name getList];
 
-  // get a list of lists of email strings
-  let emailsOfEveryPerson = contacts.people.emails.value.get() as! [[String]]
+// get a list of lists of email strings
+NSArray *emails = [contacts.people.emails.value getList];
 
-  var result = []
-  for i in (0 ... emailsOfEveryPerson.length) {
-      for email in emailsOfEveryPerson[i] {
-          if email.endsWith(desiredDomain) {
-              result += names[i]
-              break
-          }
-      }
-  }
-  print(result)
+NSMutableArray *foundNames = [NSMutableArray array];
+
+for (NSUInteger i = 0; i &lt; names.count; i++) {
+    for (NSString *email in emails) {
+        if ([email hasSuffix: desiredDomain]) {
+            [foundNames addObject: names[i]];
+            break;
+        }
+    }
+}
+NSLog(@"%@", foundNames);
 </code></pre>
 
-<p>This solution isn't as fast as the pure-query approach, but is still far more efficient than iterating over and manipulating each of the application objects themselves.</p>
+<p>This solution isn't as fast as the pure-query approach, but is still far more efficient than iterating over and manipulating every person and email element one at a time.</p>
 
             </div>
         </div>

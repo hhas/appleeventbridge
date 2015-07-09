@@ -261,10 +261,10 @@ specifier <strong>==</strong> <var>value</var>
 specifier <strong>!=</strong> <var>value</var>
 specifier <strong>&gt;</strong> <var>value</var>
 specifier <strong>&gt;=</strong> <var>value</var>
-specifier <strong>beginsWith</strong>(<var>value</var>)
-specifier <strong>endsWith</strong>(<var>value</var>)
-specifier <strong>contains</strong>(<var>value</var>)
-specifier <strong>isIn</strong>(<var>value</var>)</code></pre>
+specifier.<strong>beginsWith</strong>(<var>value</var>)
+specifier.<strong>endsWith</strong>(<var>value</var>)
+specifier.<strong>contains</strong>(<var>value</var>)
+specifier.<strong>isIn</strong>(<var>value</var>)</code></pre>
 »«
   <pre><code>[specifier <strong>lt:</strong> <var>value</var>] // less than
 [specifier <strong>le:</strong> <var>value</var>] // less or equal
@@ -304,7 +304,7 @@ specifier <strong>isIn</strong>(<var>value</var>)</code></pre>
 »«
   <pre><code>[<var>test</var> <strong>AND:</strong> <var>test</var>]
 [<var>test</var> <strong>OR:</strong> <var>test</var>]
-<var>test</var> <strong>.NOT</strong></code></pre>
+<var>test</var><strong>.NOT</strong></code></pre>
 »
   Examples:
 «

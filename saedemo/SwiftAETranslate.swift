@@ -61,7 +61,7 @@ private func appDataForProcess(var addressDesc: NSAppleEventDescriptor!, useSDEF
                                          defaultTerms: kAEBUseDefaultTerminology,
                                      keywordConverter: AEBSwiftKeywordConverter.sharedKeywordConverter(),
                                   aemApplicationClass: AEMApplication.self)
-    let appTerms = try dynamicAppData.terminologyWithError()
+    let appTerms = try dynamicAppData.terminology()
     return SwiftAETranslationAppData(targetType: targetType, targetData: targetData,
                                           terms: appTerms, appClassName: appClassName, prefix: prefix)
 }

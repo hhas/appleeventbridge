@@ -92,13 +92,13 @@ func named(name: AnyObject) -&gt; XXSpecifier
 <pre><code>elements<strong>[</strong><var>selector</var><strong>]</strong>
         <var>selector</var> : String -- the object's name (as defined in its 'name' property)</code></pre>
 
+<p class="hilitebox">Applications usually treat object names as case-insensitive. Where multiple element have the same name, a by-name specifier only identifies the first element found with that name. (To identify <em>all</em> elements with a particular name, use a by-test specifier instead.)</p>
+
 <p>Examples:</p>
 
 <pre><code>disks["Macintosh HD"]
 files["index.html"]
 </code></pre>
-
-<p class="hilitebox">Applications usually treat object names as case-insensitive. Where multiple element have the same name, a by-name specifier only identifies the first element found with that name. (To identify <em>all</em> elements with a particular name, use a by-test specifier instead.)</p>
 
 <h3>Element by ID</h3>
 
@@ -228,10 +228,10 @@ specifier <strong>==</strong> <var>value</var>
 specifier <strong>!=</strong> <var>value</var>
 specifier <strong>&gt;</strong> <var>value</var>
 specifier <strong>&gt;=</strong> <var>value</var>
-specifier <strong>beginsWith</strong>(<var>value</var>)
-specifier <strong>endsWith</strong>(<var>value</var>)
-specifier <strong>contains</strong>(<var>value</var>)
-specifier <strong>isIn</strong>(<var>value</var>)</code></pre>
+specifier.<strong>beginsWith</strong>(<var>value</var>)
+specifier.<strong>endsWith</strong>(<var>value</var>)
+specifier.<strong>contains</strong>(<var>value</var>)
+specifier.<strong>isIn</strong>(<var>value</var>)</code></pre>
 
 <p>Examples:</p>
 

@@ -232,7 +232,7 @@ class SwiftAEFormatter: AEMQueryVisitor {
         } else { // concrete specifier
             self.mutableResult?.appendString(self.appClassName)
             do {
-                let target = try aebAppData!.targetWithError()
+                let target = try aebAppData!.target()
                 let targetData = target.targetData()
                 let targetType = target.targetType()
                 if targetType == AEMTargetType.Current {

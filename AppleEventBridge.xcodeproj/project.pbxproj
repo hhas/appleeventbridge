@@ -91,7 +91,7 @@
 		4F7B9A271B4DAEA20028EEFA /* introduction.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C51B4DAE580028EEFA /* introduction.html */; };
 		4F7B9A281B4DAEA20028EEFA /* low-level-apis.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C61B4DAE580028EEFA /* low-level-apis.html */; };
 		4F7B9A291B4DAEA20028EEFA /* notes.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C71B4DAE580028EEFA /* notes.html */; };
-		4F7B9A2A1B4DAEA20028EEFA /* objc-ae-type-mappings.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C81B4DAE580028EEFA /* objc-ae-type-mappings.html */; };
+		4F7B9A2A1B4DAEA20028EEFA /* ae-type-mappings.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C81B4DAE580028EEFA /* ae-type-mappings.html */; };
 		4F7B9A2B1B4DAEA20028EEFA /* object-specifiers.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99C91B4DAE580028EEFA /* object-specifiers.html */; };
 		4F7B9A2C1B4DAEA20028EEFA /* optimizing-performance.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99CA1B4DAE580028EEFA /* optimizing-performance.html */; };
 		4F7B9A2D1B4DAEA20028EEFA /* relationships_example.gif in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99CB1B4DAE580028EEFA /* relationships_example.gif */; };
@@ -110,7 +110,7 @@
 		4F7B9A3B1B4DAEFD0028EEFA /* introduction.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A001B4DAE720028EEFA /* introduction.html */; };
 		4F7B9A3C1B4DAEFD0028EEFA /* low-level-apis.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A011B4DAE720028EEFA /* low-level-apis.html */; };
 		4F7B9A3D1B4DAEFD0028EEFA /* notes.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A021B4DAE720028EEFA /* notes.html */; };
-		4F7B9A3E1B4DAEFD0028EEFA /* objc-ae-type-mappings.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A031B4DAE720028EEFA /* objc-ae-type-mappings.html */; };
+		4F7B9A3E1B4DAEFD0028EEFA /* ae-type-mappings.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A031B4DAE720028EEFA /* ae-type-mappings.html */; };
 		4F7B9A3F1B4DAEFD0028EEFA /* object-specifiers.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A041B4DAE720028EEFA /* object-specifiers.html */; };
 		4F7B9A401B4DAEFD0028EEFA /* optimizing-performance.html in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A051B4DAE720028EEFA /* optimizing-performance.html */; };
 		4F7B9A411B4DAEFD0028EEFA /* relationships_example.gif in Copy Files (objc manual) */ = {isa = PBXBuildFile; fileRef = 4F7B9A061B4DAE720028EEFA /* relationships_example.gif */; };
@@ -206,7 +206,7 @@
 				4F7B9A3B1B4DAEFD0028EEFA /* introduction.html in Copy Files (objc manual) */,
 				4F7B9A3C1B4DAEFD0028EEFA /* low-level-apis.html in Copy Files (objc manual) */,
 				4F7B9A3D1B4DAEFD0028EEFA /* notes.html in Copy Files (objc manual) */,
-				4F7B9A3E1B4DAEFD0028EEFA /* objc-ae-type-mappings.html in Copy Files (objc manual) */,
+				4F7B9A3E1B4DAEFD0028EEFA /* ae-type-mappings.html in Copy Files (objc manual) */,
 				4F7B9A3F1B4DAEFD0028EEFA /* object-specifiers.html in Copy Files (objc manual) */,
 				4F7B9A401B4DAEFD0028EEFA /* optimizing-performance.html in Copy Files (objc manual) */,
 				4F7B9A411B4DAEFD0028EEFA /* relationships_example.gif in Copy Files (objc manual) */,
@@ -256,7 +256,7 @@
 				4F7B9A271B4DAEA20028EEFA /* introduction.html in Copy Files (swift manual) */,
 				4F7B9A281B4DAEA20028EEFA /* low-level-apis.html in Copy Files (swift manual) */,
 				4F7B9A291B4DAEA20028EEFA /* notes.html in Copy Files (swift manual) */,
-				4F7B9A2A1B4DAEA20028EEFA /* objc-ae-type-mappings.html in Copy Files (swift manual) */,
+				4F7B9A2A1B4DAEA20028EEFA /* ae-type-mappings.html in Copy Files (swift manual) */,
 				4F7B9A2B1B4DAEA20028EEFA /* object-specifiers.html in Copy Files (swift manual) */,
 				4F7B9A2C1B4DAEA20028EEFA /* optimizing-performance.html in Copy Files (swift manual) */,
 				4F7B9A2D1B4DAEA20028EEFA /* relationships_example.gif in Copy Files (swift manual) */,
@@ -360,7 +360,7 @@
 		4F7B99C51B4DAE580028EEFA /* introduction.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = introduction.html; sourceTree = "<group>"; };
 		4F7B99C61B4DAE580028EEFA /* low-level-apis.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "low-level-apis.html"; sourceTree = "<group>"; };
 		4F7B99C71B4DAE580028EEFA /* notes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = notes.html; sourceTree = "<group>"; };
-		4F7B99C81B4DAE580028EEFA /* objc-ae-type-mappings.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "objc-ae-type-mappings.html"; sourceTree = "<group>"; };
+		4F7B99C81B4DAE580028EEFA /* ae-type-mappings.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ae-type-mappings.html"; sourceTree = "<group>"; };
 		4F7B99C91B4DAE580028EEFA /* object-specifiers.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "object-specifiers.html"; sourceTree = "<group>"; };
 		4F7B99CA1B4DAE580028EEFA /* optimizing-performance.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "optimizing-performance.html"; sourceTree = "<group>"; };
 		4F7B99CB1B4DAE580028EEFA /* relationships_example.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = relationships_example.gif; sourceTree = "<group>"; };
@@ -379,7 +379,7 @@
 		4F7B9A001B4DAE720028EEFA /* introduction.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = introduction.html; sourceTree = "<group>"; };
 		4F7B9A011B4DAE720028EEFA /* low-level-apis.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "low-level-apis.html"; sourceTree = "<group>"; };
 		4F7B9A021B4DAE720028EEFA /* notes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = notes.html; sourceTree = "<group>"; };
-		4F7B9A031B4DAE720028EEFA /* objc-ae-type-mappings.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "objc-ae-type-mappings.html"; sourceTree = "<group>"; };
+		4F7B9A031B4DAE720028EEFA /* ae-type-mappings.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "ae-type-mappings.html"; sourceTree = "<group>"; };
 		4F7B9A041B4DAE720028EEFA /* object-specifiers.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "object-specifiers.html"; sourceTree = "<group>"; };
 		4F7B9A051B4DAE720028EEFA /* optimizing-performance.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "optimizing-performance.html"; sourceTree = "<group>"; };
 		4F7B9A061B4DAE720028EEFA /* relationships_example.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = relationships_example.gif; sourceTree = "<group>"; };
@@ -414,7 +414,7 @@
 		4FFA2D3A1A129AAE00AF09E4 /* 12 notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "12 notes.md"; sourceTree = "<group>"; };
 		4FFA2D3B1A129AAE00AF09E4 /* 2 understanding-apple-events.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "2 understanding-apple-events.md"; sourceTree = "<group>"; };
 		4FFA2D3D1A129AAE00AF09E4 /* 4 creating-and-using-static-glues.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "4 creating-and-using-static-glues.md"; sourceTree = "<group>"; };
-		4FFA2D3E1A129AAE00AF09E4 /* 5 objc-ae-type-mappings.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "5 objc-ae-type-mappings.md"; sourceTree = "<group>"; };
+		4FFA2D3E1A129AAE00AF09E4 /* 5 ae-type-mappings.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "5 ae-type-mappings.md"; sourceTree = "<group>"; };
 		4FFA2D3F1A129AAE00AF09E4 /* 6 application-objects.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "6 application-objects.md"; sourceTree = "<group>"; };
 		4FFA2D401A129AAE00AF09E4 /* 7 object-specifiers.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "7 object-specifiers.md"; sourceTree = "<group>"; };
 		4FFA2D411A129AAE00AF09E4 /* 8 commands.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "8 commands.md"; sourceTree = "<group>"; };
@@ -673,7 +673,7 @@
 				4F7B99C51B4DAE580028EEFA /* introduction.html */,
 				4F7B99C61B4DAE580028EEFA /* low-level-apis.html */,
 				4F7B99C71B4DAE580028EEFA /* notes.html */,
-				4F7B99C81B4DAE580028EEFA /* objc-ae-type-mappings.html */,
+				4F7B99C81B4DAE580028EEFA /* ae-type-mappings.html */,
 				4F7B99C91B4DAE580028EEFA /* object-specifiers.html */,
 				4F7B99CA1B4DAE580028EEFA /* optimizing-performance.html */,
 				4F7B99CB1B4DAE580028EEFA /* relationships_example.gif */,
@@ -699,7 +699,7 @@
 				4F7B9A001B4DAE720028EEFA /* introduction.html */,
 				4F7B9A011B4DAE720028EEFA /* low-level-apis.html */,
 				4F7B9A021B4DAE720028EEFA /* notes.html */,
-				4F7B9A031B4DAE720028EEFA /* objc-ae-type-mappings.html */,
+				4F7B9A031B4DAE720028EEFA /* ae-type-mappings.html */,
 				4F7B9A041B4DAE720028EEFA /* object-specifiers.html */,
 				4F7B9A051B4DAE720028EEFA /* optimizing-performance.html */,
 				4F7B9A061B4DAE720028EEFA /* relationships_example.gif */,
@@ -797,7 +797,7 @@
 				4FFA2D3B1A129AAE00AF09E4 /* 2 understanding-apple-events.md */,
 				4F1D2EF11B383BBC00B5A39D /* 3 a-quick-tutorial.md */,
 				4FFA2D3D1A129AAE00AF09E4 /* 4 creating-and-using-static-glues.md */,
-				4FFA2D3E1A129AAE00AF09E4 /* 5 objc-ae-type-mappings.md */,
+				4FFA2D3E1A129AAE00AF09E4 /* 5 ae-type-mappings.md */,
 				4FFA2D3F1A129AAE00AF09E4 /* 6 application-objects.md */,
 				4FFA2D401A129AAE00AF09E4 /* 7 object-specifiers.md */,
 				4FFA2D411A129AAE00AF09E4 /* 8 commands.md */,
