@@ -63,7 +63,7 @@
 
 @implementation AEBDynamicCommandTerm : AEBDynamicTerm
 
-@synthesize eventClass, eventID, parameters;
+@synthesize eventClass, eventID;
 
 
 - (instancetype)initWithName:(NSString*)name_ eventClass:(OSType)eventClass_ eventID:(OSType)eventID_ {
@@ -73,6 +73,7 @@
     eventID = eventID_;
     parametersByName = [[NSMutableDictionary alloc] init];
     parametersByCode = [[NSMutableDictionary alloc] init];
+    orderedParameters = [NSMutableArray array];
     return self;
 }
 
@@ -97,17 +98,18 @@
 
 
 
-- (AEBDynamicCommandTerm *)addParameterWithName:(NSString *)name_ code:(OSType)code_ {
+- (instancetype)addParameterWithName:(NSString *)name_ code:(OSType)code_ {
     AEBDynamicKeywordTerm *paramDef = [[AEBDynamicKeywordTerm alloc] initWithName: name_
                                                                              code: code_
                                                                              kind: kAEBTermParameter];
 	parametersByName[name_] = parametersByCode[@(code_)] = paramDef;
+    [orderedParameters addObject: paramDef];
     return self;
 }
 
 
-- (NSSet *)parameters {
-    return [NSSet setWithArray: parametersByName.allValues];
+- (NSArray *)parameters {
+    return [orderedParameters copy];
 }
 
 - (AEBDynamicKeywordTerm *)parameterForName:(NSString *)name_ {

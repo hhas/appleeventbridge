@@ -10,6 +10,7 @@
 
 @implementation AEBCommand
 
+@synthesize aemEvent;
 
 - (instancetype)initWithAppData:(AEBAppData *)appData
                      eventClass:(AEEventClass)eventClass_
@@ -22,12 +23,12 @@
     directParameter = (__bridge id)kAEBNoDirectParameter;
     parentQuery = parentQuery_;
 	sendMode = kAEWaitReply | kAECanSwitchLayer;
-	timeoutInTicks = kAEDefaultTimeout;
+	timeoutInSeconds = kAEDefaultTimeout;
 	considsAndIgnoresFlags = kAECaseIgnoreMask;
 	// if -targetWithError: fails, store NSError and return it when -sendWithError: is invoked
     NSError *err = nil;
-	id target = [appData targetWithError: &err];
-    // If process failed to launch, there's no point creating an AEMEvent instance as we don't have a valid kAEBTargetProcessID for
+	AEMApplication *target = [appData targetWithError: &err];
+    // If process failed to launch, there's no point creating an AEMEvent instance as we don't have a valid AEBTargetProcessID for
     // it. However, the error can't be reported immediately as there's no way to pass an NSError back to client code
     // from here. Instead, the NSError is temporarily stored, and will be returned to client when it finally calls
     // -sendWithError:. Until then, any calls to add parameters, set attributes, etc. are effectively ignored, since
@@ -37,9 +38,9 @@
 	// if an application specified by path has quit/restart, its AEAddressDesc is no longer valid;
 	// this code will automatically restart it (or not) according to client-specified auto-relaunch policy
 	AEBRelaunchMode relaunchPolicy = appData.relaunchMode;
-	if (relaunchPolicy != kAEBRelaunchNever && [target targetType] == kAEMTargetFileURL
+	if (relaunchPolicy != AEBRelaunchNever && [target targetType] == AEMTargetFileURL
 			&& ![AEMApplication isApplicationRunningWithProcessID: [[target descriptor] int32Value]]) {
-		if (relaunchPolicy == kAEBRelaunchAlways || (eventClass_ == kCoreEventClass && eventID_ == kAEOpenApplication)) {
+		if (relaunchPolicy == AEBRelaunchAlways || (eventClass_ == kCoreEventClass && eventID_ == kAEOpenApplication)) {
 			BOOL success = [target reconnectWithError: &err];
             // As above, if process failed to relaunch, store the NSError and return it on -sendWithError:.
             commandError = err;
@@ -53,12 +54,7 @@
 
 
 - (NSString *)description {
-    return [NSString stringWithFormat: @"<AEBCommand %@>", aemEvent];
-}
-
-
-- (AEMEvent *)AEMEvent {
-	return aemEvent;
+    return [NSString stringWithFormat: @"<AEBCommand %@>", aemEvent]; // TO DO: this is somewhat misleading/unhelpful as AEMEvent instance is not fully packed until sent, so some values (e.g. parent query and direct parameter) won't be shown (cheapest solution would be to make a throwaway copy of the AEMEvent, finish packing that, and display that; this would require splitting sendWithError into two methods)
 }
 
 
@@ -103,18 +99,18 @@
 	return self;
 }
 
-- (instancetype)timeout:(long)timeout_ {
-	timeoutInTicks = timeout_ * 60;
+- (instancetype)timeout:(NSTimeInterval)timeout_ {
+	timeoutInSeconds = timeout_;
 	return self;
 }
 
 - (instancetype)defaultTimeout {
-	timeoutInTicks = kAEDefaultTimeout;
+	timeoutInSeconds = kAEDefaultTimeout;
 	return self;
 }
 
 - (instancetype)noTimeout {
-	timeoutInTicks = kNoTimeOut;
+	timeoutInSeconds = kNoTimeOut;
 	return self;
 }
 
@@ -232,7 +228,7 @@
 	}
 	// send event
 	NSError *eventError = nil;
-	id result = [aemEvent sendWithMode: sendMode timeout: timeoutInTicks error: &eventError];
+	id result = [aemEvent sendWithOptions: sendMode timeout: timeoutInSeconds error: &eventError];
 	if (eventError && error) {
 		NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary: eventError.userInfo];
 		userInfo[kAEMErrorFailedEvent] = self;

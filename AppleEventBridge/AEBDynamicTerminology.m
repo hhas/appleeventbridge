@@ -4,34 +4,8 @@
 
 // TO DO: check conflicting terms are correctly disambiguated (note that property/element names currently aren't; this should be fixed)
 
-// TO DO: move keyword conversion to parser for consistency (currently term objects don't contain escaped names, except for parameters)
-
 
 #import "AEBDynamicTerminology.h"
-
-
-/**********************************************************************/
-
-
-@interface AEBDynamicKeywordDefaultConverter : NSObject<AEBDynamicTermNameConverterProtocol>
-// Default implementation returns names unchanged.
-@end
-
-
-@implementation AEBDynamicKeywordDefaultConverter // default implementation is a no-op // TO DO: eventually provide a subclass that takes list of legal characters and reserved words, and creates suitable converter on client's behalf, thereby reducing the amount of code a client bridge must implement
-
-- (NSString *)convert:(NSString *)name {
-	return name;
-}
-
-- (NSString *)escape:(NSString *)name {
-	return name;
-}
-
-@end
-
-
-/**********************************************************************/
 
 
 @implementation AEBDynamicTerminology
@@ -43,12 +17,11 @@
 	return [self initWithKeywordConverter: nil defaultTerminology: nil];
 }
 
-- (instancetype)initWithKeywordConverter:(id<AEBDynamicTermNameConverterProtocol>)keywordConverter_
+- (instancetype)initWithKeywordConverter:(AEBKeywordConverter *)converter
                       defaultTerminology:(id)defaultTerms {
 	self = [super init];
 	if (!self) return self;
-	keywordCache = [[NSMutableDictionary alloc] init];
-	keywordConverter = keywordConverter_ ? (id)keywordConverter_ : [[AEBDynamicKeywordDefaultConverter alloc] init];
+	keywordConverter = converter ?: [[AEBKeywordConverter alloc] init];
 
     typesByName = [[NSMutableDictionary alloc] init];
     propertiesByName = [[NSMutableDictionary alloc] init];
@@ -63,12 +36,12 @@
     if ([defaultTerms isEqual: kAEBUseDefaultTerminology]) { // use built-in default terms
         // TO DO: currently this uses pre-converted names, but eventually AEBDefaultTerms should contain
         // AS-style names and convert these as required (not sure what difference this might make to performance
-        // but if significant then cache the converted terms here in a key-value list using keywordConverter_ as
+        // but if significant then cache the converted terms here in a key-value list using converter_ as
         // key (note: AEBDynamic must support >1 language at a time, so any caches must be client language-aware)
         static dispatch_once_t pred = 0;
         __strong static AEBDefaultTerms *defaultRawTerms = nil;
         dispatch_once(&pred, ^{
-            defaultRawTerms = [[AEBDefaultTerms alloc] init];
+            defaultRawTerms = [[AEBDefaultTerms alloc] initWithKeywordConverter: keywordConverter];
         });
         [self addRawTerminology: defaultRawTerms];
     } else if ([defaultTerms conformsToProtocol: @protocol(AEMSelfPackingProtocol)]) { // an object containing raw (dumped) terminology
@@ -93,28 +66,30 @@
 	for (NSUInteger i = 0; i < len; i++) {
 		// add a definition to typeByCode table
 		// to handle synonyms, if same code appears more than once then use name from last definition in list
-		AEBDynamicKeywordTerm *keywordTerm = definitions[i];
-		NSString *name = keywordCache[keywordTerm.name];
-		if (!name) name = keywordCache[keywordTerm.name] = [keywordConverter convert: keywordTerm.name];
-		OSType code = keywordTerm.code;
-		// escape definitions that semi-overlap default definitions
-		NSAppleEventDescriptor *desc = defaultTypeByName[name];
-		if (desc && [desc typeCodeValue] != code) name = [keywordConverter escape: name];
-		// add item
-		typesByCode[@(code)] = name;
+        {
+            AEBDynamicKeywordTerm *keywordTerm = definitions[i];
+            NSString *name = [keywordConverter convertSpecifierName: keywordTerm.name]; // TO DO: this should be redundant now; review, delete
+            OSType code = keywordTerm.code;
+            // escape definitions that semi-overlap default definitions
+            NSAppleEventDescriptor *desc = defaultTypeByName[name];
+            if (desc && desc.typeCodeValue != code) name = keywordTerm.name = [keywordConverter escapeName: name];
+            // add item
+            typesByCode[@(code)] = name;
+        }
 		// add a definition to typeByName table
 		// to handle synonyms, if same name appears more than once then use code from first definition in list
-		keywordTerm = definitions[(len - 1 - i)];
-		name = keywordCache[keywordTerm.name];
-		if (!name) name = keywordCache[keywordTerm.name] = [keywordConverter convert: keywordTerm.name];
-		code = keywordTerm.code;
-		// escape definitions that semi-overlap default definitions
-		desc = defaultTypeByName[name];
-		if (desc && [desc typeCodeValue] != code) name = [keywordConverter escape: name];
-		// add item
-		typesByName[name] = desc = [[NSAppleEventDescriptor alloc] initWithDescriptorType: descType
-                                                                                    bytes: (void *)(&code)
-                                                                                   length: sizeof(code)];
+        {
+            AEBDynamicKeywordTerm *keywordTerm = definitions[(len - 1 - i)];
+            NSString *name = keywordTerm.name;
+            OSType code = keywordTerm.code;
+            // escape definitions that semi-overlap default definitions
+            NSAppleEventDescriptor *desc = defaultTypeByName[name];
+            if (desc && desc.typeCodeValue != code) name = keywordTerm.name = [keywordConverter escapeName: name];
+            // add item
+            typesByName[name] = desc = [[NSAppleEventDescriptor alloc] initWithDescriptorType: descType
+                                                                                        bytes: (void *)(&code)
+                                                                                       length: sizeof(code)];
+        }
 	}
 }
 
@@ -126,17 +101,17 @@
 	for (NSUInteger i = 0; i < len; i++) {
 		// add a definition to the byCode table
 		// to handle synonyms, if same code appears more than once then use name from last definition in list
-		AEBDynamicKeywordTerm *keywordTerm = definitions[i];
-		NSString *name = keywordCache[keywordTerm.name];
-		if (!name) name = keywordCache[keywordTerm.name] = [keywordConverter convert: keywordTerm.name];
-		codeTable[@(keywordTerm.code)] = name;
-		// TO DO: escape definitions that semi-overlap default definitions?
+        {
+            AEBDynamicKeywordTerm *keywordTerm = definitions[i];
+            codeTable[@(keywordTerm.code)] = keywordTerm.name;
+        }
+        // TO DO: escape definitions that semi-overlap default definitions? (see TODO at top)
 		// add a definition to the byName table
 		// to handle synonyms, if same name appears more than once then use code from first definition in list
-		keywordTerm = definitions[(len - 1 - i)];
-		name = keywordCache[keywordTerm.name];
-		if (!name) name = keywordCache[keywordTerm.name] = [keywordConverter convert: keywordTerm.name];
-		nameTable[name] = keywordTerm;
+        {
+            AEBDynamicKeywordTerm *keywordTerm = definitions[(len - 1 - i)];
+            nameTable[keywordTerm.name] = keywordTerm;
+        }
 	}
 }
 
@@ -147,8 +122,7 @@
 	NSUInteger len = [commands count];
 	for (NSUInteger i = 0; i < len; i++) {
 		AEBDynamicCommandTerm *commandTerm = commands[(len - 1 - i)];
-		NSString *name = keywordCache[commandTerm.name];
-		if (!name) name = keywordCache[commandTerm.name] = [keywordConverter convert: commandTerm.name];
+		NSString *name = commandTerm.name;
 		OSType eventClass = commandTerm.eventClass;
 		OSType eventID = commandTerm.eventID;
 		// Avoid collisions between default commands and application-defined commands with same name
@@ -157,7 +131,7 @@
 		existingCommandDef = defaultCommandByName[name];
 		if (existingCommandDef && (existingCommandDef.eventClass != eventClass
                                    || existingCommandDef.eventID != eventID)) {
-			name = [keywordConverter escape: name];
+			name = commandTerm.name = [keywordConverter escapeName: name];
         }
 		// add item
 		commandDef = [[AEBDynamicCommandTerm alloc] initWithName: name
@@ -165,9 +139,7 @@
                                                          eventID: eventID];
         commandsByName[name] = commandsByCode[AEBCommandKeyForCodes(eventClass, eventID)] = commandDef;
 		for (AEBDynamicKeywordTerm *parameterDef in [commandTerm parameters]) {
-			NSString *paramName = keywordCache[parameterDef.name];
-			if (!paramName) paramName = keywordCache[parameterDef.name] = [keywordConverter convert: parameterDef.name];
-			[commandDef addParameterWithName: paramName code: parameterDef.code];
+			[commandDef addParameterWithName: parameterDef.name code: parameterDef.code];
 		}
 	}
 }

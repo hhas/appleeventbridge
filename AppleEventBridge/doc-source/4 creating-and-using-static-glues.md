@@ -12,24 +12,37 @@ To view the `aebglue` tool's full documentation:
 
     aebglue -h
 
-The following example generates a glue for the TextEdit application, using `TE` as the class name prefix, and saving the generated glue to your home folder as `TEGlue`:
+`aebglue` generates Swift-based glues by default, so to generate an Objective-C glue instead you must include an `-o` flag. 
 
-    aebglue -a TextEdit  -p TE -o ~/TEGlue
+The following example generates a glue for the TextEdit application, using an auto-generated class name prefix (in this case `TED`), creating a new `TEDGlue` folder in your current working directory:
+
+    aebglue -o TextEdit
+
+while the following command uses a custom class name prefix, `TE`, and creates the new `TEGlue` folder in your home directory's "Documents" folder:
+
+    aebglue -o -p TE TextEdit ~/Documents
+
+The generated glue folder also contains an `.sdef` file containing the application's dictionary (interface documentation) in the correct format. For example, to view the `TEGlue` terminology in Script Editor: 
+
+    open -a 'Script Editor' ~/Documents/TEGlue/TextEdit.objc.sdef
+
+Refer to this documentation when using AppleEventBridge glues in your own code, as it shows element, property, command, etc. names as they appear in the generated glue classes. (Make sure Script Editor's dictionary viewer is set to "AppleScript" language; other formats are for use with OS X's Scripting Bridge/JavaScript for Automation bridges only.)
+
+If an identically named folder already exists at the same location, `aebglue` will normally fail with a "path already exists" error. If you wish to force it to overwrite the existing folder without warning, add an `-r` option:
+
+    aebglue -o -r TextEdit
 
 For compatibility, `aebglue` normally sends the application an `ascr/gdte` event to retrieve its terminology in AETE format. However, some Carbon-based applications (e.g. Finder in 10.9 and 10.10) may have buggy `ascr/gdte` event handlers that return Cocoa Scripting's default terminology instead of the application's own. To work around this, add an `-s` option to retrieve the terminology in SDEF format instead:
 
-    aebglue -a Finder  -p FN -o ~/FNGlue -s
+    aebglue -o -s Finder
 
 (Be aware that OS X's AETE-to-SDEF converter is not 100% reliable; for example, some four-char codes may fail to translate, in which case `aebglue` will warn of their omission. You'll have to correct the glue files manually should you need to use the affected features, or use the lower-level `AEM` APIs instead.)
 
-The generated glue includes an `.sdef` file containing the application's dictionary documentation in AEB format. For example, to view the `TEGlue` terminology in Script Editor: 
-
-    open -a 'Script Editor' ~/TEGlue/TextEdit.sdef
-
-Refer to this documentation when using AppleEventBridge glues in your own code, as it shows element, property, command, etc. names as they appear in the generated glue classes. (Make sure Script Editor's dictionary viewer is set to "AppleScript" language mode; the "Objective-C" mode formats terminology for OS X's Scripting Bridge.)
-
+«»«<p class="hilitebox">If using Objective-C glues in a non-ARC project, `autorelease` calls must be manually added to the `XXApplication` class where indicated to avoid memory leaks.</p>»
 
 ## Using a glue
+
+[TO DO: this covers ObjC; update for Swift once glue structure, etc. finalzied]
 
 To include the generated glue files in your project:
 
@@ -45,19 +58,19 @@ You can now import the main `<var>XX</var>Glue/<var>XX</var>Glue.h` header file 
 
 Each glue contains the following classes:
 
-* `<var>XX</var>Symbol` -- represents Apple event type, enumerator, and property names, e.g. `TESymbol`
+* `<var>XX</var>Symbol` -- represents Apple event type, enumerator, and property names, e.g. `TEDSymbol`
 
-* `<var>XX</var>Specifier` -- represents Apple Event Object Model queries (a.k.a. object specifiers), e.g. `TESpecifier`
+* `<var>XX</var>Specifier` -- represents Apple Event Object Model queries (a.k.a. object specifiers), e.g. `TEDSpecifier`
 
-* `<var>XXNAME</var>Command` -- represents an application command (one class for each application command), e.g. `TEMakeCommand`, `TEMoveCommand`, etc.
+* `<var>XXNAME</var>Command` -- represents an application command (one class for each application command), e.g. `TEDMakeCommand`, `TEDMoveCommand`, etc. [TO DO: only in ObjC glues]
 
-* `<var>XX</var>Application` -- represents an application, e.g. `TEApplication`
-
-
-Each glue also provides three macros - `<var>XX</var>App`, `<var>XX</var>Con` and `<var>XX</var>Its` - for use in constructing object specifiers.
+* `<var>XX</var>Application` -- represents an application, e.g. `TEDApplication` [TO DO: in Swift glues, this class's name is derived from the application's own name, or the `-n` option if given; ObjC glues may be revised in future to adopt same naming scheme]
 
 
-<p class="hilitebox">Note that the code examples in this manual assume the presence of suitable glues; e.g. TextEdit-based examples assume a TextEdit glue with the prefix `TE`, Finder-based examples assume a Finder glue with the prefix `FN`, etc.</p>
+Each glue also provides three macros - `<var>XX</var>App`, `<var>XX</var>Con` and `<var>XX</var>Its` - for use in constructing object specifiers. [TO DO: in Swift glues, these are defined as top-level constants and capitalized slightly differently: `<var>XX</var>app`, `<var>XX</var>con` and `<var>XX</var>its`; again, this needs to be finalized]
+
+
+<p class="hilitebox">Note that the code examples in this manual assume the presence of suitable glues; e.g. TextEdit-based examples assume a TextEdit glue with the prefix `TED`, Finder-based examples assume a Finder glue with the prefix `FIN`, etc.</p>
 
 
 

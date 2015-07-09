@@ -10,22 +10,22 @@
 
 @implementation AEBDynamicAppData
 
-- (instancetype)initWithApplicationClass:(Class)appClass
-                              targetType:(AEBTargetType)type
-                              targetData:(id)data
-                            relaunchMode:(AEBRelaunchMode)mode
-                           launchOptions:(NSWorkspaceLaunchOptions)options
-                             targetTerms:(id)targetTerms_
-                            defaultTerms:(id)defaultTerms_
-                        keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_ {
-	self = [super initWithApplicationClass: appClass
-                                targetType: type
-                                targetData: data
-                              relaunchMode: mode
-                               launchOptions: options];
-	if (!self) return self;
-	targetTerms = targetTerms_;
-	defaultTerms = defaultTerms_;
+- (instancetype)initWithTargetType:(AEBTargetType)type
+                        targetData:(id)data
+                     launchOptions:(NSWorkspaceLaunchOptions)options
+                      relaunchMode:(AEBRelaunchMode)mode
+                       targetTerms:(id)targetTerms_ // target app's terminology
+                      defaultTerms:(id)defaultTerms_ // built-in terminology (normally an AEBDefaultTerms instance)
+                  keywordConverter:(AEBKeywordConverter *)converter_
+               aemApplicationClass:(Class)appClass {
+    self = [super initWithTargetType: type
+                          targetData: data
+                       launchOptions: options
+                        relaunchMode: mode
+                 aemApplicationClass: appClass];
+    if (!self) return self;
+    targetTerms = targetTerms_;
+    defaultTerms = defaultTerms_;
 	keywordConverter = (id)converter_;
 	return self;
 }
@@ -33,15 +33,15 @@
 
 - (instancetype)initWithApplicationURL:(NSURL *)url
                                useSDEF:(bool)useSDEF
-                      keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_ {
-    return [self initWithApplicationClass: AEMApplication.class
-                               targetType: (url ? kAEBTargetURL : kAEBTargetCurrent)
-                               targetData: url
-                             relaunchMode: kAEBRelaunchAlways
-                            launchOptions: kAEMDefaultLaunchOptions
-                              targetTerms: (useSDEF ? kAEBUseSDEFTerminology : kAEBUseAETETerminology)
-                             defaultTerms: kAEBUseDefaultTerminology
-                         keywordConverter: converter_];
+                      keywordConverter:(AEBKeywordConverter *)converter_ {
+    return [self initWithTargetType: (url ? AEBTargetURL : AEBTargetCurrent)
+                         targetData: url
+                      launchOptions: kAEMDefaultLaunchOptions
+                       relaunchMode: AEBRelaunchAlways
+                        targetTerms: (useSDEF ? kAEBUseSDEFTerminology : kAEBUseAETETerminology)
+                       defaultTerms: kAEBUseDefaultTerminology
+                   keywordConverter: converter_
+                aemApplicationClass: AEMApplication.class];
 }
 
 
@@ -69,9 +69,9 @@
         if ([targetTerms isEqual: kAEBUseAETETerminology]) { // obtain AETE terminology from application by sending `ascrgdte` event
             id aetes = [self aetesWithError: &tempError];
             if (aetes) {
-                AEBDynamicAETEParser *parser = [[AEBDynamicAETEParser alloc] init];
+                AEBDynamicAETEParser *parser = [[AEBDynamicAETEParser alloc] initWithKeywordConverter: keywordConverter];
                 if (![parser parse: aetes error: error]) return nil;
-                // TO DO: cache parser result? (names haven't been converted yet, so this data is language-agnostic; Q. what to use as key - not kAEBTargetProcessID, obviously; what about file/eppc url?) or just leave clients to do all their own caching once they've converted raw terms to finished terminology tables?
+                // TO DO: cache parser result? (names haven't been converted yet, so this data is language-agnostic; Q. what to use as key - not AEBTargetProcessID, obviously; what about file/eppc url?) or just leave clients to do all their own caching once they've converted raw terms to finished terminology tables?
                 [termTable addRawTerminology: parser];
             } else if (tempError.code != resNotFound) { // an error occurred when getting aetes (e.g. AE failed)
                 NSLog(@"AETE retrieval failed: %@", tempError);
@@ -80,7 +80,7 @@
             } // else no AETE, probably because app is 'non-scriptable' or an SE applet
  //           NSLog(@"AETE resource not found: %@", tempError); // DEBUG
         } else if ([targetTerms isEqual: kAEBUseSDEFTerminology]) { // obtain SDEF terminology via AEMCopyScriptingDefinitionFromURL
-            AEBDynamicSDEFParser *parser = [[AEBDynamicSDEFParser alloc] init];
+            AEBDynamicSDEFParser *parser = [[AEBDynamicSDEFParser alloc] initWithKeywordConverter: keywordConverter];
             [parser parseURL: self.targetData error: error];
             [termTable addRawTerminology: parser];
         } else if ([targetTerms conformsToProtocol: @protocol(AEMSelfPackingProtocol)]) { // an object containing raw (dumped) terminology

@@ -32,7 +32,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 
 @implementation AEMApplication
 
-@synthesize AppleEventDescriptorClass, AEMEventClass;
+@synthesize AppleEventDescriptorClass, AEMEventClass, defaultCodecs;
 
 // utility class methods
 
@@ -110,7 +110,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
             return nil;
         }
     }
-    return [NSAppleEventDescriptor descriptorWithProcessID: pid];
+    return [NSAppleEventDescriptor descriptorWithProcessIdentifier: pid];
 }
 
 
@@ -218,13 +218,13 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
     AEMEventClass = AEMEvent.class;
 	// address desc
 	switch (targetType) {
-		case kAEMTargetFileURL:
+		case AEMTargetFileURL:
 			addressDesc = [self.class descriptorForApplicationWithFileURL: targetData launchOptions: options error: error];
 			break;
-		case kAEMTargetEppcURL:
+		case AEMTargetEppcURL:
 			addressDesc = [NSAppleEventDescriptor descriptorWithApplicationURL: targetData];
 			break;
-		case kAEMTargetCurrent:
+		case AEMTargetCurrent:
 			addressDesc = [NSAppleEventDescriptor currentProcessDescriptor];
 			break;
 		default:
@@ -241,7 +241,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 
 - (instancetype)init {
 	NSError *error;
-	return [self initWithTargetType: kAEMTargetCurrent data: NSNull.null launchOptions: kAEMDefaultLaunchOptions error: &error];
+	return [self initWithTargetType: AEMTargetCurrent data: NSNull.null launchOptions: kAEMDefaultLaunchOptions error: &error];
 }
 
 - (instancetype)initWithBundleID:(NSString *)bundleID
@@ -254,7 +254,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
                                              [NSString stringWithFormat: @"Application not found: '%@'", bundleID]);
         return nil;
     }
-	return [self initWithTargetType: kAEMTargetFileURL data: url launchOptions: options error: error];
+	return [self initWithTargetType: AEMTargetFileURL data: url launchOptions: options error: error];
 }
 
 - (instancetype)initWithName:(NSString *)name
@@ -267,26 +267,26 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
                                              [NSString stringWithFormat: @"Application not found: '%@'", name]);
         return nil;
     }
-	return [self initWithTargetType: kAEMTargetFileURL data: url launchOptions: options error: error];
+	return [self initWithTargetType: AEMTargetFileURL data: url launchOptions: options error: error];
 }
 
 - (instancetype)initWithURL:(NSURL *)url
               launchOptions:(NSWorkspaceLaunchOptions)options
                       error:(NSError * __autoreleasing *)error {
 	if ([url isFileURL]) {
-		return [self initWithTargetType: kAEMTargetFileURL data: url launchOptions: options error: error];
+		return [self initWithTargetType: AEMTargetFileURL data: url launchOptions: options error: error];
 	} else {
-		return [self initWithTargetType: kAEMTargetEppcURL data: url launchOptions: kAEMDefaultLaunchOptions error: error];
+		return [self initWithTargetType: AEMTargetEppcURL data: url launchOptions: kAEMDefaultLaunchOptions error: error];
     }
 }
 
 - (instancetype)initWithProcessID:(pid_t)pid {
-    NSAppleEventDescriptor *desc = [NSAppleEventDescriptor descriptorWithProcessID: pid];
-	return [self initWithTargetType: kAEMTargetProcessID data: desc launchOptions: kAEMDefaultLaunchOptions error: nil];
+    NSAppleEventDescriptor *desc = [NSAppleEventDescriptor descriptorWithProcessIdentifier: pid];
+	return [self initWithTargetType: AEMTargetProcessID data: desc launchOptions: kAEMDefaultLaunchOptions error: nil];
 }
 
 - (instancetype)initWithDescriptor:(NSAppleEventDescriptor *)desc {
-	return [self initWithTargetType: kAEMTargetDescriptor data: desc launchOptions: kAEMDefaultLaunchOptions error: nil];
+	return [self initWithTargetType: AEMTargetDescriptor data: desc launchOptions: kAEMDefaultLaunchOptions error: nil];
 }
 
 
@@ -335,7 +335,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 
 // get address desc
 
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return addressDesc;
 }
 
@@ -349,13 +349,13 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 - (NSString *)description {
 	pid_t pid;
 	switch (targetType) {
-		case kAEMTargetFileURL:
-		case kAEMTargetEppcURL:
+		case AEMTargetFileURL:
+		case AEMTargetEppcURL:
 			return [NSString stringWithFormat: @"<AEMApplication url=%@>", AEMFormatObject(targetData)];
-		case kAEMTargetProcessID:
+		case AEMTargetProcessID:
 			[[addressDesc data] getBytes: &pid length: sizeof(pid_t)];
 			return [NSString stringWithFormat: @"<AEMApplication pid=%i>", pid];
-		case kAEMTargetCurrent:
+		case AEMTargetCurrent:
 			return @"<AEMApplication current>";
 		default:
 			return [NSString stringWithFormat: @"<AEMApplication desc=%@>", AEMFormatObject(addressDesc)];
@@ -368,7 +368,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 - (id)eventWithEventClass:(AEEventClass)eventClass
                   eventID:(AEEventID)eventID
                  returnID:(AEReturnID)returnID
-                   codecs:(id)codecs {
+                   codecs:(id <AEMCodecsProtocol>)codecs {
     NSAppleEventDescriptor *desc = [self.AppleEventDescriptorClass appleEventWithEventClass: eventClass
                                                                                     eventID: eventID
                                                                            targetDescriptor: addressDesc
@@ -391,7 +391,7 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 
 - (BOOL)reconnectWithError:(NSError * __autoreleasing *)error {
 	if (error) *error = nil;
-	if (targetType == kAEMTargetFileURL) {
+	if (targetType == AEMTargetFileURL) {
         NSAppleEventDescriptor *newAddress;
 		newAddress = [self.class descriptorForApplicationWithFileURL: targetData launchOptions: launchOptions error: error];
 		if (newAddress) {

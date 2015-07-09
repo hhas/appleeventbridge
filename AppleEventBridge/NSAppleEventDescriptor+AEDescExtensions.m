@@ -4,7 +4,7 @@
 
 #import "NSAppleEventDescriptor+AEDescExtensions.h"
 
-
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < 101100
 
 @implementation NSAppleEventDescriptor (AEDescExtensions)
 
@@ -33,10 +33,10 @@
     return [NSDate dateWithTimeIntervalSinceReferenceDate: cfTime];
 }
 
-- (instancetype)sendAppleEventWithMode:(AESendMode)sendMode timeout:(long)timeOutInTicks error:(NSError * __autoreleasing *)error {
+- (instancetype)sendEventWithOptions:(AESendMode)sendOptions timeout:(NSTimeInterval)timeoutInSeconds error:(NSError * __autoreleasing *)error {
     if (error) *error = nil;
     AEDesc reply = {typeNull, NULL};
-    OSStatus err = AESendMessage(self.aeDesc, &reply, sendMode, timeOutInTicks); // LEGACY API
+    OSStatus err = AESendMessage(self.aeDesc, &reply, sendOptions, (long)(timeoutInSeconds > 0 ? timeoutInSeconds * 60 : timeoutInSeconds)); // LEGACY API
     if (err != noErr) {
         if (error) *error = [NSError errorWithDomain: NSOSStatusErrorDomain code: err userInfo: nil];
         return nil;
@@ -44,4 +44,7 @@
     return [[self.class alloc] initWithAEDescNoCopy: &reply];
 }
 
+
 @end
+
+#endif

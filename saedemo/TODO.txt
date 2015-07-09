@@ -1,0 +1,125 @@
+TO DO:
+
+- rewrite AEB framework to simplify architecture, consolidating layered AEM+AEB query classes into a single layer of built-in and glue-defined classes:
+
+        AEBSpecifier
+            AEBObject
+                «PREFIX»Object
+                    «PREFIX»Elements <AEBElementsProtocol>
+                    «PREFIX»Application // TO DO: where should this be in class hierarchy? it needs raw and glue-defined property, elements, command methods, but none of the selector/test clause methods that normally appear on ObjectSpecifiers
+            AEBInsertion
+                «PREFIX»Insertion -- defined for typechecking purposes only
+            AEBTestClause -- defines AND, OR, NOT only, and should only be constructable from specifiers with an `its` root
+                «PREFIX»TestClause -- defined for typechecking purposes only
+
+    AEBElementsProtocol -- selector methods would be defined on AEBObject, but only exposed on «PREFIX»Elements (ideally would use mixins/traits or multiple inheritance, but ObjC doesn't support this); not sure how to support insertion and test clause constructors, as those return different types (AEBInsertion, AEBTestClause; but ideally we want them to return their glue-defined subclasses for stronger typechecks)
+
+    note: glues would subclass AEBObject to define property/elements/command attributes, so «PREFIX»Elements, «PREFIX»Application would need to be defined in ObjC glues [including default glue, which would probably be built in as AEBElements, AEBApplication]), and AEMType, etc. into AEBSymbol; consider using -command:parameters:attributes:
+
+    note: specifiers should pass self, AppData, property/elements name as string (for display, error reporting), selector type, selector data; note that deferred specifier support should remain for efficiency (with AppData option to disable); need to decide if packing should be done on the fly (caution: this would require generic specifiers to contain an AppData instance, which would be problematic for dynamic glues unless those can override pack to create a 'deferred desc' to be packed for real when added to AppleEvent); note: might also want to pass specifier root, allowing quicker 'is it a test clause?' check
+
+    Q. how best to implement 'all-elements' shim? Currently `-[AEMObjectSpecifier elements:]` returns an all-elements specifier; invoking a selector on that extracts the underlying 'selector-less' object and applies the selector to that, in effect replacing the all-elements specifier with a different element[s] specifier (one option might be to add a «Prefix»AllElements subclass?); amongst other things, the shim ensures multiple selectors are applied correctly, e.g. app.documents[its.modified == true][1], where the first selector replaces the all-elements specifier with a by-test specifier, while the second appends a new by-index specifier with the same element class
+
+- what, if any, standard Swift method/var names need reserved in AEBStaticKeywordConverter?
+
+
+- how best to specify launch flags in ObjC bridge? properties? chained method calls? (note: relaunchMode is currently implemented as property on AEBSpecifier; launchOptions needs exposed)
+
+
+- given all command methods return errors (since no Apple event is guaranteed to succeed), would it be worth overloading command methods to provide an alternative error handling scheme, allowing user to omit 'try' where they aren't concerned with error details, e.g. by passing a closure that returns a default value to be returned if command fails:
+
+    func get(directParameter: AnyObject = AEBNoParameter,
+            eventAttributes: AnyObject? = nil, ifError: ErrorType -> AnyObject) -> AnyObject {
+        do {
+            return try self.get(directParameter, eventAttributes: eventAttributes)
+        } catch {
+            return ifError(error)  
+        }
+    }
+    
+user could then use a trailing closure to return a default value in the event an error occurs, with the NSError being passed to closure as argument if required:
+
+    print (TextEdit.documents[100].text.get(){$0; return "N/A"})
+
+(Q. any way to allow closure to ignore error argument?, e.g. {$0; return -1} works with above but {-1} complains about mismatched signatures; e.g. sum type ought to work)
+
+
+- what about asynch event handling? (trailing closures typically used there for completion code)
+
+
+- figure out why the following generic function fails to instantiate the correct class (Swift bug?):
+
+
+    func != <T: SwiftAESpecifier>(left: T!, right: AnyObject!) -> T! {
+        let baseQuery = left.aemQuery as! AEMObjectSpecifier
+        let newObj: T = T(appData: left.aebAppData, aemQuery: baseQuery.notEquals(right))
+
+        // DEBUG
+        print("T=\(T.self)")                 // T=saedemo.ITUSpecifier
+        print("l=\(left.className)")         // l=saedemo.ITUSpecifier
+        print("ldt=\(left.dynamicType)")     // ldt=Swift.ImplicitlyUnwrappedOptional<saedemo.ITUSpecifier>
+        print("n=\(newObj.className)")       // n=saedemo.SwiftAESpecifier // uh-oh; should be ITUSpecifier subclass
+        let ndt = newObj.dynamicType
+        print("ndt=\(ndt)")                  // runtime crash
+
+        return newObj
+    }
+
+
+- any way to ensure `func == (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier!` always gets priority over Swift's default `==(...)->Bool`? Currently, in the absence of an explicit return type, the type inferencer likes to pick the latter rather than the former, causing `==` test clause specifier to return boolean result instead of another specifier, e.g.:
+
+    let q = TET.it == ""
+print(q) // q=false, but should be TETSpecifier; other operators do not seem to have this problem (might be a consequence of Swift's automatic bridging of -[NSObject isEqual:])
+
+
+- how best to specify how reply descs should be unpacked? (TO DO: is it possible/practical to specify return type as a Swift type, e.g. Array<String>, and introspect that to determine what coercions to apply when unpacking descs?)
+
+    - how best can commands provide generic behavior where a Swift type passed as returnType: argument can determine function/method's return type? e.g.:
+
+
+            func get<T>(..., asType: T.Type) throws -> T! {
+                // introspect T.dynamicType here and use that info to specify outgoing event's requested type and coerce return value to appropriate desc type[s] as it's being unpacked (note: this'll require overriding/modifying unpack: so that coercion info can be passed in as an argument of type id; individual glues can then coerce desc to required type before passing it to AEBAppData, along with - if it's a list/record - the coercion info describing how to unpack its items)
+                return result
+            }
+
+        would be called as:
+
+            objSpec.get(1, asType: [String].self)
+
+            finder.items.get(asType:[NSURL].self)
+
+        thus avoiding need for trailing `as! [String]` as well as providing coercion to desired type where practical. (This may need to be implemented as an overloaded method, or is it possible to declare asType: as optional arg?)
+
+        (BTW, NSAppleEventDescriptor.self should also be allowed as a return type, in which case reply desc would be returned as-is without any unpacking.)
+
+
+- in Swift XXXSymbol classes, would a dictionary of closures be faster/slower than large switch blocks for unpacking? (or a combination of switch for initial lookup combined with static dictionary-based cache for subsequent retrievals? prob. best to profile first)
+
+
+- currently built-in terms aren't predefined in GlueSupport base classes, but are included in glue each time; not sure if this is best approach (though is prob. simplest as it avoids glue gen having to detect overridden terms and explicitly mark them `override`)
+
+
+- is `defer` any use for auto-closing transactions? (not that many, if any, apps use those these days)
+
+
+- remove `k` prefix from all AEM/AEB enums (c.f. Cocoa enums)?
+
+
+- how to structure documentation to cover both Swift and ObjC?
+
+
+- one problem with unpacking typeList as NSArray rather than Array is that booleans end up as NSNumber so display as 0/1 rather than true/false (though arguably this is Cocoa/Swift's problem, not AEB), e.g.:
+
+    print(try textedit.documents.modified.get()) // prints as (0,0,...), not [false,false,...]
+
+
+- implement Playground-friendly help() support? note: need to check how Playgrounds re-evaluates code after changes: if all operations are automatically re-applied then it won't be much use for experimenting/working with AEB (i.e. all commands that modify application data will be accidents/disasters waiting to happen), in which case users will be far better off using interactive swift CLI in Terminal
+
+
+- would it be preferable for AEBSwiftSpecifiers to be pure Swift classes, rather than subclasses of NSObject?
+
+
+- support optional completionHandler closure for async sends? (not sure how best to implement this; might be simpler to take optional `queueReply:true` arg that calls command.queueReply() to set AESendMode's kAEQueueReply flag and, on successful dispatch of the event, immediately return the event's returnID as result, leaving user to collect reply event themselves)
+
+
+

@@ -28,6 +28,13 @@ NSError *AEMErrorWithInfo(NSInteger code, NSString *message);
 
 
 /**********************************************************************/
+// Convert NSString to four-char code
+
+
+OSType AEM4CC(NSString * codeStr);
+
+
+/**********************************************************************/
 
 
 #define AEMNewRecordOfType(descType) ([[NSAppleEventDescriptor recordDescriptor] coerceToDescriptorType: (descType)])
@@ -39,16 +46,7 @@ NSError *AEMErrorWithInfo(NSInteger code, NSString *message);
 
 
 /**********************************************************************/
-// supported by all self-packing objects
 
-@protocol AEMSelfPackingProtocol <NSObject>
-
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error;
-
-@end
-
-
-/**********************************************************************/
 
 @protocol AEMCodecsProtocol <NSObject>
 
@@ -64,18 +62,31 @@ NSError *AEMErrorWithInfo(NSInteger code, NSString *message);
 
 
 /**********************************************************************/
+// supported by all self-packing objects; called by -[AEMCodecs pack:error:]
 
-typedef enum {
-	kAEBRelaunchNever,
-	kAEBRelaunchLimited,
-	kAEBRelaunchAlways
-} AEBRelaunchMode;
+@protocol AEMSelfPackingProtocol <NSObject>
+
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error;
+
+@end
+
+/**********************************************************************/
+// supported by all objects that wrap (or are) AEMQuery objects
+
+@class AEMQuery;
+
+
+@protocol AEMQueryProtocol <NSObject>
+@property (readonly) AEMQuery *aemQuery;
+@end
 
 
 /**********************************************************************/
 
 NSString *AEMDescriptionForError(OSStatus err);
 
+
+void AEMLog(NSString *format, ...); // TEST
 
 
 

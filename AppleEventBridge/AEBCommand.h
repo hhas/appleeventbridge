@@ -1,13 +1,15 @@
 //
 //  AEBCommand.h
 //
-//  Base class for AEBStaticCommand base class used in static ObjC glues.
+//  Base class for AEBObjCCommand base class used in static ObjC glues.
 //
-//  May also be used by dynamicbridge-based libraries as superclass to
+//  May also be used by AEBDynamic-based bridges as the superclass to
 //  their own equivalent, as it provides most of the logic required to
 //  pack AEs in the same way as AppleScript. (AEMEvent only packs AEs;
 //  it doesn't emulate the various quirks in how AppleScript does it.)
 //
+
+// TO DO: would be useful if arbitrarily complex return types could be specified (esp. for Swift interop)
 
 #import "AEMEvent.h"
 #import "AEMUtils.h"
@@ -23,14 +25,12 @@
 // Command base
 
 
-
 @interface AEBCommand : NSObject {
-	AEMEvent *aemEvent;
     AEEventClass eventClass;
 	AEEventID eventID;
 	id directParameter, parentQuery; // packing is deferred
     AESendMode sendMode;
-	long timeoutInTicks;
+	NSTimeInterval timeoutInSeconds;
 	UInt32 considsAndIgnoresFlags;
 	NSError *commandError;
 }
@@ -38,20 +38,30 @@
 - (instancetype)initWithAppData:(AEBAppData *)appData
                      eventClass:(AEEventClass)eventClass_
                         eventID:(AEEventID)eventID_
-                    parentQuery:(id)parentQuery_; // TO DO: shouldn't this be (AEMQuery*)?
+                    parentQuery:(id)parentQuery_; // TO DO: shouldn't this be AEMQuery*, not id? // TO DO: also define AEMQuery.aemQuery property that returns self? (would simplify AEM/AEB interop, and allow a common protocol to be defined)
 
+/*
+ * get underlying AEMEvent instance
+ *
+ * Caution: subclasses should avoid directly accessing AEMEvent instance directly,
+ * unless they really know what they're doing. Intead, use methods provided by AEBCommand
+ * itself, as these know how to emulate the various quirks that AppleScript has.
+ *
+ * Also be aware that the AEMEvent instance is not fully packed until -sendWithError:
+ * is invoked. e.g. The packing of command's direct parameter and/or parent query is
+ * deferred until dispatch as they are packed differently depending on whether one,
+ * other, or both are given. Currently the only way to obtain a full description of
+ * the AEMEvent is to send the AEBCommand first, *then* get its aemEvent property.
+ */
+@property (readonly) AEMEvent *aemEvent;
 
-// add a parameter (always use this, not -[AEMEvent setParameter:forKeyword:], when packing parameters to ensure that direct parameter and subject attribute are packed in same way as AppleScript for better application compatibility); any errors will be reported when -sendWithError: is called
-
+/*
+ * add a parameter (always use this, not -[AEMEvent setParameter:forKeyword:],
+ * when packing parameters to ensure that direct parameter and subject attribute
+ * are packed in same way as AppleScript for better application compatibility);
+ * any errors will be reported when -sendWithError: is called
+ */
 -(void)setParameter:(id)value forKeyword:(DescType)key;
-
-// get underlying AEMEvent instance
-//
-// Caution: subclasses should avoid directly accessing AEMEvent instance in aemEvent ivar
-// (unless they really know what they're doing). Intead, use methods provided by AEBCommand
-// itself, as these know how to emulate the various quirks that AppleScript has.
-// 
-- (AEMEvent *)AEMEvent; // TO DO: update glue generator to reserve 'AEM' and 'AEB' prefixes
 
 // set attributes
 
@@ -115,7 +125,7 @@
  * Note: don't use kAEDefaultTimeout/kNoTimeOut constants in -timeout: as those only
  * work where ticks are being used; use -defaultTimeout/-noTimeout methods instead.
  */
-- (instancetype)timeout:(long)timeout_;
+- (instancetype)timeout:(NSTimeInterval)timeout_;
 
 - (instancetype)defaultTimeout;
 
@@ -158,7 +168,6 @@
 /*
  * Invoke -returnDescriptor to have -sendWithError: return the returned AEDesc as
  * an NSAppleEventDescriptor without unpacking it.
- *
  */
 - (instancetype)returnDescriptor;
 

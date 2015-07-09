@@ -1,89 +1,60 @@
 //
 //  AEMQuery.h
 //
-//  Base class for all AEMObjectSpecifier and AEMTestSpecifier query-building subclasses.
+//  Base class for all AEMObjectSpecifier and AEMTestClause query-building subclasses.
 //
 
 #import "AEMUtils.h"
 
 @class AEMQueryRoot;
+@class AEMApplicationRoot;
+@class AEMCurrentContainerRoot;
+@class AEMObjectBeingExaminedRoot;
+@class AEMCustomRoot;
+
+
+/**********************************************************************/
+// convenience macros for +[AEMQuery app], etc.
+
+#define AEMApp ([AEMQuery app])
+#define AEMCon ([AEMQuery con])
+#define AEMIts ([AEMQuery its])
+#define AEMRoot(object) ([AEMQuery customRoot: (object)])
 
 
 /**********************************************************************/
 // Base class for all AEM queries (object and test specifiers)
 
 
-@interface AEMQuery : NSObject <AEMSelfPackingProtocol> {
+// TO DO: when specifier is used as selector or parameter, need to check its root is the right type (i.e. AEMIts in -byTest:, AEMApp/AEMCon in -byRange:to:, AEMApp in event params) and return error if not
+
+
+@interface AEMQuery : NSObject <AEMSelfPackingProtocol, AEMQueryProtocol> {
 	NSAppleEventDescriptor *cachedDesc;
 }
 
-// set cached descriptor; performance optimisation, used internally by AEMCodecs
-- (void)setCachedDesc:(NSAppleEventDescriptor *)desc;
+// obtain root objects for building all new queries
++ (AEMApplicationRoot *)app;
++ (AEMCurrentContainerRoot *)con;
++ (AEMObjectBeingExaminedRoot *)its;
++ (AEMCustomRoot *)customRoot:(id)rootObject;
 
 // return specifier's root object (AEMApp, AEMCon, AEMIts, or AEMCustomRoot)
-- (AEMQueryRoot *)root;
+@property (readonly) AEMQueryRoot *root;
+
+// TO DO: add method for rebuilding this query with a different root, suitable for constructing fully qualified specifiers? (caveat: those things are a bad idea to begin with, and only used in Automator + OSA components AFAIK; also bear in mind that codecs is right way to do it, since it can handle arbitrarily deep structures including lists and records)
+
+// set cached descriptor; performance optimisation, used internally by AEMCodecs
+- (void)setCachedDesc:(NSAppleEventDescriptor *)desc;
 
 // walk specifier
 - (id)resolveWithObject:(id)object;
 
 // pack specifier
-- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id)codecs error:(NSError * __autoreleasing *)error;
+- (NSAppleEventDescriptor *)packWithCodecsNoCache:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error;
 
 // pack specifier, caching result for efficiency
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error;
-
-@end
-
-
-/**********************************************************************/
-// Visitor base class for objects to be passed to -[AEMQuery resolveWithObject:]
-// Each method simply returns self; subclasses can override some or all of these
-// methods as needed.
-
-
-@interface AEMVisitor : NSObject
-
-- (id)property:(OSType)code;
-- (id)elements:(OSType)code;
-
-- (id)first;
-- (id)middle;
-- (id)last;
-- (id)any;
-
-- (id)byIndex:(id)index;
-- (id)byName:(id)name;
-- (id)byID:(id)id_;
-
-- (id)previous:(OSType)class_;
-- (id)next:(OSType)class_;
-
-- (id)byRange:(id)fromObject to:(id)toObject;
-- (id)byTest:(id)testSpecifier;
-
-- (id)beginning;
-- (id)end;
-- (id)before;
-- (id)after;
-
-- (id)greaterThan:(id)object;
-- (id)greaterOrEquals:(id)object;
-- (id)equals:(id)object;
-- (id)notEquals:(id)object;
-- (id)lessThan:(id)object;
-- (id)lessOrEquals:(id)object;
-- (id)beginsWith:(id)object;
-- (id)endsWith:(id)object;
-- (id)contains:(id)object;
-- (id)isIn:(id)object;
-- (id)AND:(id)remainingOperands;
-- (id)OR:(id)remainingOperands;
-- (id)NOT;
-
-- (id)app;
-- (id)con;
-- (id)its;
-- (id)customRoot:(id)rootObject;
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error;
 
 @end
 

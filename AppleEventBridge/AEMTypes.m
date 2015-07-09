@@ -48,7 +48,7 @@
 	return boolValue;
 }
 
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
 	return cachedDesc;
 }
 
@@ -82,13 +82,13 @@
 }
 
 - (instancetype)initWithDescriptor:(NSAppleEventDescriptor *)desc {
-    return [self initWithDescriptorType: '\000\000\000\000'
+    return [self initWithDescriptorType: '\000\000\000\000' // TO DO: is there any appreciable benefit to lazy unpacking (see -code), or would it be simpler just to get desc's descriptorType and typeCodeValue here?
                                    code: '\000\000\000\000'
                                    desc: desc];
 }
 
 - (instancetype)initWithCode:(OSType)code_ { // subclasses should override this method
-    return nil;
+    @throw [NSException exceptionWithName: @"NotImplementedError" reason: nil userInfo: nil];
 }
 
 
@@ -112,7 +112,7 @@
     return code;
 }
 
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     @synchronized(self) {
         if (!cachedDesc) cachedDesc = [[NSAppleEventDescriptor alloc] initWithDescriptorType: type
                                                                                        bytes: &code

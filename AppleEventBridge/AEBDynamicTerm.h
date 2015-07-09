@@ -29,20 +29,6 @@
 @end
 
 
-
-// Convert AS-style keywords to a form suitable for use in client language (e.g. as native identifiers).
-@protocol AEBDynamicTermNameConverterProtocol <NSObject>
-
-// Convert an AppleScript-style keyword name to client language-appropriate (e.g. C-style) identifier.
-- (NSString *)convert:(NSString *)name;
-
-// Disambiguate a converted name (e.g. by appending underscore); called when parser detects a terminology
-// conflict between two name-code definitions where their names are same but their codes are different.
-- (NSString *)escape:(NSString *)name;
-
-@end
-
-
 /**********************************************************************/
 
 
@@ -60,7 +46,7 @@ typedef enum {
 
 @interface AEBDynamicTerm : NSObject // base class for keyword and command terms
 
-@property (readonly) NSString *name;
+@property (retain) NSString *name; // clients may need to escape names to disambiguate conflicting terms
 @property (readonly) AEBDynamicTermType kind;
 
 - (instancetype)initWithName:(NSString*)name_ kind:(AEBDynamicTermType)kind_;
@@ -82,15 +68,16 @@ typedef enum {
 
 @interface AEBDynamicCommandTerm : AEBDynamicTerm {
 	NSMutableDictionary *parametersByName, *parametersByCode;
+    NSMutableArray *orderedParameters;
 }
 
 @property (readonly) OSType eventClass, eventID;
-@property (readonly) NSSet *parameters; // set of AEBDynamicKeywordTerm
+@property (readonly) NSArray *parameters; // array of AEBDynamicKeywordTerm, in order of definition
 
 - (instancetype)initWithName:(NSString*)name_ eventClass:(OSType)eventClass_ eventID:(OSType)eventID_;
 
 
-- (AEBDynamicCommandTerm *)addParameterWithName:(NSString *)name_ code:(OSType)code_; // returns self
+- (instancetype)addParameterWithName:(NSString *)name_ code:(OSType)code_; // returns self
 
 - (AEBDynamicKeywordTerm *)parameterForName:(NSString *)name_;
 

@@ -4,7 +4,7 @@
 //  Mid-level OO API for constructing object specifiers and their
 //  various reference forms using raw "four-char codes" (OSType).
 //
-//  (See AEMTest.h for related classes used to construct test clauses
+//  (See AEMTestClause.h for related classes used to construct test clauses
 //  for use in by-test reference form.)
 //
 //  These classes nearly perfectly replicate the full range of
@@ -21,18 +21,10 @@
 //
 
 #import "AEMQuery.h"
-#import "AEMTestSpecifier.h"
+#import "AEMTestClause.h"
+#import "AEMQueryVisitor.h"
 #import "AEMFormatter.h"
 #import "AEMUtils.h"
-
-
-/**********************************************************************/
-
-
-#define AEMApp [AEMApplicationRoot applicationRoot]
-#define AEMCon [AEMCurrentContainerRoot currentContainerRoot]
-#define AEMIts [AEMObjectBeingExaminedRoot objectBeingExaminedRoot]
-#define AEMRoot(object) [AEMCustomRoot customRootWithObject: (object)]
 
 
 /**********************************************************************/
@@ -67,7 +59,7 @@
 @class AEMObjectBeingExaminedRoot;
 @class AEMCustomRoot;
 
-@class AEMTest;
+@class AEMTestClause;
 
 
 /**********************************************************************/
@@ -100,7 +92,7 @@
 @interface AEMDeferredSpecifier : AEMSpecifier {
 	id specifier;
 	NSAppleEventDescriptor *desc;
-	id codecs;
+	id <AEMCodecsProtocol> codecs;
 }
 
 - (instancetype)initWithDescriptor:(NSAppleEventDescriptor *)desc_ codecs:(id)codecs_;
@@ -239,7 +231,7 @@
 
 // by-test selector
 
-- (AEMElementsByTestSpecifier *)byTest:(AEMTest *)testSpecifier;
+- (AEMElementsByTestSpecifier *)byTest:(AEMTestClause *)testSpecifier;
 
 @end
 
@@ -284,39 +276,28 @@
 
 /**********************************************************************/
 // Reference roots
+//
+// note: clients should avoid initializing these class directly;
+// use AEMQuery class methods or convenience macros instead
 
-@interface AEMQueryRoot : AEMObjectSpecifier // abstract class
-
-// note: clients should avoid initialising this class directly;
-// use provided class methods or convenience macros instead
-
+@interface AEMQueryRoot : AEMObjectSpecifier // abstract base class
 @end
 
+
 @interface AEMApplicationRoot : AEMQueryRoot
-
-+ (AEMApplicationRoot *)applicationRoot;
-
 @end
 
 @interface AEMCurrentContainerRoot : AEMQueryRoot
-
-+ (AEMCurrentContainerRoot *)currentContainerRoot;
-
 @end
 
 @interface AEMObjectBeingExaminedRoot : AEMQueryRoot
-
-+ (AEMObjectBeingExaminedRoot *)objectBeingExaminedRoot;
-
 @end
 
 @interface AEMCustomRoot : AEMQueryRoot {
 	id rootObject;
 }
 
-+ (AEMCustomRoot *)customRootWithObject:(id)object;
-
-- (instancetype)initWithObject:(id)object;
+- (instancetype)initWithRootObject:(id)object;
 
 - (id)rootObject; // used by isEqual
 

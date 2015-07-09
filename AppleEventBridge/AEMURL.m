@@ -3,6 +3,7 @@
 //
 
 #import "AEMURL.h"
+#import "AEMFormatter.h"
 
 @implementation AEMURL
 
@@ -12,8 +13,9 @@
         self = [super initFileURLWithPath: path];
     } else {
         // TO DO: what if desc is typeAlias/typeBookmarkData?
-        NSString *urlString = [[NSString alloc] initWithData: [[desc coerceToDescriptorType: typeFileURL] data]
-                                                    encoding: NSUTF8StringEncoding];
+        NSAppleEventDescriptor *urlDesc = [desc_ coerceToDescriptorType: typeFileURL];
+        NSString *urlString = [[NSString alloc] initWithData: urlDesc.data encoding: NSUTF8StringEncoding];
+        if (!urlString) return nil;
         self = [self initWithString: urlString];
     }
     if (!self) return self;
@@ -22,7 +24,7 @@
 }
 
 
-- (NSAppleEventDescriptor *)packWithCodecs:(id)codecs error:(NSError * __autoreleasing *)error {
+- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
     if (error) *error = nil;
     if (!desc) {
         if (!self.fileURL) {

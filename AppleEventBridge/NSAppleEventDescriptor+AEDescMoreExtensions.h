@@ -11,6 +11,7 @@
 #import <Foundation/Foundation.h>
 #import <Carbon/Carbon.h>
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < 101100
 
 @interface NSAppleEventDescriptor (AEDescMoreExtensions)
 
@@ -55,7 +56,7 @@
  
     A descriptor identifying the specified process, or nil if an error occurs.
  */
-+ (instancetype)descriptorWithProcessID:(pid_t)pid;
++ (instancetype)descriptorWithProcessIdentifier:(pid_t)pid;
 
 
 /*
@@ -96,3 +97,5 @@
 
 
 @end
+
+#endif

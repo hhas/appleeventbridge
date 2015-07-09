@@ -4,10 +4,10 @@ AppleEventBridge is a mostly cleaned-up, modernized fork of objc-appscript
 (http://appscript.sourceforge.net). Some work remains to be done; for now,
 it is released as-is.
 
-AppleEventBridge currently depends on a number of legacy/deprecated Carbon
-APIs (see LEGACY API WRAPPERS) and is therefore unsupported and not
-recommended for production use. (This may change should Apple add fully-
-supported Cocoa API equivalents to future OS X releases.) No warranty given,
-E&OE, use at own risk, etc.
+When compiled for 10.10 and earlier, AppleEventBridge uses a number of
+legacy/deprecated Carbon APIs (see LEGACY API WRAPPERS). Builds that
+target 10.11+ use fully supported OS X APIs only.
+
+No warranty given, E&OE, use at own risk, etc.
 
 AppleEventBridge is released into the public domain.

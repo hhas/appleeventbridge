@@ -4,7 +4,7 @@
 
 #import "NSAppleEventDescriptor+AEDescMoreExtensions.h"
 
-
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < 101100
 
 @implementation NSAppleEventDescriptor (AEDescMoreExtensions)
 
@@ -18,7 +18,7 @@
     return [self.class descriptorWithDescriptorType: typeFileURL data: data];
 }
 
-+ (instancetype)descriptorWithProcessID:(pid_t)pid {
++ (instancetype)descriptorWithProcessIdentifier:(pid_t)pid {
     return [self.class descriptorWithDescriptorType: typeKernelProcessID bytes: &pid length: sizeof(pid)];
 }
 
@@ -41,3 +41,5 @@
 }
 
 @end
+
+#endif

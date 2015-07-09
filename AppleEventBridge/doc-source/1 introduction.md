@@ -2,41 +2,28 @@
 
 ## What is AppleEventBridge?
 
-AppleEventBridge allows you to control Apple event-aware ("AppleScriptable") Mac OS X applications from Objective-C programs.
+AppleEventBridge allows you to control Apple event-aware ("AppleScriptable") Mac OS X applications from «Swift»«Objective-C» programs.
 
 For example, to get the value of the first paragraph of the topmost document in TextEdit:
-
-    #import "TEGlue/TEGlue.h"
-    
-    TEApplication *textedit = [TEApplication application];
-                            
-    TESpecifier *ref = [[textedit.documents at: 1].paragraphs at: 1];
-
-    NSString *result = [[ref get] send];
-
+«
+    let result = try TextEdit().documents[1].paragraphs[1].get() as! String
+»«
+    id result = [[[[TEDApplication application].documents at:1].paragraphs at:1] getItem];
+»
 This is equivalent to the AppleScript statement:
 
-    tell application id "com.apple.TextEdit"
-        get paragraph 1 of document 1
-    end tell
+    tell application id "com.apple.TextEdit" to get paragraph 1 of document 1
 
 
 ## "Hello World!" example
 
-The following program uses AppleEventBridge to create a new "Hello World!" document in TextEdit:
+The following example uses AppleEventBridge to create a new "Hello World!" document in TextEdit:
+«
+    let textedit = TextEdit()
 
-    #import "TEGlue/TEGlue.h"
+    try textedit.make(new: TED.document, withProperties: [TED.text: "Hello World!"])
+»«
+    TEApplication *textedit = [TEApplication application];
 
-    int main(int argc, char *argv[]) {
-      @autoreleasepool {
-        
-        TEApplication *textedit = [TEApplication application];
-    
-        TEMakeCommand *cmd = [[[textedit make] new_: TESymbol.document]
-                                     withProperties: @{TESymbol.text: @"Hello World!"}];
-    
-        [cmd send];
-      }
-      return 0;
-    }
-
+    [[[[textedit make] new_: TED.document] withProperties @{TED.text: @"Hello World!"}] send];
+»

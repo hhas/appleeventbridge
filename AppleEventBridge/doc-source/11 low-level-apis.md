@@ -1,5 +1,7 @@
 # Low-level APIs
 
+// TO DO: leave this as ObjC for now; can always translate to Swift later if needed
+
 ## Introduction
 
 AppleEventBridge's lower-level `AEM` classes provides a object-oriented wrapper around the low-level Apple Event Manager and NSAppleEventDescriptor APIs. It provides the following services:
@@ -22,7 +24,7 @@ The major AEM classes are as follows:
 
 * `AEMEvent` – Represents an Apple event, and provides methods for adding parameters and attributes, and for sending it.
 
-* `AEMQuery`, `AEMSpecifier`, `AEMTest` – Abstract base classes for all object and test specifiers (see later). 
+* `AEMQuery`, `AEMSpecifier`, `AEMTestClause` – Abstract base classes for all object and test specifiers (see later). 
 
 * `AEMCodecs` – Provides `-pack:` and `-unpack:` methods for converting Foundation values to NSAppleEventDescriptors, and vice-versa. Clients usually don't need to access this class directly.
 
@@ -141,7 +143,7 @@ which is short for:
 
 ### Reference forms
 
-AEM defines a number of classes representing each of the AEOM reference forms (see `AEMQuery.h`, `AEMSpecifier.h`, and `AEMTestSpecifier.h`). There are nine AEOM reference forms, each represented by a different `AEMSpecifier` subclass:
+AEM defines a number of classes representing each of the AEOM reference forms (see `AEMQuery.h`, `AEMSpecifier.h`, and `AEMTestClause.h`). There are nine AEOM reference forms, each represented by a different `AEMSpecifier` subclass:
 
 * insertion location – `AEMInsertionSpecifier` refers to insertion point before or after/at start or end of element(s); e.g. `ref.before`
 
@@ -171,7 +173,7 @@ The following diagram shows the AEM reference class hierarchy (slightly simplifi
 
 Clients shouldn't instantiate these classes directly; instead, AEM will instantiate them as appropriate when the client calls the methods of other AEM query objects, starting with the `AEMApp`, `AEMCon` and `AEMIts` objects that form the root of all AEM queries.
 
-In fact, it isn't really necessary to remember the class hierarchy at all, only to know which concrete classes (shown in bold on the above diagram) support which methods. All public methods are inherited from just three abstract superclasses: `AEMObjectSpecifier`, `AEMMultipleElementsSpecifier`, and `AEMTest` (highlighted above). The following sections list these methods for reference.
+In fact, it isn't really necessary to remember the class hierarchy at all, only to know which concrete classes (shown in bold on the above diagram) support which methods. All public methods are inherited from just three abstract superclasses: `AEMObjectSpecifier`, `AEMMultipleElementsSpecifier`, and `AEMTestClause` (highlighted above). The following sections list these methods for reference.
 
 ### `AEMObjectSpecifier` methods
 
@@ -244,18 +246,18 @@ The abstract `AEMMultipleElementsSpecifier` class extends `AEMObjectSpecifier` w
 
 * Identify multiple elements by test (the `testSpecifier` argument must be an `AEMIts`-based specifier):
 
-        - (AEMElementsByTestSpecifier *)byTest:(AEMTest *)testSpecifier;
+        - (AEMElementsByTestSpecifier *)byTest:(AEMTestClause *)testSpecifier;
 
 
-### `AEMTest` methods
+### `AEMTestClause` methods
 
-The abstract `AEMTest` class implements Boolean logic tests applicable to all test specifiers:
+The abstract `AEMTestClause` class implements Boolean logic tests applicable to all test specifiers:
 
     - (AEMANDTest *)AND:(id)remainingOperands;
     - (AEMORTest  *)OR:(id)remainingOperands;
     - (AEMNOTTest *)NOT;
 
-(The `-AND:` and `-OR:` methods' `remainingOperands` argument may be either a single AEMTest instance or an NSArray of AEMTest instances.)
+(The `-AND:` and `-OR:` methods' `remainingOperands` argument may be either a single `AEMTestClause` instance or an `NSArray` of `AEMTest` instances.)
 
 
 ## Creating application objects

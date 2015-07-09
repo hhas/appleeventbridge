@@ -16,11 +16,11 @@
 
 @synthesize targetType, targetData, launchOptions, isRunning, relaunchMode;
 
-- (instancetype)initWithApplicationClass:(Class)appClass
-                              targetType:(AEBTargetType)type
-                              targetData:(id)data
-                            relaunchMode:(AEBRelaunchMode)mode
-                           launchOptions:(NSWorkspaceLaunchOptions)options {
+- (instancetype)initWithTargetType:(AEBTargetType)type
+                        targetData:(id)data
+                     launchOptions:(NSWorkspaceLaunchOptions)options
+                      relaunchMode:(AEBRelaunchMode)mode
+               aemApplicationClass:(Class)appClass {
 	self = [super init];
 	if (!self) return self;
 	aemApplicationClass = appClass;
@@ -34,11 +34,11 @@
 
 
 - (instancetype)initWithTargetType:(AEBTargetType)type targetData:(id)data {
-    return [self initWithApplicationClass: AEMApplication.class
-                               targetType: type
-                               targetData: data
-                             relaunchMode: kAEBRelaunchLimited
-                              launchOptions: kAEMDefaultLaunchOptions];
+    return [self initWithTargetType: type
+                         targetData: data
+                      launchOptions: kAEMDefaultLaunchOptions
+                       relaunchMode: AEBRelaunchLimited
+                aemApplicationClass: AEMApplication.class];
 }
 
 // create target AEMApplication instance (this will launch local process if not already running)
@@ -48,28 +48,28 @@
 		target = nil;
 	}
 	switch (targetType) {
-		case kAEBTargetCurrent:
+		case AEBTargetCurrent:
 			target = [[aemApplicationClass alloc] init];
 			break;
-		case kAEBTargetName:
+		case AEBTargetName:
 			target = [[aemApplicationClass alloc] initWithName: targetData launchOptions: launchOptions error: error];
 			break;
-		case kAEBTargetBundleID:
+		case AEBTargetBundleID:
 			target = [[aemApplicationClass alloc] initWithBundleID: targetData launchOptions: launchOptions error: error];
 			break;
-		case kAEBTargetURL:
+		case AEBTargetURL:
 			target = [[aemApplicationClass alloc] initWithURL: targetData launchOptions: launchOptions error: error];
 			break;
-		case kAEBTargetProcessID:
+		case AEBTargetProcessID:
 			target = [[aemApplicationClass alloc] initWithProcessID: [(NSNumber *)targetData intValue]];
 			break;
-		case kAEBTargetDescriptor:
+		case AEBTargetDescriptor:
 			target = [[aemApplicationClass alloc] initWithDescriptor: targetData];
 	}
 	return target != nil;
 }
 
-- (id)targetWithError:(NSError * __autoreleasing *)error { // returns underlying AEMApplication instance
+- (AEMApplication *)targetWithError:(NSError * __autoreleasing *)error { // returns underlying AEMApplication instance
 	if (!target && ![self connectWithError: error]) return nil;
 	return target;
 }
@@ -78,24 +78,24 @@
 	NSURL *url;
 	BOOL result;
 	switch (targetType) {
-		case kAEBTargetName:
+		case AEBTargetName:
 			url = [AEMApplication fileURLForApplicationWithName: targetData];
 			result = [AEMApplication isApplicationRunningWithURL: url];
 			break;
-		case kAEBTargetBundleID:
+		case AEBTargetBundleID:
             url = [AEMApplication fileURLForApplicationWithBundleID: targetData];
 			result = [AEMApplication isApplicationRunningWithURL: url];
 			break;
-		case kAEBTargetURL:
+		case AEBTargetURL:
 			result = [AEMApplication isApplicationRunningWithURL: targetData];
 			break;
-		case kAEBTargetProcessID:
+		case AEBTargetProcessID:
 			result = [AEMApplication isApplicationRunningWithProcessID: [(NSNumber *)targetData intValue]];
 			break;
-		case kAEBTargetDescriptor:
+		case AEBTargetDescriptor:
 			result = [AEMApplication isApplicationRunningWithDescriptor: targetData];
 			break;
-		default: // kAEBTargetCurrent
+		default: // AEBTargetCurrent
 			result = YES;
 	}
 	return result;
@@ -107,17 +107,17 @@
 	if (!error) error = &err;
 	*error = nil;
 	switch (targetType) {
-		case kAEBTargetName:
+		case AEBTargetName:
 			fileURL = [AEMApplication fileURLForApplicationWithName: targetData];
 			break;
-		case kAEBTargetBundleID:
+		case AEBTargetBundleID:
 			fileURL = [AEMApplication fileURLForApplicationWithBundleID: targetData];
 			break;
-		case kAEBTargetURL:
+		case AEBTargetURL:
 			if ([targetData isFileURL]) fileURL = targetData;
             break;
         default:
-            *error = AEMErrorWithInfo(1, [NSString stringWithFormat: @"Invalid target type: %i", targetType]);
+            *error = AEMErrorWithInfo(1, [NSString stringWithFormat: @"Invalid target type: %lu", (unsigned long)targetType]);
             return NO;
 	}
 	if (fileURL) { // launch local app

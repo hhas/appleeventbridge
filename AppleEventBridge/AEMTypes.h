@@ -31,7 +31,7 @@ enum { typeFSS = 'fss ' };
 // Boolean class represents AEDescs of typeTrue and typeFalse
 
 
-@interface AEMBoolean : NSObject <AEMSelfPackingProtocol> {
+@interface AEMBoolean : NSObject <AEMSelfPackingProtocol> { // TO DO: get rid of this and use NSNumber with 'c' type instead? (another option might be to extend NSNumber class cluster, or use existing underlying __NSCFBoolean; really needs expert advice)
 	BOOL boolValue;
 	NSAppleEventDescriptor *cachedDesc;
 }

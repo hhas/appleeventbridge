@@ -25,19 +25,19 @@
 // designated initializer
 // targetTerms: kAEBUseAETETerminology/kAEBUseSDEFTerminology/kAEBNoTerminology/any object conforming to AEBDynamicRawTermsProtocol
 // defaultTerms: kAEBUseDefaultTerminology/kAEBNoTerminology/any object conforming to AEBDynamicRawTermsProtocol
-- (instancetype)initWithApplicationClass:(Class)appClass
-                              targetType:(AEBTargetType)type
-                              targetData:(id)data
-                            relaunchMode:(AEBRelaunchMode)mode
-                           launchOptions:(NSWorkspaceLaunchOptions)options
-                             targetTerms:(id)targetTerms_
-                            defaultTerms:(id)defaultTerms_
-                        keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_;
+- (instancetype)initWithTargetType:(AEBTargetType)type
+                        targetData:(id)data
+                     launchOptions:(NSWorkspaceLaunchOptions)options
+                      relaunchMode:(AEBRelaunchMode)mode
+                       targetTerms:(id)targetTerms_ // target app's terminology
+                      defaultTerms:(id)defaultTerms_ // built-in terminology (normally an AEBDefaultTerms instance)
+                  keywordConverter:(AEBKeywordConverter *)converter_
+               aemApplicationClass:(Class)appClass;
 
 // used by aebglue
 - (instancetype)initWithApplicationURL:(NSURL *)url
                                useSDEF:(bool)useSDEF
-                      keywordConverter:(id<AEBDynamicTermNameConverterProtocol>)converter_;
+                      keywordConverter:(AEBKeywordConverter *)converter_;
 
 
 - (AEBDynamicTerminology *)terminologyWithError:(NSError * __autoreleasing *)error;

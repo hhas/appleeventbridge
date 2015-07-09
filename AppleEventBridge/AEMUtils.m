@@ -8,7 +8,7 @@
 /**********************************************************************/
 // NSError userInfo constants
 
-NSString *const kAEMErrorDomain = @"net.sourceforge.appscript.AppleEventBridge.ErrorDomain";
+NSString *const kAEMErrorDomain = @"org.bitbucket.hhas.AppleEventBridge.ErrorDomain";
 
 
 NSString *const kAEMErrorNumberKey			= @"ErrorNumber";
@@ -26,6 +26,16 @@ NSError *AEMErrorWithInfo(NSInteger code, NSString *message) {
                            userInfo: @{NSLocalizedDescriptionKey: (message ?: @"Error"),
                                        kAEMErrorStringKey: (message ?: @"Error"),
                                        kAEMErrorNumberKey: @(code)}];
+}
+
+
+/**********************************************************************/
+
+
+OSType AEM4CC(NSString *codeStr) {
+    char code[5];
+    if (!(codeStr.length == 4 && [codeStr getCString: code maxLength: 5 encoding: NSMacOSRomanStringEncoding])) return -1;
+    return CFSwapInt32HostToBig(*((uint32_t *)code));
 }
 
 
@@ -124,4 +134,14 @@ NSString *AEMDescriptionForError(OSStatus err) {
              @(-10025): @"Illegal combination of properties settings.",
              }[@(err)] ?: [NSString stringWithFormat: @"Mac OS error %i", err];
 }
+
+
+
+void AEMLog(NSString *format, ...) {
+    va_list argList; va_start (argList, format);
+    NSString *message = [[NSString alloc] initWithFormat: format arguments: argList];
+    va_end (argList); CFShow((CFStringRef)message);
+}
+
+
 

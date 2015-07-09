@@ -47,8 +47,13 @@
 //
 
 -(instancetype)init {
+    return [self initWithKeywordConverter: nil];
+}
+
+- (instancetype)initWithKeywordConverter:(AEBKeywordConverter *)converter_ {
     self = [super init];
     if (!self) return self;
+    keywordConverter = converter_ ?: [[AEBKeywordConverter alloc] init];
     types = [NSMutableArray array];
     enumerators = [NSMutableArray array];
     properties = [NSMutableArray array];
@@ -78,6 +83,9 @@
 #define eCODE   (attributeDict[@"code"])
 #define ePLURAL (attributeDict[@"plural"])
 
+#define KEYWORD(aName)       ([keywordConverter convertSpecifierName: (aName)])
+#define KEYWORD_PARAM(aName) ([keywordConverter convertParameterName: (aName)])
+
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName
                                         namespaceURI:(NSString *)namespaceURI
                                        qualifiedName:(NSString *)qualifiedName
@@ -88,19 +96,19 @@
     if ((isClass = [elementName isEqualToString: @"class"]) || [elementName isEqualToString: @"record-type"]
                                                             || [elementName isEqualToString: @"value-type"]) {
         if (!((name = eNAME).length && [self getOSTypeForCode: eCODE code: &code])) goto malformedElement;
-        [types addObject: [[AEBDynamicKeywordTerm alloc] initWithName: name code: code kind: kAEBTermType]];
+        [types addObject: [[AEBDynamicKeywordTerm alloc] initWithName: KEYWORD(name) code: code kind: kAEBTermType]];
         if (isClass) {
             if (!(plural = ePLURAL).length) plural = [NSString stringWithFormat: @"%@s", name];
-            [elements addObject: [[AEBDynamicKeywordTerm alloc] initWithName: plural code: code kind: kAEBTermType]];
+            [elements addObject: [[AEBDynamicKeywordTerm alloc] initWithName: KEYWORD(plural) code: code kind: kAEBTermType]];
         }
         
     } else if ([elementName isEqualToString: @"property"]) {
         if (!((name = eNAME).length && [self getOSTypeForCode: eCODE code: &code])) goto malformedElement;
-         [properties addObject: [[AEBDynamicKeywordTerm alloc] initWithName: name code: code kind: kAEBTermProperty]];
+         [properties addObject: [[AEBDynamicKeywordTerm alloc] initWithName: KEYWORD(name) code: code kind: kAEBTermProperty]];
         
     } else if ([elementName isEqualToString: @"enumerator"]) {
         if (!((name = eNAME).length && [self getOSTypeForCode: eCODE code: &code])) goto malformedElement;
-        [enumerators addObject: [[AEBDynamicKeywordTerm alloc] initWithName: name code: code kind: kAEBTermEnumerator]];
+        [enumerators addObject: [[AEBDynamicKeywordTerm alloc] initWithName: KEYWORD(name) code: code kind: kAEBTermEnumerator]];
         
     } else if ([elementName isEqualToString: @"command"]) {
         if (!((name = eNAME).length && (codeString = eCODE).length == 8
@@ -113,7 +121,7 @@
         //   definitions are ignored and will not compile.
         AEBDynamicCommandTerm *previousDef = commandsDict[name];
         if (!previousDef || (previousDef.eventClass == eventClass && previousDef.eventID == eventID)) {
-            currentCommand = [[AEBDynamicCommandTerm alloc] initWithName: name eventClass: eventClass eventID: eventID];
+            currentCommand = [[AEBDynamicCommandTerm alloc] initWithName: KEYWORD(name) eventClass: eventClass eventID: eventID];
             commandsDict[name] = currentCommand;
         } else {
             currentCommand = nil;
@@ -121,7 +129,7 @@
         
     } else if ([elementName isEqualToString: @"parameter"]) {
         if (!((name = eNAME).length && [self getOSTypeForCode: eCODE code: &code])) goto malformedElement;
-        [currentCommand addParameterWithName: name code: code];
+        [currentCommand addParameterWithName: KEYWORD_PARAM(name) code: code];
     }
     return;
 malformedElement: // e.g. OSACopyScriptingDefinition's AETE-to-SDEF conversion is buggy

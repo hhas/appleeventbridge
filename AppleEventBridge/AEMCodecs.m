@@ -13,24 +13,7 @@
 // (or NSString when unpacking 'usrf' item containing user-defined names).
 //
 
-
-/* 
- TO DO: pack/unpack booleans as __NSCFNumber
- 
-     if ([anObject isKindOfClass: NSNumber.class]) {
-        if ([anObject isKindOfClass: [@YES class]]) { // is it an __NSCFBoolean?
-            result = [NSAppleEventDescriptor descriptorWithBoolean: [anObject boolValue]];
-        } else {
-
- 
-        case typeBoolean:
-        case typeFalse:
-        case typeTrue:
-            result = desc.booleanValue ? @YES : @NO;
-
- */
-
-
+// TO DO: in -[NSNumber objCType], 'c' indicates either char or bool; is there any way to reliably tell the difference? (if there was, AEMBoolean could be eliminated and NSNumber mapped instead to typeTrue/typeFalse), at least in ObjC bridge (note: Swift bridge should map directly to native true/false, so will either need to override pack/unpack or else AEMCodes should break those types out into overrideable methods); best kludge seems to be `CFBooleanGetTypeID() == CFGetTypeID(anObject)` to determine if an NSNumber is bool/non-bool
 
 
 /**********************************************************************/
@@ -394,7 +377,7 @@
     NSInteger length = [desc numberOfItems];
     for (NSInteger i=1; i<=length; i++) {
         id item = [self unpack: [desc descriptorAtIndex: i] error: error];
-        if (!item) return nil; // TO DO: better error message
+        if (!item) return nil; // TO DO: better error message if not already given
         [result addObject: item];
     }
     return result;
@@ -408,7 +391,7 @@
         NSAppleEventDescriptor *valueDesc = [desc descriptorAtIndex: i];
         if (!valueDesc) return nil; // don't think this will ever happen
         id value = [self unpack: valueDesc error: error];
-        if (!value) return nil;
+        if (!value) return nil; // TO DO: better error message if not already given
         if (key == keyASUserRecordFields) {
             NSInteger length2 = [value count];
             for (NSInteger j = 0; j < length2; j += 2) {
@@ -416,7 +399,7 @@
             }
         } else {
             id keyObj = [self unpackAERecordKey: key error: error];
-            if (!keyObj) return nil;
+            if (!keyObj) return nil; // TO DO: better error message if not already given
             result[keyObj] = value;
         }
     }
@@ -640,7 +623,7 @@
     return rootValue ? AEMRoot(rootValue) : nil;
 }
 
-- (id)unpackCompDescriptor:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error {
+- (id)unpackCompDescriptor:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error { // TO DO: better error reporting
     DescType operator = [[desc descriptorForKeyword: keyAECompOperator] enumCodeValue];
     id op1 = [self unpack: [desc descriptorForKeyword: keyAEObject1] error: error];
     if (!op1) return nil;
@@ -667,7 +650,7 @@
     return nil;
 }
 
-- (id)unpackLogicalDescriptor:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error {
+- (id)unpackLogicalDescriptor:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error { // TO DO: better error reporting
     NSAppleEventDescriptor *listDesc;
     listDesc = [[desc descriptorForKeyword: keyAELogicalTerms] coerceToDescriptorType: typeAEList];
     DescType operator = [[desc descriptorForKeyword: keyAELogicalOperator] enumCodeValue];
@@ -689,7 +672,7 @@
 }
 
 - (id)unpackContainsCompDescriptorWithOperand1:(id)op1 operand2:(id)op2 error:(NSError * __autoreleasing *)error {
-    if ([op1 isKindOfClass: AEMTest.class]) { // check op1 is an its-based test specifier, e.g. `its text contains "foo"`
+    if ([op1 isKindOfClass: AEMTestClause.class]) { // check op1 is an its-based test specifier, e.g. `its text contains "foo"`
         return [op1 contains: op2];
     } else { // else op2 is [presumably] the its-based specifier, e.g. `its name is in {"bar", "baz", "fub"}`
         return [op2 isIn: op1];

@@ -103,7 +103,7 @@ static NSString *kAEMReplyPortDescriptor = @"kAEMReplyPortDescriptor";
 
 // Access codecs object
 
-- (id)codecs {
+- (id <AEMCodecsProtocol>)codecs {
 	return codecs;
 }
 
@@ -208,16 +208,16 @@ static NSString *kAEMReplyPortDescriptor = @"kAEMReplyPortDescriptor";
 /*
  * Send event.
  *
- * (-send, -sendWithMode:, -sendWithTimeout: are convenience shortcuts for -sendWithMode:timeout:)
+ * (-send and -sendWithError: are convenience shortcuts for -sendWithOptions:timeout:error:)
  *
- * (Note: a single event can be sent multiple times if desired.)
+ * (Note: a single event can be sent multiple times if desired.) // TO DO: check this is correct (i.e. what about returnID?)
  *
  * (Note: if an Apple Event Manager/application error occurs, these methods will return nil.
  * Clients should test for this, and use the error argument to retrieve additional error information
  * if needed.
  */
 
-- (id)sendWithMode:(AESendMode)sendMode timeout:(long)timeoutInTicks error:(NSError * __autoreleasing *)error {
+- (id)sendWithOptions:(AESendMode)sendMode timeout:(NSTimeInterval)timeoutInSeconds error:(NSError * __autoreleasing *)error {
     NSAppleEventDescriptor *result;
 	NSString *errorDescription;
 	if (error) *error = nil;
@@ -245,7 +245,7 @@ static NSString *kAEMReplyPortDescriptor = @"kAEMReplyPortDescriptor";
     }
     // send event
     NSError *sendError = nil;
-    NSAppleEventDescriptor *replyData = [descriptor sendAppleEventWithMode: sendMode timeout: timeoutInTicks error: &sendError];
+    NSAppleEventDescriptor *replyData = [descriptor sendEventWithOptions: sendMode timeout: timeoutInSeconds error: &sendError];
 	// check for an Apple Event Manager error
     if (!replyData) {
 		// ignore 'invalid connection' errors caused by application quitting normally after being sent a quit event
@@ -371,11 +371,11 @@ noResult:
 }
 
 - (id)sendWithError:(NSError * __autoreleasing *)error {
-	return [self sendWithMode: kAEWaitReply timeout: kAEDefaultTimeout error: error];
+	return [self sendWithOptions: kAEWaitReply timeout: kAEDefaultTimeout error: error];
 }
 
 - (id)send {
-	return [self sendWithMode: kAEWaitReply timeout: kAEDefaultTimeout error: nil];
+	return [self sendWithOptions: kAEWaitReply timeout: kAEDefaultTimeout error: nil];
 }
 
 @end
