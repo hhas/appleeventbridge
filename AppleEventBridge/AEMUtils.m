@@ -23,7 +23,7 @@ NSString *const kAEMErrorFailedEvent		= @"ErrorFailedEvent";
 NSError *AEMErrorWithInfo(NSInteger code, NSString *message) {
     return [NSError errorWithDomain: kAEMErrorDomain
                                code: code
-                           userInfo: @{NSLocalizedDescriptionKey: (message ?: @"Error"),
+                           userInfo: @{NSLocalizedDescriptionKey: message ?: AEMDescriptionForError((OSStatus)code),
                                        kAEMErrorStringKey: (message ?: @"Error"),
                                        kAEMErrorNumberKey: @(code)}];
 }

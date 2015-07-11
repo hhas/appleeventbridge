@@ -8,6 +8,8 @@
 //  outgoing AEs, pass them to SwiftAETranslateAppleEvent(), and print the result.
 //
 
+// TO DO: change `useSDEF` to accept .AETE (default), .SDEF, or .None
+
 import Foundation
 import AppKit
 import AppleEventBridge
@@ -22,50 +24,6 @@ let kAEBUseSDEFTerminology    = AEMType(code: AEM4CC("SDEF"))
 let kAEBNoTerminology         = AEMType(code: AEM4CC("NoTe"))
 let kAEBUseDefaultTerminology = AEMType(code: AEM4CC("DeTe"))
 
-
-
-// generate default AppClassName, Prefix strings from application's CFBundleName
-private func glueInfoForLocalProcess(pid: pid_t) -> (String, String) {
-    if let url = AEMApplication.fileURLForApplicationWithProcessID(pid) {
-        if let bundleInfo = NSBundle(URL: url)?.infoDictionary {
-            let name = (bundleInfo["CFBundleName"] as? String) ?? url.lastPathComponent // TO DO: need to strip .app suffix
-            let converter = AEBSwiftKeywordConverter.sharedKeywordConverter()
-            return (converter.identifierForAppName(name), converter.prefixForAppName(name))
-        }
-    }
-    return ("XXXApplication", "XXX")
-}
-
-
-private func appDataForProcess(var addressDesc: NSAppleEventDescriptor!, useSDEF: Bool) throws -> SwiftAETranslationAppData {
-    if addressDesc.descriptorType == AEM4CC("psn ") { // typeProcessSerialNumber // AppleScript is old school
-        addressDesc = addressDesc.coerceToDescriptorType(AEM4CC("kpid"))! // typeKernelProcessID
-    }
-    var targetType = AEBTargetType.URL
-    var targetData: AnyObject
-    var appClassName: String = "XXXApplication"
-    var prefix: String = "XXX"
-    if addressDesc.descriptorType == AEM4CC("kpid") { // typeKernelProcessID // local processes are generally targeted by PID
-        var pid: pid_t = 0
-        addressDesc.data.getBytes(&pid, length: sizeof(pid_t))
-        targetData = NSRunningApplication(processIdentifier: pid)!.bundleURL!
-        (appClassName, prefix) = glueInfoForLocalProcess(pid)
-    } else {
-        targetType = AEBTargetType.Descriptor
-        targetData = addressDesc
-    }
-    // get terms for use in custom formatter
-    let dynamicAppData = AEBDynamicAppData(targetType: targetType, targetData: targetData,
-                                        launchOptions: NSWorkspaceLaunchOptions.WithoutActivation, relaunchMode: .Always,
-                                          targetTerms: (useSDEF ? kAEBUseSDEFTerminology : kAEBUseAETETerminology),
-                                         defaultTerms: kAEBUseDefaultTerminology,
-                                     keywordConverter: AEBSwiftKeywordConverter.sharedKeywordConverter(),
-                                  aemApplicationClass: AEMApplication.self)
-    let appTerms = try dynamicAppData.terminology()
-    return SwiftAETranslationAppData(targetType: targetType, targetData: targetData,
-                                          terms: appTerms, appClassName: appClassName, prefix: prefix)
-}
-//
 
 // note: if sending events to self, processes _must_ useSDEF=true or call this function on a background thread, otherwise SwiftAETranslateAppleEvent will deadlock the main loop when it tries to fetch host app's AETE via ascr/gdte event
 
@@ -110,24 +68,25 @@ func SwiftAETranslateAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = 
             let value = SwiftAETranslationFormatter.formatObject(try appData.unpack(param), appData: appData)
             argStrings.append("\(paramInfo.name): \(value)")
         }
-        
     }
     // add command's attributes in order of appearance
-    if let replyType = event.attributeDescriptorForKeyword(0x72747970) { // keyAERequestedType
+    if let replyType = event.paramDescriptorForKeyword(0x72747970) { // keyAERequestedType
         let value = SwiftAETranslationFormatter.formatObject(try appData.unpack(replyType), appData: appData)
         argStrings.append("returnType: \(value)")
     }
-    if let wantsReply = event.attributeDescriptorForKeyword(0x72657071) { // keyReplyRequestedAttr]
+    /*
+    if let wantsReply = event.attributeDescriptorForKeyword(0x72657071) { // keyReplyRequestedAttr // event attr is unreliable
         // keyReplyRequestedAttr appears to be boolean value encoded as Int32 (1=wait or queue reply; 0=no reply)
         if wantsReply.int32Value == 0 {
             argStrings.append("waitReply: false")
         }
     }
-    if let timeout = event.attributeDescriptorForKeyword(0x74696D6F) { // keyTimeoutAttr
+    */
+    if let timeout = event.attributeDescriptorForKeyword(0x74696D6F) { // keyTimeoutAttr // event attr is unreliable
         let timeoutInTicks = timeout.int32Value
         if timeoutInTicks == -2 { // AEBNoTimeout
             argStrings.append("withTimeout: AEBNoTimeout")
-        } else if timeoutInTicks != -1 { // AEBDefaultTimeout
+        } else if timeoutInTicks > 0 {
             let timeoutInSeconds = NSString(format: "%.2f", Double(timeoutInTicks) / 60.0)
             argStrings.append("withTimeout: \(timeoutInSeconds)")
         }
@@ -156,6 +115,53 @@ func SwiftAETranslateAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = 
     }
     let argsString = ", ".join(argStrings)
     return "\(baseString).\(commandInfo!.name)(\(argsString))"
+}
+
+
+/******************************************************************************/
+// support functions used by above
+
+
+// generate default AppClassName, Prefix strings from application's CFBundleName
+private func glueInfoForLocalProcess(pid: pid_t) -> (String, String) {
+    if let url = AEMApplication.fileURLForApplicationWithProcessID(pid) {
+        if let bundleInfo = NSBundle(URL: url)?.infoDictionary {
+            let name = (bundleInfo["CFBundleName"] as? String) ?? url.lastPathComponent // TO DO: need to strip .app suffix
+            let converter = AEBSwiftKeywordConverter.sharedKeywordConverter()
+            return (converter.identifierForAppName(name), converter.prefixForAppName(name))
+        }
+    }
+    return ("XXXApplication", "XXX")
+}
+
+
+private func appDataForProcess(var addressDesc: NSAppleEventDescriptor!, useSDEF: Bool) throws -> SwiftAETranslationAppData {
+    if addressDesc.descriptorType == AEM4CC("psn ") { // typeProcessSerialNumber // AppleScript is old school
+        addressDesc = addressDesc.coerceToDescriptorType(AEM4CC("kpid"))! // typeKernelProcessID
+    }
+    var targetType = AEBTargetType.URL
+    var targetData: AnyObject
+    var appClassName: String = "XXXApplication"
+    var prefix: String = "XXX"
+    if addressDesc.descriptorType == AEM4CC("kpid") { // typeKernelProcessID // local processes are generally targeted by PID
+        var pid: pid_t = 0
+        addressDesc.data.getBytes(&pid, length: sizeof(pid_t))
+        targetData = NSRunningApplication(processIdentifier: pid)!.bundleURL!
+        (appClassName, prefix) = glueInfoForLocalProcess(pid)
+    } else {
+        targetType = AEBTargetType.Descriptor
+        targetData = addressDesc
+    }
+    // get terms for use in custom formatter
+    let dynamicAppData = AEBDynamicAppData(targetType: targetType, targetData: targetData,
+        launchOptions: NSWorkspaceLaunchOptions.WithoutActivation, relaunchMode: .Always,
+        targetTerms: (useSDEF ? kAEBUseSDEFTerminology : kAEBUseAETETerminology),
+        defaultTerms: kAEBUseDefaultTerminology,
+        keywordConverter: AEBSwiftKeywordConverter.sharedKeywordConverter(),
+        aemApplicationClass: AEMApplication.self)
+    let appTerms = try dynamicAppData.terminology()
+    return SwiftAETranslationAppData(targetType: targetType, targetData: targetData,
+        terms: appTerms, appClassName: appClassName, prefix: prefix)
 }
 
 

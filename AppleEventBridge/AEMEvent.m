@@ -17,10 +17,13 @@ typedef struct {
 	OSType code;
 }  AEMEventAttributeDef;
 
+
 // All known Apple event attributes:
 static AEMEventAttributeDef AttributeKeys[] = {
+    // AEDataModel.h
 	{"EventClass       ", keyEventClassAttr},
 	{"EventID          ", keyEventIDAttr},
+    
 	{"TransactionID    ", keyTransactionIDAttr},
 	{"ReturnID         ", keyReturnIDAttr},
 	{"Address          ", keyAddressAttr},
@@ -28,8 +31,28 @@ static AEMEventAttributeDef AttributeKeys[] = {
 	{"Timeout          ", keyTimeoutAttr},
 	{"InteractLevel    ", keyInteractLevelAttr},
 	{"EventSource      ", keyEventSourceAttr},
+    {"MissedKeyword    ", keyMissedKeywordAttr},
 	{"OriginalAddress  ", keyOriginalAddressAttr},
 	{"AcceptTimeout    ", keyAcceptTimeoutAttr},
+    {"ReplyRequested   ", keyReplyRequestedAttr},
+    
+    // security
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
+    {"SenderEUID                              ", keySenderEUIDAttr},
+    {"SenderEGID                              ", keySenderEGIDAttr},
+    {"SenderUID                               ", keySenderUIDAttr},
+    {"SenderGID                               ", keySenderGIDAttr},
+    {"SenderPID                               ", keySenderPIDAttr},
+    {"SenderAuditToken                        ", keySenderAuditTokenAttr},
+#endif
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1080
+    {"SenderApplescriptEntitlements           ", keySenderApplescriptEntitlementsAttr},
+    {"SenderApplicationIdentifierEntitlement  ", keySenderApplicationIdentifierEntitlementAttr},
+    {"SenderApplicationSandboxed              ", keySenderApplicationSandboxed},
+    {"ActualSenderAuditToken                  ", keyActualSenderAuditToken},
+#endif
+    
+    // additional
 	{"Considerations   ", enumConsiderations},
 	{"ConsidsAndIgnores", enumConsidsAndIgnores},
 	{"Subject          ", keySubjectAttr},

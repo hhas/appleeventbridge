@@ -19,15 +19,20 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>aebdemo.xcscheme</key>
+		<key>SwiftAETranslate.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
+		<key>aebdemo.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>saedemo.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -63,6 +68,11 @@
 			<true/>
 		</dict>
 		<key>4FA7A8B51A0A607400F0E578</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4FD7DFA11B4FCD77003608BD</key>
 		<dict>
 			<key>primary</key>
 			<true/>

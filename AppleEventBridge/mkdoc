@@ -65,7 +65,7 @@ def render(sourcedir, destdir, isobjc):
             outpath = os.path.join(destdir, )
             with open(inpath) as f:
                 title, content = f.read().decode('utf-8').strip().split('\n', 1)
-                content = patt.sub('\\1', content)
+                title, content = [patt.sub('\\1', s) for s in [title, content]]
                 pages.append((int(idx), newname.rstrip('md')+'html', title.strip('# '), content.lstrip()))
         else: # copy other files directly
             shutil.copyfile(inpath, os.path.join(destdir, name))

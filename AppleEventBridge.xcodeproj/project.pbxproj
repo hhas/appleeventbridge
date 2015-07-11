@@ -132,6 +132,19 @@
 		4FA7A8C51A0A99AE00F0E578 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA7A8C41A0A99AE00F0E578 /* Carbon.framework */; };
 		4FAA6C941B491CF800626E60 /* ITUGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA6C901B491CF800626E60 /* ITUGlue.m */; };
 		4FAA6C951B491CF800626E60 /* TEDGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAA6C931B491CF800626E60 /* TEDGlue.m */; };
+		4FD7DFA61B4FCD77003608BD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7DFA51B4FCD77003608BD /* AppDelegate.m */; };
+		4FD7DFA91B4FCD77003608BD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7DFA81B4FCD77003608BD /* main.m */; };
+		4FD7DFAB1B4FCD77003608BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FD7DFAA1B4FCD77003608BD /* Assets.xcassets */; };
+		4FD7DFB71B4FCDB3003608BD /* AEBLanguageInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7DFB41B4FCDB3003608BD /* AEBLanguageInstance.m */; };
+		4FD7DFB81B4FCDB3003608BD /* AEBEventSniffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7DFB61B4FCDB3003608BD /* AEBEventSniffer.m */; };
+		4FD7DFBA1B4FCDCA003608BD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FD7DFB91B4FCDCA003608BD /* MainMenu.xib */; };
+		4FD7DFC21B4FD1CB003608BD /* AppleEventBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */; };
+		4FD7DFC41B4FD1CB003608BD /* OSAKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD7DFC31B4FD1CB003608BD /* OSAKit.framework */; };
+		4FD7DFC61B4FD1D7003608BD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD7DFC51B4FD1D7003608BD /* Cocoa.framework */; };
+		4FD7DFC71B4FD1E3003608BD /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA7A8C41A0A99AE00F0E578 /* Carbon.framework */; };
+		4FD7DFD41B4FF508003608BD /* SwiftAEFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7DFD11B4FF508003608BD /* SwiftAEFormatter.swift */; };
+		4FD7DFD51B4FF508003608BD /* SwiftAEGlueBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7DFD21B4FF508003608BD /* SwiftAEGlueBase.swift */; };
+		4FD7DFD61B4FF508003608BD /* SwiftAETranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7DFD31B4FF508003608BD /* SwiftAETranslate.swift */; };
 		4FD8E4A11B334D63004B5CD5 /* AEBKeywordConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */; };
 /* End PBXBuildFile section */
@@ -406,6 +419,23 @@
 		4FAA6C911B491CF800626E60 /* TEDGlue-objc.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "TEDGlue-objc.sdef"; sourceTree = "<group>"; };
 		4FAA6C921B491CF800626E60 /* TEDGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEDGlue.h; sourceTree = "<group>"; };
 		4FAA6C931B491CF800626E60 /* TEDGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEDGlue.m; sourceTree = "<group>"; };
+		4FD7DFA21B4FCD77003608BD /* SwiftAETranslate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftAETranslate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FD7DFA41B4FCD77003608BD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		4FD7DFA51B4FCD77003608BD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		4FD7DFA81B4FCD77003608BD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		4FD7DFAA1B4FCD77003608BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4FD7DFAF1B4FCD77003608BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4FD7DFB31B4FCDB3003608BD /* AEBLanguageInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBLanguageInstance.h; sourceTree = "<group>"; };
+		4FD7DFB41B4FCDB3003608BD /* AEBLanguageInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBLanguageInstance.m; sourceTree = "<group>"; };
+		4FD7DFB51B4FCDB3003608BD /* AEBEventSniffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBEventSniffer.h; sourceTree = "<group>"; };
+		4FD7DFB61B4FCDB3003608BD /* AEBEventSniffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBEventSniffer.m; sourceTree = "<group>"; };
+		4FD7DFB91B4FCDCA003608BD /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		4FD7DFBB1B4FCF29003608BD /* SwiftAETranslate-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftAETranslate-Bridging-Header.h"; sourceTree = "<group>"; };
+		4FD7DFC31B4FD1CB003608BD /* OSAKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSAKit.framework; path = System/Library/Frameworks/OSAKit.framework; sourceTree = SDKROOT; };
+		4FD7DFC51B4FD1D7003608BD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		4FD7DFD11B4FF508003608BD /* SwiftAEFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAEFormatter.swift; sourceTree = "<group>"; };
+		4FD7DFD21B4FF508003608BD /* SwiftAEGlueBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAEGlueBase.swift; sourceTree = "<group>"; };
+		4FD7DFD31B4FF508003608BD /* SwiftAETranslate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAETranslate.swift; sourceTree = "<group>"; };
 		4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBKeywordConverter.h; sourceTree = "<group>"; };
 		4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBKeywordConverter.m; sourceTree = "<group>"; };
 		4FFA2D371A129AAE00AF09E4 /* 1 introduction.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "1 introduction.md"; sourceTree = "<group>"; };
@@ -466,6 +496,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4FD7DF9F1B4FCD77003608BD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FD7DFC71B4FD1E3003608BD /* Carbon.framework in Frameworks */,
+				4FD7DFC61B4FD1D7003608BD /* Cocoa.framework in Frameworks */,
+				4FD7DFC41B4FD1CB003608BD /* OSAKit.framework in Frameworks */,
+				4FD7DFC21B4FD1CB003608BD /* AppleEventBridge.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -477,6 +518,7 @@
 				4F1A9FF619F92A9F00FBD23E /* AppleEventBridge */,
 				4FA7A8B71A0A607400F0E578 /* Objective-C demo */,
 				4F5EE3D31B2D7F1F007C58B5 /* Swift demo */,
+				4FD7DFA31B4FCD77003608BD /* SwiftAETranslate */,
 				4F1AA01419F92D2F00FBD23E /* Frameworks */,
 				4F1AA00319F92A9F00FBD23E /* AppleEventBridgeTests */,
 				4F1A9FF519F92A9F00FBD23E /* Products */,
@@ -491,6 +533,7 @@
 				4F1A9FFF19F92A9F00FBD23E /* AppleEventBridgeTests.xctest */,
 				4FA7A8B61A0A607400F0E578 /* aebdemo */,
 				4F5EE3D21B2D7F1F007C58B5 /* saedemo */,
+				4FD7DFA21B4FCD77003608BD /* SwiftAETranslate.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -540,6 +583,8 @@
 		4F1AA01419F92D2F00FBD23E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FD7DFC51B4FD1D7003608BD /* Cocoa.framework */,
+				4FD7DFC31B4FD1CB003608BD /* OSAKit.framework */,
 				4FA7A8C41A0A99AE00F0E578 /* Carbon.framework */,
 				4F1AA01119F92B4C00FBD23E /* Foundation.framework */,
 				4F1AA01019F92B4C00FBD23E /* AppKit.framework */,
@@ -790,6 +835,35 @@
 			name = "Legacy support (10.10.x and earlier)";
 			sourceTree = "<group>";
 		};
+		4FD7DFA31B4FCD77003608BD /* SwiftAETranslate */ = {
+			isa = PBXGroup;
+			children = (
+				4FD7DFA41B4FCD77003608BD /* AppDelegate.h */,
+				4FD7DFA51B4FCD77003608BD /* AppDelegate.m */,
+				4FD7DFD11B4FF508003608BD /* SwiftAEFormatter.swift */,
+				4FD7DFD21B4FF508003608BD /* SwiftAEGlueBase.swift */,
+				4FD7DFD31B4FF508003608BD /* SwiftAETranslate.swift */,
+				4FD7DFB31B4FCDB3003608BD /* AEBLanguageInstance.h */,
+				4FD7DFB41B4FCDB3003608BD /* AEBLanguageInstance.m */,
+				4FD7DFB51B4FCDB3003608BD /* AEBEventSniffer.h */,
+				4FD7DFB61B4FCDB3003608BD /* AEBEventSniffer.m */,
+				4FD7DFB91B4FCDCA003608BD /* MainMenu.xib */,
+				4FD7DFAA1B4FCD77003608BD /* Assets.xcassets */,
+				4FD7DFAF1B4FCD77003608BD /* Info.plist */,
+				4FD7DFA71B4FCD77003608BD /* Supporting Files */,
+				4FD7DFBB1B4FCF29003608BD /* SwiftAETranslate-Bridging-Header.h */,
+			);
+			path = SwiftAETranslate;
+			sourceTree = "<group>";
+		};
+		4FD7DFA71B4FCD77003608BD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4FD7DFA81B4FCD77003608BD /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		4FFA2D361A129AAE00AF09E4 /* doc-source */ = {
 			isa = PBXGroup;
 			children = (
@@ -937,6 +1011,23 @@
 			productReference = 4FA7A8B61A0A607400F0E578 /* aebdemo */;
 			productType = "com.apple.product-type.tool";
 		};
+		4FD7DFA11B4FCD77003608BD /* SwiftAETranslate */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4FD7DFB21B4FCD77003608BD /* Build configuration list for PBXNativeTarget "SwiftAETranslate" */;
+			buildPhases = (
+				4FD7DF9E1B4FCD77003608BD /* Sources */,
+				4FD7DF9F1B4FCD77003608BD /* Frameworks */,
+				4FD7DFA01B4FCD77003608BD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftAETranslate;
+			productName = SwiftAETranslate;
+			productReference = 4FD7DFA21B4FCD77003608BD /* SwiftAETranslate.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -959,6 +1050,9 @@
 					4FA7A8B51A0A607400F0E578 = {
 						CreatedOnToolsVersion = 6.1;
 					};
+					4FD7DFA11B4FCD77003608BD = {
+						CreatedOnToolsVersion = 7.0;
+					};
 				};
 			};
 			buildConfigurationList = 4F1A9FEE19F92A9E00FBD23E /* Build configuration list for PBXProject "AppleEventBridge" */;
@@ -967,6 +1061,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 4F1A9FEA19F92A9E00FBD23E;
 			productRefGroup = 4F1A9FF519F92A9F00FBD23E /* Products */;
@@ -977,6 +1072,7 @@
 				4F1A9FFE19F92A9F00FBD23E /* AppleEventBridgeTests */,
 				4FA7A8B51A0A607400F0E578 /* aebdemo */,
 				4F5EE3D11B2D7F1F007C58B5 /* saedemo */,
+				4FD7DFA11B4FCD77003608BD /* SwiftAETranslate */,
 			);
 		};
 /* End PBXProject section */
@@ -993,6 +1089,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4FD7DFA01B4FCD77003608BD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FD7DFAB1B4FCD77003608BD /* Assets.xcassets in Resources */,
+				4FD7DFBA1B4FCDCA003608BD /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1084,6 +1189,20 @@
 				4FAA6C951B491CF800626E60 /* TEDGlue.m in Sources */,
 				4F7B9A461B4DCC020028EEFA /* FINGlue.m in Sources */,
 				4FAA6C941B491CF800626E60 /* ITUGlue.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4FD7DF9E1B4FCD77003608BD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FD7DFB81B4FCDB3003608BD /* AEBEventSniffer.m in Sources */,
+				4FD7DFA91B4FCD77003608BD /* main.m in Sources */,
+				4FD7DFD61B4FF508003608BD /* SwiftAETranslate.swift in Sources */,
+				4FD7DFD41B4FF508003608BD /* SwiftAEFormatter.swift in Sources */,
+				4FD7DFD51B4FF508003608BD /* SwiftAEGlueBase.swift in Sources */,
+				4FD7DFB71B4FCDB3003608BD /* AEBLanguageInstance.m in Sources */,
+				4FD7DFA61B4FCD77003608BD /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1318,6 +1437,41 @@
 			};
 			name = Release;
 		};
+		4FD7DFB01B4FCD77003608BD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SwiftAETranslate/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.bitbucket.hhas.AppleEventBridge.SwiftAETranslate;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftAETranslate/SwiftAETranslate-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		4FD7DFB11B4FCD77003608BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = SwiftAETranslate/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.bitbucket.hhas.AppleEventBridge.SwiftAETranslate;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftAETranslate/SwiftAETranslate-Bridging-Header.h";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1365,6 +1519,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		4FD7DFB21B4FCD77003608BD /* Build configuration list for PBXNativeTarget "SwiftAETranslate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4FD7DFB01B4FCD77003608BD /* Debug */,
+				4FD7DFB11B4FCD77003608BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

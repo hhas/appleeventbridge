@@ -1,4 +1,4 @@
-# «Swift»«Objective-C»/Apple event type mappings
+# Apple event type mappings
 
 ## Overview
 
