@@ -38,29 +38,51 @@
     NSAttributedString *scriptResult = nil;
     NSDictionary *errorInfo = nil;
     NSError *error = nil;
+    // note: execute... returns fully qualified objspecs
     if (!([script compileAndReturnError: &errorInfo] && [script executeAndReturnDisplayValue: &scriptResult error: &errorInfo])) {
-        NSLog(@"%@", errorInfo);
-        error = AEMErrorWithInfo([errorInfo[OSAScriptErrorNumber] intValue], errorInfo[OSAScriptErrorMessage]);
+        error = AEMErrorWithInfo([errorInfo[OSAScriptErrorNumber] intValue] ?: 1, errorInfo[OSAScriptErrorMessage]);
     }
-    [self writeToView: self.asOut literalResult: scriptResult.string error: error desc: nil];
+    [self writeToView: self.asOut isReply: YES literalResult: scriptResult.string error: error desc: nil];
 }
 
 
 -(void)logAppleEvent:(NSAppleEventDescriptor *)desc {
     NSError *error = nil;
     NSString *literalResult = [SwiftAEFormatter formatAppleEvent: desc useSDEF: useSDEF error: &error];
-    [self writeToView: self.jsLog literalResult: literalResult error: error desc: desc];
+    [self writeToView: self.jsLog isReply: NO literalResult: literalResult error: error desc: desc];
 }
 
--(void)writeToView:(NSTextView *)view literalResult:(NSString *)result error:(NSError *)error desc:(NSAppleEventDescriptor *)desc {
+-(void)logReplyEvent:(NSAppleEventDescriptor *)desc {
+    NSError *error = nil;
+    NSString *literalResult = [SwiftAEFormatter formatAppleEvent: desc useSDEF: useSDEF error: &error];
+    [self writeToView: self.jsLog isReply: YES literalResult: literalResult error: error desc: desc];
+
+}
+
+-(void)writeToView:(NSTextView *)view isReply:(BOOL)isReply literalResult:(NSString *)result
+                                        error:(NSError *)error desc:(NSAppleEventDescriptor *)desc {
     if (result) {
-        [view.textStorage.mutableString appendFormat: @"%@\n", result];
+        NSColor *color;
+        if (isReply) {
+            color = NSColor.grayColor;
+            if (view == self.jsLog) result = [NSString stringWithFormat: @"// %@", result];
+        } else {
+            color = NSColor.blackColor;
+        }
+        [view.textStorage appendAttributedString:
+         [[NSAttributedString alloc] initWithString: result attributes: @{NSForegroundColorAttributeName: color}]];
     } else {
-        [view.textStorage.mutableString appendFormat: @"ERROR: %@\n",
-         error ? [NSString stringWithFormat: @"(%li) %@", error.code, error.localizedDescription] : @"No details available."];
-        if (desc) [view.textStorage.mutableString appendFormat: @"%@\n", desc.description];
-        [view.textStorage.mutableString appendString: @"\n"];
+        NSMutableString *errorMessage = [NSMutableString stringWithString: @"ERROR: "];
+        if (error) {
+            [errorMessage appendFormat: @"(%li) %@", error.code, error.localizedDescription];
+        } else {
+            [errorMessage appendString: @"No details available."];
+        }
+        if (desc) [errorMessage appendFormat: @"%@\n", desc.description];
+        [view.textStorage appendAttributedString:
+         [[NSAttributedString alloc] initWithString: errorMessage attributes: @{NSForegroundColorAttributeName: NSColor.redColor}]];
     }
+    [view.textStorage.mutableString appendString: @"\n"];
 }
 
 -(IBAction)clearLog:(id)sender {

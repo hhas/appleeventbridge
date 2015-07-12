@@ -21,6 +21,11 @@ class SwiftAEFormatter: AEMQueryVisitor {
     var aebAppData: AEBAppData?
     var mutableResult: NSMutableString?
     
+    // caution: if sending events to self, processes _must_ useSDEF=true or call this function on a background thread, otherwise SwiftAETranslateAppleEvent will deadlock the main loop when it tries to fetch host app's AETE via ascr/gdte event
+    class func formatAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = false) throws -> String {
+        return try SwiftAETranslateAppleEvent(event, useSDEF: useSDEF);
+    }
+    
     // takes an AEMQuery plus AEBStaticAppData instance, and returns the query's literal ObjC representation
     class func formatObject(object: AnyObject!, appData: AEBAppData?) -> String {
         if object is AEMQuery { // instantiate a new formatter instance and pass it to AEMQuery's visitor method
@@ -274,27 +279,9 @@ class SwiftAEFormatter: AEMQueryVisitor {
 func SwiftAEFormatObject(object: AnyObject!) -> String {
     switch object {
     case let obj as [AnyObject]:
-        var tmp = "["
-        var useSep = false // TO DO: use map+join
-        for item in obj {
-            if useSep {
-                tmp += ", "
-            }
-            tmp += SwiftAEFormatObject(item)
-            useSep = true
-        }
-        return "[\(tmp)]"
-    case let obj as NSDictionary: // TO DO: what about Swift dictionaries? (i.e. how to declare, as [protocol<Hashable>:AnyObject] doesn't work)
-        var tmp = ""
-        var useSep = false // TO DO: use map+join
-        for (key, value) in obj {
-            if (useSep) {
-                tmp += ", "
-            }
-            tmp += "\(SwiftAEFormatObject(key)): \(SwiftAEFormatObject(value))"
-            useSep = true
-        }
-        return "[\(tmp)]"
+        return "[" + (", ".join(obj.map {SwiftAEFormatObject($0)})) + "]"
+    case let obj as NSDictionary: // kluge as Swift can't express [AnyHashable:AnyObject]
+        return "[" + ", ".join(obj.map({"\(SwiftAEFormatObject($0)): \(SwiftAEFormatObject($1))"})) + "]"
     case let obj as String:
         let tmp = NSMutableString(string: obj)
         for (from, to) in [("\\", "\\\\"), ("\"", "\\\""), ("\r", "\\r"), ("\n", "\\n"), ("\t", "\\t")] {

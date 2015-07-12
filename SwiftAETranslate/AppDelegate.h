@@ -26,6 +26,11 @@
 
 -(void)logAppleEvent:(NSString *)desc;
 
+-(void)logReplyEvent:(NSString *)desc;
+
+-(void)writeToView:(NSTextView *)view isReply:(BOOL)isReply literalResult:(NSString *)result
+                                        error:(NSError *)error desc:(NSAppleEventDescriptor *)desc;
+
 -(IBAction)clearLog:(id)sender;
 
 -(IBAction)openHelp:(id)sender;

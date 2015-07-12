@@ -279,27 +279,9 @@ class SwiftAEFormatter: AEMQueryVisitor {
 func SwiftAEFormatObject(object: AnyObject!) -> String {
     switch object {
     case let obj as [AnyObject]:
-        var tmp = "["
-        var useSep = false // TO DO: use map+join
-        for item in obj {
-            if useSep {
-                tmp += ", "
-            }
-            tmp += SwiftAEFormatObject(item)
-            useSep = true
-        }
-        return "[\(tmp)]"
-    case let obj as NSDictionary: // TO DO: what about Swift dictionaries? (i.e. how to declare, as [protocol<Hashable>:AnyObject] doesn't work)
-        var tmp = ""
-        var useSep = false // TO DO: use map+join
-        for (key, value) in obj {
-            if (useSep) {
-                tmp += ", "
-            }
-            tmp += "\(SwiftAEFormatObject(key)): \(SwiftAEFormatObject(value))"
-            useSep = true
-        }
-        return "[\(tmp)]"
+        return "[" + (", ".join(obj.map {SwiftAEFormatObject($0)})) + "]"
+    case let obj as NSDictionary: // kluge as Swift can't express [AnyHashable:AnyObject]
+        return "[" + ", ".join(obj.map({"\(SwiftAEFormatObject($0)): \(SwiftAEFormatObject($1))"})) + "]"
     case let obj as String:
         let tmp = NSMutableString(string: obj)
         for (from, to) in [("\\", "\\\\"), ("\"", "\\\""), ("\r", "\\r"), ("\n", "\\n"), ("\t", "\\t")] {

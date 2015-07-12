@@ -28,7 +28,7 @@ let kAEBUseDefaultTerminology = AEMType(code: AEM4CC("DeTe"))
 // note: if sending events to self, processes _must_ useSDEF=true or call this function on a background thread, otherwise SwiftAETranslateAppleEvent will deadlock the main loop when it tries to fetch host app's AETE via ascr/gdte event
 
 func SwiftAETranslateAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = false) throws -> String { // TO DO: on failure, return string or error message?
-    if event.descriptorType as UInt32 != AEM4CC("aevt") { // typeAppleEvent // TO DO: Swift auto-converts OSType to Int, making AE consts useless
+    if event.descriptorType as UInt32 != AEM4CC("aevt") { // typeAppleEvent // TO DO: Swift auto-converts OSType to Int in AE*.h, making standard AE consts useless (should be UInt32)
         return "<NOT A VALID APPLE EVENT>" // TO DO: how to handle? throw error?
     }
     // get target process's terminology
@@ -37,6 +37,15 @@ func SwiftAETranslateAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = 
     // unpack event attributes
     let eventClass: UInt32 = event.attributeDescriptorForKeyword(0x6576636C)!.typeCodeValue // keyEventClassAttr
     let eventID: UInt32 = event.attributeDescriptorForKeyword(0x65766964)!.typeCodeValue // keyEventIDAttr
+    if eventClass == AEM4CC("aevt") && eventID == AEM4CC("ansr") { // it's a reply event, so format error/return value only
+        if let errn = event.paramDescriptorForKeyword(AEM4CC("errn"))?.int32Value {
+            let errs = event.paramDescriptorForKeyword(AEM4CC("errs"))?.stringValue ?? AEMDescriptionForError(errn)
+            return "Error: (\(errn)) \(errs)"
+        } else if let reply = event.paramDescriptorForKeyword(AEM4CC("----")) {
+            return SwiftAEFormatObject(try appData.unpack(reply))
+        }
+        return "<noreply>"
+    }
     let subjectDesc = event.attributeDescriptorForKeyword(0x7375626A) // keySubjectAttr
     // get the application terminology for this event
     let commandInfo = appData.commandsByCodeTable[NSNumber(unsignedLongLong: (UInt64(eventClass) << 32 | UInt64(eventID)))]

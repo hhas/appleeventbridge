@@ -17,7 +17,8 @@
     return sendEvents;
 }
 
-- (void)sniffReply:(NSAppleEventDescriptor *)desc { // TO DO: log result in swift syntax too?
+- (void)sniffReply:(NSAppleEventDescriptor *)desc {
+    [(AppDelegate *)(NSApp.delegate) performSelectorOnMainThread: @selector(logReplyEvent:) withObject: desc waitUntilDone: NO];
 }
 
 @end
