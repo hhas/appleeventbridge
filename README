@@ -1,14 +1,19 @@
-README
+# AppleEventBridge README
+
+## About
 
 AppleEventBridge provides client-side Apple event bindings for Swift and
 Objective-C, enabling them to control "AppleScriptable" OS X applications
 directly. For example:
 
-  tell application id "com.apple.TextEdit" to get text of document 1
+  tell application "TextEdit" to get text of document 1
 
   let result = try TextEdit().documents[1].text.get() as! String
 
   id result = [[TEDApplication application].documents[1].text getItem];
+
+
+## Status
 
 AppleEventBridge is a modernized, reworked fork of the objc-appscript bridge
 (http://appscript.sourceforge.net). Its objective is to provide Apple's Swift
@@ -21,13 +26,53 @@ and implementation may change radically in future; this release is provided
 primarily for exploration, experimentation, and feedback purposes rather than
 production use.
 
+
+## Support
+
 Swift and Objective-C documentation is provided, though still rough in places.
 Code examples and a simple SwiftAETranslate app for translating AppleScript
-commands to the equivalent Swift syntax are also included.
+commands to the equivalent Swift syntax are also included. 
+
+For example, running the following AppleScript commands in SwiftAETranslate  
+with the 'Send Apple events' option enabled:
+
+  tell app "iTunes"
+    make new playlist with properties {name: "My Faves"}
+    duplicate every track whose artist is "Bjork" and rating ≥ 80 to result
+  end
+
+displays each Apple event sent by AppleScript, along with the application's 
+response, in the following format:
+
+  ITunes().make(new: ITU.playlist, withProperties: [ITU.name: "My Faves"])
+  // ITunes().sources.ID(70).userPlaylists.ID(938)
+  ITunes().tracks[(ITUIts.artist == "Bjork" && ITUIts.rating >= 80)]
+                  .duplicate(to: ITunes().sources.ID(70).userPlaylists.ID(938))
+  // [ITunes().sources.ID(70).userPlaylists.ID(938).fileTracks.ID(941), ...]
+
+These raw commands are then easily adapted to create the finished Swift code:
+
+  let itunes = ITunes()
+  let playlist = itunes.make(new: ITU.playlist, 
+                             withProperties: [ITU.name: "My Faves"])
+  itunes.tracks[ITUIts.artist == "Sigur Ros" 
+             && ITUIts.rating >= 80].duplicate(to: playlist)
+
+
+## Get it
+
+To clone AppleEventBridge to your own machine:
+
+    git clone https://bitbucket.org/hhas/appleeventbridge.git
 
 Advice, suggestions, bug reports, pull requests, etc. can be submitted at:
 
-	https://bitbucket.org/hhas/appleeventbridge/issues
+  https://bitbucket.org/hhas/appleeventbridge/issues
+
+Swift support requires Swift 2.0 and Xcode 7 beta 3 or later.
+
+
+## Etc.
 
 No warranty given, E&OE, use at own risk, etc.
 

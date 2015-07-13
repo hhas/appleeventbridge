@@ -681,9 +681,6 @@
 		4F5EE3D31B2D7F1F007C58B5 /* Swift demo */ = {
 			isa = PBXGroup;
 			children = (
-				4F7B999E1B4C280E0028EEFA /* SwiftAEGlueBase.swift */,
-				4F7B999D1B4C280E0028EEFA /* SwiftAEFormatter.swift */,
-				4F7B999F1B4C280E0028EEFA /* SwiftAETranslate.swift */,
 				4F5EE3D41B2D7F1F007C58B5 /* main.swift */,
 				4F4ADEDA1B3824E30017EE65 /* FINGlue-swift.sdef */,
 				4F4ADEDB1B3824E30017EE65 /* FINGlue.swift */,
@@ -691,6 +688,9 @@
 				4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */,
 				4F4ADED41B35DC330017EE65 /* TEDGlue-swift.sdef */,
 				4F4ADED31B35DC330017EE65 /* TEDGlue.swift */,
+				4F7B999E1B4C280E0028EEFA /* SwiftAEGlueBase.swift */,
+				4F7B999D1B4C280E0028EEFA /* SwiftAEFormatter.swift */,
+				4F7B999F1B4C280E0028EEFA /* SwiftAETranslate.swift */,
 			);
 			name = "Swift demo";
 			path = saedemo;
