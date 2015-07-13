@@ -30,8 +30,6 @@ The major AEM classes are as follows:
 
 * `AEMType`, `AEMEnum`, `AEMProperty` – Represent Apple event type, enumerator, and property name values.
 
-In addition, supporting `AEMBoolean` and `AEMURL` classes are defined to represent Apple event types that do not have a precise Cocoa equivalent; see the [Objective-C/Apple event type mappings](objc-ae-type-mappings.html) chapter for details.
-
 The following macros are exported for use in constructing application references:
 
 * `AEMApp` – Returns an `AEMApplicationRoot` instance used to construct absolute references.

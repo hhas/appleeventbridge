@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
-        <title>AppleEventBridge | Swift/Apple event type mappings</title>
+        <title>AppleEventBridge | Apple event type mappings</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style type="text/css" media="all"><!--@import url(full.css);--></style>
     </head>
     <body>
         <div id="wrap">
             <div id="main">
-                <h1>Swift/Apple event type mappings</h1>
+                <h1>Apple event type mappings</h1>
                 <div class="navbar"><a href="creating-and-using-static-glues.html">back</a> | <a href="index.html">index</a> | <a href="application-objects.html">next</a></div>
                 <h2>Overview</h2>
 
@@ -18,18 +18,18 @@
 
 <table width="100%" summary="AE-Foundation type mappings">
 <thead>
-<tr><th>AppleScript type</th><th>Descriptor type</th><th>`AEBSymbol` name</th><th>Objective-C (or Swift) class</th></tr>
+<tr><th>AppleScript type</th><th>Descriptor type</th><th>`AEBSymbol` name</th><th>Cocoa class</th></tr>
 </thead>
 <tbody>
 <tr><td>(no data)</td><td><code>typeNull</code></td><td><code>null</code></td><td><code>NSNull</code></td></tr>
-<tr><td><code>boolean</code></td><td><code>typeBoolean</code></td><td><code>boolean</code></td><td><code>AEMBoolean</code> (<code>Boolean</code>)</td></tr>
+<tr><td><code>boolean</code></td><td><code>typeBoolean</code></td><td><code>boolean</code></td><td><code>NSNumber</code> (equiv. <code>CFBoolean</code>)</td></tr>
 <tr><td><code>integer</code></td><td><code>typeSInt32</code></td><td><code>integer</code></td><td><code>NSNumber</code></td></tr>
 <tr><td><code>real</code></td><td><code>typeIEEE64BitFloatingPoint</code></td><td><code>float</code></td><td><code>NSNumber</code></td></tr>
 <tr><td><code>text</code> [1]</td><td><code>typeUnicodeText</code></td><td><code>unicodeText</code></td><td><code>NSString</code></td></tr>
 <tr><td><code>list</code></td><td><code>typeAEList</code></td><td><code>list</code></td><td><code>NSArray</code></td></tr>
 <tr><td><code>record</code></td><td><code>typeAERecord</code></td><td><code>record</code></td><td><code>NSDictionary</code></td></tr>
 <tr><td><code>date</code></td><td><code>typeLongDateTime</code></td><td><code>date</code></td><td><code>NSDate</code></td></tr>
-<tr><td><code>«class bmrk»</code></td><td><code>typeBookmarkData</code></td><td><code>bookmarkData</code></td><td><code>NSURL</code> [2]</td></tr>
+<tr><td><code>class bmrk»</code></td><td><code>typeBookmarkData</code></td><td><code>bookmarkData</code></td><td><code>NSURL</code> [2]</td></tr>
 <tr><td><code>alias</code></td><td><code>typeAlias</code></td><td><code>alias</code></td><td><code>NSURL</code> [2]</td></tr>
 <tr><td><code>«class furl»</code></td><td><code>typeFileURL</code></td><td><code>fileURL</code></td><td><code>NSURL</code> [2]</td></tr>
 <tr><td><code>reference</code></td><td><code>typeObjectSpecifier</code></td><td><code>reference</code></td><td><code>AEMSpecifier</code> / <code>AEBSpecifier</code> [3]</td></tr>
@@ -52,11 +52,9 @@
 
 <h3>Boolean</h3>
 
-<p>When used with Swift glues, AppleEventBridge maps <code>typeBoolean</code> descriptors to Swift's native Boolean type.</p>
+<p>AppleEventBridge maps <code>typeBoolean</code> descriptors to and from <code>NSNumber</code>, based on the assumption that the <code>NSNumber</code> class cluster internally represents Boolean values as bridged <code>CFBoolean</code> (<code>__NSCFBoolean</code>) instances.</p>
 
-<p>Otherwise, AppleEventBridge currently maps <code>typeBoolean</code> descriptors to its own <code>AEMBoolean</code> class, and provides shorthand C macros, <code>AEMTrue</code> and <code>AEMFalse</code>, for convenience. [TO DO: this may change in future, if/when a robust mapping to <code>NSNumber</code> or an <code>NSNumber</code> subclass is implemented.]</p>
-
-<p>(AppleEventBridge can also unpack descriptors of <code>typeTrue</code> and <code>typeFalse</code>, though these are not normally used by applications.)</p>
+<p>(AppleEventBridge can also unpack descriptors of <code>typeTrue</code> and <code>typeFalse</code>, although these are not normally returned by applications.)</p>
 
 <h3>Numbers</h3>
 
@@ -82,34 +80,33 @@
 
 <p>While OS X has deprecated HFS path strings in favor of POSIX, some older Carbon applications may still occasionally require these. <code>AEMURL</code> provides the following compatibility methods for converting to and from HFS path strings:</p>
 
-<pre><code>  - (instancetype)initFileURLWithHFSPath:(NSString *)path;
-
-  - (NSString *)HFSPath;
+<pre><code>- (instancetype)initFileURLWithHFSPath:(NSString *)path;
+@property (readonly) NSString *HFSPath;
 </code></pre>
 
 <p><code>AEMURL</code> also defines the following method in case the underlying descriptor needs to be coerced to a specific AE type:</p>
 
-<pre><code>  - (instancetype)coerceToDescriptorType:(DescType)descType;
+<pre><code>- (instancetype)coerceToDescriptorType:(DescType)descType;
 </code></pre>
 
 <p>The <code>descType</code> argument should be one of the following: <code>typeAlias</code>, <code>typeFileURL</code>, <code>typeObjectSpecifier</code>, or <code>typeBookmarkData</code>. (<code>typeFSRef</code> or <code>typeFSS</code> may also be used, but as these are deprecated/not fully supported they are not guaranteed to work correctly).</p>
 
 <p>For example, if an application requires a <code>typeAlias</code> descriptor but doesn't coerce the given value itself:</p>
 
-<pre><code>  AEMURL *url = [[AEMURL fileURLWithPath: @"/some/path..."]
-                         coerceToDescriptorType: typeAlias];
+<pre><code>AEMURL *url = [[AEMURL fileURLWithPath: @"/path/to..."] coerceToDescriptorType: typeAlias];
 </code></pre>
 
 <p>Be aware when specifying a command's required/result type, you must specify the exact AE type (<code>AEMSymbol.alias</code>/<code>typeAlias</code>, <code>AEMSymbol.fileURL</code>/<code>typeFileURL</code>, etc). For example, the Finder normally returns file system references as object specifiers:</p>
 
-<pre><code>      [[finder.home get] send]
-      // [[Finder.startupDisk.folders byName: @"Users"].folders byName: @"Users"]
+<pre><code>FINApplication *finder = [FINApplication application];
+FINSpecifier *objSpec = [finder.home.get send];
+// [FINApplication...].startupDisk.folders[@"Users"].folders[@"Users"]
 </code></pre>
 
 <p>To get the current user's home folder as an <code>NSURL</code> instead:</p>
 
-<pre><code>      [[[finder.home get] resultType: AEBSymbol.fileURL] send]
-      // &lt;NSURL file:///Users/jsmith&gt;
+<pre><code>NSURL *url = [[finder.home.get resultType: AEBSymbol.fileURL] send];
+// &lt;NSURL file:///Users/jsmith&gt;
 </code></pre>
 
 <h3>Records</h3>
@@ -120,33 +117,28 @@
 
 <h3>Types and enumerators</h3>
 
-<p>For your convenience, AppleEventBridge represents Apple event type names and application-specific class and enumerator names as instances of the glue's <code>AEBSymbol</code> subclass. Examples:</p>
+<p>For your convenience, AppleEventBridge represents Apple event type names and application-specific class and enumerator names as instances of the glue's <code>AEBSymbol</code> For example, a standard TextEdit glue defines a <code>TEDSymbol</code> subclass, along with a convenience <code>TED</code> shortcut macro. Examples:</p>
 
-<pre><code>  // AEM-defined data types
-  TESymbol.boolean
-  TESymbol.unicodeText
-  TESymbol.list
+<pre><code>// AEM-defined data types
+TED.boolean // convenience shorthand for [TEDSymbol boolean]
+TED.unicodeText
+TED.list
 
-  // Application-defined class names
-  TESymbol.document
-  TESymbol.window
-  TESymbol.disk
+// Application-defined class names
+TED.document
+TED.window
+TED.disk
 
-  // Application-defined enumerators
-  TESymbol.yes
-  TESymbol.no
-  TESymbol.ask
+// Application-defined enumerators
+TED.yes
+TED.no
+TED.ask
 </code></pre>
 
-<p>[TO DO: SwiftAE uses AEBSymbol(fourCharCode:String)]</p>
+<p>Descriptors of <code>typeType</code>, <code>typeEnumerated</code>, and <code>typeProperty</code> are unpacked as <code>AEBSymbol</code> subclass instances«, using raw four-char codes instead of names when the corresponding terminology is not available, e.g.:</p>
 
-<p>Occasionally an application dictionary defines a type or enumerator without providing it with a corresponding name name. In these cases, the value will be represented as a raw <code>AEMType</code> or <code>AEMEnum</code> instance instead, e.g.:</p>
-
-<pre><code>  [AEMType typeWithCode: 'abcd']
-  [AEMEnum enumWithCode: 'xyz ']
+<pre><code>AEBSymbol(fourCharCode:"abcd")]
 </code></pre>
-
-<p>Descriptors of <code>typeType</code>, <code>typeEnumerated</code>, and <code>typeProperty</code> are unpacked as <code>AEBSymbol</code> subclass instances when the corresponding terminology is available, otherwise they are unpacked as <code>AEMType</code>, <code>AEMEnum</code>, and <code>AEMProperty</code> respectively.</p>
 
 <h3>Other types</h3>
 

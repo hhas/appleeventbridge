@@ -295,6 +295,12 @@ func SwiftAEFormatObject(object: AnyObject!) -> String {
         return "NSURL(string:\(SwiftAEFormatObject(obj.absoluteString)))"
 //    case is Bool: // glitchy due to Swift's crappy bridging of ObjC's crappy NSNumber
 //        return object as! Bool ? "true" : "false"
+    case let obj as NSNumber:
+        if CFBooleanGetTypeID() == CFGetTypeID(object) {
+            return obj == 0 ? "false" : "true"
+        } else {
+            return "\(object)"
+        }
     default:
         return "\(object)" // SwiftAE objects (specifiers, symbols) are self-formatting; any other Swift object will use its default description (which may or may not be the same as its literal representation, but that's Swift's problem, not ours)
     }

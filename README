@@ -1,12 +1,33 @@
 README
 
-AppleEventBridge is a mostly cleaned-up, modernized fork of objc-appscript
-(http://appscript.sourceforge.net). Some work remains to be done; for now,
-it is released as-is.
+AppleEventBridge provides client-side Apple event bindings for Swift and
+Objective-C, enabling them to control "AppleScriptable" OS X applications
+directly. For example:
 
-When compiled for 10.10 and earlier, AppleEventBridge uses a number of
-legacy/deprecated Carbon APIs (see LEGACY API WRAPPERS). Builds that
-target 10.11+ use fully supported OS X APIs only.
+  tell application id "com.apple.TextEdit" to get text of document 1
+
+  let result = try TextEdit().documents[1].text.get() as! String
+
+  id result = [[TEDApplication application].documents[1].text getItem];
+
+AppleEventBridge is a modernized, reworked fork of the objc-appscript bridge
+(http://appscript.sourceforge.net). Its objective is to provide Apple's Swift
+language with first-class application scripting support, equal in capability
+and compatibility to AppleScript's own.
+
+Its high-level API is mostly stable, though future updates may enhance/change
+it to improve language integration (e.g. better type support). Internal APIs
+and implementation may change radically in future; this release is provided
+primarily for exploration, experimentation, and feedback purposes rather than
+production use.
+
+Swift and Objective-C documentation is provided, though still rough in places.
+Code examples and a simple SwiftAETranslate app for translating AppleScript
+commands to the equivalent Swift syntax are also included.
+
+Advice, suggestions, bug reports, pull requests, etc. can be submitted at:
+
+	https://bitbucket.org/hhas/appleeventbridge/issues
 
 No warranty given, E&OE, use at own risk, etc.
 

@@ -21,36 +21,6 @@ enum { typeFSS = 'fss ' };
 
 
 /**********************************************************************/
-// convenience macros
-
-#define AEMTrue  ([AEMBoolean True])
-#define AEMFalse ([AEMBoolean False])
-
-
-/**********************************************************************/
-// Boolean class represents AEDescs of typeTrue and typeFalse
-
-
-@interface AEMBoolean : NSObject <AEMSelfPackingProtocol> { // TO DO: get rid of this and use NSNumber with 'c' type instead? (another option might be to extend NSNumber class cluster, or use existing underlying __NSCFBoolean; really needs expert advice)
-	BOOL boolValue;
-	NSAppleEventDescriptor *cachedDesc;
-}
-
-+ (instancetype)True;
-
-+ (instancetype)False;
-
-// client's shouldn't call -initWithBool: directly; use +True/+False (or AEMTrue/AEMFalse macros) instead
-- (instancetype)initWithBool:(BOOL)boolValue_;
-
-- (BOOL)boolValue;
-
-- (NSAppleEventDescriptor *)descriptor;
-
-@end
-
-
-/**********************************************************************/
 
 // abstract base class for AEMType, AEMEnum, AEMProperty, AEMKeyword
 @interface AEMTypeBase : NSObject <NSCopying, AEMSelfPackingProtocol> {

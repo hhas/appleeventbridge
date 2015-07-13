@@ -8,11 +8,11 @@ Standard Apple event descriptor types are mapped to and from Foundation/AppleEve
 
 <table width="100%" summary="AE-Foundation type mappings">
 <thead>
-<tr><th>AppleScript type</th><th>Descriptor type</th><th>`AEBSymbol` name</th><th>Objective-C (or Swift) class</th></tr>
+<tr><th>AppleScript type</th><th>Descriptor type</th><th>`AEBSymbol` name</th><th>Cocoa class</th></tr>
 </thead>
 <tbody>
 <tr><td>(no data)</td><td><code>typeNull</code></td><td><code>null</code></td><td><code>NSNull</code></td></tr>
-<tr><td><code>boolean</code></td><td><code>typeBoolean</code></td><td><code>boolean</code></td><td><code>AEMBoolean</code> (<code>Boolean</code>)</td></tr>
+<tr><td><code>boolean</code></td><td><code>typeBoolean</code></td><td><code>boolean</code></td><td><code>NSNumber</code> (equiv. <code>CFBoolean</code>)</td></tr>
 <tr><td><code>integer</code></td><td><code>typeSInt32</code></td><td><code>integer</code></td><td><code>NSNumber</code></td></tr>
 <tr><td><code>real</code></td><td><code>typeIEEE64BitFloatingPoint</code></td><td><code>float</code></td><td><code>NSNumber</code></td></tr>
 <tr><td><code>text</code> [1]</td><td><code>typeUnicodeText</code></td><td><code>unicodeText</code></td><td><code>NSString</code></td></tr>
@@ -44,11 +44,9 @@ While AE-ObjC type conversions generally work quite seamlessly, it is sometimes 
 
 ### Boolean
 
-When used with Swift glues, AppleEventBridge maps `typeBoolean` descriptors to Swift's native Boolean type.
+AppleEventBridge maps `typeBoolean` descriptors to and from `NSNumber`, based on the assumption that the `NSNumber` class cluster internally represents Boolean values as bridged `CFBoolean` (`__NSCFBoolean`) instances.
 
-Otherwise, AppleEventBridge currently maps `typeBoolean` descriptors to its own `AEMBoolean` class, and provides shorthand C macros, `AEMTrue` and `AEMFalse`, for convenience. [TO DO: this may change in future, if/when a robust mapping to `NSNumber` or an `NSNumber` subclass is implemented.]
-
-(AppleEventBridge can also unpack descriptors of `typeTrue` and `typeFalse`, though these are not normally used by applications.)
+(AppleEventBridge can also unpack descriptors of `typeTrue` and `typeFalse`, although these are not normally returned by applications.)
 
 
 ### Numbers
@@ -77,30 +75,29 @@ AppleEventBridge unpacks all file system descriptors as `AEMURL` instances. Appl
 
 While OS X has deprecated HFS path strings in favor of POSIX, some older Carbon applications may still occasionally require these. `AEMURL` provides the following compatibility methods for converting to and from HFS path strings:
 
-    - (instancetype)initFileURLWithHFSPath:(NSString *)path;
-
-    - (NSString *)HFSPath;
+  - (instancetype)initFileURLWithHFSPath:(NSString *)path;
+  @property (readonly) NSString *HFSPath;
 
 `AEMURL` also defines the following method in case the underlying descriptor needs to be coerced to a specific AE type:
 
-    - (instancetype)coerceToDescriptorType:(DescType)descType;
+  - (instancetype)coerceToDescriptorType:(DescType)descType;
 
 The `descType` argument should be one of the following: `typeAlias`, `typeFileURL`, `typeObjectSpecifier`, or `typeBookmarkData`. (`typeFSRef` or `typeFSS` may also be used, but as these are deprecated/not fully supported they are not guaranteed to work correctly).
 
 For example, if an application requires a `typeAlias` descriptor but doesn't coerce the given value itself:
 
-    AEMURL *url = [[AEMURL fileURLWithPath: @"/some/path..."]
-                           coerceToDescriptorType: typeAlias];
-    
+  AEMURL *url = [[AEMURL fileURLWithPath: @"/path/to..."] coerceToDescriptorType: typeAlias];
+
 Be aware when specifying a command's required/result type, you must specify the exact AE type (`AEMSymbol.alias`/`typeAlias`, `AEMSymbol.fileURL`/`typeFileURL`, etc). For example, the Finder normally returns file system references as object specifiers:
 
-        [[finder.home get] send]
-        // [[Finder.startupDisk.folders byName: @"Users"].folders byName: @"Users"]
+  FINApplication *finder = [FINApplication application];
+  FINSpecifier *objSpec = [finder.home.get send];
+  // [FINApplication...].startupDisk.folders[@"Users"].folders[@"Users"]
 
  To get the current user's home folder as an `NSURL` instead:
 
-        [[[finder.home get] resultType: AEBSymbol.fileURL] send]
-        // <NSURL file:///Users/jsmith>
+  NSURL *url = [[finder.home.get resultType: AEBSymbol.fileURL] send];
+  // <NSURL file:///Users/jsmith>
 
 
 ### Records
@@ -112,31 +109,30 @@ If a dictionary includes a `AEBSymbol.class_` (or `[AEMProperty propertyWithCode
 
 ### Types and enumerators
 
-For your convenience, AppleEventBridge represents Apple event type names and application-specific class and enumerator names as instances of the glue's `AEBSymbol` subclass. Examples:
+For your convenience, AppleEventBridge represents Apple event type names and application-specific class and enumerator names as instances of the glue's `AEBSymbol` For example, a standard TextEdit glue defines a `TEDSymbol` subclass, along with a convenience `TED` shortcut macro. Examples:
 
-    // AEM-defined data types
-    TESymbol.boolean
-    TESymbol.unicodeText
-    TESymbol.list
+  // AEM-defined data types
+  TED.boolean // convenience shorthand for [TEDSymbol boolean]
+  TED.unicodeText
+  TED.list
 
-    // Application-defined class names
-    TESymbol.document
-    TESymbol.window
-    TESymbol.disk
+  // Application-defined class names
+  TED.document
+  TED.window
+  TED.disk
 
-    // Application-defined enumerators
-    TESymbol.yes
-    TESymbol.no
-    TESymbol.ask
+  // Application-defined enumerators
+  TED.yes
+  TED.no
+  TED.ask
 
-[TO DO: SwiftAE uses AEBSymbol(fourCharCode:String)]
-
-Occasionally an application dictionary defines a type or enumerator without providing it with a corresponding name name. In these cases, the value will be represented as a raw `AEMType` or `AEMEnum` instance instead, e.g.:
-
-    [AEMType typeWithCode: 'abcd']
-    [AEMEnum enumWithCode: 'xyz ']
-
-Descriptors of `typeType`, `typeEnumerated`, and `typeProperty` are unpacked as `AEBSymbol` subclass instances when the corresponding terminology is available, otherwise they are unpacked as `AEMType`, `AEMEnum`, and `AEMProperty` respectively.
+Descriptors of `typeType`, `typeEnumerated`, and `typeProperty` are unpacked as `AEBSymbol` subclass instances«, using raw four-char codes instead of names when the corresponding terminology is not available»«when the corresponding terminology is available, otherwise they are unpacked as `AEMType`, `AEMEnum`, and `AEMProperty` respectively», e.g.:
+«
+  AEBSymbol(fourCharCode:"abcd")]
+»«
+  [AEMType typeWithCode: 'abcd']
+  [AEMEnum enumWithCode: 'xyz ']
+»
 
 
 ### Other types

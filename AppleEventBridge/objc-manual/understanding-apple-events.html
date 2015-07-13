@@ -112,8 +112,7 @@
 
 <p>this is not always the case. For example, the following object specifiers all identify the same objects (files on the user's desktop):</p>
 
-<pre><code>  [[[[finder.disks byName: @"Macintosh HD"].folders byName: @"Users"]
-          .folders byName: @"jsmith"].folders byName: @"Desktop"].files
+<pre><code>  finder.disks[@"Macintosh HD"].folders[@"Users"].folders[@"jsmith"].folders[@"Desktop"].files
 
   finder.desktop.files
 
@@ -122,11 +121,11 @@
 
 <p>though only the first specifier describes the files' location by physical containment; the other two use other relationships provided by the application as convenient shortcuts. Some applications can be surprisingly flexible in interpreting and evaluating queries against this relational object graph:</p>
 
-<pre><code>  [finder.home.folders byName: @"Desktop"].files
+<pre><code>  finder.home.folders[@"Desktop"].files
 
-  [finder.startupDisk.folders byName: "Users:jsmith:Desktop:"].files
+  finder.startupDisk.folders[@"Users:jsmith:Desktop:"].files
 
-  [finder.items byIndex: [NSURL URLWithString: @"file:///Users/jsmith/Desktop"]].files
+  finder.items[[NSURL URLWithString: @"file:///Users/jsmith/Desktop"]].files
 </code></pre>
 
 <p>Some specifiers may identify different objects at different times, according to changes in the application's state, e.g.:</p>
@@ -136,11 +135,11 @@
 
 <p>Specifiers may identify objects that do not actually exist as discreet entities within the application's underlying data structures, but are interpreted on the fly as proxies to the relevant portions of implementation-level data structures, e.g.:</p>
 
-<pre><code>  [textedit.documents at: 1].text.characters
+<pre><code>  textedit.documents[1].text.characters
 
-  [textedit.documents at: 1].text.words
+  textedit.documents[1].text.words
 
-  [textedit.documents at: 1].text.paragraphs
+  textedit.documents[1].text.paragraphs
 </code></pre>
 
 <p>all refer to sections of data that's actually stored in a single <code>NSTextStorage</code> object within TextEdit's Model layer. This decoupling of the AEOM from the Model layer's structure allows applications to present data in a way that is convenient to the user, i.e. easy and intuitive to understand and use.</p>
@@ -228,8 +227,8 @@
   TEDApplication *textedit = [[TEDApplication application];
 
   TEDReference *ref;
-  ref = [[textedit.documents.text
-          .paragraphs byTest: [TEDIts notEquals: @"\n"]].characters at: 1].size;
+  ref = [textedit.documents.text.paragraphs 
+         byTest: [TEDIts notEquals: @"\n"]].characters[1].size;
 
   [[[ref set] to: @24] send];&lt;/code&gt;&lt;/pre&gt;
 </code></pre>

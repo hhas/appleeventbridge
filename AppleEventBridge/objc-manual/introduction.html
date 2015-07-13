@@ -16,7 +16,7 @@
 
 <p>For example, to get the value of the first paragraph of the topmost document in TextEdit:</p>
 
-<pre><code>  id result = [[[[TEDApplication application].documents at:1].paragraphs at:1] getItem];
+<pre><code>  id result = [[TEDApplication application].documents[1].paragraphs[1] getItem];
 </code></pre>
 
 <p>This is equivalent to the AppleScript statement:</p>

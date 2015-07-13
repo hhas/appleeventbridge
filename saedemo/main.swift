@@ -94,6 +94,9 @@ if t {
 }
 
 if t {
+    
+    // tell application "iTunes" to get player state
+    print(try itunes.playerState.get())
 
     // tell application "iTunes" to get name of every track of playlist "Top 25 Most Played"
     print((try itunes.playlists["Top 25 Most Played"].tracks.name.get()) as! [String])

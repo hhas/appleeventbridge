@@ -236,7 +236,7 @@ Duplicate a folder to a disk, replacing an existing item if one exists:
     // end tell
 «    try finder.home.folders["Projects"].duplicate(to: FINApp.disks["Backup"], replacing: true)»
 «    [[[[finder.home.folders[@"Projects"] duplicate] to: FINApp.disks[@"Backup"]] 
-                                             replacing: AEMTrue] send]»
+                                             replacing: @YES] send]»
 
 
 ## `add` command

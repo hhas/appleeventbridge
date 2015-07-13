@@ -13,13 +13,18 @@
 // (or NSString when unpacking 'usrf' item containing user-defined names).
 //
 
-// TO DO: in -[NSNumber objCType], 'c' indicates either char or bool; is there any way to reliably tell the difference? (if there was, AEMBoolean could be eliminated and NSNumber mapped instead to typeTrue/typeFalse), at least in ObjC bridge (note: Swift bridge should map directly to native true/false, so will either need to override pack/unpack or else AEMCodes should break those types out into overrideable methods); best kludge seems to be `CFBooleanGetTypeID() == CFGetTypeID(anObject)` to determine if an NSNumber is bool/non-bool
+// TO DO: make sure that mapping typeBoolean/typeTrue/typeFalse to NSNumber/@YES/@NO always uses __NSCFBoolean as its internal representation
+
+// TO DO: given that AppKit is now a required dependency for AEMApplication, consider adding NSImage packing/unpacking support for typePICT, etc
 
 
 /**********************************************************************/
 
 
 @implementation AEMCodecs
+
+@synthesize specifierCachingDisabled, UInt64DescriptorsEnabled;
+
 
 + (instancetype)defaultCodecs {
     static dispatch_once_t pred = 0;
@@ -35,24 +40,11 @@
     self = [super init];
     if (!self) return self;
     applicationRootDescriptor = [NSAppleEventDescriptor nullDescriptor];
-    disableCache = NO;
-    allowUInt64 = NO;
+    specifierCachingDisabled = NO;
+    UInt64DescriptorsEnabled = NO;
     return self;
 }
 
-
-
-
-/**********************************************************************/
-// compatibility options
-
-- (void)dontCacheUnpackedSpecifiers {
-    disableCache = YES;
-}
-
-- (void)allowUInt64 {
-    allowUInt64 = YES;
-}
 
 /***********************************/
 // main pack methods; subclasses can override to process some or all values themselves
@@ -65,60 +57,64 @@
     NSAppleEventDescriptor *result = nil;
     
     if (error) *error = nil;
-    if ([anObject conformsToProtocol: @protocol(AEMSelfPackingProtocol)]) { // AEMApplication, AEMBoolean, AEMPath, AEMType, AEMEmum, etc.
+    if ([anObject conformsToProtocol: @protocol(AEMSelfPackingProtocol)]) { // AEMQuery, AEMURL, AEMType, etc.
         result = [anObject packWithCodecs: self error: error];
     } else if ([anObject isKindOfClass: NSNumber.class]) {
-        switch (*[anObject objCType]) {
-                /*
-                 * note: for better compatibility with less well-designed applications that don't like
-                 * less common integer types (typeSInt64, typeUInt32, etc.), try to use typeSInt32
-                 * and typeIEEE64BitFloatingPoint (double) whenever possible
-                 */
-            case 'b':
-            case 'c':
-            case 'C':
-            case 's':
-            case 'S':
-            case 'i':
-            case 'l': // TO DO: check this is always SInt32
-            packAsSInt32:
-                result = [NSAppleEventDescriptor descriptorWithInt32: [anObject intValue]];
-                break;
-            case 'I':
-            case 'L': // TO DO: check this is always UInt32
-                uint32 = [anObject unsignedIntValue];
-                if (uint32 < 0x7FFFFFFF) {
-                    goto packAsSInt32;
-                }
-                result = [NSAppleEventDescriptor descriptorWithDescriptorType: typeUInt32
-                                                                        bytes: &uint32
-                                                                       length: sizeof(uint32)];
-                break;
-            case 'q':
-            packAsSInt64:
-                sint64 = [anObject longLongValue];
-                if (sint64 >= 0x80000000 && sint64 < 0x7FFFFFFF) {
-                    goto packAsSInt32;
-                }
-                result = [NSAppleEventDescriptor descriptorWithDescriptorType: typeSInt64
-                                                                        bytes: &sint64
-                                                                       length: sizeof(sint64)];
-                break;
-            case 'Q':
-                uint64 = [anObject unsignedLongLongValue];
-                if (uint64 < 0x7FFFFFFF) {
-                    goto packAsSInt32;
-                } else if (uint64 < pow(2, 63)) {
-                    goto packAsSInt64;
-                }
-                if (allowUInt64) {
-                    result = [NSAppleEventDescriptor descriptorWithDescriptorType: 'ucom'
-                                                                            bytes: &uint64
-                                                                           length: sizeof(uint64)];
+        if (CFBooleanGetTypeID() == CFGetTypeID((__bridge CFTypeRef)(anObject))) {
+            result = [NSAppleEventDescriptor descriptorWithBoolean: [anObject boolValue]];
+        } else {
+            switch (*[anObject objCType]) {
+                    /*
+                     * note: for better compatibility with less well-designed applications that don't like
+                     * less common integer types (typeSInt64, typeUInt32, etc.), try to use typeSInt32
+                     * and typeIEEE64BitFloatingPoint (double) whenever possible
+                     */
+                case 'b':
+                case 'c':
+                case 'C':
+                case 's':
+                case 'S':
+                case 'i':
+                case 'l': // TO DO: check this is always SInt32
+                packAsSInt32:
+                    result = [NSAppleEventDescriptor descriptorWithInt32: [anObject intValue]];
                     break;
-                } // else pack as double for compatibility's sake
-            default: // f, d
-                result = [NSAppleEventDescriptor descriptorWithDouble: [anObject doubleValue]];
+                case 'I':
+                case 'L': // TO DO: check this is always UInt32
+                    uint32 = [anObject unsignedIntValue];
+                    if (uint32 < 0x7FFFFFFF) {
+                        goto packAsSInt32;
+                    }
+                    result = [NSAppleEventDescriptor descriptorWithDescriptorType: typeUInt32
+                                                                            bytes: &uint32
+                                                                           length: sizeof(uint32)];
+                    break;
+                case 'q':
+                packAsSInt64:
+                    sint64 = [anObject longLongValue];
+                    if (sint64 >= 0x80000000 && sint64 < 0x7FFFFFFF) {
+                        goto packAsSInt32;
+                    }
+                    result = [NSAppleEventDescriptor descriptorWithDescriptorType: typeSInt64
+                                                                            bytes: &sint64
+                                                                           length: sizeof(sint64)];
+                    break;
+                case 'Q':
+                    uint64 = [anObject unsignedLongLongValue];
+                    if (uint64 < 0x7FFFFFFF) {
+                        goto packAsSInt32;
+                    } else if (uint64 < pow(2, 63)) {
+                        goto packAsSInt64;
+                    }
+                    if (UInt64DescriptorsEnabled) {
+                        result = [NSAppleEventDescriptor descriptorWithDescriptorType: 'ucom'
+                                                                                bytes: &uint64
+                                                                               length: sizeof(uint64)];
+                        break;
+                    } // else pack as double for compatibility's sake
+                default: // f, d
+                    result = [NSAppleEventDescriptor descriptorWithDouble: [anObject doubleValue]];
+            }
         }
     } else if ([anObject isKindOfClass: NSString.class]) {
         result = [NSAppleEventDescriptor descriptorWithString: anObject];
@@ -252,10 +248,9 @@
             result = desc.stringValue;
             break;
         case typeFalse:
-            result = AEMFalse;
-            break;
         case typeTrue:
-            result = AEMTrue;
+        case typeBoolean:
+            result = desc.booleanValue ? @YES : @NO; // this assumes Cocoa will always represent @YES and @NO as __NSCFBoolean
             break;
         case typeLongDateTime:
             result = desc.dateValue;
@@ -341,9 +336,6 @@
         case typeRGBColor:
             [desc.data getBytes: &rgbColor length: sizeof(rgbColor)];
             result = @[@(rgbColor[0]), @(rgbColor[1]), @(rgbColor[2])];
-            break;
-        case typeBoolean:
-            result = desc.booleanValue ? AEMTrue : AEMFalse;
             break;
         default:
             result = [self unpackUnknown: desc error: error];
@@ -520,7 +512,7 @@
     AEMDeferredSpecifier *container;
     AEMUnkeyedElementsShim *shim;
     id keyObj, ref = nil;
-    if (disableCache) return [self fullyUnpackObjectSpecifier: desc error: error];
+    if (specifierCachingDisabled) return [self fullyUnpackObjectSpecifier: desc error: error];
     keyForm = [[desc descriptorForKeyword: keyAEKeyForm] enumCodeValue];
     switch (keyForm) {
         case formPropertyID:
@@ -652,7 +644,7 @@
 
 - (id)unpackLogicalDescriptor:(NSAppleEventDescriptor *)desc error:(NSError * __autoreleasing *)error { // TO DO: better error reporting
     NSAppleEventDescriptor *listDesc;
-    listDesc = [[desc descriptorForKeyword: keyAELogicalTerms] coerceToDescriptorType: typeAEList];
+    listDesc = [[desc descriptorForKeyword: keyAELogicalTerms] coerceToDescriptorType: typeAEList]; // TO DO: should unpack as list of comparison/logic descs, raising error if any are not
     DescType operator = [[desc descriptorForKeyword: keyAELogicalOperator] enumCodeValue];
     id ops, op1 = [self unpack: [listDesc descriptorAtIndex: 1] error: error];
     if (!op1) return nil;
@@ -660,7 +652,7 @@
         case kAEAND:
             [listDesc removeDescriptorAtIndex: 1];
             ops = [self unpack: listDesc error: error];
-            return ops ? [op1 AND: ops] : nil;
+            return ops ? [op1 AND: ops] : nil; // TO DO: better to chain single operands rather than use array of operands?
         case kAEOR:
             [listDesc removeDescriptorAtIndex: 1];
             ops = [self unpack: listDesc error: error];

@@ -23,28 +23,7 @@ import AppleEventBridge
 
 
 class SwiftAEAppData: AEBStaticAppData {
-    
-    override func pack(anObject: AnyObject!) throws -> NSAppleEventDescriptor {
-        if anObject is NSNumber {
-            // kludge: Swift's crappy bridging of Cocoa's crappy NSNumber cannot distinguish booleans from numerical values,
-            // so we just have to hope it's still a CFBoolean underneath
-            if CFBooleanGetTypeID() == CFGetTypeID(anObject) {
-                return NSAppleEventDescriptor(boolean: (anObject as! Bool ? 1 : 0))
-            }
-        }
-        return try super.pack(anObject)
-    }
-    
-    override func unpack(desc: NSAppleEventDescriptor!) throws -> AnyObject {
-        // TO DO: intervening ObjC converts true and false to NSNumbers (NSCFBooleans), which Swift then displays as Ints
-        switch desc.descriptorType {
-        case 0x74727565: return true
-        case 0x66616c73: return false
-        case 0x626f6f6c: return desc.booleanValue != 0
-        default: return try super.unpack(desc)
-        }
-    }
-    
+        
     override func unpackCompDescriptor(desc: NSAppleEventDescriptor) throws -> AnyObject { // TO DO: throw error -1726 if invalid operand(s)
         let operatorCode = desc.descriptorForKeyword(AEM4CC("relo"))!.enumCodeValue // keyAECompOperator
         var op1 = try self.unpack(desc.descriptorForKeyword(AEM4CC("obj1"))) // keyAEObject1

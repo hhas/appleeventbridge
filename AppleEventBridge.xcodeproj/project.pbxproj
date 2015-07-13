@@ -164,6 +164,13 @@
 			remoteGlobalIDString = 4F1A9FF319F92A9F00FBD23E;
 			remoteInfo = AppleEventBridge;
 		};
+		4F78B5F51B53CBDD0046EBA7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4F1A9FEB19F92A9E00FBD23E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F1A9FF319F92A9F00FBD23E;
+			remoteInfo = AppleEventBridge;
+		};
 		4FCE80E61A0B894A00C54EAC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4F1A9FEB19F92A9E00FBD23E /* Project object */;
@@ -1022,6 +1029,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4F78B5F61B53CBDD0046EBA7 /* PBXTargetDependency */,
 			);
 			name = SwiftAETranslate;
 			productName = SwiftAETranslate;
@@ -1218,6 +1226,11 @@
 			isa = PBXTargetDependency;
 			target = 4F1A9FF319F92A9F00FBD23E /* AppleEventBridge */;
 			targetProxy = 4F5EE3D91B2D95A5007C58B5 /* PBXContainerItemProxy */;
+		};
+		4F78B5F61B53CBDD0046EBA7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4F1A9FF319F92A9F00FBD23E /* AppleEventBridge */;
+			targetProxy = 4F78B5F51B53CBDD0046EBA7 /* PBXContainerItemProxy */;
 		};
 		4FCE80E71A0B894A00C54EAC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1527,6 +1540,7 @@
 				4FD7DFB11B4FCD77003608BD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

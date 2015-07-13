@@ -24,7 +24,6 @@
 
 @interface AEMCodecs : NSObject <AEMCodecsProtocol> {
 	id applicationRootDescriptor;
-	BOOL disableCache, allowUInt64;
 }
 
 + (instancetype)defaultCodecs;
@@ -39,16 +38,18 @@
  * be re-packed much more quickly. Occasionally this causes compatibility
  * problems with applications that returned subtly malformed specifiers.
  * To force an AEMCodecs object to fully unpack and repack object specifiers,
- * call its -dontCacheUnpackedSpecifiers method.
+ * set this property to YES.
  */
-- (void)dontCacheUnpackedSpecifiers;
+@property BOOL specifierCachingDisabled;
+
+
 
 /*
  * For compatibility's sake, AEBridge packs UInt64s greater than 2^62 as
  * doubles, with some potential loss of precision. To pack them as typeUInt64
- * instead, call -allowUInt64.
+ * instead, set this property to YES.
  */
-- (void)allowUInt64;
+@property BOOL UInt64DescriptorsEnabled;
 
 
 /**********************************************************************/

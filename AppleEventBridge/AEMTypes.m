@@ -6,60 +6,6 @@
 
 
 /**********************************************************************/
-// Booleans
-
-
-@implementation AEMBoolean
-
-+ (instancetype)True {
-    static dispatch_once_t pred = 0;
-    __strong static AEMBoolean *value = nil;
-    dispatch_once(&pred, ^{
-        value = [[self.class alloc] initWithBool: YES];
-    });
-    return value;
-}
-
-+ (instancetype)False {
-    static dispatch_once_t pred = 0;
-    __strong static AEMBoolean *value = nil;
-    dispatch_once(&pred, ^{
-        value = [[self.class alloc] initWithBool: NO];
-    });
-    return value;
-}
-
-- (instancetype)initWithBool:(BOOL)value {
-	self = [super init];
-	if (!self) return self;
-	boolValue = value;
-	cachedDesc = [[NSAppleEventDescriptor alloc]
-						 initWithDescriptorType: (value ? typeTrue : typeFalse)
-										  bytes: NULL
-										 length: 0];
-	return self;
-}
-
-- (NSString *)description {
-	return boolValue ? @"AEMTrue" : @"AEMFalse";
-}
-
-- (BOOL)boolValue {
-	return boolValue;
-}
-
-- (NSAppleEventDescriptor *)packWithCodecs:(id <AEMCodecsProtocol>)codecs error:(NSError * __autoreleasing *)error {
-	return cachedDesc;
-}
-
-- (NSAppleEventDescriptor *)descriptor {
-	return cachedDesc;
-}
-
-@end
-
-
-/**********************************************************************/
 // types, enums, etc.
 
 

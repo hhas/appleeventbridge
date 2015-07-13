@@ -107,8 +107,7 @@ this is not always the case. For example, the following object specifiers all id
 «
     finder.disks["Macintosh HD"].folders["Users"].folders["jsmith"].folders["Desktop"].files
 »«
-    [[[[finder.disks byName: @"Macintosh HD"].folders byName: @"Users"]
-            .folders byName: @"jsmith"].folders byName: @"Desktop"].files
+    finder.disks[@"Macintosh HD"].folders[@"Users"].folders[@"jsmith"].folders[@"Desktop"].files
 »
     finder.desktop.files
 
@@ -122,30 +121,24 @@ though only the first specifier describes the files' location by physical contai
 
     finder.items[NSURL(string:"file:///Users/jsmith/Desktop")].files
 »«
-    [finder.home.folders byName: @"Desktop"].files
+    finder.home.folders[@"Desktop"].files
 
-    [finder.startupDisk.folders byName: "Users:jsmith:Desktop:"].files
+    finder.startupDisk.folders[@"Users:jsmith:Desktop:"].files
     
-    [finder.items byIndex: [NSURL URLWithString: @"file:///Users/jsmith/Desktop"]].files
+    finder.items[[NSURL URLWithString: @"file:///Users/jsmith/Desktop"]].files
 »
 Some specifiers may identify different objects at different times, according to changes in the application's state, e.g.:
 
     itunes.currentTrack
 
 Specifiers may identify objects that do not actually exist as discreet entities within the application's underlying data structures, but are interpreted on the fly as proxies to the relevant portions of implementation-level data structures, e.g.:
-«
+
     textedit.documents[1].text.characters
 
     textedit.documents[1].text.words
 
     textedit.documents[1].text.paragraphs
-»«
-    [textedit.documents at: 1].text.characters
 
-    [textedit.documents at: 1].text.words
-
-    [textedit.documents at: 1].text.paragraphs
-»
 all refer to sections of data that's actually stored in a single `NSTextStorage` object within TextEdit's Model layer. This decoupling of the AEOM from the Model layer's structure allows applications to present data in a way that is convenient to the user, i.e. easy and intuitive to understand and use.
 
 Finally, one-to-many relationships may be selective in identifying a subset of related elements according to their individual class or shared superclasses. For example:
@@ -253,8 +246,8 @@ and using `AEB` glue classes:
     TEDApplication *textedit = [[TEDApplication application];
 
     TEDReference *ref;
-    ref = [[textedit.documents.text
-            .paragraphs byTest: [TEDIts notEquals: @"\n"]].characters at: 1].size;
+    ref = [textedit.documents.text.paragraphs 
+           byTest: [TEDIts notEquals: @"\n"]].characters[1].size;
 
     [[[ref set] to: @24] send];</code></pre>
 »

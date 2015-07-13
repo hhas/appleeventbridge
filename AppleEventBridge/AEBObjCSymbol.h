@@ -9,6 +9,9 @@
 
 // TO DO: make sure return types are all sorted out (ideally, AEM/AS-defined symbols should be same class regardless of app glue)
 
+// TO DO: glue-defined symbols are currently displaying as `[AEBSymbol NAME]`; should be `PRE.NAME` where `PRE` is glue-defined prefix
+
+
 #import "AEBSymbol.h"
 
 /**********************************************************************/

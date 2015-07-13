@@ -26,6 +26,9 @@ TO DO:
 - how best to specify launch flags in ObjC bridge? properties? chained method calls? (note: relaunchMode is currently implemented as property on AEBSpecifier; launchOptions needs exposed)
 
 
+- add nullable annotations, etc.
+
+
 - given all command methods return errors (since no Apple event is guaranteed to succeed), would it be worth overloading command methods to provide an alternative error handling scheme, allowing user to omit 'try' where they aren't concerned with error details, e.g. by passing a closure that returns a default value to be returned if command fails:
 
     func get(directParameter: AnyObject = AEBNoParameter,
@@ -65,11 +68,13 @@ user could then use a trailing closure to return a default value in the event an
         return newObj
     }
 
+    (note: glue-specific comparison/containment/logic constructors would be unnecessary if TestClause were always represented as AEBSpecifier; this'd be the simplest way to get these methods/operators out of app-specific glues and into SwiftAEGlueBase.swift)
+
 
 - any way to ensure `func == (left: TETSpecifier!, right: AnyObject!) -> TETSpecifier!` always gets priority over Swift's default `==(...)->Bool`? Currently, in the absence of an explicit return type, the type inferencer likes to pick the latter rather than the former, causing `==` test clause specifier to return boolean result instead of another specifier, e.g.:
 
     let q = TET.it == ""
-print(q) // q=false, but should be TETSpecifier; other operators do not seem to have this problem (might be a consequence of Swift's automatic bridging of -[NSObject isEqual:])
+    print(q) // q=false, but should be TETSpecifier; other operators do not seem to have this problem (might be a consequence of Swift's automatic bridging of -[NSObject isEqual:])
 
 
 - how best to specify how reply descs should be unpacked? (TO DO: is it possible/practical to specify return type as a Swift type, e.g. Array<String>, and introspect that to determine what coercions to apply when unpacking descs?)
@@ -84,13 +89,13 @@ print(q) // q=false, but should be TETSpecifier; other operators do not seem to 
 
         would be called as:
 
-            objSpec.get(1, asType: [String].self)
+            objSpec.get(1, asType:[String].self)
 
             finder.items.get(asType:[NSURL].self)
 
         thus avoiding need for trailing `as! [String]` as well as providing coercion to desired type where practical. (This may need to be implemented as an overloaded method, or is it possible to declare asType: as optional arg?)
 
-        (BTW, NSAppleEventDescriptor.self should also be allowed as a return type, in which case reply desc would be returned as-is without any unpacking.)
+        (BTW, NSAppleEventDescriptor.self should also be allowed as a return type, in which case the entire reply event desc would be returned as-is without any unpacking.)
 
 
 - in Swift XXXSymbol classes, would a dictionary of closures be faster/slower than large switch blocks for unpacking? (or a combination of switch for initial lookup combined with static dictionary-based cache for subsequent retrievals? prob. best to profile first)

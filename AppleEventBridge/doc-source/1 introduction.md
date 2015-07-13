@@ -8,7 +8,7 @@ For example, to get the value of the first paragraph of the topmost document in 
 «
     let result = try TextEdit().documents[1].paragraphs[1].get() as! String
 »«
-    id result = [[[[TEDApplication application].documents at:1].paragraphs at:1] getItem];
+    id result = [[TEDApplication application].documents[1].paragraphs[1] getItem];
 »
 This is equivalent to the AppleScript statement:
 
