@@ -10,7 +10,7 @@
             <div id="main">
                 <h1>A quick tutorial</h1>
                 <div class="navbar"><a href="understanding-apple-events.html">back</a> | <a href="index.html">index</a> | <a href="creating-and-using-static-glues.html">next</a></div>
-                <p>[note that this tutorial is incomplete and unfinished]</p>
+                <p>[NOTE: this tutorial is incomplete and unfinished, and while it can be read it can't yet be performed as-is due to Swift2's lack of support for building/linking/using 3rd-party frameworks outside of Xcode shared workspaces]</p>
 
 <p>[TO DO: should this chapter come before Apple events chapter?]</p>
 
@@ -23,6 +23,8 @@
 <p>This tutorial uses AppleEventBridge, TextEdit and the interactive command line <code>swift</code> interpreter to perform a simple 'Hello World' exercise.</p>
 
 <p class="hilitebox">Caution: It is recommended that you do not have any other documents open in TextEdit during this tutorial, as accidental modifications are easy to make and changes to existing documents are not undoable.</p>
+
+<p>[TO DO: using interactive <code>swift</code> in Terminal will only work if AEB framework and static glues can be passed via -framework and -F options; need to see if shared workspace+playground will be a better option.  OTOH, if interactive <code>swift</code> is a possibility, it would make sense to wrap it in a custom shell script that passes required options automatically, and also takes a list of scriptable apps for which to generate glues if they don't already exist]</p>
 
 <p>To begin, launch Terminal.app and type <code>swift</code> followed by a newline to launch the <code>swift</code> interpreter:</p>
 
@@ -139,7 +141,7 @@
 <p>Or to insert a new paragraph at the end of the document:</p>
 
 <pre><code>  textedit.make(new: TED.paragraph,
-           withData: 'Hello Again, World\n',
+           withData: "Hello Again, World\n",
                  at: TEDApp.documents[1].text.paragraphs.end)
 </code></pre>
 

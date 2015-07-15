@@ -1,6 +1,6 @@
 # A quick tutorial
 
-[note that this tutorial is incomplete and unfinished]
+[NOTE: this tutorial is incomplete and unfinished, and while it can be read it can't yet be performed as-is due to Swift2's lack of support for building/linking/using 3rd-party frameworks outside of Xcode shared workspaces]
 
 [TO DO: should this chapter come before Apple events chapter?]
 
@@ -14,6 +14,8 @@ The following tutorial provides a practical taste of application scripting with 
 This tutorial uses AppleEventBridge, TextEdit and the interactive command line `swift` interpreter to perform a simple 'Hello World' exercise.
 
 <p class="hilitebox">Caution: It is recommended that you do not have any other documents open in TextEdit during this tutorial, as accidental modifications are easy to make and changes to existing documents are not undoable.</p>
+
+[TO DO: using interactive `swift` in Terminal will only work if AEB framework and static glues can be passed via -framework and -F options; need to see if shared workspace+playground will be a better option.  OTOH, if interactive `swift` is a possibility, it would make sense to wrap it in a custom shell script that passes required options automatically, and also takes a list of scriptable apps for which to generate glues if they don't already exist]
 
 To begin, launch Terminal.app and type `swift` followed by a newline to launch the `swift` interpreter:
 
@@ -123,7 +125,7 @@ In addition to getting and setting a document's entire text by applying `get()` 
 Or to insert a new paragraph at the end of the document:
 
     textedit.make(new: TED.paragraph,
-             withData: 'Hello Again, World\n',
+             withData: "Hello Again, World\n",
                    at: TEDApp.documents[1].text.paragraphs.end)
 
 [TO DO: add note that unlike AS, Swift is sensitive to parameter order, so named params must appear in same order as in glue]

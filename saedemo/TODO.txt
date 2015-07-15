@@ -128,3 +128,72 @@ user could then use a trailing closure to return a default value in the event an
 
 
 
+- could/should ObjC glues also include convenience shortcut methods for constructing commands where all 'required' params (according to dictionary) can be added at once, e.g. the glue definition of:
+
+        make v : Make a new object.
+            make
+                new type : The class of the new object.
+                [at location specifier] : The location at which to insert the object.
+                [with data any] : The initial data for the object.
+                [with properties record] : The initial values for properties of the object.
+
+    would, in addition to `-make:` and `-make`, add `-make:new:` and `-makeNew:`, which (combined with existing special-case support for `at`) would reduce a typical `make` command from:
+
+        [[[[documents.end make] new_: TED.document] withProperties: @{...}] send]
+
+    to:
+
+        [[[documents.end makeNew: TED.document] withProperties: @{...}] send]
+
+    Similarly:
+
+        [[objSpec move] to: ...] send]
+
+        [[objSpec moveTo: ...] send]
+
+
+    Another heuristic would be also to include all params that take specifiers, as those are usually all supplied anyway even if marked optional:
+
+        duplicate v : Copy object(s) and put the copies at a new location.
+            duplicate specifier : the object for the command
+                [to location specifier] : The location for the new object(s).
+                [with properties record] : Properties to be set in the new duplicated object(s).
+
+        [[[objSpec duplicate] to: ...] send]
+
+        [[objSpec duplicateTo: ...] send]
+
+    OTOH, the ability to invoke a command directly on an objSpec combined with Obj's support for property-style syntax arguably reduces any benefits (simpler syntax, user convenience) to the point where they are not outweighted by the greater complexity (both in glue code and user learning):
+
+        [[objSpec duplicateTo: ...] send]
+
+        [[objSpec.duplicate to: ...] send]
+
+
+    Note that SB-style command names, where all params are included but nullable, isn't a good option as ObjC also commonly uses nil to indicate errors, making it impossible to distingish an intentionally omitted argument from an invalid one. Plus it wouldn't eliminate the separate `-send` call unless event attributes and &error arguments were passed differently as well, at which point the whole thing becomes hopelessly unwieldy.
+
+    Yet another option might be to define params and attributes as properties, e.g.:
+
+    TEDMake *make = textedit.documents.end.make;
+            make.withProperties = @{...};
+            make.timeout = 30;
+            make.send;
+
+    That would avoid nested brackets, but not verbosity.
+
+    Other ideas would be to pass params as dictionary or varargs:
+
+        [textedit.documents.end.make: @{TEDWithProperties:..., TEDTimeout, @30} error: &error]
+
+        [textedit.documents.end.make: TEDWithProperties, @{...}, TEDTimeout, @30, nil]
+
+        [textedit.documents.end make: @"withProperties:timeout:" @{...}, @30]
+        
+    or maybe even a C struct, but again that gets messy and potentially more confusing and complex that the traditional chained calls.
+
+
+
+- TO DO: check if ObjC glues' command param methods can safely use ObjC 'keywords', e.g. would it be safe to allow `[ref.make new: ...]` rather than use `[ref.make new_: ...]` and, if not, is there anything else that could be used rather than a trailing underscore which sits awkwardly between param name and colon?
+
+
+

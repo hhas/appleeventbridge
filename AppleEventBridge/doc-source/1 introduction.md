@@ -25,5 +25,5 @@ The following example uses AppleEventBridge to create a new "Hello World!" docum
 »«
     TEApplication *textedit = [TEApplication application];
 
-    [[[[textedit make] new_: TED.document] withProperties @{TED.text: @"Hello World!"}] send];
+    [[[textedit.make new_: TED.document] withProperties @{TED.text: @"Hello World!"}] send];
 »

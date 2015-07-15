@@ -11,6 +11,8 @@
 
 # TO DO: SDEF exporter needs to support synonyms
 
+# allow .sdef file path to be passed as alternative to app name (note that -n and -p options would be mandatory in this case)
+
 # TO DO: how to format type attributes in SDEF exporter? (currently both built-in and app-defined type names use AS format) (note that `type` attributes are somewhat ambiguous, since they may be either name or [enumeration-only?] code) 
 
 # TO DO: obtain reserved NSObject, AEB method names dynamically
@@ -76,7 +78,7 @@ def readtemplate(name, suffix='txt'):
 # TO DO: make sure app terms that conflict with builtins are escaped correctly
 
 
-def exportsdef(appurl, outpath, keywordconverter, prefix, commandnamesuffix, allowoverwrite):
+def exportsdef(appurl, outpath, keywordconverter, prefix, allowoverwrite):
     """ Export application's .sdef file as user documentation. Keywords are reformatted as appropriate. 
     
         outpath : str -- glue path with .sdef prefix
@@ -92,7 +94,7 @@ def exportsdef(appurl, outpath, keywordconverter, prefix, commandnamesuffix, all
     for suite in root.findall('./suite'):
         for key in ['command', 'event']:
             for command in suite.findall(key):
-                convertnode(command, 'name', '' if command.find('direct-parameter') is None else commandnamesuffix)
+                convertnode(command, 'name')
                 for param in command.findall('parameter'):
                     attr = param.get('name')
                     if attr: param.set('name', keywordconverter.convertSpecifierName_(attr)+':')
@@ -261,10 +263,10 @@ class AppInfo:
         if self.isobjc:
             for templatename, suffix in [('ObjCInterfaceGlueTemplate', '.h'), ('ObjCImplementationGlueTemplate', '.m')]:
                 renderglue(readtemplate(templatename), outdir, self.gluename+suffix, self, terms, allowoverwrite, shellcmd)
-            sdeffilenamesuffix, sdefcommandnamesuffix = 'objc.sdef', ':'
+            sdeffilenamesuffix = 'objc.sdef'
         else:
             renderglue(readtemplate('SwiftGlueTemplate'), outdir, self.gluename+'.swift', self, terms, allowoverwrite, shellcmd)
-            sdeffilenamesuffix, sdefcommandnamesuffix = 'swift.sdef', ''
+            sdeffilenamesuffix = 'swift.sdef'
         if self.appurl:
             exportsdef(self.appurl, os.path.join(outdir, '%s-%s' % (self.gluename, sdeffilenamesuffix)),
                        self.keywordconverter, self.prefix, sdefcommandnamesuffix, allowoverwrite)

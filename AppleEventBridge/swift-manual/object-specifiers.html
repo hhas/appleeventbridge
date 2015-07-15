@@ -35,7 +35,7 @@
 
 <p>Syntax:</p>
 
-<pre><code>specifier.<var>property</var></code></pre>
+<pre><code>specifier<strong>.</strong><var>property</var></code></pre>
 
 <p>Examples:</p>
 
@@ -50,7 +50,7 @@ finder.<strong>home</strong>.files.<strong>name</strong></code></pre>
 
 <p>Syntax:</p>
 
-<pre><code>specifier.<var>elements</var></code></pre>
+<pre><code>specifier<strong>.</strong><var>elements</var></code></pre>
 
 <p>Examples:</p>
 
@@ -107,7 +107,7 @@ files["index.html"]
 
 <p>Syntax:</p>
 
-<pre><code>elements.<strong>ID</strong>(<var>selector</var>)
+<pre><code>elements<strong>.ID(</strong><var>selector</var><strong>)</strong>
         <var>selector</var> : AnyObject -- the object's id (as defined in its 'id' property)</code></pre>
 
 <p>Examples:</p>
@@ -125,10 +125,10 @@ var any: XXSpecifier
 
 <p>Syntax:</p>
 
-<pre><code>elements.<strong>first</strong> -- first element
-elements.<strong>middle</strong> -- middle element
-elements.<strong>last</strong> -- last element
-elements.<strong>any</strong> -- random element</code></pre>
+<pre><code>elements<strong>.first</strong> -- first element
+elements<strong>.middle</strong> -- middle element
+elements<strong>.last</strong> -- last element
+elements<strong>.any</strong> -- random element</code></pre>
 
 <p>Examples:</p>
 
@@ -146,10 +146,10 @@ func next(elementClass: AEBSymbol) -&gt; XXSpecifier
 <p>Syntax:</p>
 
 <pre><code>// nearest element of a given class to appear before the specified element:
-element.<strong>previous</strong>(<var>elementClass</var>)
+element.<strong>previous(<var>elementClass</var>)</strong>
 
 // nearest element of a given class to appear after the specified element
-element.<strong>next</strong>(<var>elementClass</var>)
+element.<strong>next(<var>elementClass</var>)</strong>
 
         <var>elementClass</var> : AEBSymbol -- the name of the previous/next element's class</code></pre>
 
@@ -188,7 +188,7 @@ paragraphs[-1].previous(TED.character) // the last character before the last par
 
 <p>Syntax:</p>
 
-<pre><code>elements<strong>[</strong> <var>start</var>, </strong> <var>end</var>]
+<pre><code>elements<strong>[</strong><var>start</var><strong>,</strong> <var>end</var><strong>]</strong>
         <var>start</var> : Int | String | AEBSpecifier -- start of range
         <var>end</var> : Int | String | AEBSpecifier -- end of range</code></pre>
 
@@ -206,7 +206,7 @@ text[TEPCon.characters[5], TEPCon.words[-2]]
 
 <p>A specifier to each element that satisfies one or more conditions specified by a test specifier:</p>
 
-<pre><code>elements<strong>[</strong><var>selector</var><strong>]</strong>
+<pre><code>elements<strong>[<var>selector</var>]</strong>
         <var>selector</bar> : XXSpecifier -- test specifier</code></pre>
 
 <p>Test expressions consist of the following:</p>
@@ -228,10 +228,10 @@ specifier <strong>==</strong> <var>value</var>
 specifier <strong>!=</strong> <var>value</var>
 specifier <strong>&gt;</strong> <var>value</var>
 specifier <strong>&gt;=</strong> <var>value</var>
-specifier.<strong>beginsWith</strong>(<var>value</var>)
-specifier.<strong>endsWith</strong>(<var>value</var>)
-specifier.<strong>contains</strong>(<var>value</var>)
-specifier.<strong>isIn</strong>(<var>value</var>)</code></pre>
+specifier.<strong>beginsWith(</strong><var>value</var><strong>)</strong>
+specifier.<strong>endsWith(</strong><var>value</var><strong>)</strong>
+specifier.<strong>contains(</strong><var>value</var><strong>)</strong>
+specifier.<strong>isIn(</strong><var>value</var><strong>)</strong></code></pre>
 
 <p>Examples:</p>
 
@@ -276,10 +276,10 @@ var after: XXSpecifier
 
 <p>Syntax:</p>
 
-<pre><code>elements.<strong>beginning</strong>
-elements.<strong>end</strong>
-element.<strong>before</strong>
-element.<strong>after</strong></code></pre>
+<pre><code>elements<strong>.beginning</strong>
+elements<strong>.end</strong>
+element<strong>.before</strong>
+element<strong>.after</strong></code></pre>
 
 <p>Examples:</p>
 

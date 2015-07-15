@@ -25,7 +25,7 @@ characters/words/paragraphs of documents by index/relative-position/range/filter
   -(instancetype)PROPERTY;
 »
 Syntax:
-<pre><code>specifier.<var>property</var></code></pre>
+<pre><code>specifier<strong>.</strong><var>property</var></code></pre>
 
 Examples:
 
@@ -41,7 +41,7 @@ finder.<strong>home</strong>.files.<strong>name</strong></code></pre>
 »
 Syntax:
 
-<pre><code>specifier.<var>elements</var></code></pre>
+<pre><code>specifier<strong>.</strong><var>elements</var></code></pre>
 
 Examples:
 
@@ -107,10 +107,10 @@ Examples:
 »
 Syntax:
 «
-<pre><code>elements.<strong>ID</strong>(<var>selector</var>)
+<pre><code>elements<strong>.ID(</strong><var>selector</var><strong>)</strong>
         <var>selector</var> : AnyObject -- the object's id (as defined in its 'id' property)</code></pre>
 »«
-<pre><code>[elements <strong>ID:</strong> <var>selector</var>]
+<pre><code><strong>[</strong>elements <strong>ID:</strong> <var>selector</var><strong>]</strong>
         <var>selector</var> : id -- the object's ID (as defined in its 'id' property)</code></pre>
 »
 Examples:
@@ -134,10 +134,10 @@ Examples:
 »
 Syntax:
 
-<pre><code>elements.<strong>first</strong> -- first element
-elements.<strong>middle</strong> -- middle element
-elements.<strong>last</strong> -- last element
-elements.<strong>any</strong> -- random element</code></pre>
+<pre><code>elements<strong>.first</strong> -- first element
+elements<strong>.middle</strong> -- middle element
+elements<strong>.last</strong> -- last element
+elements<strong>.any</strong> -- random element</code></pre>
     
 Examples:
 
@@ -157,18 +157,18 @@ Examples:
 Syntax:
 «
 <pre><code>// nearest element of a given class to appear before the specified element:
-element.<strong>previous</strong>(<var>elementClass</var>)
+element.<strong>previous(<var>elementClass</var>)</strong>
 
 // nearest element of a given class to appear after the specified element
-element.<strong>next</strong>(<var>elementClass</var>)
+element.<strong>next(<var>elementClass</var>)</strong>
 
         <var>elementClass</var> : AEBSymbol -- the name of the previous/next element's class</code></pre>
 »«
 <pre><code>// nearest element of a given class to appear before the specified element:
-[element <strong>previous:</strong> <var>typeName</var>]
+<strong>[</strong>element <strong>previous:</strong> <var>typeName</var><strong>]</strong>
 
 // nearest element of a given class to appear after the specified element
-[element <strong>next:</strong> <var>typeName</var>]
+<strong>[</strong>element <strong>next:</strong> <var>typeName</var><strong>]</strong>
 
         <var>typeName</var> : AEBSymbol* -- the name of the previous/next element's class</code></pre>
 »
@@ -212,11 +212,11 @@ Some applications can handle more complex range references. For example, the fol
 »
 Syntax:
 «
-<pre><code>elements<strong>[</strong> <var>start</var>, </strong> <var>end</var>]
+<pre><code>elements<strong>[</strong><var>start</var><strong>,</strong> <var>end</var><strong>]</strong>
         <var>start</var> : Int | String | AEBSpecifier -- start of range
         <var>end</var> : Int | String | AEBSpecifier -- end of range</code></pre>
 »«
-<pre><code>elements<strong>[</strong> <var>start</var>, </strong> <var>end</var>]
+<pre><code><strong>[</strong>elements <strong>from:</strong> <var>start</var> <strong>to:</strong> <var>end</var><strong>]</strong>
         <var>start</var> : NSNumber* | NSString* | AEBSpecifier* -- start of range
         <var>end</var> : NSNumber* | NSString* | AEBSpecifier* -- end of range</code></pre>
 »
@@ -240,7 +240,7 @@ Examples:
 
 A specifier to each element that satisfies one or more conditions specified by a test specifier:
 
-<pre><code>elements<strong>[</strong><var>selector</var><strong>]</strong>
+<pre><code>elements<strong>[<var>selector</var>]</strong>
         <var>selector</bar> : XXSpecifier«»«*» -- test specifier</code></pre>
 
 Test expressions consist of the following:
@@ -261,21 +261,21 @@ specifier <strong>==</strong> <var>value</var>
 specifier <strong>!=</strong> <var>value</var>
 specifier <strong>&gt;</strong> <var>value</var>
 specifier <strong>&gt;=</strong> <var>value</var>
-specifier.<strong>beginsWith</strong>(<var>value</var>)
-specifier.<strong>endsWith</strong>(<var>value</var>)
-specifier.<strong>contains</strong>(<var>value</var>)
-specifier.<strong>isIn</strong>(<var>value</var>)</code></pre>
+specifier.<strong>beginsWith(</strong><var>value</var><strong>)</strong>
+specifier.<strong>endsWith(</strong><var>value</var><strong>)</strong>
+specifier.<strong>contains(</strong><var>value</var><strong>)</strong>
+specifier.<strong>isIn(</strong><var>value</var><strong>)</strong></code></pre>
 »«
-  <pre><code>[specifier <strong>lt:</strong> <var>value</var>] // less than
-[specifier <strong>le:</strong> <var>value</var>] // less or equal
-[specifier <strong>eq:</strong> <var>value</var>] // equal
-[specifier <strong>ne:</strong> <var>value</var>] // not equal
-[specifier <strong>gt:</strong> <var>value</var>] // greater than
-[specifier <strong>ge:</strong> <var>value</var>] // greater or equal
-[specifier <strong>beginsWith:</strong> <var>value</var>]
-[specifier <strong>endsWith:</strong> <var>value</var>]
-[specifier <strong>contains:</strong> <var>value</var>]
-[specifier <strong>isIn:</strong> <var>value</var>]</code></pre>
+  <pre><code><strong>[</strong>specifier <strong>lt:</strong> <var>value</var><strong>]</strong> // less than
+<strong>[</strong>specifier <strong>le:</strong> <var>value</var><strong>]</strong> // less or equal
+<strong>[</strong>specifier <strong>eq:</strong> <var>value</var><strong>]</strong> // equal
+<strong>[</strong>specifier <strong>ne:</strong> <var>value</var><strong>]</strong> // not equal
+<strong>[</strong>specifier <strong>gt:</strong> <var>value</var><strong>]</strong> // greater than
+<strong>[</strong>specifier <strong>ge:</strong> <var>value</var><strong>]</strong> // greater or equal
+<strong>[</strong>specifier <strong>beginsWith:</strong> <var>value</var><strong>]</strong>
+<strong>[</strong>specifier <strong>endsWith:</strong> <var>value</var><strong>]</strong>
+<strong>[</strong>specifier <strong>contains:</strong> <var>value</var><strong>]</strong>
+<strong>[</strong>specifier <strong>isIn:</strong> <var>value</var><strong>]</strong></code></pre>
 »
   Examples:
 «
@@ -302,8 +302,8 @@ specifier.<strong>isIn</strong>(<var>value</var>)</code></pre>
 <var>test</var> <strong>||</strong> <var>test</var>
 <strong>!</strong><var>test</var></code></pre>
 »«
-  <pre><code>[<var>test</var> <strong>AND:</strong> <var>test</var>]
-[<var>test</var> <strong>OR:</strong> <var>test</var>]
+  <pre><code><strong>[</strong><var>test</var> <strong>AND:</strong> <var>test</var><strong>]</strong>
+<strong>[</strong><var>test</var> <strong>OR:</strong> <var>test</var><strong>]</strong>
 <var>test</var><strong>.NOT</strong></code></pre>
 »
   Examples:
@@ -337,10 +337,10 @@ Insertion locations can be specified at the beginning or end of all elements, or
 »
 Syntax:
 
-<pre><code>elements.<strong>beginning</strong>
-elements.<strong>end</strong>
-element.<strong>before</strong>
-element.<strong>after</strong></code></pre>
+<pre><code>elements<strong>.beginning</strong>
+elements<strong>.end</strong>
+element<strong>.before</strong>
+element<strong>.after</strong></code></pre>
     
 Examples:
 
