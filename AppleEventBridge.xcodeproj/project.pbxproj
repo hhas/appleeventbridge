@@ -58,6 +58,7 @@
 		4F1AA07319F92D6000FBD23E /* AEMTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA03F19F92D6000FBD23E /* AEMTypes.m */; };
 		4F1AA07619F92D6000FBD23E /* AEMUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AA04219F92D6000FBD23E /* AEMUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1AA07719F92D6000FBD23E /* AEMUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AA04319F92D6000FBD23E /* AEMUtils.m */; };
+		4F2645AA1BA4B27700256402 /* AppleEventBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1A9FF419F92A9F00FBD23E /* AppleEventBridge.framework */; };
 		4F4ADE7D1B35C3870017EE65 /* aebglue in Copy Files (aebglue) */ = {isa = PBXBuildFile; fileRef = 4F4ADE741B35C2E50017EE65 /* aebglue */; };
 		4F4ADED21B35DC2B0017EE65 /* ITUGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */; };
 		4F4ADED51B35DC330017EE65 /* TEDGlue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4ADED31B35DC330017EE65 /* TEDGlue.swift */; };
@@ -491,6 +492,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F2645AA1BA4B27700256402 /* AppleEventBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
