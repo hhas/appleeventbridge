@@ -122,7 +122,7 @@ func SwiftAETranslateAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = 
             }
         }
     }
-    let argsString = ", ".join(argStrings)
+    let argsString = argStrings.joinWithSeparator(", ")
     return "\(baseString).\(commandInfo!.name)(\(argsString))"
 }
 

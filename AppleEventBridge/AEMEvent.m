@@ -297,6 +297,12 @@ static NSString *kAEMReplyPortDescriptor = @"kAEMReplyPortDescriptor";
 	 *	Note: some apps (e.g. Finder) may return noErr on success, so ignore that too.
 	 */
 	errorNumber = [[replyData paramDescriptorForKeyword: keyErrorNumber] int32Value];
+    
+    // TO DO:
+    // if e.errornumber == -1708 and self._code == b'ascrnoop':
+	//			return # 'launch' events always return 'not handled' errors; just ignore these
+
+    
 	if (errorNumber) {
 		// if an application error occurred, generate an NSError if one is requested, then return nil
 		if (error) {

@@ -34,21 +34,9 @@
     // -sendWithError:. Until then, any calls to add parameters, set attributes, etc. are effectively ignored, since
     // they all operate on aemEvent, which remains nil.
     commandError = err;
-	if (!target) return self;
-	// if an application specified by path has quit/restart, its AEAddressDesc is no longer valid;
-	// this code will automatically restart it (or not) according to client-specified auto-relaunch policy
-	AEBRelaunchMode relaunchPolicy = appData.relaunchMode;
-	if (relaunchPolicy != AEBRelaunchNever && [target targetType] == AEMTargetFileURL
-			&& ![AEMApplication isApplicationRunningWithProcessID: [[target descriptor] int32Value]]) {
-		if (relaunchPolicy == AEBRelaunchAlways || (eventClass_ == kCoreEventClass && eventID_ == kAEOpenApplication)) {
-			BOOL success = [target reconnectWithError: &err];
-            // As above, if process failed to relaunch, store the NSError and return it on -sendWithError:.
-            commandError = err;
-			if (!success) return self; 
-		}
-	}
-	// create new AEMEvent instance
-	aemEvent = [target eventWithEventClass: eventClass_ eventID: eventID_ returnID: kAutoGenerateReturnID codecs: appData];
+    if (target) { // create new AEMEvent instance
+        aemEvent = [target eventWithEventClass: eventClass_ eventID: eventID_ returnID: kAutoGenerateReturnID codecs: appData];
+    }
     return self;
 }
 
@@ -229,10 +217,31 @@
 	// send event
 	NSError *eventError = nil;
 	id result = [aemEvent sendWithOptions: sendMode timeout: timeoutInSeconds error: &eventError];
-	if (eventError && error) {
-		NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary: eventError.userInfo];
-		userInfo[kAEMErrorFailedEvent] = self;
-		*error = [NSError errorWithDomain: eventError.domain code: eventError.code userInfo: userInfo];
+    if (eventError) {
+        
+        /* TO DO: need to incorporate relaunch support here (note: this is old incorrect code moved from above)
+        
+        // if an application specified by path has quit/restart, its AEAddressDesc is no longer valid;
+        // this code will automatically restart it (or not) according to client-specified auto-relaunch policy
+        AEBRelaunchMode relaunchPolicy = appData.relaunchMode;
+        if (relaunchPolicy != AEBRelaunchNever && target.targetType == AEMTargetFileURL
+            && ![AEMApplication isApplicationRunningWithProcessID: target.descriptor.int32Value]) {
+            if (relaunchPolicy == AEBRelaunchAlways || (eventClass_ == kCoreEventClass && eventID_ == kAEOpenApplication)) {
+                BOOL success = [target reconnectWithError: &err];
+                // As above, if process failed to relaunch, store the NSError and return it on -sendWithError:.
+                commandError = err;
+                if (!success) return self; 
+            }
+        }
+        
+        */
+        
+        if (error) {
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary: eventError.userInfo];
+            userInfo[kAEMErrorFailedEvent] = self;
+            *error = [NSError errorWithDomain: eventError.domain code: eventError.code userInfo: userInfo];
+        }
+        return nil;
 	}
 	return [result isEqual: NSNull.null] ? self.nullResult : result;
 }

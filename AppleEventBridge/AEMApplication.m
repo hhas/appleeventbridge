@@ -72,6 +72,10 @@ id AEMGetFileIDFromNSURL(NSURL *url) {
 // Get info on running applications
 
 + (pid_t)processIDForApplicationWithFileURL:(NSURL *)fileURL error:(NSError * __autoreleasing *)error {
+    
+    // TO DO: use NSWorkspace - (nullable NSRunningApplication *)launchApplicationAtURL:(NSURL *)url options:(NSWorkspaceLaunchOptions)options configuration:(NSDictionary<NSString *, id> *)configuration error:(NSError **)error; instead
+
+    
     if (error) *error = nil;
     id fileID = AEMGetFileIDFromNSURL(fileURL);
     // check each process to see if it was launched from the specified bundle/executable

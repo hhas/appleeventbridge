@@ -269,7 +269,7 @@ class AppInfo:
             sdeffilenamesuffix = 'swift.sdef'
         if self.appurl:
             exportsdef(self.appurl, os.path.join(outdir, '%s-%s' % (self.gluename, sdeffilenamesuffix)),
-                       self.keywordconverter, self.prefix, sdefcommandnamesuffix, allowoverwrite)
+                       self.keywordconverter, self.prefix, allowoverwrite)
 
 
 

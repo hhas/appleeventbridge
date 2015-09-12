@@ -102,7 +102,7 @@ func SwiftAETranslateAppleEvent(event: NSAppleEventDescriptor!, useSDEF: Bool = 
     }
     if let considersAndIgnoresDesc = event.attributeDescriptorForKeyword(0x63736967) { // enumConsidsAndIgnores
         var considersAndIgnores: UInt32 = 0
-        considersAndIgnoresDesc.data.getBytes(&considersAndIgnores, length: sizeof(UInt32))
+        considersAndIgnoresDesc.data.getBytes(&considersAndIgnores, length: sizeofValue(considersAndIgnores))
         if considersAndIgnores != kAEBDefaultConsidersIgnoresMask {
             var considering = [AEBSymbol]()
             var ignoring = [AEBSymbol]()
@@ -154,7 +154,7 @@ private func appDataForProcess(var addressDesc: NSAppleEventDescriptor!, useSDEF
     var prefix: String = "XXX"
     if addressDesc.descriptorType == AEM4CC("kpid") { // typeKernelProcessID // local processes are generally targeted by PID
         var pid: pid_t = 0
-        addressDesc.data.getBytes(&pid, length: sizeof(pid_t))
+        addressDesc.data.getBytes(&pid, length: sizeofValue(pid))
         targetData = NSRunningApplication(processIdentifier: pid)!.bundleURL!
         (appClassName, prefix) = glueInfoForLocalProcess(pid)
     } else {

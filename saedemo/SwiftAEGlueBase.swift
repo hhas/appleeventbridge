@@ -361,7 +361,7 @@ class SwiftAESpecifier: AEBSpecifier {
                     args.append("\(name): \(SwiftAEFormatObject(value))")
                 }
             }
-            let failedCommandDescription = "\(self).\(name)(" + ", ".join(args) + ")"
+            let failedCommandDescription = "\(self).\(name)(" + args.joinWithSeparator(", ") + ")"
             var errorDescription = "Application command failed:\n\n\(failedCommandDescription)"
             var info: [NSObject: AnyObject] = [AEBErrorNumber:aemError.code, AEBErrorFailedCommandDescription: failedCommandDescription]
             let errorMessage = aemError.userInfo[kAEMErrorStringKey] ?? AEMDescriptionForError(Int32(aemError.code))

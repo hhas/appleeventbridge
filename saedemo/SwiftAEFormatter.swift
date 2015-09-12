@@ -279,9 +279,9 @@ class SwiftAEFormatter: AEMQueryVisitor {
 func SwiftAEFormatObject(object: AnyObject!) -> String {
     switch object {
     case let obj as [AnyObject]:
-        return "[" + (", ".join(obj.map {SwiftAEFormatObject($0)})) + "]"
+        return "[" + obj.map({SwiftAEFormatObject($0)}).joinWithSeparator(", ") + "]"
     case let obj as NSDictionary: // kluge as Swift can't express [AnyHashable:AnyObject]
-        return "[" + ", ".join(obj.map({"\(SwiftAEFormatObject($0)): \(SwiftAEFormatObject($1))"})) + "]"
+        return "[" + obj.map({"\(SwiftAEFormatObject($0)): \(SwiftAEFormatObject($1))"}).joinWithSeparator(", ") + "]"
     case let obj as String:
         let tmp = NSMutableString(string: obj)
         for (from, to) in [("\\", "\\\\"), ("\"", "\\\""), ("\r", "\\r"), ("\n", "\\n"), ("\t", "\\t")] {
