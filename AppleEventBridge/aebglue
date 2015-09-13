@@ -157,12 +157,11 @@ def insertcodeandname(tpl, content):
     return insert(tpl, 'CODE', fcc(code))
 
 def insertcommand(tpl, term):
-    params = sorted((p.code(), p.name()) for p in term.parameters())
     tpl = insert(tpl, 'COMMAND_NAME', term.name())
     tpl = insert(tpl, 'CAP_NAME', term.name()[0].upper()+term.name()[1:])
     tpl = insert(tpl, 'EVENT_CLASS', fcc(term.eventClass()))
     tpl = insert(tpl, 'EVENT_ID', fcc(term.eventID()))
-    return repeat(tpl, 'PARAMETER', params, insertcodeandname)
+    return repeat(tpl, 'PARAMETER', [(p.code(), p.name()) for p in term.parameters()], insertcodeandname)
 
 
 kElement = 1
