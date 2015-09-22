@@ -97,13 +97,13 @@ def exportsdef(appurl, outpath, keywordconverter, prefix, allowoverwrite):
                 convertnode(command, 'name')
                 for param in command.findall('parameter'):
                     attr = param.get('name')
-                    if attr: param.set('name', keywordconverter.convertSpecifierName_(attr)+':')
+                    if attr: param.set('name', keywordconverter.convertParameterName_(attr)+':')
         for key in ['class', 'class-extension', 'record-type']:
             for klass in suite.findall(key):
                 convertnode(klass, 'name')
                 # optional plural names require extra fiddling
                 pluralname = klass.get('plural')
-                if not pluralname:
+                if not pluralname: # TO DO: not sure we actually need to do this (it's the SDEF consumer's problem); convertnode(klass,'plural') ought to do
                     pluralname = klass.get('name')
                     if pluralname:
                         pluralname += 's'

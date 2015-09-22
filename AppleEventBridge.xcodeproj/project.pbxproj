@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0E39C31BB0068700FF2A96 /* SwiftAEGlueBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B993A1B4B02CB0028EEFA /* SwiftAEGlueBase.swift */; };
+		4F0E39C41BB0068700FF2A96 /* SwiftAEFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B99391B4B02CB0028EEFA /* SwiftAEFormatter.swift */; };
+		4F0E39C51BB0068700FF2A96 /* SwiftAETranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B993B1B4B02CB0028EEFA /* SwiftAETranslate.swift */; };
+		4F0E39C61BB006CE00FF2A96 /* SwiftAEGlueBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B993A1B4B02CB0028EEFA /* SwiftAEGlueBase.swift */; };
+		4F0E39C71BB006CE00FF2A96 /* SwiftAEFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B99391B4B02CB0028EEFA /* SwiftAEFormatter.swift */; };
+		4F0E39C81BB006CE00FF2A96 /* SwiftAETranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B993B1B4B02CB0028EEFA /* SwiftAETranslate.swift */; };
 		4F1311271B3F34050060179E /* AEBStaticKeywordConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1311251B3F34050060179E /* AEBStaticKeywordConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1311281B3F34050060179E /* AEBStaticKeywordConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1311261B3F34050060179E /* AEBStaticKeywordConverter.m */; };
 		4F1A9FFA19F92A9F00FBD23E /* AppleEventBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1A9FF919F92A9F00FBD23E /* AppleEventBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -74,9 +80,6 @@
 		4F7B99911B4C27110028EEFA /* SwiftAEGlueBase.swift in Copy Files (glue templates) */ = {isa = PBXBuildFile; fileRef = 4F7B993A1B4B02CB0028EEFA /* SwiftAEGlueBase.swift */; };
 		4F7B99921B4C27110028EEFA /* SwiftAEFormatter.swift in Copy Files (glue templates) */ = {isa = PBXBuildFile; fileRef = 4F7B99391B4B02CB0028EEFA /* SwiftAEFormatter.swift */; };
 		4F7B99931B4C27110028EEFA /* SwiftAETranslate.swift in Copy Files (glue templates) */ = {isa = PBXBuildFile; fileRef = 4F7B993B1B4B02CB0028EEFA /* SwiftAETranslate.swift */; };
-		4F7B99A01B4C280E0028EEFA /* SwiftAEFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B999D1B4C280E0028EEFA /* SwiftAEFormatter.swift */; };
-		4F7B99A11B4C280E0028EEFA /* SwiftAEGlueBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B999E1B4C280E0028EEFA /* SwiftAEGlueBase.swift */; };
-		4F7B99A21B4C280E0028EEFA /* SwiftAETranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7B999F1B4C280E0028EEFA /* SwiftAETranslate.swift */; };
 		4F7B9A1B1B4DAEA20028EEFA /* a-quick-tutorial.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99B91B4DAE580028EEFA /* a-quick-tutorial.html */; };
 		4F7B9A1C1B4DAEA20028EEFA /* application-objects.html in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99BA1B4DAE580028EEFA /* application-objects.html */; };
 		4F7B9A1D1B4DAEA20028EEFA /* application_architecture.gif in Copy Files (swift manual) */ = {isa = PBXBuildFile; fileRef = 4F7B99BB1B4DAE580028EEFA /* application_architecture.gif */; };
@@ -143,9 +146,6 @@
 		4FD7DFC41B4FD1CB003608BD /* OSAKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD7DFC31B4FD1CB003608BD /* OSAKit.framework */; };
 		4FD7DFC61B4FD1D7003608BD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD7DFC51B4FD1D7003608BD /* Cocoa.framework */; };
 		4FD7DFC71B4FD1E3003608BD /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA7A8C41A0A99AE00F0E578 /* Carbon.framework */; };
-		4FD7DFD41B4FF508003608BD /* SwiftAEFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7DFD11B4FF508003608BD /* SwiftAEFormatter.swift */; };
-		4FD7DFD51B4FF508003608BD /* SwiftAEGlueBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7DFD21B4FF508003608BD /* SwiftAEGlueBase.swift */; };
-		4FD7DFD61B4FF508003608BD /* SwiftAETranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7DFD31B4FF508003608BD /* SwiftAETranslate.swift */; };
 		4FD8E4A11B334D63004B5CD5 /* AEBKeywordConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FD8E4A21B334D63004B5CD5 /* AEBKeywordConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */; };
 /* End PBXBuildFile section */
@@ -363,9 +363,6 @@
 		4F7B99391B4B02CB0028EEFA /* SwiftAEFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftAEFormatter.swift; path = SwiftAE/SwiftAEFormatter.swift; sourceTree = "<group>"; };
 		4F7B993A1B4B02CB0028EEFA /* SwiftAEGlueBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftAEGlueBase.swift; path = SwiftAE/SwiftAEGlueBase.swift; sourceTree = "<group>"; };
 		4F7B993B1B4B02CB0028EEFA /* SwiftAETranslate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftAETranslate.swift; path = SwiftAE/SwiftAETranslate.swift; sourceTree = "<group>"; };
-		4F7B999D1B4C280E0028EEFA /* SwiftAEFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAEFormatter.swift; sourceTree = "<group>"; };
-		4F7B999E1B4C280E0028EEFA /* SwiftAEGlueBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAEGlueBase.swift; sourceTree = "<group>"; };
-		4F7B999F1B4C280E0028EEFA /* SwiftAETranslate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAETranslate.swift; sourceTree = "<group>"; };
 		4F7B99B91B4DAE580028EEFA /* a-quick-tutorial.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "a-quick-tutorial.html"; sourceTree = "<group>"; };
 		4F7B99BA1B4DAE580028EEFA /* application-objects.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "application-objects.html"; sourceTree = "<group>"; };
 		4F7B99BB1B4DAE580028EEFA /* application_architecture.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = application_architecture.gif; sourceTree = "<group>"; };
@@ -441,9 +438,6 @@
 		4FD7DFBB1B4FCF29003608BD /* SwiftAETranslate-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftAETranslate-Bridging-Header.h"; sourceTree = "<group>"; };
 		4FD7DFC31B4FD1CB003608BD /* OSAKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSAKit.framework; path = System/Library/Frameworks/OSAKit.framework; sourceTree = SDKROOT; };
 		4FD7DFC51B4FD1D7003608BD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		4FD7DFD11B4FF508003608BD /* SwiftAEFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAEFormatter.swift; sourceTree = "<group>"; };
-		4FD7DFD21B4FF508003608BD /* SwiftAEGlueBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAEGlueBase.swift; sourceTree = "<group>"; };
-		4FD7DFD31B4FF508003608BD /* SwiftAETranslate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAETranslate.swift; sourceTree = "<group>"; };
 		4FD8E49F1B334D63004B5CD5 /* AEBKeywordConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEBKeywordConverter.h; sourceTree = "<group>"; };
 		4FD8E4A01B334D63004B5CD5 /* AEBKeywordConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEBKeywordConverter.m; sourceTree = "<group>"; };
 		4FFA2D371A129AAE00AF09E4 /* 1 introduction.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "1 introduction.md"; sourceTree = "<group>"; };
@@ -690,9 +684,6 @@
 				4F4ADED01B35DC2B0017EE65 /* ITUGlue.swift */,
 				4F4ADED41B35DC330017EE65 /* TEDGlue-swift.sdef */,
 				4F4ADED31B35DC330017EE65 /* TEDGlue.swift */,
-				4F7B999E1B4C280E0028EEFA /* SwiftAEGlueBase.swift */,
-				4F7B999D1B4C280E0028EEFA /* SwiftAEFormatter.swift */,
-				4F7B999F1B4C280E0028EEFA /* SwiftAETranslate.swift */,
 			);
 			name = "Swift demo";
 			path = saedemo;
@@ -849,9 +840,6 @@
 			children = (
 				4FD7DFA41B4FCD77003608BD /* AppDelegate.h */,
 				4FD7DFA51B4FCD77003608BD /* AppDelegate.m */,
-				4FD7DFD11B4FF508003608BD /* SwiftAEFormatter.swift */,
-				4FD7DFD21B4FF508003608BD /* SwiftAEGlueBase.swift */,
-				4FD7DFD31B4FF508003608BD /* SwiftAETranslate.swift */,
 				4FD7DFB31B4FCDB3003608BD /* AEBLanguageInstance.h */,
 				4FD7DFB41B4FCDB3003608BD /* AEBLanguageInstance.m */,
 				4FD7DFB51B4FCDB3003608BD /* AEBEventSniffer.h */,
@@ -1181,9 +1169,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F7B99A01B4C280E0028EEFA /* SwiftAEFormatter.swift in Sources */,
-				4F7B99A11B4C280E0028EEFA /* SwiftAEGlueBase.swift in Sources */,
-				4F7B99A21B4C280E0028EEFA /* SwiftAETranslate.swift in Sources */,
+				4F0E39C61BB006CE00FF2A96 /* SwiftAEGlueBase.swift in Sources */,
+				4F0E39C71BB006CE00FF2A96 /* SwiftAEFormatter.swift in Sources */,
+				4F0E39C81BB006CE00FF2A96 /* SwiftAETranslate.swift in Sources */,
 				4F4ADEDC1B3824E30017EE65 /* FINGlue.swift in Sources */,
 				4F4ADED21B35DC2B0017EE65 /* ITUGlue.swift in Sources */,
 				4F4ADED51B35DC330017EE65 /* TEDGlue.swift in Sources */,
@@ -1206,11 +1194,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F0E39C31BB0068700FF2A96 /* SwiftAEGlueBase.swift in Sources */,
+				4F0E39C41BB0068700FF2A96 /* SwiftAEFormatter.swift in Sources */,
+				4F0E39C51BB0068700FF2A96 /* SwiftAETranslate.swift in Sources */,
 				4FD7DFB81B4FCDB3003608BD /* AEBEventSniffer.m in Sources */,
 				4FD7DFA91B4FCD77003608BD /* main.m in Sources */,
-				4FD7DFD61B4FF508003608BD /* SwiftAETranslate.swift in Sources */,
-				4FD7DFD41B4FF508003608BD /* SwiftAEFormatter.swift in Sources */,
-				4FD7DFD51B4FF508003608BD /* SwiftAEGlueBase.swift in Sources */,
 				4FD7DFB71B4FCDB3003608BD /* AEBLanguageInstance.m in Sources */,
 				4FD7DFA61B4FCD77003608BD /* AppDelegate.m in Sources */,
 			);

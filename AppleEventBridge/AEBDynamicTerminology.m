@@ -134,7 +134,7 @@
 			name = commandTerm.name = [keywordConverter escapeName: name];
         }
 		// add item
-		commandDef = [[AEBDynamicCommandTerm alloc] initWithName: name
+		commandDef = [[AEBDynamicCommandTerm alloc] initWithName: name // TO DO: redundant
                                                       eventClass: eventClass
                                                          eventID: eventID];
         commandsByName[name] = commandsByCode[AEBCommandKeyForCodes(eventClass, eventID)] = commandDef;
