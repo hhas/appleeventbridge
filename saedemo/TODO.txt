@@ -1,6 +1,8 @@
 TO DO:
 
-- rewrite AEB framework to simplify architecture, consolidating layered AEM+AEB query classes into a single layer of built-in and glue-defined classes:
+- strip out Swift support (for Swift3+, use SwiftAE/SwiftAutomation.framework instead)
+
+- rewrite AEB framework to simplify architecture, consolidating layered AEM+AEB query classes into a single layer of built-in and glue-defined classes (c.f. SwiftAE):
 
         AEBSpecifier
             AEBObject

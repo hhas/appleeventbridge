@@ -16,15 +16,11 @@ directly. For example:
 ## Status
 
 AppleEventBridge is a modernized, reworked fork of the objc-appscript bridge
-(http://appscript.sourceforge.net). Its objective is to provide Apple's Swift
-language with first-class application scripting support, equal in capability
-and compatibility to AppleScript's own.
-
-Its high-level API is mostly stable, though future updates may enhance/change
-it to improve language integration (e.g. better type support). Internal APIs
-and implementation may change radically in future; this release is provided
-primarily for exploration, experimentation, and feedback purposes rather than
-production use.
+(http://appscript.sourceforge.net). Further development has been discontinued
+in favor of the SwiftAutomation framework (https://bitbucket.org/hhas/swiftae)
+therefore its use is not recommended. (The most reliable way for Objective-C
+applications to send Apple events is to call AppleScript handlers directly
+via the AppleScript-Objective-C bridge.)
 
 
 ## Support
@@ -65,15 +61,12 @@ To clone AppleEventBridge to your own machine:
 
     git clone https://bitbucket.org/hhas/appleeventbridge.git
 
-Advice, suggestions, bug reports, pull requests, etc. can be submitted at:
-
-  https://bitbucket.org/hhas/appleeventbridge/issues
-
 Swift support requires Swift 2.0 and Xcode 7 beta 3 or later.
 
 
 ## Etc.
 
-No warranty given, E&OE, use at own risk, etc.
+Development of this software has ended. No warranty or support given,
+E&OE, use at own risk, etc.
 
 AppleEventBridge is released into the public domain.
